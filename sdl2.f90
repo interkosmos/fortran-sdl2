@@ -48,6 +48,57 @@ module sdl2_consts
     integer(kind=c_int), parameter :: sdl_window_tooltip            = z'00040000'
     integer(kind=c_int), parameter :: sdl_window_popup_menu         = z'00080000'
     integer(kind=c_int), parameter :: sdl_window_vulkan             = z'10000000'
+
+    ! SDL_EventType
+    integer(kind=c_int), parameter :: sdl_first_event                = 0
+    integer(kind=c_int), parameter :: sdl_quit_type                  = z'100'
+    integer(kind=c_int), parameter :: sdl_app_terminating            = z'101'
+    integer(kind=c_int), parameter :: sdl_app_low_memory             = z'102'
+    integer(kind=c_int), parameter :: sdl_app_will_enter_background  = z'103'
+    integer(kind=c_int), parameter :: sdl_app_did_enter_background   = z'104'
+    integer(kind=c_int), parameter :: sdl_app_will_enter_foreground  = z'105'
+    integer(kind=c_int), parameter :: sdl_app_did_enter_foreground   = z'106'
+    integer(kind=c_int), parameter :: sdl_window                     = z'200'
+    integer(kind=c_int), parameter :: sdl_sys_wm                     = z'201'
+    integer(kind=c_int), parameter :: sdl_key_down                   = z'300'
+    integer(kind=c_int), parameter :: sdl_key_up                     = z'301'
+    integer(kind=c_int), parameter :: sdl_text_editing               = z'302'
+    integer(kind=c_int), parameter :: sdl_text_input                 = z'303'
+    integer(kind=c_int), parameter :: sdl_key_map_changed            = z'304'
+    integer(kind=c_int), parameter :: sdl_mouse_motion               = z'400'
+    integer(kind=c_int), parameter :: sdl_mouse_button_down          = z'401'
+    integer(kind=c_int), parameter :: sdl_mouse_button_up            = z'402'
+    integer(kind=c_int), parameter :: sdl_mouse_wheel                = z'403'
+    integer(kind=c_int), parameter :: sdl_joy_axis_motion            = z'600'
+    integer(kind=c_int), parameter :: sdl_joy_ball_motion            = z'601'
+    integer(kind=c_int), parameter :: sdl_joy_hat_motion             = z'602'
+    integer(kind=c_int), parameter :: sdl_joy_button_down            = z'603'
+    integer(kind=c_int), parameter :: sdl_joy_button_up              = z'604'
+    integer(kind=c_int), parameter :: sdl_joy_device_added           = z'605'
+    integer(kind=c_int), parameter :: sdl_joy_device_removed         = z'606'
+    integer(kind=c_int), parameter :: sdl_controller_axis_motion     = z'650'
+    integer(kind=c_int), parameter :: sdl_controller_button_down     = z'651'
+    integer(kind=c_int), parameter :: sdl_controller_button_up       = z'652'
+    integer(kind=c_int), parameter :: sdl_controller_device_added    = z'653'
+    integer(kind=c_int), parameter :: sdl_controller_device_removed  = z'654'
+    integer(kind=c_int), parameter :: sdl_controller_device_remapped = z'655'
+    integer(kind=c_int), parameter :: sdl_finger_down                = z'700'
+    integer(kind=c_int), parameter :: sdl_finger_up                  = z'701'
+    integer(kind=c_int), parameter :: sdl_finger_motion              = z'702'
+    integer(kind=c_int), parameter :: sdl_dollar_gesture             = z'800'
+    integer(kind=c_int), parameter :: sdl_dollar_record              = z'801'
+    integer(kind=c_int), parameter :: sdl_multi_gesture              = z'802'
+    integer(kind=c_int), parameter :: dl_clipboard_update            = z'900'
+    integer(kind=c_int), parameter :: sdl_drop_file                  = z'1000'
+    integer(kind=c_int), parameter :: sdl_drop_text                  = z'1001'
+    integer(kind=c_int), parameter :: sdl_drop_begin                 = z'1002'
+    integer(kind=c_int), parameter :: sdl_drop_complete              = z'1003'
+    integer(kind=c_int), parameter :: sdl_audio_device_added         = z'1100'
+    integer(kind=c_int), parameter :: sdl_audio_device_removed       = z'1101'
+    integer(kind=c_int), parameter :: sdl_render_targets_reset       = z'2000'
+    integer(kind=c_int), parameter :: sdl_render_device_reset        = z'2001'
+    integer(kind=c_int), parameter :: sdl_user                       = z'8000'
+    integer(kind=c_int), parameter :: sdl_last                       = z'FFFF'
 end module sdl2_consts
 
 module sdl2_types
@@ -390,6 +441,7 @@ module sdl2_types
         type(c_ptr)             :: msg
     end type sdl_sys_wm_event
 
+    ! SDL_Event
     type, bind(c) :: sdl_event
         integer(kind=c_int32_t)               :: type
         type(sdl_common_event)                :: common
@@ -485,11 +537,20 @@ module sdl2
             use :: sdl2_types
             implicit none
             type(sdl_pixel_format), intent(in)        :: format
-            integer(kind=c_int8_t),    intent(in), value :: r
-            integer(kind=c_int8_t),    intent(in), value :: g
-            integer(kind=c_int8_t),    intent(in), value :: b
-            integer(kind=c_int32_t)                      :: sdl_map_rgb
+            integer(kind=c_int8_t), intent(in), value :: r
+            integer(kind=c_int8_t), intent(in), value :: g
+            integer(kind=c_int8_t), intent(in), value :: b
+            integer(kind=c_int32_t)                   :: sdl_map_rgb
         end function sdl_map_rgb
+
+        ! int SDL_PollEvent(SDL_Event *event)
+        function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_event), intent(in out) :: event
+            integer(kind=c_int)             :: sdl_poll_event_
+        end function sdl_poll_event_
 
         ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
         function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
@@ -623,4 +684,112 @@ module sdl2
             ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
             call c_f_pointer(ptr, sdl_load_bmp)
         end function sdl_load_bmp
+
+        function sdl_poll_event(event)
+            !! Calls `sdl_poll_event_()` and transfers the returned
+            !! event union to event type (since there are no unions
+            !! in Fortran).
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            use :: sdl2_types
+            implicit none
+            type(sdl_event), intent(in out) :: event
+            integer                         :: sdl_poll_event
+
+            sdl_poll_event = sdl_poll_event_(event)
+
+            select case (event%type)
+                ! SDL_WindowEvent
+                case (sdl_window)
+                    event%window = transfer(event, event%window)
+
+                ! SDL_KeyboardEvent
+                case (sdl_key_down : sdl_key_up)
+                    event%key = transfer(event, event%key)
+
+                ! SDL_TextEditingEvent
+                case (sdl_text_editing)
+                    event%edit = transfer(event, event%edit)
+
+                ! SDL_TextInputEvent
+                case (sdl_text_input)
+                    event%text = transfer(event, event%text)
+
+                ! SDL_MouseMotionEvent
+                case (sdl_mouse_motion)
+                    event%motion = transfer(event, event%motion)
+
+                ! SDL_MouseButtonEvent
+                case (sdl_mouse_button_down : sdl_mouse_button_up)
+                    event%button = transfer(event, event%button)
+
+                ! SDL_MouseWheelEvent
+                case (sdl_mouse_wheel)
+                    event%wheel = transfer(event, event%wheel)
+
+                ! SDL_JoyAxisEvent
+                case (sdl_joy_axis_motion)
+                    event%j_axis = transfer(event, event%j_axis)
+
+                ! SDL_JoyBallEvent
+                case (sdl_joy_ball_motion)
+                    event%j_ball = transfer(event, event%j_ball)
+
+                ! SDL_JoyHatEvent
+                case (sdl_joy_hat_motion)
+                    event%j_hat = transfer(event, event%j_hat)
+
+                ! SDL_JoyButtonEvent
+                case (sdl_joy_button_down : sdl_joy_button_up)
+                    event%j_button = transfer(event, event%j_button)
+
+                ! SDL_JoyDeviceEvent
+                case (sdl_joy_device_added : sdl_joy_device_removed)
+                    event%j_device = transfer(event, event%j_device)
+
+                ! SDL_ControllerAxisEvent
+                case (sdl_controller_axis_motion)
+                    event%c_axis = transfer(event, event%c_axis)
+
+                ! SDL_ControllerButtonEvent
+                case (sdl_controller_button_down : sdl_controller_button_up)
+                    event%c_button = transfer(event, event%c_button)
+
+                ! SDL_ControllerDeviceEvent
+                case (sdl_controller_device_added : sdl_controller_device_remapped)
+                    event%c_device = transfer(event, event%c_device)
+
+                ! SDL_AudioDeviceEvent
+                case (sdl_audio_device_added : sdl_audio_device_removed)
+                    event%a_device = transfer(event, event%a_device)
+
+                ! SDL_QuitEvent
+                case (sdl_quit_type)
+                    event%quit = transfer(event, event%quit)
+
+                ! SDL_UserEvent
+                case (sdl_user)
+                    event%user = transfer(event, event%user)
+
+                ! SDL_SysWMEvent
+                case (sdl_sys_wm)
+                    event%sys_wm = transfer(event, event%sys_wm)
+
+                ! SDL_TouchFingerEvent
+                case (sdl_finger_down : sdl_finger_motion)
+                    event%t_finger = transfer(event, event%t_finger)
+
+                ! SDL_MultiGestureEvent
+                case (sdl_multi_gesture)
+                    event%m_gesture = transfer(event, event%m_gesture)
+
+                ! SDL_DollarGestureEvent
+                case (sdl_dollar_gesture : sdl_dollar_record)
+                    event%d_gesture = transfer(event, event%d_gesture)
+
+                ! SDL_DropEvent
+                case (sdl_drop_file : sdl_drop_complete)
+                    event%drop = transfer(event, event%drop)
+            end select
+        end function sdl_poll_event
 end module sdl2
