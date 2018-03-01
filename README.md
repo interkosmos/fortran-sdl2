@@ -7,9 +7,14 @@ Use the Makefile to build the interface:
 ```
 $ make sdl2
 ```
-Or run your favourite Fortran compiler directly:
+You can override the default compiler (GNU Fortran 8) by passing an argument,
+for example:
 ```
-$ gfortran8 -c sdl2.f90
+$ make sdl2 FC=flang
+```
+Or just run your favourite Fortran compiler directly:
+```
+$ flang -c sdl2.f90
 ```
 
 ## Examples
