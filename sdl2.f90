@@ -685,6 +685,7 @@ module sdl2
             call c_f_pointer(ptr, sdl_load_bmp)
         end function sdl_load_bmp
 
+        ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event(event)
             !! Calls `sdl_poll_event_()` and transfers the returned
             !! event union to event type (since there are no unions
