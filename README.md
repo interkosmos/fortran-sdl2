@@ -17,6 +17,7 @@ Some demo applications are provided in directory `examples`.
 
 * **window** just opens an SDL 2 window.
 * **image** loads and displays an image.
+* **events** polls SDL events.
 
 Build the examples with:
 ```

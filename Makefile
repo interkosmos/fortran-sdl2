@@ -13,6 +13,7 @@ DIR         = examples
 
 WINDOW      = window
 IMAGE       = image
+EVENTS      = events
 
 all: $(OBJ)
 
@@ -27,7 +28,10 @@ $(WINDOW): $(DIR)/$*.f90 $(OBJ)
 $(IMAGE): $(DIR)/$*.f90 $(OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
+$(EVENTS): $(DIR)/$*.f90 $(OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
+
 .PHONY: clean
 
 clean:
-	rm *.mod $(OBJ) $(WINDOW) $(IMAGE)
+	rm *.mod $(OBJ) $(WINDOW) $(IMAGE) $(EVENTS)
