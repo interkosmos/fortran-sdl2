@@ -475,6 +475,17 @@ end module sdl2_types
 
 module sdl2
     interface
+        ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
+        function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface),       intent(in)        :: src
+            type(sdl_pixel_format),  intent(in)        :: fmt
+            integer(kind=c_int32_t), intent(in), value :: flags
+            type(c_ptr)                                :: sdl_convert_surface_
+        end function sdl_convert_surface_
+
         ! SDL_Window *SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
             use, intrinsic :: iso_c_binding
@@ -552,6 +563,16 @@ module sdl2
             integer(kind=c_int)             :: sdl_poll_event_
         end function sdl_poll_event_
 
+        ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
+        function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface), intent(in) :: surface
+            type(sdl_rect),    intent(in) :: rect
+            integer(kind=c_int)           :: sdl_set_clip_rect
+        end function sdl_set_clip_rect
+
         ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
         function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
             use, intrinsic :: iso_c_binding
@@ -581,6 +602,18 @@ module sdl2
             integer(kind=c_int)           :: sdl_upper_blit
         end function sdl_upper_blit
 
+        ! int SDL_UpperBlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
+        function sdl_upper_blit_scaled(src, src_rect, dst, dst_rect) bind(c, name='SDL_UpperBlitScaled')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface), intent(in) :: src
+            type(sdl_rect),    intent(in) :: src_rect
+            type(sdl_surface), intent(in) :: dst
+            type(sdl_rect),    intent(in) :: dst_rect
+            integer(kind=c_int)           :: sdl_upper_blit_scaled
+        end function sdl_upper_blit_scaled
+
         ! void SDL_Delay(Uint32 ms)
         subroutine sdl_delay(ms) bind(c, name='SDL_Delay')
             use, intrinsic :: iso_c_binding
@@ -609,6 +642,21 @@ module sdl2
     end interface
 
     contains
+        ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
+        function sdl_blit_scaled(src, src_rect, dst, dst_rect)
+            !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface), intent(in) :: src
+            type(sdl_rect),    intent(in) :: src_rect
+            type(sdl_surface), intent(in) :: dst
+            type(sdl_rect),    intent(in) :: dst_rect
+            integer(kind=c_int)           :: sdl_blit_scaled
+
+            sdl_blit_scaled = sdl_upper_blit_scaled(src, src_rect, dst, dst_rect)
+        end function sdl_blit_scaled
+
         ! int SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
         function sdl_blit_surface(src, src_rect, dst, dst_rect)
             !! Macro for `sdl_upper_blit()`, as defined in `SDL_surface.h`.
@@ -623,6 +671,23 @@ module sdl2
 
             sdl_blit_surface = sdl_upper_blit(src, src_rect, dst, dst_rect)
         end function sdl_blit_surface
+
+        ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
+        function sdl_convert_surface(src, fmt, flags)
+            !! Calls `sdl_convert_surface_()` and converts the returned
+            !! C pointer to `sdl_surface`.
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface),       intent(in) :: src
+            type(sdl_pixel_format),  intent(in) :: fmt
+            integer(kind=c_int32_t), intent(in) :: flags
+            type(sdl_surface), pointer          :: sdl_convert_surface
+            type(c_ptr)                         :: ptr
+
+            ptr = sdl_convert_surface_(src, fmt, flags)
+            call c_f_pointer(ptr, sdl_convert_surface)
+        end function sdl_convert_surface
 
         ! const char *SDL_GetError(void)
         function sdl_get_error()
