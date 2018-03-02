@@ -53,10 +53,11 @@ program main
     surface = sdl_get_window_surface(window)
     pixel_format = sdl_get_pixel_format(surface)
 
-    color = sdl_map_rgb(pixel_format, 15, 15, 15)
+    ! Set color to red (#FF0000).
+    color = sdl_map_rgb(pixel_format, int(255, 2), int(0, 2), int(0, 2))
 
     ! Draw and update.
-    rc = sdl_fill_rect(surface, rect, 16000)
+    rc = sdl_fill_rect(surface, rect, color)
     rc = sdl_update_window_surface(window)
 
     call sdl_delay(3000)
