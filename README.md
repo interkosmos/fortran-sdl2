@@ -7,8 +7,8 @@ Use the Makefile to build the interface:
 ```
 $ make sdl2
 ```
-You can override the default compiler (GNU Fortran 8) by passing an argument,
-for example:
+You can override the default compiler (GNU Fortran 8) by passing the `FC`
+argument, for example:
 ```
 $ make sdl2 FC=flang
 ```
@@ -23,6 +23,8 @@ Some demo applications are provided in directory `examples`.
 * **window** just opens an SDL 2 window.
 * **image** loads and displays an image.
 * **events** polls SDL events.
+* **scaling** displays a scaled image.
+* **translucency** makes one color of an image translucent.
 
 Build the examples with:
 ```
