@@ -547,11 +547,11 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(sdl_pixel_format), intent(in)        :: format
-            integer(kind=c_int8_t), intent(in), value :: r
-            integer(kind=c_int8_t), intent(in), value :: g
-            integer(kind=c_int8_t), intent(in), value :: b
-            integer(kind=c_int32_t)                   :: sdl_map_rgb
+            type(sdl_pixel_format),  intent(in)        :: format
+            integer(kind=c_int16_t), intent(in), value :: r
+            integer(kind=c_int16_t), intent(in), value :: g
+            integer(kind=c_int16_t), intent(in), value :: b
+            integer(kind=c_int32_t)                    :: sdl_map_rgb
         end function sdl_map_rgb
 
         ! int SDL_PollEvent(SDL_Event *event)
@@ -581,6 +581,17 @@ module sdl2
             character(kind=c_char), intent(in) :: mode
             type(c_ptr)                        :: sdl_rw_from_file
         end function sdl_rw_from_file
+
+        ! int SDL_SetColorKey(SDL_Surface *surface, int flag, Uint32 key)
+        function sdl_set_color_key(surface, flag, key) bind(c, name='SDL_SetColorKey')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface),       intent(in)        :: surface
+            integer(kind=c_int),     intent(in), value :: flag
+            integer(kind=c_int32_t), intent(in), value :: key
+            integer(kind=c_int)                        :: sdl_set_color_key
+        end function sdl_set_color_key
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')
