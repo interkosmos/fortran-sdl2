@@ -20,7 +20,7 @@ $ flang -c sdl2.f90
 ## Examples
 Some demo applications are provided in directory `examples`.
 
-* **window** just opens an SDL 2 window.
+* **window** just opens an SDL window.
 * **image** loads and displays an image.
 * **events** polls SDL events.
 * **scaling** displays a scaled image.
