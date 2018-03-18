@@ -1,4 +1,4 @@
-! translucency.f90
+! translucence.f90
 !
 ! Makes one color of an image translucent.
 !

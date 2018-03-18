@@ -9,11 +9,11 @@ OBJ          = sdl2.o
 
 DIR          = examples
 
-WINDOW        = window
+WINDOW       = window
 IMAGE        = image
 EVENTS       = events
 SCALING      = scaling
-TRANSLUCENCY = translucency
+TRANSLUCENCE = translucence
 
 all: $(OBJ)
 
@@ -34,7 +34,7 @@ $(EVENTS): $(DIR)/$*.f90 $(OBJ)
 $(SCALING): $(DIR)/$*.f90 $(OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCY): $(DIR)/$*.f90 $(OBJ)
+$(TRANSLUCENCE): $(DIR)/$*.f90 $(OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 .PHONY: clean

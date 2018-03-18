@@ -24,7 +24,7 @@ Some demo applications are provided in directory `examples`.
 * **image** loads and displays an image.
 * **events** polls SDL events.
 * **scaling** displays a scaled image.
-* **translucency** makes one color of an image translucent.
+* **translucence** makes one color of an image translucent.
 
 Build the examples with:
 ```
