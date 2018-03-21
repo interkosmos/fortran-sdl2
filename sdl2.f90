@@ -88,7 +88,7 @@ module sdl2_consts
     integer(kind=c_int), parameter :: sdl_dollar_gesture             = z'800'
     integer(kind=c_int), parameter :: sdl_dollar_record              = z'801'
     integer(kind=c_int), parameter :: sdl_multi_gesture              = z'802'
-    integer(kind=c_int), parameter :: dl_clipboard_update            = z'900'
+    integer(kind=c_int), parameter :: sdl_clipboard_update           = z'900'
     integer(kind=c_int), parameter :: sdl_drop_file                  = z'1000'
     integer(kind=c_int), parameter :: sdl_drop_text                  = z'1001'
     integer(kind=c_int), parameter :: sdl_drop_begin                 = z'1002'
@@ -121,103 +121,103 @@ module sdl2_types
 
     ! SDL_Color
     type, bind(c) :: sdl_color
-        integer(kind=c_int8_t) :: r
-        integer(kind=c_int8_t) :: g
-        integer(kind=c_int8_t) :: b
-        integer(kind=c_int8_t) :: a
+        integer(kind=c_int16_t) :: r
+        integer(kind=c_int16_t) :: g
+        integer(kind=c_int16_t) :: b
+        integer(kind=c_int16_t) :: a
     end type sdl_color
 
     ! SDL_Palette
     type, bind(c) :: sdl_palette
         integer(kind=c_int)     :: ncolors
         type(c_ptr)             :: colors
-        integer(kind=c_int32_t) :: version
+        integer(kind=c_int64_t) :: version
         integer(kind=c_int)     :: refcount
     end type sdl_palette
 
     ! SDL_PixelFormat
     type, bind(c) :: sdl_pixel_format
-        integer(kind=c_int32_t)              :: format
-        type(c_ptr)                          :: palette
-        integer(kind=c_int8_t)               :: bits_per_pixel
-        integer(kind=c_int8_t)               :: bytes_per_pixel
-        integer(kind=c_int8_t), dimension(2) :: padding
-        integer(kind=c_int32_t)              :: r_mask
-        integer(kind=c_int32_t)              :: g_mask
-        integer(kind=c_int32_t)              :: b_mask
-        integer(kind=c_int32_t)              :: a_mask
-        integer(kind=c_int8_t)               :: r_loss
-        integer(kind=c_int8_t)               :: g_loss
-        integer(kind=c_int8_t)               :: b_loss
-        integer(kind=c_int8_t)               :: a_loss
-        integer(kind=c_int8_t)               :: r_shift
-        integer(kind=c_int8_t)               :: g_shift
-        integer(kind=c_int8_t)               :: b_shift
-        integer(kind=c_int8_t)               :: a_shift
-        integer(kind=c_int)                  :: ref_count
-        type(c_ptr)                          :: next
+        integer(kind=c_int64_t)               :: format
+        type(c_ptr)                           :: palette
+        integer(kind=c_int16_t)               :: bits_per_pixel
+        integer(kind=c_int16_t)               :: bytes_per_pixel
+        integer(kind=c_int16_t), dimension(2) :: padding
+        integer(kind=c_int64_t)               :: r_mask
+        integer(kind=c_int64_t)               :: g_mask
+        integer(kind=c_int64_t)               :: b_mask
+        integer(kind=c_int64_t)               :: a_mask
+        integer(kind=c_int16_t)               :: r_loss
+        integer(kind=c_int16_t)               :: g_loss
+        integer(kind=c_int16_t)               :: b_loss
+        integer(kind=c_int16_t)               :: a_loss
+        integer(kind=c_int16_t)               :: r_shift
+        integer(kind=c_int16_t)               :: g_shift
+        integer(kind=c_int16_t)               :: b_shift
+        integer(kind=c_int16_t)               :: a_shift
+        integer(kind=c_int)                   :: ref_count
+        type(c_ptr)                           :: next
     end type sdl_pixel_format
 
     ! SDL_Surface
     type, bind(c) :: sdl_surface
-        integer(kind=c_int)    :: flags
-        type(c_ptr)            :: format
-        integer(kind=c_int)    :: w
-        integer(kind=c_int)    :: h
-        integer(kind=c_int)    :: pitch
-        type(c_ptr)            :: pixels
-        type(c_ptr)            :: user_data
-        integer(kind=c_int)    :: locked
-        type(c_ptr)            :: locked_data
-        type(sdl_rect)         :: clip_rect
-        type(c_ptr)            :: map
-        integer(kind=c_int)    :: ref_count
+        integer(kind=c_int64_t) :: flags
+        type(c_ptr)             :: format
+        integer(kind=c_int)     :: w
+        integer(kind=c_int)     :: h
+        integer(kind=c_int)     :: pitch
+        type(c_ptr)             :: pixels
+        type(c_ptr)             :: user_data
+        integer(kind=c_int)     :: locked
+        type(c_ptr)             :: locked_data
+        type(sdl_rect)          :: clip_rect
+        type(c_ptr)             :: map
+        integer(kind=c_int)     :: ref_count
     end type sdl_surface
 
     ! SDL_CommonEvent
     type, bind(c) :: sdl_common_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
     end type sdl_common_event
 
     ! SDL_WindowEvent
     type, bind(c) :: sdl_window_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
-        integer(kind=c_int8_t)  :: event
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
-        integer(kind=c_int32_t) :: data1
-        integer(kind=c_int32_t) :: data2
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
+        integer(kind=c_int16_t) :: event
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
+        integer(kind=c_int64_t) :: data1
+        integer(kind=c_int64_t) :: data2
     end type sdl_window_event
 
     ! SDL_Keysym
     type, bind(c) :: sdl_key_sym
         integer(kind=c_int)     :: scan_code
         integer(kind=c_int32_t) :: sym
-        integer(kind=c_int16_t) :: mod
-        integer(kind=c_int32_t) :: unused
+        integer(kind=c_int32_t) :: mod
+        integer(kind=c_int64_t) :: unused
     end type sdl_key_sym
 
     ! SDL_KeyboardEvent
     type, bind(c) :: sdl_keyboard_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
-        integer(kind=c_int8_t)  :: state
-        integer(kind=c_int8_t)  :: repeat
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
+        integer(kind=c_int16_t) :: state
+        integer(kind=c_int16_t) :: repeat
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
         type(sdl_key_sym)       :: key_sym
     end type sdl_keyboard_event
 
     ! SDL_TextEditingEvent
     type, bind(c) :: sdl_text_editing_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
         character(kind=c_char)  :: text
         integer(kind=c_int32_t) :: start
         integer(kind=c_int32_t) :: length
@@ -225,19 +225,19 @@ module sdl2_types
 
     ! SDL_TextInputEvent
     type, bind(c) :: sdl_text_input_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
         character(kind=c_char)  :: text
     end type sdl_text_input_event
 
     ! SDL_MouseMotionEvent
     type, bind(c) :: sdl_mouse_motion_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
-        integer(kind=c_int32_t) :: which
-        integer(kind=c_int32_t) :: state
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
+        integer(kind=c_int64_t) :: which
+        integer(kind=c_int64_t) :: state
         integer(kind=c_int32_t) :: x
         integer(kind=c_int32_t) :: y
         integer(kind=c_int32_t) :: x_rel
@@ -246,24 +246,24 @@ module sdl2_types
 
     ! SDL_MouseButtonEvent
     type, bind(c) :: sdl_mouse_button_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
-        integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: button
-        integer(kind=c_int8_t)  :: state
-        integer(kind=c_int8_t)  :: clicks
-        integer(kind=c_int8_t)  :: padding1
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
+        integer(kind=c_int64_t) :: which
+        integer(kind=c_int16_t) :: button
+        integer(kind=c_int16_t) :: state
+        integer(kind=c_int16_t) :: clicks
+        integer(kind=c_int16_t) :: padding1
         integer(kind=c_int32_t) :: x
         integer(kind=c_int32_t) :: y
     end type sdl_mouse_button_event
 
     ! SDL_MouseWheelEvent
     type, bind(c) :: sdl_mouse_wheel_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
-        integer(kind=c_int32_t) :: which
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
+        integer(kind=c_int64_t) :: which
         integer(kind=c_int32_t) :: x
         integer(kind=c_int32_t) :: y
         integer(kind=c_int32_t) :: direction
@@ -271,105 +271,105 @@ module sdl2_types
 
     ! SDL_JoyAxisEvent
     type, bind(c) :: sdl_joy_axis_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: axis
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
+        integer(kind=c_int16_t) :: axis
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
         integer(kind=c_int16_t) :: value
-        integer(kind=c_int16_t) :: padding4
+        integer(kind=c_int32_t) :: padding4
     end type sdl_joy_axis_event
 
     ! SDL_JoyBallEvent
     type, bind(c) :: sdl_joy_ball_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: ball
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
+        integer(kind=c_int16_t) :: ball
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
         integer(kind=c_int16_t) :: x_rel
         integer(kind=c_int16_t) :: y_rel
     end type sdl_joy_ball_event
 
     ! SDL_JoyHatEvent
     type, bind(c) :: sdl_joy_hat_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: hat
-        integer(kind=c_int8_t)  :: value
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
+        integer(kind=c_int16_t) :: hat
+        integer(kind=c_int16_t) :: value
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
     end type sdl_joy_hat_event
 
     ! SDL_JoyButtonEvent
     type, bind(c) :: sdl_joy_button_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: button
-        integer(kind=c_int8_t)  :: state
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
+        integer(kind=c_int16_t) :: button
+        integer(kind=c_int16_t) :: state
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
     end type sdl_joy_button_event
 
     ! SDL_JoyDeviceEvent
     type, bind(c) :: sdl_joy_device_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
     end type sdl_joy_device_event
 
     ! SDL_ControllerAxisEvent
     type, bind(c) :: sdl_controller_axis_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: axis
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
+        integer(kind=c_int16_t) :: axis
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
         integer(kind=c_int16_t) :: value
-        integer(kind=c_int16_t) :: padding4
+        integer(kind=c_int32_t) :: padding4
     end type sdl_controller_axis_event
 
     ! SDL_ControllerButtonEvent
     type, bind(c) :: sdl_controller_button_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: button
-        integer(kind=c_int8_t)  :: state
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
+        integer(kind=c_int16_t) :: button
+        integer(kind=c_int16_t) :: state
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
     end type sdl_controller_button_event
 
     ! SDL_ControllerDeviceEvent
     type, bind(c) :: sdl_controller_device_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int32_t) :: which
     end type sdl_controller_device_event
 
     ! SDL_AudioDeviceEvent
     type, bind(c) :: sdl_audio_device_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: which
-        integer(kind=c_int8_t)  :: is_capture
-        integer(kind=c_int8_t)  :: padding1
-        integer(kind=c_int8_t)  :: padding2
-        integer(kind=c_int8_t)  :: padding3
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: which
+        integer(kind=c_int16_t) :: is_capture
+        integer(kind=c_int16_t) :: padding1
+        integer(kind=c_int16_t) :: padding2
+        integer(kind=c_int16_t) :: padding3
     end type sdl_audio_device_event
 
     ! SDL_TouchFingerEvent
     type, bind(c) :: sdl_touch_finger_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int64_t) :: touch_id
         integer(kind=c_int64_t) :: finger_id
         real(kind=c_float)      :: x
@@ -381,24 +381,24 @@ module sdl2_types
 
     ! SDL_MultiGestureEvent
     type, bind(c) :: sdl_multi_gesture_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int64_t) :: touch_id
         real(kind=c_float)      :: d_theta
         real(kind=c_float)      :: d_dist
         real(kind=c_float)      :: x
         real(kind=c_float)      :: y
-        integer(kind=c_int16_t) :: num_fingers
-        integer(kind=c_int16_t) :: padding
+        integer(kind=c_int32_t) :: num_fingers
+        integer(kind=c_int32_t) :: padding
     end type sdl_multi_gesture_event
 
     ! SDL_DollarGestureEvent
     type, bind(c) :: sdl_dollar_gesture_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int64_t) :: touch_id
         integer(kind=c_int64_t) :: gesture_id
-        integer(kind=c_int32_t) :: num_fingers
+        integer(kind=c_int64_t) :: num_fingers
         real(kind=c_float)      :: error
         real(kind=c_float)      :: x
         real(kind=c_float)      :: y
@@ -406,29 +406,29 @@ module sdl2_types
 
     ! SDL_DropEvent
     type, bind(c) :: sdl_drop_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         type(c_ptr)             :: file
-        integer(kind=c_int32_t) :: window_id
+        integer(kind=c_int64_t) :: window_id
     end type sdl_drop_event
 
     ! SDL_QuitEvent
     type, bind(c) :: sdl_quit_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
     end type sdl_quit_event
 
     ! SDL_OSEvent
     type, bind(c) :: sdl_os_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
     end type sdl_os_event
 
     ! SDL_UserEvent
     type, bind(c) :: sdl_user_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
-        integer(kind=c_int32_t) :: window_id
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
+        integer(kind=c_int64_t) :: window_id
         integer(kind=c_int32_t) :: code
         type(c_ptr)             :: data1
         type(c_ptr)             :: data2
@@ -436,8 +436,8 @@ module sdl2_types
 
     ! SDL_SysWMEvent
     type, bind(c) :: sdl_sys_wm_event
-        integer(kind=c_int32_t) :: type
-        integer(kind=c_int32_t) :: timestamp
+        integer(kind=c_int64_t) :: type
+        integer(kind=c_int64_t) :: timestamp
         type(c_ptr)             :: msg
     end type sdl_sys_wm_event
 
@@ -490,13 +490,13 @@ module sdl2
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
             use, intrinsic :: iso_c_binding
             implicit none
-            character(kind=c_char), intent(in)        :: title
-            integer(kind=c_int),    intent(in), value :: x
-            integer(kind=c_int),    intent(in), value :: y
-            integer(kind=c_int),    intent(in), value :: w
-            integer(kind=c_int),    intent(in), value :: h
-            integer(kind=c_int),    intent(in), value :: flags
-            type(c_ptr)                               :: sdl_create_window
+            character(kind=c_char),  intent(in)        :: title
+            integer(kind=c_int),     intent(in), value :: x
+            integer(kind=c_int),     intent(in), value :: y
+            integer(kind=c_int),     intent(in), value :: w
+            integer(kind=c_int),     intent(in), value :: h
+            integer(kind=c_int32_t), intent(in), value :: flags
+            type(c_ptr)                                :: sdl_create_window
         end function sdl_create_window
 
         ! int SDL_FillRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color)
@@ -551,7 +551,7 @@ module sdl2
             integer(kind=c_int16_t), intent(in), value :: r
             integer(kind=c_int16_t), intent(in), value :: g
             integer(kind=c_int16_t), intent(in), value :: b
-            integer(kind=c_int32_t)                    :: sdl_map_rgb
+            integer(kind=c_int64_t)                    :: sdl_map_rgb
         end function sdl_map_rgb
 
         ! int SDL_PollEvent(SDL_Event *event)
@@ -686,7 +686,7 @@ module sdl2
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface(src, fmt, flags)
             !! Calls `sdl_convert_surface_()` and converts the returned
-            !! C pointer to `sdl_surface`.
+            !! C pointer to Fortran type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -722,7 +722,7 @@ module sdl2
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface(window)
             !! Calls `sdl_get_window_surface_()` and converts the returned
-            !! C pointer to `sdl_surface`.
+            !! C pointer to Fortran type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -746,10 +746,10 @@ module sdl2
             call c_f_pointer(surface%format, sdl_get_pixel_format)
         end function
 
-        ! SDL_Surface *SDL_LoadBMP(const char* file)
+        ! SDL_Surface *SDL_LoadBMP(const char *file)
         function sdl_load_bmp(file)
             !! Calls `sdl_load_bmp_rw()` and converts the returned
-            !! C pointer to `sdl_surface`.
+            !! C pointer to Fortran type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -764,8 +764,8 @@ module sdl2
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event(event)
             !! Calls `sdl_poll_event_()` and transfers the returned
-            !! event union to event type (since there are no unions
-            !! in Fortran).
+            !! union to the respective event type (since there are no
+            !! unions in Fortran).
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             use :: sdl2_types
