@@ -40,4 +40,4 @@ $(TRANSLUCENCE): $(DIR)/$*.f90 $(OBJ)
 .PHONY: clean
 
 clean:
-	rm *.mod $(OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCY)
+	rm *.mod $(OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE)
