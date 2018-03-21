@@ -12,7 +12,7 @@ program main
     implicit none
 
     integer,          parameter :: width     = 640
-    integer,          parameter :: height    = 480
+    integer,          parameter :: height    = 240
     character(len=*), parameter :: file_name = 'examples/fortran.bmp'
 
     type(c_ptr)            :: window
