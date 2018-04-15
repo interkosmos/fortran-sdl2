@@ -3,7 +3,7 @@ Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
 Fortran 2003/2008, using `iso_c_binding`.
 
 ## Build
-Use the Makefile to build the interface:
+Use BSD make to build the interface:
 ```
 $ make sdl2
 ```
