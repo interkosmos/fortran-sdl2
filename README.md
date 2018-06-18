@@ -17,14 +17,20 @@ Or just run your favourite Fortran compiler directly:
 $ flang -c sdl2.f90
 ```
 
+Build the SDL_image interface with:
+```
+$ make sdl2_image
+```
+Be aware to add `-lSDL2_image` to your `LD_FLAGS`!
+
 ## Examples
 Some demo applications are provided in directory `examples`.
 
 * **window** just opens an SDL window.
-* **image** loads and displays an image.
+* **image** loads and displays an image (software renderer).
 * **events** polls SDL events.
-* **scaling** displays a scaled image.
-* **translucence** makes one color of an image translucent.
+* **scaling** displays a scaled image (software renderer).
+* **translucence** makes one color of an image translucent (software renderer).
 
 Build the examples with:
 ```

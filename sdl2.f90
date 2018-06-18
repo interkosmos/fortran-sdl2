@@ -346,6 +346,12 @@ module sdl2_consts
     integer(kind=c_int), parameter :: sdl_scancode_audiorewind          = 286
     integer(kind=c_int), parameter :: sdl_scancode_audiofastforward     = 287
     integer(kind=c_int), parameter :: sdl_num_scancodes                 = 513
+
+    ! SDL_RendererFlags
+    integer(kind=c_int), parameter :: sdl_renderer_software      = z'00000001'
+    integer(kind=c_int), parameter :: sdl_renderer_hardware      = z'00000002'
+    integer(kind=c_int), parameter :: sdl_renderer_presentvsync  = z'00000004'
+    integer(kind=c_int), parameter :: sdl_renderer_targettexture = z'00000008'
 end module sdl2_consts
 
 module sdl2_types
@@ -733,6 +739,26 @@ module sdl2
             type(c_ptr)                                :: sdl_convert_surface_
         end function sdl_convert_surface_
 
+        ! SDL_Renderer *SDL_CreateRenderer(SDL_Window *window, int index, Uint32 flags)
+        function sdl_create_renderer(window, index, flags) bind(c, name='SDL_CreateRenderer')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),             intent(in), value :: window
+            integer(kind=c_int),     intent(in), value :: index
+            integer(kind=c_int32_t), intent(in), value :: flags
+            type(c_ptr)                                :: sdl_create_renderer
+        end function sdl_create_renderer
+
+        ! SDL_Texture *SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface)
+        function sdl_create_texture_from_surface(renderer, surface) bind(c, name='SDL_CreateTextureFromSurface')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),       intent(in), value :: renderer
+            type(sdl_surface), intent(in)        :: surface
+            type(c_ptr)                          :: sdl_create_texture_from_surface
+        end function sdl_create_texture_from_surface
+
         ! SDL_Window *SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
             use, intrinsic :: iso_c_binding
@@ -818,6 +844,35 @@ module sdl2
             integer(kind=c_int)             :: sdl_poll_event_
         end function sdl_poll_event_
 
+        ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
+        function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(kind=c_char), intent(in) :: file
+            character(kind=c_char), intent(in) :: mode
+            type(c_ptr)                        :: sdl_rw_from_file
+        end function sdl_rw_from_file
+
+        ! int SDL_RenderClear(SDL_Renderer *renderer)
+        function sdl_render_clear(renderer) bind(c, name='SDL_RenderClear')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: renderer
+            integer(kind=c_int)            :: sdl_render_clear
+        end function sdl_render_clear
+
+        ! int SDL_RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect)
+        function sdl_render_copy(renderer, texture, src_rect, dst_rect) bind(c, name='SDL_RenderCopy')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),    intent(in), value :: renderer
+            type(c_ptr),    intent(in), value :: texture
+            type(sdl_rect), intent(in)        :: src_rect
+            type(sdl_rect), intent(in)        :: dst_rect
+            integer(kind=c_int)               :: sdl_render_copy
+        end function sdl_render_copy
+
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
             use, intrinsic :: iso_c_binding
@@ -827,15 +882,6 @@ module sdl2
             type(sdl_rect),    intent(in) :: rect
             integer(kind=c_int)           :: sdl_set_clip_rect
         end function sdl_set_clip_rect
-
-        ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
-        function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(kind=c_char), intent(in) :: file
-            character(kind=c_char), intent(in) :: mode
-            type(c_ptr)                        :: sdl_rw_from_file
-        end function sdl_rw_from_file
 
         ! int SDL_SetColorKey(SDL_Surface *surface, int flag, Uint32 key)
         function sdl_set_color_key(surface, flag, key) bind(c, name='SDL_SetColorKey')
@@ -887,6 +933,20 @@ module sdl2
             integer(kind=c_int32_t), intent(in), value :: ms
         end subroutine sdl_delay
 
+        ! void SDL_DestroyRenderer(SDL_Renderer *renderer)
+        subroutine sdl_destroy_renderer(renderer) bind(c, name='SDL_DestroyRenderer')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: renderer
+        end subroutine sdl_destroy_renderer
+
+        ! void SDL_DestroyTexture(SDL_Texture *texture)
+        subroutine sdl_destroy_texture(texture) bind(c, name='SDL_DestroyTexture')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: texture
+        end subroutine sdl_destroy_texture
+
         ! void SDL_DestroyWindow(SDL_Window *window)
         subroutine sdl_destroy_window(window) bind(c, name='SDL_DestroyWindow')
             use, intrinsic :: iso_c_binding
@@ -905,6 +965,13 @@ module sdl2
         ! void SDL_PumpEvents(void)
         subroutine sdl_pump_events() bind(c, name='SDL_PumpEvents')
         end subroutine sdl_pump_events
+
+        ! void SDL_RenderPresent(SDL_Renderer *renderer)
+        subroutine sdl_render_present(renderer) bind(c, name='SDL_RenderPresent')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: renderer
+        end subroutine sdl_render_present
 
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')
@@ -984,7 +1051,7 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             integer(kind=c_int8_t), pointer :: sdl_get_keyboard_state(:)
-            type(c_ptr)      :: ptr
+            type(c_ptr)                     :: ptr
 
             ptr = sdl_get_keyboard_state_(c_null_ptr)
             call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])

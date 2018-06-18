@@ -4,8 +4,10 @@ SDL_LDFLAGS  = `sdl2-config --libs`
 CFLAGS       = -fcheck=all -Ofast -march=native -Wl,-rpath=/usr/local/lib/gcc8/ $(SDL_CFLAGS)
 LDFLAGS      = $(SDL_LDFLAGS)
 
-SRC          = sdl2.f90
-OBJ          = sdl2.o
+SDL_SRC      = sdl2.f90
+SDL_OBJ      = sdl2.o
+IMG_SRC      = sdl2_image.f90
+IMG_OBJ      = sdl2_image.o
 
 DIR          = examples
 
@@ -15,29 +17,34 @@ EVENTS       = events
 SCALING      = scaling
 TRANSLUCENCE = translucence
 
-all: $(OBJ)
+all: $(SDL_OBJ) $(IMG_OBJ)
 
-sdl2: $(OBJ)
+sdl2: $(SDL_OBJ)
 
-$(OBJ):
-	$(FC) -c $(SRC)
+sdl2_image: $(IMG_OBJ)
 
-$(WINDOW): $(DIR)/$*.f90 $(OBJ)
+$(SDL_OBJ):
+	$(FC) -c $(SDL_SRC)
+
+$(IMG_OBJ):
+	$(FC) -c $(IMG_SRC)
+
+$(WINDOW): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(IMAGE): $(DIR)/$*.f90 $(OBJ)
+$(IMAGE): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(EVENTS): $(DIR)/$*.f90 $(OBJ)
+$(EVENTS): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(SCALING): $(DIR)/$*.f90 $(OBJ)
+$(SCALING): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCE): $(DIR)/$*.f90 $(OBJ)
+$(TRANSLUCENCE): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 .PHONY: clean
 
 clean:
-	rm *.mod $(OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE)
+	rm *.mod $(SDL_OBJ) $(IMG_OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE)
