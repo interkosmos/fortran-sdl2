@@ -2,8 +2,8 @@
 Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
 Fortran 2003/2008, using `iso_c_binding`.
 
-## Build
-Use BSD make to build the interface:
+## Build SDL2
+Use BSD make to build the SDL2 interface:
 ```
 $ make sdl2
 ```
@@ -17,11 +17,12 @@ Or just run your favourite Fortran compiler directly:
 $ flang -c sdl2.f90
 ```
 
-Build the SDL_image interface with:
+## Build SDL2_image
+Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
-Be aware to add `-lSDL2_image` to your `LD_FLAGS`!
+Linking against SDL2_image requires you to add `-lSDL2_image` to your `LD_FLAGS`.
 
 ## Examples
 Some demo applications are provided in directory `examples`.
