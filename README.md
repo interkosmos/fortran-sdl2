@@ -32,6 +32,7 @@ Some demo applications are provided in directory `examples`.
 * **events** polls SDL events.
 * **scaling** displays a scaled image (software renderer).
 * **translucence** makes one color of an image translucent (software renderer).
+* **render** loads a PNG file with SDL_image (hardware renderer).
 
 Build the examples with:
 ```

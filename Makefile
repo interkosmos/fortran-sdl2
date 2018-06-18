@@ -16,6 +16,7 @@ IMAGE        = image
 EVENTS       = events
 SCALING      = scaling
 TRANSLUCENCE = translucence
+RENDER       = render
 
 all: $(SDL_OBJ) $(IMG_OBJ)
 
@@ -44,7 +45,10 @@ $(SCALING): $(DIR)/$*.f90 $(SDL_OBJ)
 $(TRANSLUCENCE): $(DIR)/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
+$(RENDER): $(DIR)/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
+
 .PHONY: clean
 
 clean:
-	rm *.mod $(SDL_OBJ) $(IMG_OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE)
+	rm *.mod $(SDL_OBJ) $(IMG_OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE) $(RENDER)
