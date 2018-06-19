@@ -844,6 +844,18 @@ module sdl2
             integer(kind=c_int)             :: sdl_poll_event_
         end function sdl_poll_event_
 
+        ! int SDL_QueryTexture(SDL_Texture *texture, Uint32 *format, int *access, int *w, int *h)
+        function sdl_query_texture(texture, format, access, w, h) bind(c, name='SDL_QueryTexture')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),             intent(in), value :: texture
+            integer(kind=c_int32_t), intent(out)       :: format
+            integer(kind=c_int),     intent(out)       :: access
+            integer(kind=c_int),     intent(out)       :: w
+            integer(kind=c_int),     intent(out)       :: h
+            integer(kind=c_int)                        :: sdl_query_texture
+        end function sdl_query_texture
+
         ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
         function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
             use, intrinsic :: iso_c_binding
