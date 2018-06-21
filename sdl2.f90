@@ -352,6 +352,16 @@ module sdl2_consts
     integer(kind=c_int), parameter :: sdl_renderer_hardware      = z'00000002'
     integer(kind=c_int), parameter :: sdl_renderer_presentvsync  = z'00000004'
     integer(kind=c_int), parameter :: sdl_renderer_targettexture = z'00000008'
+
+    ! SDL_BlendMode
+    integer(kind=c_int), parameter :: sdl_blendmode_none    = z'00000000'
+    integer(kind=c_int), parameter :: sdl_blendmode_blend   = z'00000001'
+    integer(kind=c_int), parameter :: sdl_blendmode_add     = z'00000002'
+    integer(kind=c_int), parameter :: sdl_blendmode_mod     = z'00000004'
+    integer(kind=c_int), parameter :: sdl_blendmode_invalid = z'7FFFFFFF'
+
+    integer(kind=c_int16_t), parameter :: sdl_alpha_opaque      = 255
+    integer(kind=c_int16_t), parameter :: sdl_alpha_transparent = 0
 end module sdl2_consts
 
 module sdl2_types
@@ -723,7 +733,6 @@ module sdl2_types
         type(sdl_drop_event)              :: drop
         integer(kind=c_int8_t)            :: padding(56)
     end type sdl_event
-
 end module sdl2_types
 
 module sdl2
@@ -849,10 +858,10 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr),             intent(in), value :: texture
-            integer(kind=c_int32_t), intent(out)       :: format
-            integer(kind=c_int),     intent(out)       :: access
-            integer(kind=c_int),     intent(out)       :: w
-            integer(kind=c_int),     intent(out)       :: h
+            integer(kind=c_int32_t), intent(in out)    :: format
+            integer(kind=c_int),     intent(in out)    :: access
+            integer(kind=c_int),     intent(in out)    :: w
+            integer(kind=c_int),     intent(in out)    :: h
             integer(kind=c_int)                        :: sdl_query_texture
         end function sdl_query_texture
 
@@ -885,6 +894,18 @@ module sdl2
             integer(kind=c_int)               :: sdl_render_copy
         end function sdl_render_copy
 
+        ! int SDL_RenderDrawLine(SDL_Renderer *renderer, int x1, int y1, int x2, int y2)
+        function sdl_render_draw_line(renderer, x1, y1, x2, y2) bind(c, name='SDL_RenderDrawLine')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            integer(kind=c_int), intent(in), value :: x1
+            integer(kind=c_int), intent(in), value :: y1
+            integer(kind=c_int), intent(in), value :: x2
+            integer(kind=c_int), intent(in), value :: y2
+            integer(kind=c_int)                    :: sdl_render_draw_line
+        end function sdl_render_draw_line
+
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
             use, intrinsic :: iso_c_binding
@@ -905,6 +926,27 @@ module sdl2
             integer(kind=c_int32_t), intent(in), value :: key
             integer(kind=c_int)                        :: sdl_set_color_key
         end function sdl_set_color_key
+
+        ! int SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode)
+        function sdl_set_render_draw_blend_mode(renderer, blend_mode) bind(c, name='SDL_SetRenderDrawBlendMode')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            integer(kind=c_int), intent(in), value :: blend_mode
+            integer(kind=c_int)                    :: sdl_set_render_draw_blend_mode
+        end function sdl_set_render_draw_blend_mode
+
+        ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+        function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),             intent(in), value :: renderer
+            integer(kind=c_int16_t), intent(in), value :: r
+            integer(kind=c_int16_t), intent(in), value :: g
+            integer(kind=c_int16_t), intent(in), value :: b
+            integer(kind=c_int16_t), intent(in), value :: a
+            integer(kind=c_int)                        :: sdl_set_render_draw_color
+        end function sdl_set_render_draw_color
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')

@@ -51,4 +51,12 @@ $(BOUNCE): $(DIR)/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
 .PHONY: clean
 
 clean:
-	rm *.mod $(SDL_OBJ) $(IMG_OBJ) $(WINDOW) $(IMAGE) $(EVENTS) $(SCALING) $(TRANSLUCENCE) $(BOUNCE)
+	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
+	if [ -e $(SDL_OBJ) ]; then rm $(SDL_OBJ); fi
+	if [ -e $(IMG_OBJ) ]; then rm $(IMG_OBJ); fi
+	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi
+	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
+	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
+	if [ -e $(SCALING) ]; then rm $(SCALING); fi
+	if [ -e $(TRANSLUCENCE) ]; then rm $(TRANSLUCENCE); fi
+	if [ -e $(BOUNCE) ]; then rm $(BOUNCE); fi

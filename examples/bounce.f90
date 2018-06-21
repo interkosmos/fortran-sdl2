@@ -57,6 +57,7 @@ program main
     renderer = sdl_create_renderer(window, -1, 0)
     texture  = img_load_texture(renderer, file_name // c_null_char)
 
+    ! Get texture size.
     rc = sdl_query_texture(texture, &
                            texture_format, &
                            texture_access, &
@@ -80,25 +81,28 @@ program main
             end select
         end if
 
+        ! Bounce horizontally.
         if (dst_rect%x < 0) then
             dst_rect%x = 0
             dx = 1
-        elseif (dst_rect%x + texture_width > width) then
+        else if (dst_rect%x + texture_width > width) then
             dst_rect%x = width - texture_width
             dx = -1
-        endif
+        end if
 
+       ! Bounce vertically.
        if (dst_rect%y < 0) then
             dst_rect%y = 0
             dy = 1
-        elseif (dst_rect%y + texture_height > height) then
+        else if (dst_rect%y + texture_height > height) then
             dst_rect%y = height - texture_height
             dy = -1
-        endif
+        end if
 
         dst_rect%x = dst_rect%x + dx
         dst_rect%y = dst_rect%y + dy
 
+        ! Render the texture.
         rc = sdl_render_clear(renderer)
         rc = sdl_render_copy(renderer, texture, src_rect, dst_rect)
         call sdl_render_present(renderer)
