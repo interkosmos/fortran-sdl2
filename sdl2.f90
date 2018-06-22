@@ -807,6 +807,13 @@ module sdl2
             type(c_ptr)                    :: sdl_get_keyboard_state_
         end function sdl_get_keyboard_state_
 
+        ! Uint32 SDL_GetTicks(void)
+        function sdl_get_ticks() bind(c, name='SDL_GetTicks')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int64_t) :: sdl_get_ticks
+        end function sdl_get_ticks
+
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface_(window) bind(c, name='SDL_GetWindowSurface')
             use, intrinsic :: iso_c_binding
