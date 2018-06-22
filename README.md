@@ -1,6 +1,11 @@
 # f03sdl2
 Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
-Fortran 2003/2008, using `iso_c_binding`.
+Fortran 2003, using `iso_c_binding`. It provides access to:
+
+* SDL2
+* SDL2_image
+* SDL2_mixer
+* SDL2_ttf
 
 ## Build SDL2
 Use BSD make to build the SDL2 interface:
@@ -22,7 +27,21 @@ Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
-Linking against SDL2_image requires you to add `-lSDL2_image` to your `LD_FLAGS`.
+Add `-lSDL2_image` to your `LD_FLAGS` to link SDL2_image.
+
+## Build SDL2_mixer
+Build the SDL2_mixer interface with:
+```
+$ make sdl2_mixer
+```
+Add `-lSDL2_mixer` to your `LD_FLAGS` to link SDL2_mixer.
+
+## Build SDL2_ttf
+Build the SDL2_ttf interface with:
+```
+$ make sdl2_ttf
+```
+Add `-lSDL2_ttf` to your `LD_FLAGS` to link SDL2_ttf.
 
 ## Examples
 Some demo applications are provided in directory `examples`.
@@ -32,7 +51,8 @@ Some demo applications are provided in directory `examples`.
 * **events** polls SDL events.
 * **scaling** displays a scaled image (software renderer).
 * **translucence** makes one color of an image translucent (software renderer).
-* **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
+* **bounce** loads a PNG file with SDL2_image and lets it bounce on the screen (hardware renderer).
+* **music** plays an OGG file with SDL2_mixer.
 
 Build the examples with:
 ```
