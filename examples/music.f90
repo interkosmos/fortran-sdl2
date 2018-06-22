@@ -1,6 +1,7 @@
-! mixer.f90
+! music.f90
 !
-! Plays an OGG file using SDL2_mixer.
+! Plays an OGG file using SDL2_mixer and outputs some text
+! with SDL2_ttf.
 !
 ! Author:   Philipp Engel
 ! Licence:  ISC
