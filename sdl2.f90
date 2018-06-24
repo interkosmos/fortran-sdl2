@@ -1,6 +1,6 @@
 ! sdl2.f90
 !
-! SDL 2 interface for Fortran 2003/2008.
+! SDL2 interface for Fortran 2003/2008.
 !
 ! Author:  Philipp Engel
 ! Licence: ISC
@@ -912,6 +912,16 @@ module sdl2
             integer(kind=c_int), intent(in), value :: y2
             integer(kind=c_int)                    :: sdl_render_draw_line
         end function sdl_render_draw_line
+
+        ! int SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_Rect *rect)
+        function sdl_render_fill_rect(renderer, rect) bind(c, name='SDL_RenderFillRect')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),    intent(in), value :: renderer
+            type(sdl_rect), intent(in)        :: rect
+            integer(kind=c_int)               :: sdl_render_fill_rect
+        end function sdl_render_fill_rect
 
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
