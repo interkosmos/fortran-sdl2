@@ -6,8 +6,8 @@ Library   | Version
 ----------|--------
 SDL       | 2.0.7
 SDL_image | 2.0.2
-SDL_ttf   | 2.0.14_1
 SDL_mixer | 2.0.1_1
+SDL_ttf   | 2.0.14_1
 
 ## Build SDL2
 Use BSD make to build the SDL2 interface:
@@ -201,7 +201,7 @@ SDL_GetAudioDriver                    |   –   |
 SDL_GetAudioStatus                    |   –   |
 SDL_GetBasePath                       |   –   |
 SDL_GetCPUCacheLineSize               |   –   |
-SDL_GetCPUCount                       |   –   |
+SDL_GetCPUCount                       |   ✓   |
 SDL_GetClipRect                       |   –   |
 SDL_GetClipboardText                  |   –   |
 SDL_GetClosestDisplayMode             |   –   |
@@ -262,7 +262,7 @@ SDL_GetScancodeName                   |   –   |
 SDL_GetSurfaceAlphaMod                |   –   |
 SDL_GetSurfaceBlendMode               |   –   |
 SDL_GetSurfaceColorMod                |   –   |
-SDL_GetSystemRAM                      |   –   |
+SDL_GetSystemRAM                      |   ✓   |
 SDL_GetTextureAlphaMod                |   –   |
 SDL_GetTextureBlendMode               |   –   |
 SDL_GetTextureColorMod                |   –   |
@@ -317,21 +317,21 @@ SDL_HapticStopAll                     |   –   |
 SDL_HapticStopEffect                  |   –   |
 SDL_HapticUnpause                     |   –   |
 SDL_HapticUpdateEffect                |   –   |
-SDL_Has3DNow                          |   –   |
-SDL_HasAVX                            |   –   |
-SDL_HasAVX2                           |   –   |
+SDL_Has3DNow                          |   ✓   |
+SDL_HasAVX                            |   ✓   |
+SDL_HasAVX2                           |   ✓   |
 SDL_HasAltiVec                        |   –   |
 SDL_HasClipboardText                  |   –   |
 SDL_HasEvent                          |   –   |
 SDL_HasEvents                         |   –   |
 SDL_HasIntersection                   |   –   |
-SDL_HasMMX                            |   –   |
-SDL_HasRDTSC                          |   –   |
-SDL_HasSSE                            |   –   |
-SDL_HasSSE2                           |   –   |
-SDL_HasSSE3                           |   –   |
-SDL_HasSSE41                          |   –   |
-SDL_HasSSE42                          |   –   |
+SDL_HasMMX                            |   ✓   |
+SDL_HasRDTSC                          |   ✓   |
+SDL_HasSSE                            |   ✓   |
+SDL_HasSSE2                           |   ✓   |
+SDL_HasSSE3                           |   ✓   |
+SDL_HasSSE41                          |   ✓   |
+SDL_HasSSE42                          |   ✓   |
 SDL_HasScreenKeyboardSupport          |   –   |
 SDL_HideWindow                        |   –   |
 SDL_Init                              |   ✓   |
@@ -504,7 +504,7 @@ SDL_SetSurfaceRLE                     |   –   |
 SDL_SetTextInputRect                  |   –   |
 SDL_SetTextureAlphaMod                |   –   |
 SDL_SetTextureBlendMode               |   –   |
-SDL_SetTextureColorMod                |   –   |
+SDL_SetTextureColorMod                |   ✓   |
 SDL_SetThreadPriority                 |   –   |
 SDL_SetWindowBordered                 |   –   |
 SDL_SetWindowBrightness               |   –   |
@@ -629,60 +629,6 @@ IMG_isXCF                             |   –   |
 IMG_isXPM                             |   –   |
 IMG_isXV                              |   –   |
 
-### SDL_ttf
-
-Name                                  | Bound |
---------------------------------------|-------|
-SDL_TTF_MAJOR_VERSION                 |   –   |
-SDL_TTF_MINOR_VERSION                 |   –   |
-SDL_TTF_PATCHLEVEL                    |   –   |
-TTF_ByteSwappedUNICODE                |   –   |
-TTF_CloseFont                         |   ✓   |
-TTF_FontAscent                        |   –   |
-TTF_FontDescent                       |   –   |
-TTF_FontFaceFamilyName                |   –   |
-TTF_FontFaceIsFixedWidth              |   –   |
-TTF_FontFaceStyleName                 |   –   |
-TTF_FontFaces                         |   –   |
-TTF_FontHeight                        |   –   |
-TTF_FontLineSkip                      |   –   |
-TTF_GetError                          |   –   |
-TTF_GetFontHinting                    |   –   |
-TTF_GetFontKerning                    |   –   |
-TTF_GetFontOutline                    |   –   |
-TTF_GetFontStyle                      |   –   |
-TTF_GlyphIsProvided                   |   –   |
-TTF_GlyphMetrics                      |   –   |
-TTF_Init                              |   ✓   |
-TTF_Linked_Version                    |   –   |
-TTF_OpenFont                          |   ✓   |
-TTF_OpenFontIndex                     |   –   |
-TTF_OpenFontIndexRW                   |   –   |
-TTF_OpenFontRW                        |   –   |
-TTF_Quit                              |   –   |
-TTF_RenderGlyph_Blended               |   –   |
-TTF_RenderGlyph_Shaded                |   –   |
-TTF_RenderGlyph_Solid                 |   –   |
-TTF_RenderText_Blended                |   –   |
-TTF_RenderText_Shaded                 |   –   |
-TTF_RenderText_Solid                  |   ✓   |
-TTF_RenderUNICODE_Blended             |   –   |
-TTF_RenderUNICODE_Shaded              |   –   |
-TTF_RenderUNICODE_Solid               |   –   |
-TTF_RenderUTF8_Blended                |   –   |
-TTF_RenderUTF8_Shaded                 |   –   |
-TTF_RenderUTF8_Solid                  |   –   |
-TTF_SetError                          |   –   |
-TTF_SetFontHinting                    |   –   |
-TTF_SetFontKerning                    |   –   |
-TTF_SetFontOutline                    |   –   |
-TTF_SetFontStyle                      |   –   |
-TTF_SizeText                          |   –   |
-TTF_SizeUNICODE                       |   –   |
-TTF_SizeUTF8                          |   –   |
-TTF_WasInit                           |   –   |
-
-
 ### SDL_mixer
 
 Name                                  | Bound |
@@ -758,6 +704,59 @@ Mix_UnregisterEffect                  |   –   |
 Mix_Volume                            |   –   |
 Mix_VolumeChunk                       |   –   |
 Mix_VolumeMusic                       |   –   |
+
+### SDL_ttf
+
+Name                                  | Bound |
+--------------------------------------|-------|
+SDL_TTF_MAJOR_VERSION                 |   –   |
+SDL_TTF_MINOR_VERSION                 |   –   |
+SDL_TTF_PATCHLEVEL                    |   –   |
+TTF_ByteSwappedUNICODE                |   –   |
+TTF_CloseFont                         |   ✓   |
+TTF_FontAscent                        |   –   |
+TTF_FontDescent                       |   –   |
+TTF_FontFaceFamilyName                |   –   |
+TTF_FontFaceIsFixedWidth              |   –   |
+TTF_FontFaceStyleName                 |   –   |
+TTF_FontFaces                         |   –   |
+TTF_FontHeight                        |   –   |
+TTF_FontLineSkip                      |   –   |
+TTF_GetError                          |   –   |
+TTF_GetFontHinting                    |   –   |
+TTF_GetFontKerning                    |   –   |
+TTF_GetFontOutline                    |   –   |
+TTF_GetFontStyle                      |   –   |
+TTF_GlyphIsProvided                   |   –   |
+TTF_GlyphMetrics                      |   –   |
+TTF_Init                              |   ✓   |
+TTF_Linked_Version                    |   –   |
+TTF_OpenFont                          |   ✓   |
+TTF_OpenFontIndex                     |   –   |
+TTF_OpenFontIndexRW                   |   –   |
+TTF_OpenFontRW                        |   –   |
+TTF_Quit                              |   –   |
+TTF_RenderGlyph_Blended               |   –   |
+TTF_RenderGlyph_Shaded                |   –   |
+TTF_RenderGlyph_Solid                 |   –   |
+TTF_RenderText_Blended                |   –   |
+TTF_RenderText_Shaded                 |   –   |
+TTF_RenderText_Solid                  |   ✓   |
+TTF_RenderUNICODE_Blended             |   –   |
+TTF_RenderUNICODE_Shaded              |   –   |
+TTF_RenderUNICODE_Solid               |   –   |
+TTF_RenderUTF8_Blended                |   –   |
+TTF_RenderUTF8_Shaded                 |   –   |
+TTF_RenderUTF8_Solid                  |   –   |
+TTF_SetError                          |   –   |
+TTF_SetFontHinting                    |   –   |
+TTF_SetFontKerning                    |   –   |
+TTF_SetFontOutline                    |   –   |
+TTF_SetFontStyle                      |   –   |
+TTF_SizeText                          |   –   |
+TTF_SizeUNICODE                       |   –   |
+TTF_SizeUTF8                          |   –   |
+TTF_WasInit                           |   –   |
 
 ## Licence
 ISC

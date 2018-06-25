@@ -792,6 +792,13 @@ module sdl2
             integer(kind=c_int)                        :: sdl_fill_rect
         end function sdl_fill_rect
 
+        ! int SDL_GetCPUCount(void)
+        function sdl_get_cpu_count() bind(c, name='SDL_GetCPUCount')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_get_cpu_count
+        end function sdl_get_cpu_count
+
         ! const char *SDL_GetError(void)
         function sdl_get_error_() bind(c, name='SDL_GetError')
             use, intrinsic :: iso_c_binding
@@ -807,6 +814,13 @@ module sdl2
             type(c_ptr)                    :: sdl_get_keyboard_state_
         end function sdl_get_keyboard_state_
 
+        ! int SDL_GetSystemRAM(void)
+        function sdl_get_system_ram() bind(c, name='SDL_GetSystemRAM')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_get_system_ram
+        end function sdl_get_system_ram
+
         ! Uint32 SDL_GetTicks(void)
         function sdl_get_ticks() bind(c, name='SDL_GetTicks')
             use, intrinsic :: iso_c_binding
@@ -821,6 +835,83 @@ module sdl2
             type(c_ptr), intent(in), value :: window
             type(c_ptr)                    :: sdl_get_window_surface_
         end function sdl_get_window_surface_
+
+        ! SDL_bool SDL_Has3DNow(void)
+        function sdl_has_3dnow() bind(c, name='SDL_Has3DNow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_3dnow
+        end function sdl_has_3dnow
+
+        ! SDL_bool SDL_HasAltiVec(void)
+        function sdl_has_alti_vec() bind(c, name='SDL_HasAltiVec')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_alti_vec
+        end function sdl_has_alti_vec
+
+        ! SDL_bool SDL_HasAVX(void)
+        function sdl_has_avx() bind(c, name='SDL_HasAVX')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_avx
+        end function sdl_has_avx
+
+        ! SDL_bool SDL_HasAVX2(void)
+        function sdl_has_avx2() bind(c, name='SDL_HasAVX2')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_avx2
+        end function sdl_has_avx2
+
+        ! SDL_bool SDL_HasMMX(void)
+        function sdl_has_mmx() bind(c, name='SDL_HasMMX')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_mmx
+        end function sdl_has_mmx
+
+        ! SDL_bool SDL_HasRDTSC(void)
+        function sdl_has_rdtsc() bind(c, name='SDL_HasRDTSC')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_rdtsc
+        end function sdl_has_rdtsc
+
+        ! SDL_bool SDL_HasSSE(void)
+        function sdl_has_sse() bind(c, name='SDL_HasSSE')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_sse
+        end function sdl_has_sse
+
+        ! SDL_bool SDL_HasSSE2(void)
+        function sdl_has_sse2() bind(c, name='SDL_HasSSE2')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_sse2
+        end function sdl_has_sse2
+
+        ! SDL_bool SDL_HasSSE3(void)
+        function sdl_has_sse3() bind(c, name='SDL_HasSSE3')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_sse3
+        end function sdl_has_sse3
+
+        ! SDL_bool SDL_HasSSE41(void)
+        function sdl_has_sse41() bind(c, name='SDL_HasSSE41')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_sse41
+        end function sdl_has_sse41
+
+        ! SDL_bool SDL_HasSSE42(void)
+        function sdl_has_sse42() bind(c, name='SDL_HasSSE42')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_has_sse42
+        end function sdl_has_sse42
 
         ! int SDL_Init(Uint32 flags)
         function sdl_init(flags) bind(c, name='SDL_Init')
@@ -964,6 +1055,17 @@ module sdl2
             integer(kind=c_int16_t), intent(in), value :: a
             integer(kind=c_int)                        :: sdl_set_render_draw_color
         end function sdl_set_render_draw_color
+
+        ! int SDL_SetTextureColorMod(SDL_Texture* texture, Uint8 r, Uint8 g, Uint8 b)
+        function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),             intent(in), value :: texture
+            integer(kind=c_int16_t), intent(in), value :: r
+            integer(kind=c_int16_t), intent(in), value :: g
+            integer(kind=c_int16_t), intent(in), value :: b
+            integer(kind=c_int)                        :: sdl_set_texture_color_mod
+        end function sdl_set_texture_color_mod
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')
