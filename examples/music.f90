@@ -18,7 +18,7 @@ program main
     integer,          parameter :: height    = 240
     character(len=*), parameter :: file_path = 'examples/music.ogg'
 
-    logical           :: done   = .false.
+    logical           :: done = .false.
     type(c_ptr)       :: window
     type(sdl_surface) :: screen
     type(sdl_surface) :: text
