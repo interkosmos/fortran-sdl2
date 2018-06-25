@@ -60,9 +60,7 @@ $ make <name>
 ```
 
 ## Coverage
-
-SDL
-===
+### SDL
 
 Name                                  | Bound |
 --------------------------------------|-------|
@@ -583,8 +581,7 @@ SDL_assert                            |   ×   |
 SDL_assert_paranoid                   |   ×   |
 SDL_assert_release                    |   ×   |
 
-SDL_image
-=========
+### SDL_image
 
 Name                                  | Bound |
 --------------------------------------|-------|
@@ -630,8 +627,7 @@ IMG_isXCF                             |   ×   |
 IMG_isXPM                             |   ×   |
 IMG_isXV                              |   ×   |
 
-SDL_ttf
-=======
+### SDL_ttf
 
 Name                                  | Bound |
 --------------------------------------|-------|
@@ -685,8 +681,7 @@ TTF_SizeUTF8                          |   ×   |
 TTF_WasInit                           |   ×   |
 
 
-SDL_mixer
-=========
+### SDL_mixer
 
 Name                                  | Bound |
 --------------------------------------|-------|
