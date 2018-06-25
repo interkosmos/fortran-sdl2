@@ -45,17 +45,6 @@ module sdl2_mixer
     end type mix_chunk
 
     interface
-        ! int Mix_OpenAudio(int frequency, Uint16 format, int channels, int chunksize)
-        function mix_open_audio(frequency, format, channels, chunk_size) bind(c, name='Mix_OpenAudio')
-            use, intrinsic :: iso_c_binding
-            implicit none
-            integer(kind=c_int),     intent(in), value :: frequency
-            integer(kind=c_int32_t), intent(in), value :: format
-            integer(kind=c_int),     intent(in), value :: channels
-            integer(kind=c_int),     intent(in), value :: chunk_size
-            integer(kind=c_int)                        :: mix_open_audio
-        end function mix_open_audio
-
         ! Mix_Chunk *Mix_LoadWAV_RW(SDL_RWops *src, int freesrc)
         function mix_load_wav_rw(src, free_src) bind(c, name='Mix_LoadWAV_RW')
             use, intrinsic :: iso_c_binding
@@ -72,6 +61,17 @@ module sdl2_mixer
             character(kind=c_char), intent(in) :: file
             type(c_ptr)                        :: mix_load_mus
         end function mix_load_mus
+
+        ! int Mix_OpenAudio(int frequency, Uint16 format, int channels, int chunksize)
+        function mix_open_audio(frequency, format, channels, chunk_size) bind(c, name='Mix_OpenAudio')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int),     intent(in), value :: frequency
+            integer(kind=c_int32_t), intent(in), value :: format
+            integer(kind=c_int),     intent(in), value :: channels
+            integer(kind=c_int),     intent(in), value :: chunk_size
+            integer(kind=c_int)                        :: mix_open_audio
+        end function mix_open_audio
 
         ! int Mix_PlayChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ticks)
         function mix_play_channel_timed(channel, chunk, loops, ticks) bind(c, name='Mix_PlayChannelTimed')

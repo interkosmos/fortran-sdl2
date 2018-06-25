@@ -5,9 +5,6 @@
 ! Author:  Philipp Engel
 ! Licence: ISC
 module sdl2_ttf
-    use, intrinsic :: iso_c_binding
-    implicit none
-
     interface
         ! int TTF_Init(void)
         function ttf_init() bind(c, name='TTF_Init')
