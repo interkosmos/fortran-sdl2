@@ -1,11 +1,13 @@
 # f03sdl2
 Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
-Fortran 2003, using `iso_c_binding`. It provides access to:
+Fortran 2003, using `iso_c_binding`. Versions tested against:
 
-* SDL2
-* SDL2_image
-* SDL2_mixer
-* SDL2_ttf
+Library   | Version
+----------|--------
+SDL       | 2.0.7
+SDL_image | 2.0.2
+SDL_ttf   | 2.0.14_1
+SDL_mixer | 2.0.1_1
 
 ## Build SDL2
 Use BSD make to build the SDL2 interface:
