@@ -461,7 +461,7 @@ SDL_RenderGetLogicalSize              |   –   |
 SDL_RenderGetScale                    |   –   |
 SDL_RenderGetViewport                 |   –   |
 SDL_RenderIsClipEnabled               |   –   |
-SDL_RenderPresent                     |   –   |
+SDL_RenderPresent                     |   ✓   |
 SDL_RenderReadPixels                  |   –   |
 SDL_RenderSetClipRect                 |   –   |
 SDL_RenderSetLogicalSize              |   –   |
@@ -480,7 +480,7 @@ SDL_SemValue                          |   –   |
 SDL_SemWait                           |   –   |
 SDL_SemWaitTimeout                    |   –   |
 SDL_SetAssertionHandler               |   –   |
-SDL_SetClipRect                       |   ✓   |
+SDL_SetClipRect                       |   –   |
 SDL_SetClipboardText                  |   –   |
 SDL_SetColorKey                       |   ✓   |
 SDL_SetCursor                         |   –   |
