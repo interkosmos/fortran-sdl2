@@ -320,7 +320,7 @@ SDL_HapticUpdateEffect                |   –   |
 SDL_Has3DNow                          |   ✓   |
 SDL_HasAVX                            |   ✓   |
 SDL_HasAVX2                           |   ✓   |
-SDL_HasAltiVec                        |   –   |
+SDL_HasAltiVec                        |   ✓   |
 SDL_HasClipboardText                  |   –   |
 SDL_HasEvent                          |   –   |
 SDL_HasEvents                         |   –   |
