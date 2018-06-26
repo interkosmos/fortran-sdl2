@@ -736,6 +736,62 @@ module sdl2_types
 end module sdl2_types
 
 module sdl2
+    implicit none
+    private
+
+    public :: sdl_blit_scaled
+    public :: sdl_blit_surface
+    public :: sdl_convert_surface
+    public :: sdl_create_renderer
+    public :: sdl_create_texture_from_surface
+    public :: sdl_create_window
+    public :: sdl_delay
+    public :: sdl_destroy_renderer
+    public :: sdl_destroy_texture
+    public :: sdl_destroy_window
+    public :: sdl_fill_rect
+    public :: sdl_free_surface
+    public :: sdl_get_cpu_count
+    public :: sdl_get_error
+    public :: sdl_get_keyboard_state
+    public :: sdl_get_pixel_format
+    public :: sdl_get_system_ram
+    public :: sdl_get_ticks
+    public :: sdl_get_window_surface
+    public :: sdl_has_3dnow
+    public :: sdl_has_alti_vec
+    public :: sdl_has_avx
+    public :: sdl_has_avx2
+    public :: sdl_has_mmx
+    public :: sdl_has_rdtsc
+    public :: sdl_has_sse
+    public :: sdl_has_sse2
+    public :: sdl_has_sse3
+    public :: sdl_has_sse41
+    public :: sdl_has_sse42
+    public :: sdl_init
+    public :: sdl_load_bmp
+    public :: sdl_load_bmp_rw
+    public :: sdl_map_rgb
+    public :: sdl_poll_event
+    public :: sdl_pump_events
+    public :: sdl_query_texture
+    public :: sdl_quit
+    public :: sdl_render_clear
+    public :: sdl_render_copy
+    public :: sdl_render_draw_line
+    public :: sdl_render_fill_rect
+    public :: sdl_render_present
+    public :: sdl_rw_from_file
+    public :: sdl_set_clip_rect
+    public :: sdl_set_color_key
+    public :: sdl_set_render_draw_blend_mode
+    public :: sdl_set_render_draw_color
+    public :: sdl_set_texture_color_mod
+    public :: sdl_update_window_surface
+    public :: sdl_upper_blit
+    public :: sdl_upper_blit_scaled
+
     interface
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')

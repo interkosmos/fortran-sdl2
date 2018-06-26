@@ -394,7 +394,7 @@ SDL_LogWarn                           |   –   |
 SDL_LowerBlit                         |   –   |
 SDL_LowerBlitScaled                   |   –   |
 SDL_MUSTLOCK                          |   –   |
-SDL_MapRGB                            |   –   |
+SDL_MapRGB                            |   ✓   |
 SDL_MapRGBA                           |   –   |
 SDL_MasksToPixelFormatEnum            |   –   |
 SDL_MaximizeWindow                    |   –   |
@@ -735,7 +735,7 @@ TTF_OpenFont                          |   ✓   |
 TTF_OpenFontIndex                     |   –   |
 TTF_OpenFontIndexRW                   |   –   |
 TTF_OpenFontRW                        |   –   |
-TTF_Quit                              |   –   |
+TTF_Quit                              |   ✓   |
 TTF_RenderGlyph_Blended               |   –   |
 TTF_RenderGlyph_Shaded                |   –   |
 TTF_RenderGlyph_Solid                 |   –   |
