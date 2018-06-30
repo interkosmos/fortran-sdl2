@@ -362,6 +362,76 @@ module sdl2_consts
 
     integer(kind=c_int16_t), parameter :: sdl_alpha_opaque      = 255
     integer(kind=c_int16_t), parameter :: sdl_alpha_transparent = 0
+
+    ! SDL_Hints
+    character(len=*), parameter :: sdl_hint_framebuffer_acceleration                 = 'SDL_FRAMEBUFFER_ACCELERATION'
+    character(len=*), parameter :: sdl_hint_render_driver                            = 'SDL_RENDER_DRIVER'
+    character(len=*), parameter :: sdl_hint_render_opengl_shaders                    = 'SDL_RENDER_OPENGL_SHADERS'
+    character(len=*), parameter :: sdl_hint_render_direct3d_threadsafe               = 'SDL_RENDER_DIRECT3D_THREADSAFE'
+    character(len=*), parameter :: sdl_hint_render_direct3d11_debug                  = 'SDL_RENDER_DIRECT3D11_DEBUG'
+    character(len=*), parameter :: sdl_hint_render_logical_size_mode                 = 'SDL_RENDER_LOGICAL_SIZE_MODE'
+    character(len=*), parameter :: sdl_hint_render_scale_quality                     = 'SDL_RENDER_SCALE_QUALITY'
+    character(len=*), parameter :: sdl_hint_render_vsync                             = 'SDL_RENDER_VSYNC'
+    character(len=*), parameter :: sdl_hint_video_allow_screensaver                  = 'SDL_VIDEO_ALLOW_SCREENSAVER'
+    character(len=*), parameter :: sdl_hint_video_x11_xvidmode                       = 'SDL_VIDEO_X11_XVIDMODE'
+    character(len=*), parameter :: sdl_hint_video_x11_xinerama                       = 'SDL_VIDEO_X11_XINERAMA'
+    character(len=*), parameter :: sdl_hint_video_x11_xrandr                         = 'SDL_VIDEO_X11_XRANDR'
+    character(len=*), parameter :: sdl_hint_video_x11_net_wm_ping                    = 'SDL_VIDEO_X11_NET_WM_PING'
+    character(len=*), parameter :: sdl_hint_window_frame_usable_while_cursor_hidden  = 'SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN'
+    character(len=*), parameter :: sdl_hint_windows_intresource_icon                 = 'SDL_WINDOWS_INTRESOURCE_ICON'
+    character(len=*), parameter :: sdl_hint_windows_intresource_icon_small           = 'SDL_WINDOWS_INTRESOURCE_ICON_SMALL'
+    character(len=*), parameter :: sdl_hint_windows_enable_messageloop               = 'SDL_WINDOWS_ENABLE_MESSAGELOOP'
+    character(len=*), parameter :: sdl_hint_grab_keyboard                            = 'SDL_GRAB_KEYBOARD'
+    character(len=*), parameter :: sdl_hint_mouse_normal_speed_scale                 = 'SDL_MOUSE_NORMAL_SPEED_SCALE'
+    character(len=*), parameter :: sdl_hint_mouse_relative_speed_scale               = 'SDL_MOUSE_RELATIVE_SPEED_SCALE'
+    character(len=*), parameter :: sdl_hint_mouse_relative_mode_warp                 = 'SDL_MOUSE_RELATIVE_MODE_WARP'
+    character(len=*), parameter :: sdl_hint_mouse_focus_clickthrough                 = 'SDL_MOUSE_FOCUS_CLICKTHROUGH'
+    character(len=*), parameter :: sdl_hint_touch_mouse_events                       = 'SDL_TOUCH_MOUSE_EVENTS'
+    character(len=*), parameter :: sdl_hint_video_minimize_on_focus_loss             = 'SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS'
+    character(len=*), parameter :: sdl_hint_idle_timer_disabled                      = 'SDL_IOS_IDLE_TIMER_DISABLED'
+    character(len=*), parameter :: sdl_hint_orientations                             = 'SDL_IOS_ORIENTATIONS'
+    character(len=*), parameter :: sdl_hint_apple_tv_controller_ui_events            = 'SDL_APPLE_TV_CONTROLLER_UI_EVENTS'
+    character(len=*), parameter :: sdl_hint_apple_tv_remote_allow_rotation           = 'SDL_APPLE_TV_REMOTE_ALLOW_ROTATION'
+    character(len=*), parameter :: sdl_hint_accelerometer_as_joystick                = 'SDL_ACCELEROMETER_AS_JOYSTICK'
+    character(len=*), parameter :: sdl_hint_xinput_enabled                           = 'SDL_XINPUT_ENABLED'
+    character(len=*), parameter :: sdl_hint_xinput_use_old_joystick_mapping          = 'SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING'
+    character(len=*), parameter :: sdl_hint_gamecontrollerconfig                     = 'SDL_GAMECONTROLLERCONFIG'
+    character(len=*), parameter :: sdl_hint_gamecontroller_ignore_devices            = 'SDL_GAMECONTROLLER_IGNORE_DEVICES'
+    character(len=*), parameter :: sdl_hint_gamecontroller_ignore_devices_except     = 'SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT'
+    character(len=*), parameter :: sdl_hint_joystick_allow_background_events         = 'SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS'
+    character(len=*), parameter :: sdl_hint_allow_topmost                            = 'SDL_ALLOW_TOPMOST'
+    character(len=*), parameter :: sdl_hint_timer_resolution                         = 'SDL_TIMER_RESOLUTION'
+    character(len=*), parameter :: sdl_hint_qtwayland_content_orientation            = 'SDL_QTWAYLAND_CONTENT_ORIENTATION'
+    character(len=*), parameter :: sdl_hint_qtwayland_window_flags                   = 'SDL_QTWAYLAND_WINDOW_FLAGS'
+    character(len=*), parameter :: sdl_hint_thread_stack_size                        = 'SDL_THREAD_STACK_SIZE'
+    character(len=*), parameter :: sdl_hint_video_highdpi_disabled                   = 'SDL_VIDEO_HIGHDPI_DISABLED'
+    character(len=*), parameter :: sdl_hint_mac_ctrl_click_emulate_right_click       = 'SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK'
+    character(len=*), parameter :: sdl_hint_video_win_d3dcompiler                    = 'SDL_VIDEO_WIN_D3DCOMPILER'
+    character(len=*), parameter :: sdl_hint_video_window_share_pixel_format          = 'SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT'
+    character(len=*), parameter :: sdl_hint_winrt_privacy_policy_url                 = 'SDL_WINRT_PRIVACY_POLICY_URL'
+    character(len=*), parameter :: sdl_hint_winrt_privacy_policy_label               = 'SDL_WINRT_PRIVACY_POLICY_LABEL'
+    character(len=*), parameter :: sdl_hint_winrt_handle_back_button                 = 'SDL_WINRT_HANDLE_BACK_BUTTON'
+    character(len=*), parameter :: sdl_hint_video_mac_fullscreen_spaces              = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
+    character(len=*), parameter :: sdl_hint_mac_background_app                       = 'SDL_MAC_BACKGROUND_APP'
+    character(len=*), parameter :: sdl_hint_android_apk_expansion_main_file_version  = 'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
+    character(len=*), parameter :: sdl_hint_android_apk_expansion_patch_file_version = 'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
+    character(len=*), parameter :: sdl_hint_ime_internal_editing                     = 'SDL_IME_INTERNAL_EDITING'
+    character(len=*), parameter :: sdl_hint_android_separate_mouse_and_touch         = 'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
+    character(len=*), parameter :: sdl_hint_emscripten_keyboard_element              = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
+    character(len=*), parameter :: sdl_hint_no_signal_handlers                       = 'SDL_NO_SIGNAL_HANDLERS'
+    character(len=*), parameter :: sdl_hint_windows_no_close_on_alt_f4               = 'SDL_WINDOWS_NO_CLOSE_ON_ALT_F4'
+    character(len=*), parameter :: sdl_hint_bmp_save_legacy_format                   = 'SDL_BMP_SAVE_LEGACY_FORMAT'
+    character(len=*), parameter :: sdl_hint_windows_disable_thread_naming            = 'SDL_WINDOWS_DISABLE_THREAD_NAMING'
+    character(len=*), parameter :: sdl_hint_rpi_video_layer                          = 'SDL_RPI_VIDEO_LAYER'
+    character(len=*), parameter :: sdl_hint_opengl_es_driver                         = 'SDL_OPENGL_ES_DRIVER'
+    character(len=*), parameter :: sdl_hint_audio_resampling_mode                    = 'SDL_AUDIO_RESAMPLING_MODE'
+    character(len=*), parameter :: sdl_hint_audio_category                           = 'SDL_AUDIO_CATEGORY'
+
+    enum, bind(c) :: sdl_hint_priority
+        enumerator :: sdl_hint_default  = 0
+        enumerator :: sdl_hint_normal   = 1
+        enumerator :: sdl_hint_override = 2
+    end enum
 end module sdl2_consts
 
 module sdl2_types
@@ -753,6 +823,7 @@ module sdl2
     public :: sdl_free_surface
     public :: sdl_get_cpu_count
     public :: sdl_get_error
+    public :: sdl_get_hint
     public :: sdl_get_keyboard_state
     public :: sdl_get_pixel_format
     public :: sdl_get_system_ram
@@ -785,6 +856,7 @@ module sdl2
     public :: sdl_rw_from_file
     public :: sdl_set_clip_rect
     public :: sdl_set_color_key
+    public :: sdl_set_hint
     public :: sdl_set_render_draw_blend_mode
     public :: sdl_set_render_draw_color
     public :: sdl_set_texture_color_mod
@@ -869,6 +941,14 @@ module sdl2
             type(c_ptr), intent(in), value :: numkeys
             type(c_ptr)                    :: sdl_get_keyboard_state_
         end function sdl_get_keyboard_state_
+
+        ! const char *SDL_GetHint(const char *name)
+        function sdl_get_hint_(name) bind(c, name='SDL_GetHint')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(kind=c_char), intent(in) :: name
+            type(c_ptr)                        :: sdl_get_hint_
+        end function sdl_get_hint_
 
         ! int SDL_GetSystemRAM(void)
         function sdl_get_system_ram() bind(c, name='SDL_GetSystemRAM')
@@ -1091,6 +1171,15 @@ module sdl2
             integer(kind=c_int)                        :: sdl_set_color_key
         end function sdl_set_color_key
 
+        ! SDL_bool SDL_SetHint(const char *name, const char *value)
+        function sdl_set_hint_(name, value) bind(c, name='SDL_SetHint')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(kind=c_char), intent(in) :: name
+            character(kind=c_char), intent(in) :: value
+            integer(kind=c_int)                :: sdl_set_hint_
+        end function sdl_set_hint_
+
         ! int SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode)
         function sdl_set_render_draw_blend_mode(renderer, blend_mode) bind(c, name='SDL_SetRenderDrawBlendMode')
             use, intrinsic :: iso_c_binding
@@ -1286,6 +1375,26 @@ module sdl2
             call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
         end function sdl_get_keyboard_state
 
+        ! const char *SDL_GetHint(const char *name)
+        function sdl_get_hint(name)
+            !! Calls `sdl_get_hint_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(len=*), intent(in)    :: name
+            character(len=100)              :: sdl_get_hint
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            integer                         :: i
+
+            ptr = sdl_get_hint_(name // c_null_char)
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
+
+            do i = 1, size(ptrs)
+                sdl_get_hint(i:i) = ptrs(i)
+            end do
+        end function sdl_get_hint
+
         function sdl_get_pixel_format(surface)
             !! Converts the *SDL_PixelFormat pointer inside `surface`
             !! to `sdl_pixel_format`.
@@ -1436,4 +1545,15 @@ module sdl2
                     event%drop = transfer(event, event%drop)
             end select
         end function sdl_poll_event
+
+        ! SDL_bool SDL_SetHint(const char *name, const char *value)
+        function sdl_set_hint(name, value)
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(len=*) :: name
+            character(len=*) :: value
+            integer          :: sdl_set_hint
+
+            sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
+        end function sdl_set_hint
 end module sdl2

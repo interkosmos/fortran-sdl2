@@ -219,7 +219,7 @@ SDL_GetDisplayName                    |   –   |
 SDL_GetError                          |   ✓   |
 SDL_GetEventFilter                    |   –   |
 SDL_GetGlobalMouseState               |   –   |
-SDL_GetHint                           |   –   |
+SDL_GetHint                           |   ✓   |
 SDL_GetKeyFromName                    |   –   |
 SDL_GetKeyFromScancode                |   –   |
 SDL_GetKeyName                        |   –   |
@@ -486,7 +486,7 @@ SDL_SetColorKey                       |   ✓   |
 SDL_SetCursor                         |   –   |
 SDL_SetError                          |   –   |
 SDL_SetEventFilter                    |   –   |
-SDL_SetHint                           |   –   |
+SDL_SetHint                           |   ✓   |
 SDL_SetHintWithPriority               |   –   |
 SDL_SetMainReady                      |   –   |
 SDL_SetModState                       |   –   |
