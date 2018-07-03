@@ -414,7 +414,8 @@ module sdl2_consts
     character(len=*), parameter :: sdl_hint_video_mac_fullscreen_spaces              = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
     character(len=*), parameter :: sdl_hint_mac_background_app                       = 'SDL_MAC_BACKGROUND_APP'
     character(len=*), parameter :: sdl_hint_android_apk_expansion_main_file_version  = 'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
-    character(len=*), parameter :: sdl_hint_android_apk_expansion_patch_file_version = 'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
+    character(len=*), parameter :: sdl_hint_android_apk_expansion_patch_file_version = &
+        'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
     character(len=*), parameter :: sdl_hint_ime_internal_editing                     = 'SDL_IME_INTERNAL_EDITING'
     character(len=*), parameter :: sdl_hint_android_separate_mouse_and_touch         = 'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
     character(len=*), parameter :: sdl_hint_emscripten_keyboard_element              = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
@@ -427,10 +428,11 @@ module sdl2_consts
     character(len=*), parameter :: sdl_hint_audio_resampling_mode                    = 'SDL_AUDIO_RESAMPLING_MODE'
     character(len=*), parameter :: sdl_hint_audio_category                           = 'SDL_AUDIO_CATEGORY'
 
-    enum, bind(c) :: sdl_hint_priority
-        enumerator :: sdl_hint_default  = 0
-        enumerator :: sdl_hint_normal   = 1
-        enumerator :: sdl_hint_override = 2
+    ! SDL_HintPriority
+    enum, bind(c)
+        enumerator :: sdl_hint_default
+        enumerator :: sdl_hint_normal
+        enumerator :: sdl_hint_override
     end enum
 end module sdl2_consts
 
