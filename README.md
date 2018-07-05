@@ -563,7 +563,7 @@ SDL_VERSIONNUM                        |   –   |
 SDL_VERSION_ATLEAST                   |   –   |
 SDL_VideoInit                         |   –   |
 SDL_VideoQuit                         |   –   |
-SDL_WaitEvent                         |   –   |
+SDL_WaitEvent                         |   ✓   |
 SDL_WaitEventTimeout                  |   –   |
 SDL_WaitThread                        |   –   |
 SDL_WarpMouseGlobal                   |   –   |
