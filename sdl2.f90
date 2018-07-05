@@ -553,7 +553,7 @@ module sdl2_types
         integer(kind=c_int64_t) :: type
         integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int64_t) :: window_id
-        character(kind=c_char)  :: text
+        character(kind=c_char)  :: text(32)
         integer(kind=c_int32_t) :: start
         integer(kind=c_int32_t) :: length
     end type sdl_text_editing_event
@@ -563,7 +563,7 @@ module sdl2_types
         integer(kind=c_int64_t) :: type
         integer(kind=c_int64_t) :: timestamp
         integer(kind=c_int64_t) :: window_id
-        character(kind=c_char)  :: text
+        character(kind=c_char)  :: text(32)
     end type sdl_text_input_event
 
     ! SDL_MouseMotionEvent
@@ -865,6 +865,7 @@ module sdl2
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
+    public :: sdl_wait_event
 
     interface
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
@@ -1203,7 +1204,7 @@ module sdl2
             integer(kind=c_int)                        :: sdl_set_render_draw_color
         end function sdl_set_render_draw_color
 
-        ! int SDL_SetTextureColorMod(SDL_Texture* texture, Uint8 r, Uint8 g, Uint8 b)
+        ! int SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b)
         function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
             use, intrinsic :: iso_c_binding
             implicit none
@@ -1245,6 +1246,15 @@ module sdl2
             type(sdl_rect),    intent(in) :: dst_rect
             integer(kind=c_int)           :: sdl_upper_blit_scaled
         end function sdl_upper_blit_scaled
+
+        ! int SDL_WaitEvent(SDL_Event *event)
+        function sdl_wait_event_(event) bind(c, name='SDL_WaitEvent')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_event), intent(in out) :: event
+            integer(kind=c_int)             :: sdl_wait_event_
+        end function sdl_wait_event_
 
         ! void SDL_Delay(Uint32 ms)
         subroutine sdl_delay(ms) bind(c, name='SDL_Delay')
@@ -1332,7 +1342,7 @@ module sdl2
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface(src, fmt, flags)
             !! Calls `sdl_convert_surface_()` and converts the returned
-            !! C pointer to Fortran type `sdl_surface`.
+            !! C pointer to derived type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -1412,7 +1422,7 @@ module sdl2
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface(window)
             !! Calls `sdl_get_window_surface_()` and converts the returned
-            !! C pointer to Fortran type `sdl_surface`.
+            !! C pointer to derived type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -1427,7 +1437,7 @@ module sdl2
         ! SDL_Surface *SDL_LoadBMP(const char *file)
         function sdl_load_bmp(file)
             !! Calls `sdl_load_bmp_rw()` and converts the returned
-            !! C pointer to Fortran type `sdl_surface`.
+            !! C pointer to derived type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
@@ -1442,8 +1452,7 @@ module sdl2
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event(event)
             !! Calls `sdl_poll_event_()` and transfers the returned
-            !! union to the respective event type (since there are no
-            !! unions in Fortran).
+            !! union to the respective event type.
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             use :: sdl2_types
@@ -1452,6 +1461,44 @@ module sdl2
             integer                         :: sdl_poll_event
 
             sdl_poll_event = sdl_poll_event_(event)
+            call sdl_transfer_event(event)
+        end function sdl_poll_event
+
+        ! SDL_bool SDL_SetHint(const char *name, const char *value)
+        function sdl_set_hint(name, value)
+            !! Adds `c_null_char` to name and value before calling
+            !! `sdl_set_hint_()`.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(len=*) :: name
+            character(len=*) :: value
+            integer          :: sdl_set_hint
+
+            sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
+        end function sdl_set_hint
+
+        ! int SDL_WaitEvent(SDL_Event *event)
+        function sdl_wait_event(event)
+            !! Calls `sdl_wait_event_()` and transfers the returned
+            !! union to the respective event type.
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            use :: sdl2_types
+            implicit none
+            type(sdl_event), intent(in out) :: event
+            integer                         :: sdl_wait_event
+
+            sdl_wait_event = sdl_wait_event_(event)
+            call sdl_transfer_event(event)
+        end function sdl_wait_event
+
+        subroutine sdl_transfer_event(event)
+            !! Transfers a given event union to the respective event type
+            !! (since there are no unions in Fortran).
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            use :: sdl2_types
+            type(sdl_event), intent(in out) :: event
 
             select case (event%type)
                 ! SDL_WindowEvent
@@ -1546,16 +1593,5 @@ module sdl2
                 case (sdl_drop_file : sdl_drop_complete)
                     event%drop = transfer(event, event%drop)
             end select
-        end function sdl_poll_event
-
-        ! SDL_bool SDL_SetHint(const char *name, const char *value)
-        function sdl_set_hint(name, value)
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(len=*) :: name
-            character(len=*) :: value
-            integer          :: sdl_set_hint
-
-            sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
-        end function sdl_set_hint
+        end subroutine sdl_transfer_event
 end module sdl2
