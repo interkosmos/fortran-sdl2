@@ -16,16 +16,11 @@ program main
     integer, parameter :: width  = 640
     integer, parameter :: height = 480
 
-    type(c_ptr)        :: window
-    type(sdl_surface)  :: surface
-    type(sdl_surface)  :: image
-    type(sdl_rect)     :: rect
-    integer            :: rc
-
-    rect%w = 640
-    rect%h = 480
-    rect%x = 0
-    rect%y = 0
+    type(c_ptr)       :: window
+    type(sdl_surface) :: screen
+    type(sdl_surface) :: image
+    type(sdl_rect)    :: rect
+    integer           :: rc
 
     ! Initialise SDL.
     rc = sdl_init(sdl_init_video)
@@ -49,11 +44,18 @@ program main
     end if
 
     ! Get the window surface.
-    surface = sdl_get_window_surface(window)
-    image   = sdl_load_bmp('examples/chess.bmp' // c_null_char)
+    screen = sdl_get_window_surface(window)
+
+    ! Load the image.
+    image  = sdl_load_bmp('examples/chess.bmp' // c_null_char)
+
+    rect%w = image%w
+    rect%h = image%h
+    rect%x = 0
+    rect%y = 0
 
     ! Output to the window.
-    rc = sdl_blit_surface(image, rect, surface, rect)
+    rc = sdl_blit_surface(image, rect, screen, rect)
     rc = sdl_update_window_surface(window)
 
     call sdl_delay(3000)
