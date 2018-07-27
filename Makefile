@@ -1,7 +1,7 @@
 FC           = gfortran8
 SDL_CFLAGS   = `sdl2-config --cflags`
 SDL_LDFLAGS  = `sdl2-config --libs`
-CFLAGS       = -fcheck=all -Ofast -march=native -Wl,-rpath=/usr/local/lib/gcc8/ $(SDL_CFLAGS)
+CFLAGS       = -Wl,-rpath=/usr/local/lib/gcc8/ $(SDL_CFLAGS)
 LDFLAGS      = $(SDL_LDFLAGS)
 
 SDL_SRC      = sdl2.f90
@@ -48,25 +48,25 @@ $(MIX_OBJ):
 $(TTF_OBJ):
 	$(FC) -c $(TTF_SRC)
 
-$(WINDOW): $(DIR)/$*.f90 $(SDL_OBJ)
+$(WINDOW): $(DIR)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(IMAGE): $(DIR)/$*.f90 $(SDL_OBJ)
+$(IMAGE): $(DIR)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(EVENTS): $(DIR)/$*.f90 $(SDL_OBJ)
+$(EVENTS): $(DIR)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(SCALING): $(DIR)/$*.f90 $(SDL_OBJ)
+$(SCALING): $(DIR)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCE): $(DIR)/$*.f90 $(SDL_OBJ)
+$(TRANSLUCENCE): $(DIR)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(BOUNCE): $(DIR)/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
+$(BOUNCE): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
 
-$(MUSIC): $(DIR)/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+$(MUSIC): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
 
 .PHONY: clean
@@ -84,3 +84,4 @@ clean:
 	if [ -e $(TRANSLUCENCE) ]; then rm $(TRANSLUCENCE); fi
 	if [ -e $(BOUNCE) ]; then rm $(BOUNCE); fi
 	if [ -e $(MUSIC) ]; then rm $(MUSIC); fi
+	if [ -e $(TEXT) ]; then rm $(TEXT); fi

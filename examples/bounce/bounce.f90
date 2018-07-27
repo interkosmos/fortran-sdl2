@@ -15,7 +15,7 @@ program main
 
     integer,          parameter :: width     = 640
     integer,          parameter :: height    = 480
-    character(len=*), parameter :: file_name = 'examples/fortran.png'
+    character(len=*), parameter :: file_name = 'examples/bounce/fortran.png'
 
     type(c_ptr)             :: window
     type(c_ptr)             :: renderer

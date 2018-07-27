@@ -47,7 +47,7 @@ program main
     screen = sdl_get_window_surface(window)
 
     ! Load the image.
-    image  = sdl_load_bmp('examples/chess.bmp' // c_null_char)
+    image  = sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
 
     rect%w = image%w
     rect%h = image%h

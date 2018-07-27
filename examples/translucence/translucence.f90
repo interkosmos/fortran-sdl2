@@ -13,7 +13,7 @@ program main
 
     integer,          parameter :: width     = 640
     integer,          parameter :: height    = 240
-    character(len=*), parameter :: file_name = 'examples/fortran.bmp'
+    character(len=*), parameter :: file_name = 'examples/translucence/fortran.bmp'
 
     type(c_ptr)            :: window
     type(sdl_surface)      :: window_surface

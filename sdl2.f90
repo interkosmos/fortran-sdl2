@@ -349,7 +349,7 @@ module sdl2_consts
 
     ! SDL_RendererFlags
     integer(kind=c_int), parameter :: sdl_renderer_software      = z'00000001'
-    integer(kind=c_int), parameter :: sdl_renderer_hardware      = z'00000002'
+    integer(kind=c_int), parameter :: sdl_renderer_accelerated   = z'00000002'
     integer(kind=c_int), parameter :: sdl_renderer_presentvsync  = z'00000004'
     integer(kind=c_int), parameter :: sdl_renderer_targettexture = z'00000008'
 
@@ -495,18 +495,18 @@ module sdl2_types
 
     ! SDL_Surface
     type, bind(c) :: sdl_surface
-        integer(kind=c_int64_t) :: flags
+        integer(kind=c_int32_t) :: flags
         type(c_ptr)             :: format
         integer(kind=c_int)     :: w
         integer(kind=c_int)     :: h
         integer(kind=c_int)     :: pitch
         type(c_ptr)             :: pixels
-        type(c_ptr)             :: user_data
+        type(c_ptr)             :: userdata
         integer(kind=c_int)     :: locked
-        type(c_ptr)             :: locked_data
+        type(c_ptr)             :: lock_data
         type(sdl_rect)          :: clip_rect
         type(c_ptr)             :: map
-        integer(kind=c_int)     :: ref_count
+        integer(kind=c_int)     :: refcount
     end type sdl_surface
 
     ! SDL_CommonEvent
@@ -1349,7 +1349,7 @@ module sdl2
             type(sdl_surface),       intent(in) :: src
             type(sdl_pixel_format),  intent(in) :: fmt
             integer(kind=c_int32_t), intent(in) :: flags
-            type(sdl_surface), pointer          :: sdl_convert_surface
+            type(sdl_surface),       pointer    :: sdl_convert_surface
             type(c_ptr)                         :: ptr
 
             ptr = sdl_convert_surface_(src, fmt, flags)
@@ -1393,11 +1393,11 @@ module sdl2
             !! C char pointer to Fortran character.
             use, intrinsic :: iso_c_binding
             implicit none
-            character(len=*), intent(in)    :: name
-            character(len=100)              :: sdl_get_hint
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            integer                         :: i
+            character(len=*),       intent(in) :: name
+            character(len=100)                 :: sdl_get_hint
+            type(c_ptr)                        :: ptr
+            character(kind=c_char), pointer    :: ptrs(:)
+            integer                            :: i
 
             ptr = sdl_get_hint_(name // c_null_char)
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
@@ -1413,8 +1413,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(sdl_surface), intent(in)   :: surface
-            type(sdl_pixel_format), pointer :: sdl_get_pixel_format
+            type(sdl_surface),      intent(in) :: surface
+            type(sdl_pixel_format), pointer    :: sdl_get_pixel_format
 
             call c_f_pointer(surface%format, sdl_get_pixel_format)
         end function
@@ -1426,9 +1426,9 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(c_ptr), intent(in)    :: window
-            type(sdl_surface), pointer :: sdl_get_window_surface
-            type(c_ptr)                :: ptr
+            type(c_ptr),       intent(in) :: window
+            type(sdl_surface), pointer    :: sdl_get_window_surface
+            type(c_ptr)                   :: ptr
 
             ptr = sdl_get_window_surface_(window)
             call c_f_pointer(ptr, sdl_get_window_surface)
@@ -1442,7 +1442,7 @@ module sdl2
             use :: sdl2_types
             implicit none
             character(kind=c_char), intent(in) :: file
-            type(sdl_surface), pointer         :: sdl_load_bmp
+            type(sdl_surface),      pointer    :: sdl_load_bmp
             type(c_ptr)                        :: ptr
 
             ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)

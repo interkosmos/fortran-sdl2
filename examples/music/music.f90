@@ -16,7 +16,7 @@ program main
 
     integer,          parameter :: width     = 320
     integer,          parameter :: height    = 240
-    character(len=*), parameter :: file_path = 'examples/music.ogg'
+    character(len=*), parameter :: file_path = 'examples/music/music.ogg'
 
     logical           :: done = .false.
     type(c_ptr)       :: window
@@ -45,13 +45,18 @@ program main
         call exit(1)
     end if
 
+    ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-    rect%x  = 0; rect%y = 0; rect%w = 300; rect%h = 100
 
-    font = ttf_open_font('examples/font.ttf' // c_null_char, 12)
+    font = ttf_open_font('examples/music/font.ttf' // c_null_char, 12)
     text = ttf_render_text_solid(font, &
                                  'Playing ' // file_path // ' ...' // c_null_char, &
                                  color)
+
+    rect%x = 0
+    rect%y = 0
+    rect%w = text%w
+    rect%h = text%h
 
     ! Initialise SDL_mixer.
     rc = mix_open_audio(mix_default_frequency, &

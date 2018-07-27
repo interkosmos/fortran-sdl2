@@ -5,6 +5,15 @@
 ! Author:  Philipp Engel
 ! Licence: ISC
 module sdl2_ttf
+    implicit none
+    private
+
+    public :: ttf_init
+    public :: ttf_open_font
+    public :: ttf_render_text_solid
+    public :: ttf_close_font
+    public :: ttf_quit
+
     interface
         ! int TTF_Init(void)
         function ttf_init() bind(c, name='TTF_Init')
@@ -49,14 +58,14 @@ module sdl2_ttf
         ! SDL_Surface *TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color fg)
         function ttf_render_text_solid(font, text, fg)
             !! Calls `ttf_render_text_solid_()` and converts the returned
-            !! C pointer to Fortran type `sdl_surface`.
+            !! C pointer to derived type `sdl_surface`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
             type(c_ptr),            intent(in) :: font
             character(kind=c_char), intent(in) :: text
             type(sdl_color),        intent(in) :: fg
-            type(sdl_surface), pointer         :: ttf_render_text_solid
+            type(sdl_surface),      pointer    :: ttf_render_text_solid
             type(c_ptr)                        :: ptr
 
             ptr = ttf_render_text_solid_(font, text, fg)

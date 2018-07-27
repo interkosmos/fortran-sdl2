@@ -15,7 +15,7 @@ program main
 
     integer,          parameter :: width     = 640
     integer,          parameter :: height    = 480
-    character(len=*), parameter :: file_name = 'examples/wall.bmp'
+    character(len=*), parameter :: file_name = 'examples/scaling/wall.bmp'
 
     type(c_ptr)            :: window
     type(sdl_surface)      :: window_surface
