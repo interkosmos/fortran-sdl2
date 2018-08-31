@@ -1,7 +1,7 @@
 ! music.f90
 !
 ! Plays an OGG file using SDL2_mixer and outputs some text
-! with SDL2_ttf.
+! with SDL2_ttf (software renderer).
 !
 ! Author:   Philipp Engel
 ! Licence:  ISC
@@ -14,9 +14,11 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: width     = 320
-    integer,          parameter :: height    = 240
-    character(len=*), parameter :: file_path = 'examples/music/music.ogg'
+    integer,          parameter :: width    = 320
+    integer,          parameter :: height   = 240
+    character(len=*), parameter :: ogg_path = 'examples/music/music.ogg'
+    character(len=*), parameter :: ttf_path = 'examples/music/font.ttf'
+    character(len=*), parameter :: message  = 'Playing ' // ogg_path // ' ...'
 
     logical           :: done = .false.
     type(c_ptr)       :: window
@@ -47,11 +49,8 @@ program main
 
     ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-
-    font = ttf_open_font('examples/music/font.ttf' // c_null_char, 12)
-    text = ttf_render_text_solid(font, &
-                                 'Playing ' // file_path // ' ...' // c_null_char, &
-                                 color)
+    font    = ttf_open_font(ttf_path // c_null_char, 12)
+    text    = ttf_render_text_solid(font, message // c_null_char, color)
 
     rect%x = 0
     rect%y = 0
@@ -69,7 +68,8 @@ program main
         call exit(1)
     end if
 
-    music = mix_load_mus(file_path // c_null_char)
+    ! Play music.
+    music = mix_load_mus(ogg_path // c_null_char)
     rc    = mix_play_music(music, -1)
 
     if (rc < 0) then
@@ -104,6 +104,7 @@ program main
                     done = .true.
             end select
 
+            ! Copy text surface to screen.
             rc = sdl_blit_surface(text, rect, screen, rect)
             rc = sdl_update_window_surface(window)
         else
@@ -112,11 +113,11 @@ program main
     end do
 
     ! Quit gracefully.
-    call ttf_close_font(font)
-    call ttf_quit()
-
     call mix_free_music(music)
     call mix_close_audio()
+
+    call ttf_close_font(font)
+    call ttf_quit()
 
     call sdl_free_surface(text)
     call sdl_destroy_window(window)

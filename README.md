@@ -1,6 +1,6 @@
 # f03sdl2
 Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
-Fortran 2003, using `iso_c_binding`. Versions tested against:
+Fortran 2003/2008/2018, using ISO C bindings. Versions tested against:
 
 Library   | Version
 ----------|--------
@@ -55,11 +55,17 @@ Some demo applications are provided in directory `examples`.
 * **translucence** makes one color of an image translucent (software renderer).
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **music** plays an OGG file with SDL_mixer.
+* **text** outputs text with SDL_ttf.
 
 Build the examples with:
 ```
 $ make <name>
 ```
+
+## Known Issues
+
+* The surface returned by `ttf_render_text_solid()` can’t be freed, as it causes a segmentation fault.
+* Text rendered by `ttf_render_text_solid()` has wrong colour.
 
 ## Coverage
 ### SDL
