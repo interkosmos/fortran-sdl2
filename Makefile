@@ -25,6 +25,7 @@ SCALING      = scaling
 TRANSLUCENCE = translucence
 BOUNCE       = bounce
 MUSIC        = music
+TEXT         = text
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
@@ -68,6 +69,9 @@ $(BOUNCE): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
 
 $(MUSIC): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
+
+$(TEXT): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(TTF_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_ttf
 
 .PHONY: clean
 
