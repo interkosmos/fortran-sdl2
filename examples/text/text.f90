@@ -3,8 +3,9 @@
 ! Example that shows how to draw some text with SDL_ttf using
 ! the hardware renderer.
 !
-! Author:   Philipp Engel
-! Licence:  ISC
+! Author:  Philipp Engel
+! GitHub:  https://github.com/interkosmos/f03sdl2/
+! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
@@ -89,9 +90,9 @@ program main
         rc = sdl_render_clear(renderer)
         rc = sdl_render_copy(renderer, texture, rect, rect)
 
+        call sdl_render_present(renderer)
         call sdl_destroy_texture(texture)
         call sdl_free_surface(surface)
-        call sdl_render_present(renderer)
         call sdl_delay(50)
     end do
 

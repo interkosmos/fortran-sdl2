@@ -3,6 +3,7 @@
 ! SDL2_mixer interface for Fortran 2003/2008.
 !
 ! Author:  Philipp Engel
+! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 module sdl2_mixer
     use, intrinsic :: iso_c_binding

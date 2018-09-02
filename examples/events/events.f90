@@ -4,8 +4,9 @@
 ! Example is taken from:
 ! http://lazyfoo.net/tutorials/SDL/03_event_driven_programming/index.php
 !
-! Author:   Philipp Engel
-! Licence:  ISC
+! Author:  Philipp Engel
+! GitHub:  https://github.com/interkosmos/f03sdl2/
+! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_ptr
     use :: sdl2
@@ -13,8 +14,8 @@ program main
     use :: sdl2_types
     implicit none
 
-    integer, parameter :: width  = 640
-    integer, parameter :: height = 480
+    integer, parameter :: WIDTH  = 640
+    integer, parameter :: HEIGHT = 480
 
     type(c_ptr)        :: window
     type(sdl_surface)  :: surface
@@ -24,7 +25,7 @@ program main
     logical            :: done   = .false.
 
     ! Initialise SDL.
-    rc = sdl_init(sdl_init_video)
+    rc = sdl_init(SDL_INIT_VIDEO)
 
     if (rc < 0) then
         print *, 'SDL Error: ', sdl_get_error()
@@ -33,11 +34,11 @@ program main
 
     ! Create the SDL window.
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
-                               sdl_windowpos_undefined, &
-                               sdl_windowpos_undefined, &
-                               width, &
-                               height, &
-                               sdl_window_shown)
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               WIDTH, &
+                               HEIGHT, &
+                               SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
         print *, 'SDL Error: ', sdl_get_error()

@@ -3,8 +3,9 @@
 ! Plays an OGG file using SDL2_mixer and outputs some text
 ! with SDL2_ttf (software renderer).
 !
-! Author:   Philipp Engel
-! Licence:  ISC
+! Author:  Philipp Engel
+! GitHub:  https://github.com/interkosmos/f03sdl2/
+! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
@@ -14,11 +15,11 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: width    = 320
-    integer,          parameter :: height   = 240
-    character(len=*), parameter :: ogg_path = 'examples/music/music.ogg'
-    character(len=*), parameter :: ttf_path = 'examples/music/font.ttf'
-    character(len=*), parameter :: message  = 'Playing ' // ogg_path // ' ...'
+    integer,          parameter :: WIDTH    = 320
+    integer,          parameter :: HEIGHT   = 240
+    character(len=*), parameter :: OGG_PATH = 'examples/music/music.ogg'
+    character(len=*), parameter :: TTF_PATH = 'examples/music/font.ttf'
+    character(len=*), parameter :: MESSAGE  = 'Playing ' // OGG_PATH // ' ...'
 
     logical           :: done = .false.
     type(c_ptr)       :: window
@@ -32,7 +33,7 @@ program main
     integer           :: rc
 
     ! Initialise SDL.
-    rc = sdl_init(ior(sdl_init_video, sdl_init_audio))
+    rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
 
     if (rc < 0) then
         print *, 'SDL Error: ', sdl_get_error()
@@ -49,8 +50,8 @@ program main
 
     ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-    font    = ttf_open_font(ttf_path // c_null_char, 12)
-    text    = ttf_render_text_solid(font, message // c_null_char, color)
+    font    = ttf_open_font(TTF_PATH // c_null_char, 12)
+    text    = ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
     rect%x = 0
     rect%y = 0
@@ -58,9 +59,9 @@ program main
     rect%h = text%h
 
     ! Initialise SDL_mixer.
-    rc = mix_open_audio(mix_default_frequency, &
-                        audio_s16lsb, &
-                        mix_default_channels, &
+    rc = mix_open_audio(MIX_DEFAULT_FREQUENCY, &
+                        AUDIO_S16LSB, &
+                        MIX_DEFAULT_CHANNELS, &
                         4096)
 
     if (rc < 0) then
@@ -69,7 +70,7 @@ program main
     end if
 
     ! Play music.
-    music = mix_load_mus(ogg_path // c_null_char)
+    music = mix_load_mus(OGG_PATH // c_null_char)
     rc    = mix_play_music(music, -1)
 
     if (rc < 0) then
@@ -79,11 +80,11 @@ program main
 
     ! Create the SDL window.
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
-                               sdl_windowpos_undefined, &
-                               sdl_windowpos_undefined, &
-                               width, &
-                               height, &
-                               sdl_window_shown)
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               WIDTH, &
+                               HEIGHT, &
+                               SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
         print *, 'SDL Error: ', sdl_get_error()

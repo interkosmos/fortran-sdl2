@@ -3,8 +3,9 @@
 ! Loads a PNG file with SDL2_image and lets it bounce on the screen
 ! using the hardware renderer.
 !
-! Author:   Philipp Engel
-! Licence:  ISC
+! Author:  Philipp Engel
+! GitHub:  https://github.com/interkosmos/f03sdl2/
+! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_ptr
     use :: sdl2
@@ -13,9 +14,9 @@ program main
     use :: sdl2_image
     implicit none
 
-    integer,          parameter :: width     = 640
-    integer,          parameter :: height    = 480
-    character(len=*), parameter :: file_name = 'examples/bounce/fortran.png'
+    integer,          parameter :: WIDTH     = 640
+    integer,          parameter :: HEIGHT    = 480
+    character(len=*), parameter :: FILE_NAME = 'examples/bounce/fortran.png'
 
     type(c_ptr)             :: window
     type(c_ptr)             :: renderer
@@ -32,8 +33,8 @@ program main
     integer                 :: rc
 
     ! Initialise SDL and SDL2_image.
-    rc = sdl_init(sdl_init_video)
-    rc = img_init(img_init_png)
+    rc = sdl_init(SDL_INIT_VIDEO)
+    rc = img_init(IMG_INIT_PNG)
 
     if (rc < 0) then
         print *, 'SDL Error: ', sdl_get_error()
@@ -42,11 +43,11 @@ program main
 
     ! Create the SDL window.
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
-                               sdl_windowpos_undefined, &
-                               sdl_windowpos_undefined, &
-                               width, &
-                               height, &
-                               sdl_window_shown)
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               WIDTH, &
+                               HEIGHT, &
+                               SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
         print *, 'SDL Error: ', sdl_get_error()
@@ -55,7 +56,7 @@ program main
 
     ! Create renderer and load PNG image.
     renderer = sdl_create_renderer(window, -1, 0)
-    texture  = img_load_texture(renderer, file_name // c_null_char)
+    texture  = img_load_texture(renderer, FILE_NAME // c_null_char)
 
     ! Get texture size.
     rc = sdl_query_texture(texture, &
