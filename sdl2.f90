@@ -1,6 +1,6 @@
 ! sdl2.f90
 !
-! SDL2 interface for Fortran 2003/2008.
+! SDL2 interface for Fortran 2003/2008/2018.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -1436,7 +1436,7 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr), intent(in), value :: renderer
-            type(c_ptr),                   :: sdl_get_render_target
+            type(c_ptr)                    :: sdl_get_render_target
         end function sdl_get_render_target
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
