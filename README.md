@@ -259,7 +259,7 @@ SDL_GetRelativeMouseState             |   –   |
 SDL_GetRenderDrawBlendMode            |   –   |
 SDL_GetRenderDrawColor                |   –   |
 SDL_GetRenderDriverInfo               |   –   |
-SDL_GetRenderTarget                   |   –   |
+SDL_GetRenderTarget                   |   ✓   |
 SDL_GetRenderer                       |   –   |
 SDL_GetRendererInfo                   |   –   |
 SDL_GetRendererOutputSize             |   –   |
@@ -504,7 +504,7 @@ SDL_SetPixelFormatPalette             |   –   |
 SDL_SetRelativeMouseMode              |   –   |
 SDL_SetRenderDrawBlendMode            |   ✓   |
 SDL_SetRenderDrawColor                |   ✓   |
-SDL_SetRenderTarget                   |   –   |
+SDL_SetRenderTarget                   |   ✓   |
 SDL_SetSurfaceAlphaMod                |   –   |
 SDL_SetSurfaceBlendMode               |   –   |
 SDL_SetSurfaceColorMod                |   –   |
