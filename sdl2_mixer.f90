@@ -9,26 +9,26 @@ module sdl2_mixer
     use, intrinsic :: iso_c_binding
     implicit none
 
-    integer(kind=c_int), parameter :: AUDIO_U8     = z'0008'
-    integer(kind=c_int), parameter :: AUDIO_S8     = z'8008'
-    integer(kind=c_int), parameter :: AUDIO_U16LSB = z'0010'
-    integer(kind=c_int), parameter :: AUDIO_S16LSB = z'8010'
-    integer(kind=c_int), parameter :: AUDIO_U16MSB = z'1010'
-    integer(kind=c_int), parameter :: AUDIO_S16MSB = z'9010'
+    integer(kind=c_int), parameter :: AUDIO_U8     = int(z'0008')
+    integer(kind=c_int), parameter :: AUDIO_S8     = int(z'8008')
+    integer(kind=c_int), parameter :: AUDIO_U16LSB = int(z'0010')
+    integer(kind=c_int), parameter :: AUDIO_S16LSB = int(z'8010')
+    integer(kind=c_int), parameter :: AUDIO_U16MSB = int(z'1010')
+    integer(kind=c_int), parameter :: AUDIO_S16MSB = int(z'9010')
     integer(kind=c_int), parameter :: AUDIO_U16    = AUDIO_U16LSB
     integer(kind=c_int), parameter :: AUDIO_S16    = AUDIO_S16LSB
 
-    integer(kind=c_int), parameter :: AUDIO_S32LSB = z'8020'
-    integer(kind=c_int), parameter :: AUDIO_S32MSB = z'9020'
+    integer(kind=c_int), parameter :: AUDIO_S32LSB = int(z'8020')
+    integer(kind=c_int), parameter :: AUDIO_S32MSB = int(z'9020')
     integer(kind=c_int), parameter :: AUDIO_S32    = AUDIO_S32LSB
 
-    integer(kind=c_int), parameter :: AUDIO_F32LSB = z'8120'
-    integer(kind=c_int), parameter :: AUDIO_F32MSB = z'9120'
+    integer(kind=c_int), parameter :: AUDIO_F32LSB = int(z'8120')
+    integer(kind=c_int), parameter :: AUDIO_F32MSB = int(z'9120')
     integer(kind=c_int), parameter :: AUDIO_F32    = AUDIO_F32LSB
 
-    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FREQUENCY_CHANGE = z'00000001'
-    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FORMAT_CHANGE    = z'00000002'
-    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_CHANNELS_CHANGE  = z'00000002'
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FREQUENCY_CHANGE = int(z'00000001')
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FORMAT_CHANGE    = int(z'00000002')
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_CHANNELS_CHANGE  = int(z'00000002')
     integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_ANY_CHANGE       = ior(SDL_AUDIO_ALLOW_FREQUENCY_CHANGE, &
                                                                              ior(SDL_AUDIO_ALLOW_FORMAT_CHANGE, &
                                                                                  SDL_AUDIO_ALLOW_CHANNELS_CHANGE))

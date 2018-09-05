@@ -9,10 +9,10 @@ module sdl2_image
     use, intrinsic :: iso_c_binding
     implicit none
 
-    integer(kind=c_int), parameter :: IMG_INIT_JPG  = z'00000001'
-    integer(kind=c_int), parameter :: IMG_INIT_PNG  = z'00000002'
-    integer(kind=c_int), parameter :: IMG_INIT_TIF  = z'00000004'
-    integer(kind=c_int), parameter :: IMG_INIT_WEBP = z'00000008'
+    integer(kind=c_int), parameter :: IMG_INIT_JPG  = int(z'00000001')
+    integer(kind=c_int), parameter :: IMG_INIT_PNG  = int(z'00000002')
+    integer(kind=c_int), parameter :: IMG_INIT_TIF  = int(z'00000004')
+    integer(kind=c_int), parameter :: IMG_INIT_WEBP = int(z'00000008')
 
     interface
         ! int IMG_Init(int flags)
