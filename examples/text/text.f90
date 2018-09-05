@@ -35,7 +35,7 @@ program main
 
     if (rc < 0) then
         print *, 'SDL Error: ', sdl_get_error()
-        call exit(1)
+        stop
     end if
 
     ! Initialise SDL_ttf.
@@ -43,7 +43,7 @@ program main
 
     if (rc < 0) then
         print *, 'TTF Error: ', sdl_get_error()
-        call exit(1)
+        stop
     end if
 
     ! Create the SDL window.
@@ -56,7 +56,7 @@ program main
 
     if (.not. c_associated(window)) then
         print *, 'SDL Error: ', sdl_get_error()
-        call exit(1)
+        stop
     end if
 
     ! Create renderer.
