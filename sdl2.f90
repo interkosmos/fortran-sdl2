@@ -10,7 +10,7 @@ module sdl2_consts
     implicit none
 
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
-    integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(sdl_windowpos_undefined_mask, 0)
+    integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
 
     integer(kind=c_int), parameter :: SDL_INIT_TIMER          = int(z'00000001')
     integer(kind=c_int), parameter :: SDL_INIT_AUDIO          = int(z'00000010')
