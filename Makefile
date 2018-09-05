@@ -1,22 +1,18 @@
 FC           = gfortran8
 SDL_CFLAGS   = `sdl2-config --cflags`
 SDL_LDFLAGS  = `sdl2-config --libs`
-CFLAGS       = -Wl,-rpath=/usr/local/lib/gcc8/ $(SDL_CFLAGS)
+CFLAGS       = -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2008 $(SDL_CFLAGS)
 LDFLAGS      = $(SDL_LDFLAGS)
+EXAMPLES     = examples
 
 SDL_SRC      = sdl2.f90
 SDL_OBJ      = sdl2.o
-
 IMG_SRC      = sdl2_image.f90
 IMG_OBJ      = sdl2_image.o
-
 MIX_SRC      = sdl2_mixer.f90
 MIX_OBJ      = sdl2_mixer.o
-
 TTF_SRC      = sdl2_ttf.f90
 TTF_OBJ      = sdl2_ttf.o
-
-DIR          = examples
 
 WINDOW       = window
 IMAGE        = image
@@ -49,28 +45,28 @@ $(MIX_OBJ):
 $(TTF_OBJ):
 	$(FC) -c $(TTF_SRC)
 
-$(WINDOW): $(DIR)/$*/$*.f90 $(SDL_OBJ)
+$(WINDOW): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(IMAGE): $(DIR)/$*/$*.f90 $(SDL_OBJ)
+$(IMAGE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(EVENTS): $(DIR)/$*/$*.f90 $(SDL_OBJ)
+$(EVENTS): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(SCALING): $(DIR)/$*/$*.f90 $(SDL_OBJ)
+$(SCALING): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCE): $(DIR)/$*/$*.f90 $(SDL_OBJ)
+$(TRANSLUCENCE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(BOUNCE): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
+$(BOUNCE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
 
-$(MUSIC): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+$(MUSIC): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
 
-$(TEXT): $(DIR)/$*/$*.f90 $(SDL_OBJ) $(TTF_OBJ)
+$(TEXT): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_ttf
 
 .PHONY: clean
