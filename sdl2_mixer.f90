@@ -1,6 +1,6 @@
 ! sdl2_mixer.f90
 !
-! SDL2_mixer interface for Fortran 2003/2008.
+! SDL2_mixer interface for Fortran 2003/2008/2018.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -9,34 +9,34 @@ module sdl2_mixer
     use, intrinsic :: iso_c_binding
     implicit none
 
-    integer(kind=c_int), parameter :: audio_u8     = z'0008'
-    integer(kind=c_int), parameter :: audio_s8     = z'8008'
-    integer(kind=c_int), parameter :: audio_u16lsb = z'0010'
-    integer(kind=c_int), parameter :: audio_s16lsb = z'8010'
-    integer(kind=c_int), parameter :: audio_u16msb = z'1010'
-    integer(kind=c_int), parameter :: audio_s16msb = z'9010'
-    integer(kind=c_int), parameter :: audio_u16    = audio_u16lsb
-    integer(kind=c_int), parameter :: audio_s16    = audio_s16lsb
+    integer(kind=c_int), parameter :: AUDIO_U8     = z'0008'
+    integer(kind=c_int), parameter :: AUDIO_S8     = z'8008'
+    integer(kind=c_int), parameter :: AUDIO_U16LSB = z'0010'
+    integer(kind=c_int), parameter :: AUDIO_S16LSB = z'8010'
+    integer(kind=c_int), parameter :: AUDIO_U16MSB = z'1010'
+    integer(kind=c_int), parameter :: AUDIO_S16MSB = z'9010'
+    integer(kind=c_int), parameter :: AUDIO_U16    = AUDIO_U16LSB
+    integer(kind=c_int), parameter :: AUDIO_S16    = AUDIO_S16LSB
 
-    integer(kind=c_int), parameter :: audio_s32lsb = z'8020'
-    integer(kind=c_int), parameter :: audio_s32msb = z'9020'
-    integer(kind=c_int), parameter :: audio_s32    = audio_s32lsb
+    integer(kind=c_int), parameter :: AUDIO_S32LSB = z'8020'
+    integer(kind=c_int), parameter :: AUDIO_S32MSB = z'9020'
+    integer(kind=c_int), parameter :: AUDIO_S32    = AUDIO_S32LSB
 
-    integer(kind=c_int), parameter :: audio_f32lsb = z'8120'
-    integer(kind=c_int), parameter :: audio_f32msb = z'9120'
-    integer(kind=c_int), parameter :: audio_f32    = audio_f32lsb
+    integer(kind=c_int), parameter :: AUDIO_F32LSB = z'8120'
+    integer(kind=c_int), parameter :: AUDIO_F32MSB = z'9120'
+    integer(kind=c_int), parameter :: AUDIO_F32    = AUDIO_F32LSB
 
-    integer(kind=c_int), parameter :: sdl_audio_allow_frequency_change = z'00000001'
-    integer(kind=c_int), parameter :: sdl_audio_allow_format_change    = z'00000002'
-    integer(kind=c_int), parameter :: sdl_audio_allow_channels_change  = z'00000002'
-    integer(kind=c_int), parameter :: sdl_audio_allow_any_change       = ior(sdl_audio_allow_frequency_change, &
-                                                                             ior(sdl_audio_allow_format_change, &
-                                                                                 sdl_audio_allow_channels_change))
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FREQUENCY_CHANGE = z'00000001'
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_FORMAT_CHANGE    = z'00000002'
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_CHANNELS_CHANGE  = z'00000002'
+    integer(kind=c_int), parameter :: SDL_AUDIO_ALLOW_ANY_CHANGE       = ior(SDL_AUDIO_ALLOW_FREQUENCY_CHANGE, &
+                                                                             ior(SDL_AUDIO_ALLOW_FORMAT_CHANGE, &
+                                                                                 SDL_AUDIO_ALLOW_CHANNELS_CHANGE))
 
-    integer(kind=c_int), parameter :: mix_channels          = 8
-    integer(kind=c_int), parameter :: mix_default_frequency = 22050
-    integer(kind=c_int), parameter :: mix_default_channels  = 2
-    integer(kind=c_int), parameter :: mix_max_volume        = 128
+    integer(kind=c_int), parameter :: MIX_CHANNELS          = 8
+    integer(kind=c_int), parameter :: MIX_DEFAULT_FREQUENCY = 22050
+    integer(kind=c_int), parameter :: MIX_DEFAULT_CHANNELS  = 2
+    integer(kind=c_int), parameter :: MIX_MAX_VOLUME        = 128
 
     type, bind(c) :: mix_chunk
         integer(kind=c_int)     :: allocated

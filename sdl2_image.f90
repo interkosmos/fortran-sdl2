@@ -1,6 +1,6 @@
 ! sdl2_image.f90
 !
-! SDL2_image interface for Fortran 2003/2008.
+! SDL2_image interface for Fortran 2003/2008/2018.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -9,10 +9,10 @@ module sdl2_image
     use, intrinsic :: iso_c_binding
     implicit none
 
-    integer(kind=c_int), parameter :: img_init_jpg  = z'00000001'
-    integer(kind=c_int), parameter :: img_init_png  = z'00000002'
-    integer(kind=c_int), parameter :: img_init_tif  = z'00000004'
-    integer(kind=c_int), parameter :: img_init_webp = z'00000008'
+    integer(kind=c_int), parameter :: IMG_INIT_JPG  = z'00000001'
+    integer(kind=c_int), parameter :: IMG_INIT_PNG  = z'00000002'
+    integer(kind=c_int), parameter :: IMG_INIT_TIF  = z'00000004'
+    integer(kind=c_int), parameter :: IMG_INIT_WEBP = z'00000008'
 
     interface
         ! int IMG_Init(int flags)
