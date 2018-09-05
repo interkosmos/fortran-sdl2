@@ -829,6 +829,7 @@ module sdl2
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
     public :: sdl_get_pixel_format
+    public :: sdl_get_render_target
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
     public :: sdl_get_window_surface
@@ -862,6 +863,7 @@ module sdl2
     public :: sdl_set_hint
     public :: sdl_set_render_draw_blend_mode
     public :: sdl_set_render_draw_color
+    public :: sdl_set_render_target
     public :: sdl_set_texture_color_mod
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
@@ -1205,6 +1207,15 @@ module sdl2
             integer(kind=c_int)                        :: sdl_set_render_draw_color
         end function sdl_set_render_draw_color
 
+        ! int SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
+        function sdl_set_render_target(renderer, texture) bind(c, name='SDL_SetRenderTarget')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),             intent(in), value :: renderer
+            type(c_ptr),             intent(in), value :: texture
+            integer(kind=c_int)                        :: sdl_set_render_target
+        end function sdl_set_render_target
+
         ! int SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b)
         function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
             use, intrinsic :: iso_c_binding
@@ -1419,6 +1430,14 @@ module sdl2
 
             call c_f_pointer(surface%format, sdl_get_pixel_format)
         end function
+
+        ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
+        function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: renderer
+            type(c_ptr),                   :: sdl_get_render_target
+        end function sdl_get_render_target
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface(window)
