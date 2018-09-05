@@ -9,3 +9,5 @@ var/
 
 # Other stuff
 *.swp
+*.mod
+*.o
