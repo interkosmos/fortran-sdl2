@@ -8,7 +8,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
