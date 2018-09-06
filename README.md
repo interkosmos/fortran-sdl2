@@ -51,7 +51,7 @@ Add `-lSDL2_ttf` to your `LD_FLAGS` to link SDL2_ttf.
 ## Examples
 Some demo applications are provided in directory `examples`.
 
-* **window** just opens an SDL window.
+* **window** opens a  window and fills a rectangle (software renderer).
 * **image** loads and displays an image (software renderer).
 * **events** polls SDL events.
 * **scaling** displays a scaled image (software renderer).
@@ -59,6 +59,7 @@ Some demo applications are provided in directory `examples`.
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **music** plays an OGG file with SDL_mixer.
 * **text** outputs text with SDL_ttf.
+* **draw** draws some shapes (hardware renderer).
 
 Build the examples with:
 ```
@@ -458,9 +459,9 @@ SDL_RenderCopy                        |   ✓   |
 SDL_RenderCopyEx                      |   –   |
 SDL_RenderDrawLine                    |   ✓   |
 SDL_RenderDrawLines                   |   –   |
-SDL_RenderDrawPoint                   |   –   |
+SDL_RenderDrawPoint                   |   ✓   |
 SDL_RenderDrawPoints                  |   –   |
-SDL_RenderDrawRect                    |   –   |
+SDL_RenderDrawRect                    |   ✓   |
 SDL_RenderDrawRects                   |   –   |
 SDL_RenderFillRect                    |   ✓   |
 SDL_RenderFillRects                   |   –   |

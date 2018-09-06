@@ -855,6 +855,8 @@ module sdl2
     public :: sdl_render_clear
     public :: sdl_render_copy
     public :: sdl_render_draw_line
+    public :: sdl_render_draw_point
+    public :: sdl_render_draw_rect
     public :: sdl_render_fill_rect
     public :: sdl_render_present
     public :: sdl_rw_from_file
@@ -1145,6 +1147,26 @@ module sdl2
             integer(kind=c_int), intent(in), value :: y2
             integer(kind=c_int)                    :: sdl_render_draw_line
         end function sdl_render_draw_line
+
+        ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, int x, int y)
+        function sdl_render_draw_point(renderer, x, y) bind(c, name='SDL_RenderDrawPoint')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            integer(kind=c_int), intent(in), value :: x
+            integer(kind=c_int), intent(in), value :: y
+            integer(kind=c_int)                    :: sdl_render_draw_point
+        end function sdl_render_draw_point
+
+        ! int SDL_RenderDrawRect(SDL_Renderer *renderer, const SDL_Rect *rect)
+        function sdl_render_draw_rect(renderer, rect) bind(c, name='SDL_RenderDrawRect')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),    intent(in), value :: renderer
+            type(sdl_rect), intent(in)        :: rect
+            integer(kind=c_int)               :: sdl_render_draw_rect
+        end function sdl_render_draw_rect
 
         ! int SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_fill_rect(renderer, rect) bind(c, name='SDL_RenderFillRect')
