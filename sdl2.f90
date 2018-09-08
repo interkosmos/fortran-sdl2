@@ -1600,7 +1600,7 @@ module sdl2
                     event%j_button = transfer(event, event%j_button)
 
                 ! SDL_JoyDeviceEvent
-                case (sdl_joy_device_added : sdl_joy_device_removed)
+                case (SDL_JOY_DEVICE_ADDED : SDL_JOY_DEVICE_REMOVED)
                     event%j_device = transfer(event, event%j_device)
 
                 ! SDL_ControllerAxisEvent
