@@ -71,7 +71,7 @@ program main
 
         if (rc > 0) then
             select case (event%type)
-                case (sdl_quit_type)
+                case (SDL_QUIT_TYPE)
                     done = .true.
             end select
         end if

@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_int, c_int32_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -14,12 +14,13 @@ program main
 
     integer, parameter :: WIDTH  = 640
     integer, parameter :: HEIGHT = 480
+    real,    parameter :: RAD    = acos(-1.0) / 180
 
     type(c_ptr)     :: window
     type(c_ptr)     :: renderer
     type(sdl_event) :: event
     type(sdl_rect)  :: rect1, rect2
-    integer         :: rc
+    integer         :: i, rc, x, y
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -53,7 +54,7 @@ program main
     rect2%w = 250
     rect2%h = 250
 
-    ! Create renderer and load PNG image.
+    ! Create renderer.
     renderer = sdl_create_renderer(window, -1, 0)
 
     do while (.true.)
@@ -61,7 +62,7 @@ program main
 
         if (rc > 0) then
             select case (event%type)
-                case (sdl_quit_type)
+                case (SDL_QUIT_TYPE)
                     exit
             end select
         end if
@@ -70,9 +71,10 @@ program main
         rc = sdl_set_render_draw_color(renderer, int(0, kind=2), int(0, kind=2), int(0, kind=2), int(255, kind=2))
         rc = sdl_render_clear(renderer)
 
-        ! Draw a line.
+        ! Draw lines.
         rc = sdl_set_render_draw_color(renderer, int(255, kind=2), int(0, kind=2), int(127, kind=2), int(255, kind=2))
         rc = sdl_render_draw_line(renderer, 10, 10, 400, 100)
+        rc = sdl_render_draw_line(renderer, 80, 400, 525, 300)
 
         ! Fill a rectangle.
         rc = sdl_set_render_draw_color(renderer, int(127, kind=2), int(255, kind=2), int(0, kind=2), int(255, kind=2))
@@ -84,12 +86,12 @@ program main
 
         ! Draw some points.
         rc = sdl_set_render_draw_color(renderer, int(255, kind=2), int(255, kind=2), int(255, kind=2), int(255, kind=2))
-        rc = sdl_render_draw_point(renderer, 300, 400)
-        rc = sdl_render_draw_point(renderer, 350, 400)
-        rc = sdl_render_draw_point(renderer, 400, 400)
-        rc = sdl_render_draw_point(renderer, 450, 400)
-        rc = sdl_render_draw_point(renderer, 500, 400)
-        rc = sdl_render_draw_point(renderer, 550, 400)
+
+        do i = 0, 345, 15
+            x  = int(100.0 * cos(i * RAD))
+            y  = int(100.0 * sin(i * RAD))
+            rc = sdl_render_draw_point(renderer, 450 + x, 300 + y)
+        end do
 
         ! Render to window.
         call sdl_render_present(renderer)

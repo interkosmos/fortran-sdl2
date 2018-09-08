@@ -1,7 +1,7 @@
 ! window.f90
 !
-! Shows an SDL 2 window and fills a rectangle in it.
-! Example is taken from:
+! Shows an SDL 2 window and fills a rectangle in it, using the
+! software renderer. Example is taken from:
 ! http://lazyfoo.net/tutorials/SDL/01_hello_SDL/index2.php
 !
 ! Author:  Philipp Engel

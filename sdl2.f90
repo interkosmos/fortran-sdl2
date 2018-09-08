@@ -435,6 +435,18 @@ module sdl2_consts
         enumerator :: SDL_HINT_NORMAL
         enumerator :: SDL_HINT_OVERRIDE
     end enum
+
+    ! SDL_TextureAccess
+    enum, bind(c)
+        enumerator :: SDL_TEXTUREACCESS_STATIC
+        enumerator :: SDL_TEXTUREACCESS_STREAMING
+        enumerator :: SDL_TEXTUREACCESS_TARGET
+    end enum
+
+    ! SDL_RenderFlip
+    integer(kind=c_int), parameter :: SDL_FLIP_NONE       = int(z'00000000')
+    integer(kind=c_int), parameter :: SDL_FLIP_HORIZONTAL = int(z'00000001')
+    integer(kind=c_int), parameter :: SDL_FLIP_VERTICAL   = int(z'00000002')
 end module sdl2_consts
 
 module sdl2_types
@@ -1544,47 +1556,47 @@ module sdl2
 
             select case (event%type)
                 ! SDL_WindowEvent
-                case (sdl_window)
+                case (SDL_WINDOW)
                     event%window = transfer(event, event%window)
 
                 ! SDL_KeyboardEvent
-                case (sdl_key_down : sdl_key_up)
+                case (SDL_KEY_DOWN : SDL_KEY_UP)
                     event%key = transfer(event, event%key)
 
                 ! SDL_TextEditingEvent
-                case (sdl_text_editing)
+                case (SDL_TEXT_EDITING)
                     event%edit = transfer(event, event%edit)
 
                 ! SDL_TextInputEvent
-                case (sdl_text_input)
+                case (SDL_TEXT_INPUT)
                     event%text = transfer(event, event%text)
 
                 ! SDL_MouseMotionEvent
-                case (sdl_mouse_motion)
+                case (SDL_MOUSE_MOTION)
                     event%motion = transfer(event, event%motion)
 
                 ! SDL_MouseButtonEvent
-                case (sdl_mouse_button_down : sdl_mouse_button_up)
+                case (SDL_MOUSE_BUTTON_DOWN : SDL_MOUSE_BUTTON_UP)
                     event%button = transfer(event, event%button)
 
                 ! SDL_MouseWheelEvent
-                case (sdl_mouse_wheel)
+                case (SDL_MOUSE_WHEEL)
                     event%wheel = transfer(event, event%wheel)
 
                 ! SDL_JoyAxisEvent
-                case (sdl_joy_axis_motion)
+                case (SDL_JOY_AXIS_MOTION)
                     event%j_axis = transfer(event, event%j_axis)
 
                 ! SDL_JoyBallEvent
-                case (sdl_joy_ball_motion)
+                case (SDL_JOY_BALL_MOTION)
                     event%j_ball = transfer(event, event%j_ball)
 
                 ! SDL_JoyHatEvent
-                case (sdl_joy_hat_motion)
+                case (SDL_JOY_HAT_MOTION)
                     event%j_hat = transfer(event, event%j_hat)
 
                 ! SDL_JoyButtonEvent
-                case (sdl_joy_button_down : sdl_joy_button_up)
+                case (SDL_JOY_BUTTON_DOWN : SDL_JOY_BUTTON_UP)
                     event%j_button = transfer(event, event%j_button)
 
                 ! SDL_JoyDeviceEvent
@@ -1592,47 +1604,47 @@ module sdl2
                     event%j_device = transfer(event, event%j_device)
 
                 ! SDL_ControllerAxisEvent
-                case (sdl_controller_axis_motion)
+                case (SDL_CONTROLLER_AXIS_MOTION)
                     event%c_axis = transfer(event, event%c_axis)
 
                 ! SDL_ControllerButtonEvent
-                case (sdl_controller_button_down : sdl_controller_button_up)
+                case (SDL_CONTROLLER_BUTTON_DOWN : SDL_CONTROLLER_BUTTON_UP)
                     event%c_button = transfer(event, event%c_button)
 
                 ! SDL_ControllerDeviceEvent
-                case (sdl_controller_device_added : sdl_controller_device_remapped)
+                case (SDL_CONTROLLER_DEVICE_ADDED : SDL_CONTROLLER_DEVICE_REMAPPED)
                     event%c_device = transfer(event, event%c_device)
 
                 ! SDL_AudioDeviceEvent
-                case (sdl_audio_device_added : sdl_audio_device_removed)
+                case (SDL_AUDIO_DEVICE_ADDED : SDL_AUDIO_DEVICE_REMOVED)
                     event%a_device = transfer(event, event%a_device)
 
                 ! SDL_QuitEvent
-                case (sdl_quit_type)
+                case (SDL_QUIT_TYPE)
                     event%quit = transfer(event, event%quit)
 
                 ! SDL_UserEvent
-                case (sdl_user)
+                case (SDL_USER)
                     event%user = transfer(event, event%user)
 
                 ! SDL_SysWMEvent
-                case (sdl_sys_wm)
+                case (SDL_SYS_WM)
                     event%sys_wm = transfer(event, event%sys_wm)
 
                 ! SDL_TouchFingerEvent
-                case (sdl_finger_down : sdl_finger_motion)
+                case (SDL_FINGER_DOWN : SDL_FINGER_MOTION)
                     event%t_finger = transfer(event, event%t_finger)
 
                 ! SDL_MultiGestureEvent
-                case (sdl_multi_gesture)
+                case (SDL_MULTI_GESTURE)
                     event%m_gesture = transfer(event, event%m_gesture)
 
                 ! SDL_DollarGestureEvent
-                case (sdl_dollar_gesture : sdl_dollar_record)
+                case (SDL_DOLLAR_GESTURE : SDL_DOLLAR_RECORD)
                     event%d_gesture = transfer(event, event%d_gesture)
 
                 ! SDL_DropEvent
-                case (sdl_drop_file : sdl_drop_complete)
+                case (SDL_DROP_FILE : SDL_DROP_COMPLETE)
                     event%drop = transfer(event, event%drop)
             end select
         end subroutine sdl_transfer_event

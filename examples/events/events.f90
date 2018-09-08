@@ -54,13 +54,13 @@ program main
 
         if (rc > 0) then
             select case (event%type)
-                case (sdl_quit_type)
+                case (SDL_QUIT_TYPE)
                     done = .true.
-                case (sdl_key_down)
+                case (SDL_KEY_DOWN)
                     print *, 'key down event'
-                case (sdl_mouse_motion)
+                case (SDL_MOUSE_MOTION)
                     print *, 'mouse motion event'
-                case (sdl_window)
+                case (SDL_WINDOW)
                     print *, 'window event'
             end select
         end if
