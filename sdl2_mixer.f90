@@ -46,6 +46,14 @@ module sdl2_mixer
     end type mix_chunk
 
     interface
+        ! int Mix_AllocateChannels(int numchans)
+        function mix_allocate_channels(num_chans) bind(c, name='Mix_AllocateChannels')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int), intent(in), value :: num_chans
+            integer(kind=c_int)                    :: mix_allocate_channels
+        end function mix_allocate_channels
+
         ! Mix_Chunk *Mix_LoadWAV_RW(SDL_RWops *src, int freesrc)
         function mix_load_wav_rw(src, free_src) bind(c, name='Mix_LoadWAV_RW')
             use, intrinsic :: iso_c_binding
@@ -109,6 +117,24 @@ module sdl2_mixer
             integer(kind=c_int) :: mix_playing_music
         end function mix_playing_music
 
+        ! int Mix_VolumeChunk(Mix_Chunk *chunk, int volume)
+        function mix_volume_chunk(chunk, volume) bind(c, name='Mix_VolumeChunk')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: chunk
+            integer(kind=c_int), intent(in), value :: volume
+            integer(kind=c_int)                    :: mix_volume_chunk
+        end function mix_volume_chunk
+
+        ! int Mix_VolumeMusic(Mix_Music *music, int volume)
+        function mix_volume_music(music, volume) bind(c, name='Mix_VolumeMusic')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: music
+            integer(kind=c_int), intent(in), value :: volume
+            integer(kind=c_int)                    :: mix_volume_music
+        end function mix_volume_music
+
         ! void Mix_CloseAudio(void)
         subroutine mix_close_audio() bind(c, name='Mix_CloseAudio')
         end subroutine mix_close_audio
@@ -126,6 +152,10 @@ module sdl2_mixer
             implicit none
             type(c_ptr), intent(in), value :: music
         end subroutine mix_free_music
+
+        ! void Mix_Quit()
+        subroutine mix_quit() bind(c, name='Mix_Quit')
+        end subroutine mix_quit
     end interface
 
     contains

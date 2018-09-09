@@ -818,6 +818,13 @@ module sdl2_types
         type(sdl_drop_event)              :: drop
         integer(kind=c_int8_t)            :: padding(56)
     end type sdl_event
+
+    ! SDL_Version
+    type, bind(c) :: sdl_version
+        integer(kind=c_int8_t) :: major
+        integer(kind=c_int8_t) :: minor
+        integer(kind=c_int8_t) :: patch
+    end type sdl_version
 end module sdl2_types
 
 module sdl2
@@ -844,6 +851,7 @@ module sdl2
     public :: sdl_get_render_target
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
+    public :: sdl_get_version
     public :: sdl_get_window_surface
     public :: sdl_has_3dnow
     public :: sdl_has_alti_vec
@@ -1337,6 +1345,14 @@ module sdl2
             implicit none
             type(sdl_surface), intent(in) :: surface
         end subroutine sdl_free_surface
+
+        ! void SDLCALL SDL_GetVersion(SDL_version *ver)
+        subroutine sdl_get_version(ver) bind(c, name='SDL_GetVersion')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_version), intent(in out) :: ver
+        end subroutine sdl_get_version
 
         ! void SDL_PumpEvents(void)
         subroutine sdl_pump_events() bind(c, name='SDL_PumpEvents')

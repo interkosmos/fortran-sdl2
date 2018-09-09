@@ -281,7 +281,7 @@ SDL_GetThreadName                     |   –   |
 SDL_GetTicks                          |   ✓   |
 SDL_GetTouchDevice                    |   –   |
 SDL_GetTouchFinger                    |   –   |
-SDL_GetVersion                        |   –   |
+SDL_GetVersion                        |   ✓   |
 SDL_GetVideoDriver                    |   –   |
 SDL_GetWindowBrightness               |   –   |
 SDL_GetWindowData                     |   –   |
@@ -643,7 +643,7 @@ IMG_isXV                              |   –   |
 
 Name                                  | Bound |
 --------------------------------------|-------|
-Mix_AllocateChannels                  |   –   |
+Mix_AllocateChannels                  |   ✓   |
 Mix_ChannelFinished                   |   –   |
 Mix_CloseAudio                        |   ✓   |
 Mix_ExpireChannel                     |   –   |
@@ -695,7 +695,7 @@ Mix_PlayingMusic                      |   ✓   |
 Mix_QuerySpec                         |   –   |
 Mix_QuickLoad_RAW                     |   –   |
 Mix_QuickLoad_WAV                     |   –   |
-Mix_Quit                              |   –   |
+Mix_Quit                              |   ✓   |
 Mix_RegisterEffect                    |   –   |
 Mix_ReserveChannels                   |   –   |
 Mix_Resume                            |   –   |
@@ -712,8 +712,8 @@ Mix_SetReverseStereo                  |   –   |
 Mix_UnregisterAllEffects              |   –   |
 Mix_UnregisterEffect                  |   –   |
 Mix_Volume                            |   –   |
-Mix_VolumeChunk                       |   –   |
-Mix_VolumeMusic                       |   –   |
+Mix_VolumeChunk                       |   ✓   |
+Mix_VolumeMusic                       |   ✓   |
 
 ### SDL_ttf
 
