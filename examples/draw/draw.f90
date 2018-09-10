@@ -68,24 +68,24 @@ program main
         end if
 
         ! Clear screen.
-        rc = sdl_set_render_draw_color(renderer, int(0, kind=2), int(0, kind=2), int(0, kind=2), int(255, kind=2))
+        rc = sdl_set_render_draw_color(renderer, 0, 0, 0, 255)
         rc = sdl_render_clear(renderer)
 
         ! Draw lines.
-        rc = sdl_set_render_draw_color(renderer, int(255, kind=2), int(0, kind=2), int(127, kind=2), int(255, kind=2))
+        rc = sdl_set_render_draw_color(renderer, 255, 0, 127, 255)
         rc = sdl_render_draw_line(renderer, 10, 10, 400, 100)
         rc = sdl_render_draw_line(renderer, 80, 400, 525, 300)
 
         ! Fill a rectangle.
-        rc = sdl_set_render_draw_color(renderer, int(127, kind=2), int(255, kind=2), int(0, kind=2), int(255, kind=2))
+        rc = sdl_set_render_draw_color(renderer, 127, 255, 0, 255)
         rc = sdl_render_fill_rect(renderer, rect1)
 
         ! Draw a rectangle.
-        rc = sdl_set_render_draw_color(renderer, int(127, kind=2), int(0, kind=2), int(255, kind=2), int(255, kind=2))
+        rc = sdl_set_render_draw_color(renderer, 127, 0, 255, 255)
         rc = sdl_render_draw_rect(renderer, rect2)
 
         ! Draw some points.
-        rc = sdl_set_render_draw_color(renderer, int(255, kind=2), int(255, kind=2), int(255, kind=2), int(255, kind=2))
+        rc = sdl_set_render_draw_color(renderer, 255, 255, 255, 255)
 
         do i = 0, 345, 15
             x  = int(100.0 * cos(i * RAD))
