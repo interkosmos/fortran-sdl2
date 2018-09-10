@@ -15,7 +15,6 @@ module sdl2_aliases
     integer, parameter :: c_unsigned_long      = c_long
     integer, parameter :: c_unsigned_long_long = c_long_long
     integer, parameter :: c_unsigned_char      = c_signed_char
-    integer, parameter :: c_ssize_t            = c_size_t
     integer, parameter :: c_uint8_t            = c_int16_t
     integer, parameter :: c_uint16_t           = c_int32_t
     integer, parameter :: c_uint32_t           = c_int32_t
