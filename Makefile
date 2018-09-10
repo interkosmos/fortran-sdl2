@@ -37,16 +37,16 @@ sdl2_mixer: $(MIX_OBJ)
 sdl2_ttf: $(TTF_OBJ)
 
 $(SDL_OBJ):
-	$(FC) -c $(SDL_SRC)
+	$(FC) -Wall -c $(SDL_SRC)
 
 $(IMG_OBJ):
-	$(FC) -c $(IMG_SRC)
+	$(FC) -Wall -c $(IMG_SRC)
 
 $(MIX_OBJ):
-	$(FC) -c $(MIX_SRC)
+	$(FC) -Wall -c $(MIX_SRC)
 
 $(TTF_OBJ):
-	$(FC) -c $(TTF_SRC)
+	$(FC) -Wall -c $(TTF_SRC)
 
 $(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
