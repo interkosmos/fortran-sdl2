@@ -67,7 +67,6 @@ $ make <name>
 ```
 
 ## Known Issues
-
 * The surface returned by `ttf_render_text_solid()` can’t be freed, as it causes a segmentation fault.
 * Text rendered by `ttf_render_text_solid()` has wrong colour.
 
@@ -218,7 +217,7 @@ SDL_GetClosestDisplayMode             |   –   |
 SDL_GetColorKey                       |   –   |
 SDL_GetCurrentAudioDriver             |   –   |
 SDL_GetCurrentDisplayMode             |   –   |
-SDL_GetCurrentVideoDriver             |   –   |
+SDL_GetCurrentVideoDriver             |   ✓   |
 SDL_GetCursor                         |   –   |
 SDL_GetDefaultAssertionHandler        |   –   |
 SDL_GetDefaultCursor                  |   –   |
@@ -282,7 +281,7 @@ SDL_GetTicks                          |   ✓   |
 SDL_GetTouchDevice                    |   –   |
 SDL_GetTouchFinger                    |   –   |
 SDL_GetVersion                        |   ✓   |
-SDL_GetVideoDriver                    |   –   |
+SDL_GetVideoDriver                    |   ✓   |
 SDL_GetWindowBrightness               |   –   |
 SDL_GetWindowData                     |   –   |
 SDL_GetWindowDisplayIndex             |   –   |

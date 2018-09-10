@@ -844,6 +844,7 @@ module sdl2
     public :: sdl_fill_rect
     public :: sdl_free_surface
     public :: sdl_get_cpu_count
+    public :: sdl_get_current_video_driver
     public :: sdl_get_error
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
@@ -852,6 +853,7 @@ module sdl2
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
     public :: sdl_get_version
+    public :: sdl_get_video_driver
     public :: sdl_get_window_surface
     public :: sdl_has_3dnow
     public :: sdl_has_alti_vec
@@ -955,6 +957,13 @@ module sdl2
             integer(kind=c_int) :: sdl_get_cpu_count
         end function sdl_get_cpu_count
 
+        ! const char *SDL_GetCurrentVideoDriver(void)
+        function sdl_get_current_video_driver_() bind(c, name='SDL_GetCurrentVideoDriver')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr) :: sdl_get_current_video_driver_
+        end function sdl_get_current_video_driver_
+
         ! const char *SDL_GetError(void)
         function sdl_get_error_() bind(c, name='SDL_GetError')
             use, intrinsic :: iso_c_binding
@@ -978,6 +987,14 @@ module sdl2
             type(c_ptr)                        :: sdl_get_hint_
         end function sdl_get_hint_
 
+        ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
+        function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: renderer
+            type(c_ptr)                    :: sdl_get_render_target
+        end function sdl_get_render_target
+
         ! int SDL_GetSystemRAM(void)
         function sdl_get_system_ram() bind(c, name='SDL_GetSystemRAM')
             use, intrinsic :: iso_c_binding
@@ -991,6 +1008,14 @@ module sdl2
             implicit none
             integer(kind=c_int64_t) :: sdl_get_ticks
         end function sdl_get_ticks
+
+        ! const char *SDL_GetVideoDriver(int index)
+        function sdl_get_video_driver_(index) bind(c, name='SDL_GetVideoDriver')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer, intent(in) :: index
+            type(c_ptr)         :: sdl_get_video_driver_
+        end function sdl_get_video_driver_
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface_(window) bind(c, name='SDL_GetWindowSurface')
@@ -1418,6 +1443,32 @@ module sdl2
             call c_f_pointer(ptr, sdl_convert_surface)
         end function sdl_convert_surface
 
+        ! const char *SDL_GetCurrentVideoDriver(void)
+        function sdl_get_current_video_driver()
+            !! Calls `sdl_get_current_video_driver_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            character(len=10)               :: sdl_get_current_video_driver
+            integer                         :: i
+
+            ptr = sdl_get_current_video_driver_()
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_video_driver)])
+
+            do i = 1, size(ptrs)
+                if (ptrs(i) == c_null_char) &
+                    exit
+
+                sdl_get_current_video_driver(i:i) = ptrs(i)
+            end do
+        end function sdl_get_current_video_driver
+
         ! const char *SDL_GetError(void)
         function sdl_get_error()
             !! Calls `sdl_get_error_()` and converts the returned
@@ -1430,6 +1481,10 @@ module sdl2
             integer                         :: i
 
             ptr = sdl_get_error_()
+
+            if (.not. c_associated(ptr)) &
+                return
+
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_error)])
 
             do i = 1, size(ptrs)
@@ -1462,6 +1517,10 @@ module sdl2
             integer                            :: i
 
             ptr = sdl_get_hint_(name // c_null_char)
+
+            if (.not. c_associated(ptr)) &
+                return
+
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
 
             do i = 1, size(ptrs)
@@ -1470,7 +1529,7 @@ module sdl2
         end function sdl_get_hint
 
         function sdl_get_pixel_format(surface)
-            !! Converts the *SDL_PixelFormat pointer inside `surface`
+            !! Converts the `*SDL_PixelFormat` pointer inside `surface`
             !! to `sdl_pixel_format`.
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
@@ -1481,13 +1540,32 @@ module sdl2
             call c_f_pointer(surface%format, sdl_get_pixel_format)
         end function
 
-        ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
-        function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')
+        ! const char *SDL_GetVideoDriver(int index)
+        function sdl_get_video_driver(index)
+            !! Calls `sdl_get_video_driver_()` and converts the returned
+            !! C char pointer to Fortran character.
             use, intrinsic :: iso_c_binding
             implicit none
-            type(c_ptr), intent(in), value :: renderer
-            type(c_ptr)                    :: sdl_get_render_target
-        end function sdl_get_render_target
+            integer,                intent(in) :: index
+            type(c_ptr)                        :: ptr
+            character(kind=c_char), pointer    :: ptrs(:)
+            character(len=10)                  :: sdl_get_video_driver
+            integer                            :: i
+
+            ptr = sdl_get_video_driver_(index)
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_video_driver)])
+
+            do i = 1, size(ptrs)
+                if (ptrs(i) == c_null_char) &
+                    exit
+
+                sdl_get_video_driver(i:i) = ptrs(i)
+            end do
+        end function sdl_get_video_driver
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface(window)
