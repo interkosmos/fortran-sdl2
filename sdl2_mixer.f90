@@ -74,12 +74,13 @@ module sdl2_mixer
         ! int Mix_OpenAudio(int frequency, Uint16 format, int channels, int chunksize)
         function mix_open_audio(frequency, format, channels, chunk_size) bind(c, name='Mix_OpenAudio')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_aliases
             implicit none
-            integer(kind=c_int),     intent(in), value :: frequency
-            integer(kind=c_int32_t), intent(in), value :: format
-            integer(kind=c_int),     intent(in), value :: channels
-            integer(kind=c_int),     intent(in), value :: chunk_size
-            integer(kind=c_int)                        :: mix_open_audio
+            integer(kind=c_int),      intent(in), value :: frequency
+            integer(kind=c_uint16_t), intent(in), value :: format
+            integer(kind=c_int),      intent(in), value :: channels
+            integer(kind=c_int),      intent(in), value :: chunk_size
+            integer(kind=c_int)                         :: mix_open_audio
         end function mix_open_audio
 
         ! int Mix_PlayChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ticks)
