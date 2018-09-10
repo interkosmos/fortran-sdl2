@@ -18,16 +18,16 @@ program main
     integer,          parameter :: HEIGHT    = 480
     character(len=*), parameter :: FILE_NAME = 'examples/scaling/wall.bmp'
 
-    type(c_ptr)            :: window
-    type(sdl_surface)      :: window_surface
-    type(sdl_surface)      :: image_loaded
-    type(sdl_surface)      :: image_optimised
-    type(sdl_pixel_format) :: pixel_format
-    type(sdl_rect)         :: window_rect
-    type(sdl_rect)         :: image_rect
-    type(sdl_event)        :: event
-    integer                :: rc
-    logical                :: done = .false.
+    type(c_ptr)                          :: window
+    type(sdl_surface),      pointer      :: window_surface
+    type(sdl_surface),      pointer      :: image_loaded
+    type(sdl_surface),      pointer      :: image_optimised
+    type(sdl_pixel_format), pointer      :: pixel_format
+    type(sdl_rect)                       :: window_rect
+    type(sdl_rect)                       :: image_rect
+    type(sdl_event)                      :: event
+    integer                              :: rc
+    logical                              :: done = .false.
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -50,10 +50,10 @@ program main
         stop
     end if
 
-    window_surface  = sdl_get_window_surface(window)
-    image_loaded    = sdl_load_bmp(FILE_NAME // c_null_char)
-    pixel_format    = sdl_get_pixel_format(window_surface)
-    image_optimised = sdl_convert_surface(image_loaded, pixel_format, 0)
+    window_surface  => sdl_get_window_surface(window)
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)
+    pixel_format    => sdl_get_pixel_format(window_surface)
+    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)
 
     image_rect%w    = image_optimised%w
     image_rect%h    = image_optimised%h

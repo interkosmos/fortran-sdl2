@@ -16,17 +16,17 @@ program main
     integer,          parameter :: HEIGHT    = 240
     character(len=*), parameter :: FILE_NAME = 'examples/translucence/fortran.bmp'
 
-    type(c_ptr)            :: window
-    type(sdl_surface)      :: window_surface
-    type(sdl_surface)      :: image_loaded
-    type(sdl_surface)      :: image_optimised
-    type(sdl_pixel_format) :: pixel_format
-    type(sdl_rect)         :: window_rect
-    type(sdl_rect)         :: image_rect
-    type(sdl_event)        :: event
-    integer                :: color
-    integer                :: rc
-    logical                :: done = .false.
+    type(c_ptr)                     :: window
+    type(sdl_surface),      pointer :: window_surface
+    type(sdl_surface),      pointer :: image_loaded
+    type(sdl_surface),      pointer :: image_optimised
+    type(sdl_pixel_format), pointer :: pixel_format
+    type(sdl_rect)                  :: window_rect
+    type(sdl_rect)                  :: image_rect
+    type(sdl_event)                 :: event
+    integer                         :: color
+    integer                         :: rc
+    logical                         :: done = .false.
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -49,10 +49,10 @@ program main
         stop
     end if
 
-    window_surface  = sdl_get_window_surface(window)                                    ! Get surface of window.
-    image_loaded    = sdl_load_bmp(FILE_NAME // c_null_char)                            ! Load BMP file.
-    pixel_format    = sdl_get_pixel_format(window_surface)                              ! Get pixel format of window.
-    image_optimised = sdl_convert_surface(image_loaded, pixel_format, 0)                ! Optimise pixel format of image.
+    window_surface  => sdl_get_window_surface(window)                                   ! Get surface of window.
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)                           ! Load BMP file.
+    pixel_format    => sdl_get_pixel_format(window_surface)                             ! Get pixel format of window.
+    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)               ! Optimise pixel format of image.
     color           = sdl_map_rgb(pixel_format, int(255, 2), int(0, 2), int(255, 2))    ! Get translucent colour (#FF00FF).
     rc              = sdl_set_color_key(image_optimised, 1, color)                      ! Set translucent colour.
 

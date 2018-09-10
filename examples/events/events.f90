@@ -17,12 +17,11 @@ program main
     integer, parameter :: WIDTH  = 640
     integer, parameter :: HEIGHT = 480
 
-    type(c_ptr)        :: window
-    type(sdl_surface)  :: surface
-    type(sdl_event)    :: event
-    integer            :: rc
-
-    logical            :: done   = .false.
+    type(c_ptr)                :: window
+    type(sdl_surface), pointer :: surface
+    type(sdl_event)            :: event
+    integer                    :: rc
+    logical                    :: done = .false.
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -46,8 +45,8 @@ program main
     end if
 
     ! Get the window surface.
-    surface = sdl_get_window_surface(window)
-    rc      = sdl_update_window_surface(window)
+    surface => sdl_get_window_surface(window)
+    rc = sdl_update_window_surface(window)
 
     do while (.not. done)
         rc = sdl_poll_event(event)

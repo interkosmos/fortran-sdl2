@@ -21,16 +21,16 @@ program main
     character(len=*), parameter :: TTF_PATH = 'examples/music/font.ttf'
     character(len=*), parameter :: MESSAGE  = 'Playing ' // OGG_PATH // ' ...'
 
-    logical           :: done = .false.
-    type(c_ptr)       :: window
-    type(sdl_surface) :: screen
-    type(sdl_surface) :: text
-    type(sdl_rect)    :: rect
-    type(sdl_event)   :: event
-    type(sdl_color)   :: color
-    type(c_ptr)       :: font
-    type(c_ptr)       :: music
-    integer           :: rc
+    logical                    :: done = .false.
+    type(c_ptr)                :: window
+    type(sdl_surface), pointer :: screen
+    type(sdl_surface), pointer :: text
+    type(sdl_rect)             :: rect
+    type(sdl_event)            :: event
+    type(sdl_color)            :: color
+    type(c_ptr)                :: font
+    type(c_ptr)                :: music
+    integer                    :: rc
 
     ! Initialise SDL.
     rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
@@ -51,7 +51,7 @@ program main
     ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
     font    = ttf_open_font(TTF_PATH // c_null_char, 12)
-    text    = ttf_render_text_solid(font, MESSAGE // c_null_char, color)
+    text    => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
     rect%x = 0
     rect%y = 0
@@ -92,8 +92,8 @@ program main
     end if
 
     ! Get the window surface.
-    screen = sdl_get_window_surface(window)
-    rc     = sdl_update_window_surface(window)
+    screen => sdl_get_window_surface(window)
+    rc = sdl_update_window_surface(window)
 
     ! Event loop.
     do while (.not. done)

@@ -19,16 +19,16 @@ program main
     character(len=*), parameter :: STRING = 'Hello, World!'
     character(len=*), parameter :: PATH   = 'examples/text/font.ttf'
 
-    logical           :: done = .false.
-    type(c_ptr)       :: window
-    type(c_ptr)       :: renderer
-    type(c_ptr)       :: texture
-    type(c_ptr)       :: font
-    type(sdl_surface) :: surface
-    type(sdl_rect)    :: rect
-    type(sdl_event)   :: event
-    type(sdl_color)   :: color
-    integer           :: rc
+    logical                    :: done = .false.
+    type(c_ptr)                :: window
+    type(c_ptr)                :: renderer
+    type(c_ptr)                :: texture
+    type(c_ptr)                :: font
+    type(sdl_surface), pointer :: surface
+    type(sdl_rect)             :: rect
+    type(sdl_event)            :: event
+    type(sdl_color)            :: color
+    integer                    :: rc
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -78,7 +78,7 @@ program main
         end if
 
         ! Prepare texture.
-        surface = ttf_render_text_solid(font, STRING // c_null_char, color)
+        surface => ttf_render_text_solid(font, STRING // c_null_char, color)
         texture = sdl_create_texture_from_surface(renderer, surface)
 
         rect%x = 0

@@ -17,12 +17,12 @@ program main
     integer, parameter :: WIDTH  = 640
     integer, parameter :: HEIGHT = 480
 
-    type(c_ptr)            :: window
-    type(sdl_surface)      :: surface
-    type(sdl_pixel_format) :: pixel_format
-    type(sdl_rect)         :: rect
-    integer                :: rc
-    integer                :: color
+    type(c_ptr)                     :: window
+    type(sdl_surface),      pointer :: surface
+    type(sdl_pixel_format), pointer :: pixel_format
+    type(sdl_rect)                  :: rect
+    integer                         :: rc
+    integer                         :: color
 
     rect%x = 100
     rect%y = 100
@@ -51,8 +51,8 @@ program main
     end if
 
     ! Get the window surface.
-    surface      = sdl_get_window_surface(window)
-    pixel_format = sdl_get_pixel_format(surface)
+    surface      => sdl_get_window_surface(window)
+    pixel_format => sdl_get_pixel_format(surface)
 
     ! Set color to red (#FF0000).
     color = sdl_map_rgb(pixel_format, int(255, 2), int(0, 2), int(0, 2))
