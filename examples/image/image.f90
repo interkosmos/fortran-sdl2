@@ -17,11 +17,11 @@ program main
     integer, parameter :: WIDTH  = 640
     integer, parameter :: HEIGHT = 480
 
-    type(c_ptr)       :: window
-    type(sdl_surface) :: screen
-    type(sdl_surface) :: image
-    type(sdl_rect)    :: rect
-    integer           :: rc
+    type(c_ptr)                :: window
+    type(sdl_surface), pointer :: screen
+    type(sdl_surface), pointer :: image
+    type(sdl_rect)             :: rect
+    integer                    :: rc
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -45,10 +45,10 @@ program main
     end if
 
     ! Get the window surface.
-    screen = sdl_get_window_surface(window)
+    screen => sdl_get_window_surface(window)
 
     ! Load the image.
-    image  = sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
+    image  => sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
 
     rect%w = image%w
     rect%h = image%h
