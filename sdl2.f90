@@ -1139,17 +1139,17 @@ module sdl2
         end function sdl_load_bmp_rw
 
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
-        function sdl_map_rgb_(format, r, g, b) bind(c, name='SDL_MapRGB')
+        function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             use :: sdl2_types
             implicit none
-            type(sdl_pixel_format),  intent(in)        :: format
-            integer(kind=c_uint8_t), intent(in), value :: r
-            integer(kind=c_uint8_t), intent(in), value :: g
-            integer(kind=c_uint8_t), intent(in), value :: b
-            integer(kind=c_uint32_t)                   :: sdl_map_rgb_
-        end function sdl_map_rgb_
+            type(sdl_pixel_format) ,  intent(in)        :: format
+            integer(kind=c_uint16_t), intent(in), value :: r
+            integer(kind=c_uint16_t), intent(in), value :: g
+            integer(kind=c_uint16_t), intent(in), value :: b
+            integer(kind=c_uint32_t)                    :: sdl_map_rgb
+        end function sdl_map_rgb
 
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
@@ -1285,7 +1285,7 @@ module sdl2
         end function sdl_set_render_draw_blend_mode
 
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-        function sdl_set_render_draw_color_(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
+        function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             implicit none
@@ -1294,8 +1294,8 @@ module sdl2
             integer(kind=c_uint16_t), intent(in), value :: g
             integer(kind=c_uint16_t), intent(in), value :: b
             integer(kind=c_uint16_t), intent(in), value :: a
-            integer(kind=c_int)                         :: sdl_set_render_draw_color_
-        end function sdl_set_render_draw_color_
+            integer(kind=c_int)                         :: sdl_set_render_draw_color
+        end function sdl_set_render_draw_color
 
         ! int SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
         function sdl_set_render_target(renderer, texture) bind(c, name='SDL_SetRenderTarget')
@@ -1311,11 +1311,11 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             implicit none
-            type(c_ptr),             intent(in), value :: texture
+            type(c_ptr),              intent(in), value :: texture
             integer(kind=c_uint16_t), intent(in), value :: r
             integer(kind=c_uint16_t), intent(in), value :: g
             integer(kind=c_uint16_t), intent(in), value :: b
-            integer(kind=c_int)                        :: sdl_set_texture_color_mod
+            integer(kind=c_int)                         :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
@@ -1621,25 +1621,6 @@ module sdl2
             call c_f_pointer(ptr, sdl_load_bmp)
         end function sdl_load_bmp
 
-        ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
-        function sdl_map_rgb(format, r, g, b)
-            !! Converts integer arguments to c_uint8_t before calling
-            !! `sdl_map_rgb_()`.
-            use :: sdl2_consts
-            use :: sdl2_types
-            implicit none
-            type(sdl_pixel_format), intent(in) :: format
-            integer,                intent(in) :: r
-            integer,                intent(in) :: g
-            integer,                intent(in) :: b
-            integer                            :: sdl_map_rgb
-
-            sdl_map_rgb = sdl_map_rgb_(format, &
-                                       int(r, kind=c_uint8_t), &
-                                       int(g, kind=c_uint8_t), &
-                                       int(b, kind=c_uint8_t))
-        end function sdl_map_rgb
-
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event(event)
             !! Calls `sdl_poll_event_()` and transfers the returned
@@ -1653,27 +1634,6 @@ module sdl2
             sdl_poll_event = sdl_poll_event_(event)
             call sdl_transfer_event(event)
         end function sdl_poll_event
-
-        ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-        function sdl_set_render_draw_color(renderer, r, g, b, a)
-            !! Converts integer arguments to c_uint16_t before calling
-            !! `sdl_set_render_draw_color_()`.
-            use, intrinsic :: iso_c_binding, only: c_ptr
-            use :: sdl2_consts
-            implicit none
-            type(c_ptr), intent(in) :: renderer
-            integer,     intent(in) :: r
-            integer,     intent(in) :: g
-            integer,     intent(in) :: b
-            integer,     intent(in) :: a
-            integer                 :: sdl_set_render_draw_color
-
-            sdl_set_render_draw_color = sdl_set_render_draw_color_(renderer, &
-                                                                   int(r, kind=c_uint16_t), &
-                                                                   int(g, kind=c_uint16_t), &
-                                                                   int(b, kind=c_uint16_t), &
-                                                                   int(a, kind=c_uint16_t))
-        end function sdl_set_render_draw_color
 
         ! SDL_bool SDL_SetHint(const char *name, const char *value)
         function sdl_set_hint(name, value)

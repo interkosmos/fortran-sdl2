@@ -77,7 +77,7 @@ module sdl2_mixer
             use :: sdl2_consts
             implicit none
             integer(kind=c_int),      intent(in), value :: frequency
-            integer(kind=c_uint16_t), intent(in), value :: format
+            integer(kind=c_uint32_t), intent(in), value :: format
             integer(kind=c_int),      intent(in), value :: channels
             integer(kind=c_int),      intent(in), value :: chunk_size
             integer(kind=c_int)                         :: mix_open_audio
