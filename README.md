@@ -9,11 +9,10 @@ SDL_image | 2.0.2
 SDL_mixer | 2.0.1_1
 SDL_ttf   | 2.0.14_1
 
-The interface compiles with GNU Fortran 7/8 and Flang 5. On Linux, you have to
-install BSD make (`bmake`) in order to use the provided Makefile.
+The interface compiles with GNU Fortran 7/8 and Flang 5.
 
 ## Build SDL2
-Use BSD make to build the SDL2 interface:
+Use GNU make to build the SDL2 interface:
 ```
 $ make sdl2
 ```
