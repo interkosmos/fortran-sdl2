@@ -68,7 +68,6 @@ $ make <name>
 
 ## Coverage
 ### SDL
-
 Name                                  | Bound |
 --------------------------------------|-------|
 SDL_AddEventWatch                     |   –   |
@@ -589,7 +588,6 @@ SDL_assert_paranoid                   |   –   |
 SDL_assert_release                    |   –   |
 
 ### SDL_image
-
 Name                                  | Bound |
 --------------------------------------|-------|
 IMG_GetError                          |   –   |
@@ -711,7 +709,6 @@ Mix_VolumeChunk                       |   ✓   |
 Mix_VolumeMusic                       |   ✓   |
 
 ### SDL_ttf
-
 Name                                  | Bound |
 --------------------------------------|-------|
 SDL_TTF_MAJOR_VERSION                 |   –   |
@@ -762,6 +759,9 @@ TTF_SizeText                          |   –   |
 TTF_SizeUNICODE                       |   –   |
 TTF_SizeUTF8                          |   –   |
 TTF_WasInit                           |   –   |
+
+## Credits
+Thanks go to @angelog0.
 
 ## Licence
 ISC
