@@ -16,8 +16,8 @@ module sdl2_aliases
     integer, parameter :: c_unsigned_long_long = c_long_long
     integer, parameter :: c_unsigned_char      = c_signed_char
     integer, parameter :: c_ssize_t            = c_size_t
-    integer, parameter :: c_uint8_t            = c_int8_t
-    integer, parameter :: c_uint16_t           = c_int16_t
+    integer, parameter :: c_uint8_t            = c_int16_t
+    integer, parameter :: c_uint16_t           = c_int32_t
     integer, parameter :: c_uint32_t           = c_int32_t
     integer, parameter :: c_uint64_t           = c_int64_t
 end module sdl2_aliases
@@ -1269,7 +1269,7 @@ module sdl2
             type(sdl_surface),        intent(in)        :: surface
             integer(kind=c_int),      intent(in), value :: flag
             integer(kind=c_uint32_t), intent(in), value :: key
-        integer(kind=c_int)                         :: sdl_set_color_key
+        integer(kind=c_int)                             :: sdl_set_color_key
         end function sdl_set_color_key
 
         ! SDL_bool SDL_SetHint(const char *name, const char *value)
