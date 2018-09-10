@@ -1031,8 +1031,8 @@ module sdl2
         function sdl_get_video_driver_(index) bind(c, name='SDL_GetVideoDriver')
             use, intrinsic :: iso_c_binding
             implicit none
-            integer, intent(in) :: index
-            type(c_ptr)         :: sdl_get_video_driver_
+            integer(kind=c_int), intent(in) :: index
+            type(c_ptr)                     :: sdl_get_video_driver_
         end function sdl_get_video_driver_
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
@@ -1496,7 +1496,6 @@ module sdl2
             type(c_ptr)                     :: ptr
             character(kind=c_char), pointer :: ptrs(:)
             character(len=10)               :: sdl_get_current_video_driver
-            integer                         :: i
 
             ptr = sdl_get_current_video_driver_()
 
@@ -1516,7 +1515,6 @@ module sdl2
             character(len=100)              :: sdl_get_error
             type(c_ptr)                     :: ptr
             character(kind=c_char), pointer :: ptrs(:)
-            integer                         :: i
 
             ptr = sdl_get_error_()
 
@@ -1551,7 +1549,6 @@ module sdl2
             character(len=100)                 :: sdl_get_hint
             type(c_ptr)                        :: ptr
             character(kind=c_char), pointer    :: ptrs(:)
-            integer                            :: i
 
             ptr = sdl_get_hint_(name // c_null_char)
 
@@ -1584,7 +1581,6 @@ module sdl2
             type(c_ptr)                        :: ptr
             character(kind=c_char), pointer    :: ptrs(:)
             character(len=10)                  :: sdl_get_video_driver
-            integer                            :: i
 
             ptr = sdl_get_video_driver_(index)
 
@@ -1660,7 +1656,7 @@ module sdl2
 
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
         function sdl_set_render_draw_color(renderer, r, g, b, a)
-            !! Converts integer arguments to c_uint32_t before calling
+            !! Converts integer arguments to c_uint16_t before calling
             !! `sdl_set_render_draw_color_()`.
             use, intrinsic :: iso_c_binding, only: c_ptr
             use :: sdl2_consts
