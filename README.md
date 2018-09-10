@@ -66,10 +66,6 @@ Build the examples with:
 $ make <name>
 ```
 
-## Known Issues
-* The surface returned by `ttf_render_text_solid()` can’t be freed, as it causes a segmentation fault.
-* Text rendered by `ttf_render_text_solid()` has wrong colour.
-
 ## Coverage
 ### SDL
 
