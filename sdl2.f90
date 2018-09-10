@@ -5,25 +5,20 @@
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
-module sdl2_aliases
+module sdl2_consts
     use, intrinsic :: iso_c_binding
     implicit none
 
     ! Type aliases
     integer, parameter :: c_uint8_t            = c_int16_t
     integer, parameter :: c_uint16_t           = c_int32_t
-    integer, parameter :: c_uint32_t           = c_int32_t
+    integer, parameter :: c_uint32_t           = c_int32_t      ! c_int64_t seems to be wrong!?
     integer, parameter :: c_uint64_t           = c_int64_t
     integer, parameter :: c_unsigned           = c_int
     integer, parameter :: c_unsigned_char      = c_signed_char
     integer, parameter :: c_unsigned_long      = c_long
     integer, parameter :: c_unsigned_long_long = c_long_long
     integer, parameter :: c_unsigned_short     = c_short
-end module sdl2_aliases
-
-module sdl2_consts
-    use, intrinsic :: iso_c_binding
-    implicit none
 
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
@@ -467,7 +462,7 @@ end module sdl2_consts
 
 module sdl2_types
     use, intrinsic :: iso_c_binding
-    use :: sdl2_aliases
+    use :: sdl2_consts
     implicit none
 
     ! SDL_Point
@@ -675,7 +670,7 @@ module sdl2_types
     type, bind(c) :: sdl_joy_button_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
-        integer(kind=c_int32_t) :: which
+        integer(kind=c_int32_t)  :: which
         integer(kind=c_uint8_t)  :: button
         integer(kind=c_uint8_t)  :: state
         integer(kind=c_uint8_t)  :: padding1
@@ -801,7 +796,7 @@ module sdl2_types
 
     ! SDL_SysWMEvent
     type, bind(c) :: sdl_sys_wm_event
-        integer(kind=c_uint32_t) :: type
+        integer(kind=c_uint32_t)  :: type
         integer(kind=c_uint32_t) :: timestamp
         type(c_ptr)              :: msg
     end type sdl_sys_wm_event
@@ -838,9 +833,9 @@ module sdl2_types
 
     ! SDL_Version
     type, bind(c) :: sdl_version
-        integer(kind=c_uint8_t) :: major
-        integer(kind=c_uint8_t) :: minor
-        integer(kind=c_uint8_t) :: patch
+        integer(kind=c_int8_t) :: major
+        integer(kind=c_int8_t) :: minor
+        integer(kind=c_int8_t) :: patch
     end type sdl_version
 end module sdl2_types
 
@@ -915,8 +910,8 @@ module sdl2
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             use :: sdl2_types
-            use :: sdl2_aliases
             implicit none
             type(sdl_surface),        intent(in)        :: src
             type(sdl_pixel_format),   intent(in)        :: fmt
@@ -927,7 +922,7 @@ module sdl2
         ! SDL_Renderer *SDL_CreateRenderer(SDL_Window *window, int index, Uint32 flags)
         function sdl_create_renderer(window, index, flags) bind(c, name='SDL_CreateRenderer')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             type(c_ptr),              intent(in), value :: window
             integer(kind=c_int),      intent(in), value :: index
@@ -938,8 +933,8 @@ module sdl2
         ! SDL_Texture *SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface)
         function sdl_create_texture_from_surface(renderer, surface) bind(c, name='SDL_CreateTextureFromSurface')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             use :: sdl2_types
-            use :: sdl2_aliases
             implicit none
             type(c_ptr),       intent(in), value :: renderer
             type(sdl_surface), intent(in)        :: surface
@@ -949,7 +944,7 @@ module sdl2
         ! SDL_Window *SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             character(kind=c_char),   intent(in)        :: title
             integer(kind=c_int),      intent(in), value :: x
@@ -963,7 +958,7 @@ module sdl2
         ! int SDL_FillRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color)
         function sdl_fill_rect(dst, rect, color) bind(c, name='SDL_FillRect')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
             type(sdl_surface),        intent(in)        :: dst
@@ -1027,7 +1022,7 @@ module sdl2
         ! Uint32 SDL_GetTicks(void)
         function sdl_get_ticks() bind(c, name='SDL_GetTicks')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             integer(kind=c_uint32_t) :: sdl_get_ticks
         end function sdl_get_ticks
@@ -1128,7 +1123,7 @@ module sdl2
         ! int SDL_Init(Uint32 flags)
         function sdl_init(flags) bind(c, name='SDL_Init')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int)                         :: sdl_init
@@ -1146,7 +1141,7 @@ module sdl2
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
         function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
             type(sdl_pixel_format),  intent(in)        :: format
@@ -1168,7 +1163,7 @@ module sdl2
         ! int SDL_QueryTexture(SDL_Texture *texture, Uint32 *format, int *access, int *w, int *h)
         function sdl_query_texture(texture, format, access, w, h) bind(c, name='SDL_QueryTexture')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             type(c_ptr),              intent(in), value :: texture
             integer(kind=c_uint32_t), intent(in out)    :: format
@@ -1262,7 +1257,7 @@ module sdl2
         ! int SDL_SetColorKey(SDL_Surface *surface, int flag, Uint32 key)
         function sdl_set_color_key(surface, flag, key) bind(c, name='SDL_SetColorKey')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
             type(sdl_surface),        intent(in)        :: surface
@@ -1292,7 +1287,7 @@ module sdl2
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
         function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             type(c_ptr),             intent(in), value :: renderer
             integer(kind=c_uint8_t), intent(in), value :: r
@@ -1314,7 +1309,7 @@ module sdl2
         ! int SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b)
         function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             type(c_ptr),             intent(in), value :: texture
             integer(kind=c_uint8_t), intent(in), value :: r
@@ -1367,7 +1362,7 @@ module sdl2
         ! void SDL_Delay(Uint32 ms)
         subroutine sdl_delay(ms) bind(c, name='SDL_Delay')
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             integer(kind=c_uint32_t), intent(in), value :: ms
         end subroutine sdl_delay
@@ -1479,7 +1474,7 @@ module sdl2
             !! Calls `sdl_convert_surface_()` and converts the returned
             !! C pointer to derived type `sdl_surface`.
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
             type(sdl_surface),        intent(in) :: src
@@ -1537,7 +1532,7 @@ module sdl2
             !! Calls `sdl_get_keyboard_state_()` and converts the returned
             !! C pointer to Fortran pointers.
             use, intrinsic :: iso_c_binding
-            use :: sdl2_aliases
+            use :: sdl2_consts
             implicit none
             integer(kind=c_uint8_t), pointer :: sdl_get_keyboard_state(:)
             type(c_ptr)                      :: ptr
