@@ -481,10 +481,10 @@ module sdl2_types
 
     ! SDL_Color
     type, bind(c) :: sdl_color
-        integer(kind=c_uint8_t) :: r
-        integer(kind=c_uint8_t) :: g
-        integer(kind=c_uint8_t) :: b
-        integer(kind=c_uint8_t) :: a
+        integer(kind=c_uint16_t) :: r
+        integer(kind=c_uint16_t) :: g
+        integer(kind=c_uint16_t) :: b
+        integer(kind=c_uint16_t) :: a
     end type sdl_color
 
     ! SDL_Palette
@@ -833,9 +833,9 @@ module sdl2_types
 
     ! SDL_Version
     type, bind(c) :: sdl_version
-        integer(kind=c_int8_t) :: major
-        integer(kind=c_int8_t) :: minor
-        integer(kind=c_int8_t) :: patch
+        integer(kind=c_uint8_t) :: major
+        integer(kind=c_uint8_t) :: minor
+        integer(kind=c_uint8_t) :: patch
     end type sdl_version
 end module sdl2_types
 
@@ -1139,7 +1139,7 @@ module sdl2
         end function sdl_load_bmp_rw
 
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
-        function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
+        function sdl_map_rgb_(format, r, g, b) bind(c, name='SDL_MapRGB')
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             use :: sdl2_types
@@ -1148,8 +1148,8 @@ module sdl2
             integer(kind=c_uint8_t), intent(in), value :: r
             integer(kind=c_uint8_t), intent(in), value :: g
             integer(kind=c_uint8_t), intent(in), value :: b
-            integer(kind=c_uint32_t)                   :: sdl_map_rgb
-        end function sdl_map_rgb
+            integer(kind=c_uint32_t)                   :: sdl_map_rgb_
+        end function sdl_map_rgb_
 
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
@@ -1624,6 +1624,25 @@ module sdl2
             ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
             call c_f_pointer(ptr, sdl_load_bmp)
         end function sdl_load_bmp
+
+        ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
+        function sdl_map_rgb(format, r, g, b)
+            !! Converts integer arguments to c_uint8_t before calling
+            !! `sdl_map_rgb_()`.
+            use :: sdl2_consts
+            use :: sdl2_types
+            implicit none
+            type(sdl_pixel_format), intent(in) :: format
+            integer,                intent(in) :: r
+            integer,                intent(in) :: g
+            integer,                intent(in) :: b
+            integer                            :: sdl_map_rgb
+
+            sdl_map_rgb = sdl_map_rgb_(format, &
+                                       int(r, kind=c_uint8_t), &
+                                       int(g, kind=c_uint8_t), &
+                                       int(b, kind=c_uint8_t))
+        end function sdl_map_rgb
 
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event(event)
