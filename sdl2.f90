@@ -10,9 +10,9 @@ module sdl2_consts
     implicit none
 
     ! Type aliases
-    integer, parameter :: c_uint8_t            = c_int16_t
-    integer, parameter :: c_uint16_t           = c_int32_t
-    integer, parameter :: c_uint32_t           = c_int32_t      ! c_int64_t seems to be wrong!?
+    integer, parameter :: c_uint8_t            = c_int8_t
+    integer, parameter :: c_uint16_t           = c_int16_t
+    integer, parameter :: c_uint32_t           = c_int32_t
     integer, parameter :: c_uint64_t           = c_int64_t
     integer, parameter :: c_unsigned           = c_int
     integer, parameter :: c_unsigned_char      = c_signed_char
@@ -1285,17 +1285,17 @@ module sdl2
         end function sdl_set_render_draw_blend_mode
 
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-        function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
+        function sdl_set_render_draw_color_(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             implicit none
-            type(c_ptr),             intent(in), value :: renderer
-            integer(kind=c_uint8_t), intent(in), value :: r
-            integer(kind=c_uint8_t), intent(in), value :: g
-            integer(kind=c_uint8_t), intent(in), value :: b
-            integer(kind=c_uint8_t), intent(in), value :: a
-            integer(kind=c_int)                        :: sdl_set_render_draw_color
-        end function sdl_set_render_draw_color
+            type(c_ptr),              intent(in), value :: renderer
+            integer(kind=c_uint16_t), intent(in), value :: r
+            integer(kind=c_uint16_t), intent(in), value :: g
+            integer(kind=c_uint16_t), intent(in), value :: b
+            integer(kind=c_uint16_t), intent(in), value :: a
+            integer(kind=c_int)                         :: sdl_set_render_draw_color_
+        end function sdl_set_render_draw_color_
 
         ! int SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
         function sdl_set_render_target(renderer, texture) bind(c, name='SDL_SetRenderTarget')
@@ -1312,9 +1312,9 @@ module sdl2
             use :: sdl2_consts
             implicit none
             type(c_ptr),             intent(in), value :: texture
-            integer(kind=c_uint8_t), intent(in), value :: r
-            integer(kind=c_uint8_t), intent(in), value :: g
-            integer(kind=c_uint8_t), intent(in), value :: b
+            integer(kind=c_uint16_t), intent(in), value :: r
+            integer(kind=c_uint16_t), intent(in), value :: g
+            integer(kind=c_uint16_t), intent(in), value :: b
             integer(kind=c_int)                        :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
 
@@ -1629,7 +1629,6 @@ module sdl2
         function sdl_poll_event(event)
             !! Calls `sdl_poll_event_()` and transfers the returned
             !! union to the respective event type.
-            use, intrinsic :: iso_c_binding
             use :: sdl2_consts
             use :: sdl2_types
             implicit none
@@ -1639,6 +1638,27 @@ module sdl2
             sdl_poll_event = sdl_poll_event_(event)
             call sdl_transfer_event(event)
         end function sdl_poll_event
+
+        ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+        function sdl_set_render_draw_color(renderer, r, g, b, a)
+            !! Converts integer arguments to c_uint32_t before calling
+            !! `sdl_set_render_draw_color_()`.
+            use, intrinsic :: iso_c_binding, only: c_ptr
+            use :: sdl2_consts
+            implicit none
+            type(c_ptr), intent(in) :: renderer
+            integer,     intent(in) :: r
+            integer,     intent(in) :: g
+            integer,     intent(in) :: b
+            integer,     intent(in) :: a
+            integer                 :: sdl_set_render_draw_color
+
+            sdl_set_render_draw_color = sdl_set_render_draw_color_(renderer, &
+                                                                   int(r, kind=c_uint16_t), &
+                                                                   int(g, kind=c_uint16_t), &
+                                                                   int(b, kind=c_uint16_t), &
+                                                                   int(a, kind=c_uint16_t))
+        end function sdl_set_render_draw_color
 
         ! SDL_bool SDL_SetHint(const char *name, const char *value)
         function sdl_set_hint(name, value)
