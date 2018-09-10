@@ -761,7 +761,7 @@ TTF_SizeUTF8                          |   –   |
 TTF_WasInit                           |   –   |
 
 ## Credits
-Thanks go to @angelog0.
+Thanks go to [angelog0](https://github.com/angelog0).
 
 ## Licence
 ISC
