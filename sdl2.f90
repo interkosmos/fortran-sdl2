@@ -10,15 +10,15 @@ module sdl2_aliases
     implicit none
 
     ! Type aliases
-    integer, parameter :: c_unsigned           = c_int
-    integer, parameter :: c_unsigned_short     = c_short
-    integer, parameter :: c_unsigned_long      = c_long
-    integer, parameter :: c_unsigned_long_long = c_long_long
-    integer, parameter :: c_unsigned_char      = c_signed_char
     integer, parameter :: c_uint8_t            = c_int16_t
     integer, parameter :: c_uint16_t           = c_int32_t
     integer, parameter :: c_uint32_t           = c_int32_t
     integer, parameter :: c_uint64_t           = c_int64_t
+    integer, parameter :: c_unsigned           = c_int
+    integer, parameter :: c_unsigned_char      = c_signed_char
+    integer, parameter :: c_unsigned_long      = c_long
+    integer, parameter :: c_unsigned_long_long = c_long_long
+    integer, parameter :: c_unsigned_short     = c_short
 end module sdl2_aliases
 
 module sdl2_consts
@@ -1426,6 +1426,24 @@ module sdl2
     end interface
 
     contains
+        subroutine c_f_string_chars(c_string, f_string)
+            !! Copies a C string, passed as a char-array reference, to a Fortran
+            !! string.
+            use, intrinsic :: iso_c_binding, only: c_char, c_null_char
+            implicit none
+            character(len=1, kind=c_char), intent(in)  :: c_string(*)
+            character(len=*),              intent(out) :: f_string
+            integer                                    :: i = 1
+
+            do while (c_string(i) /= c_null_char .and. i <= len(f_string))
+                f_string(i:i) = c_string(i)
+                i = i + 1
+            end do
+
+            if (i < len(f_string)) &
+                f_string(i:) = ' '
+        end subroutine c_f_string_chars
+
         ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
         function sdl_blit_scaled(src, src_rect, dst, dst_rect)
             !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
@@ -1491,13 +1509,7 @@ module sdl2
                 return
 
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_video_driver)])
-
-            do i = 1, size(ptrs)
-                if (ptrs(i) == c_null_char) &
-                    exit
-
-                sdl_get_current_video_driver(i:i) = ptrs(i)
-            end do
+            call c_f_string_chars(ptrs, sdl_get_current_video_driver)
         end function sdl_get_current_video_driver
 
         ! const char *SDL_GetError(void)
@@ -1517,10 +1529,7 @@ module sdl2
                 return
 
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_error)])
-
-            do i = 1, size(ptrs)
-                sdl_get_error(i:i) = ptrs(i)
-            end do
+            call c_f_string_chars(ptrs, sdl_get_error)
         end function sdl_get_error
 
         ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
@@ -1555,10 +1564,7 @@ module sdl2
                 return
 
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
-
-            do i = 1, size(ptrs)
-                sdl_get_hint(i:i) = ptrs(i)
-            end do
+            call c_f_string_chars(ptrs, sdl_get_hint)
         end function sdl_get_hint
 
         function sdl_get_pixel_format(surface)
@@ -1591,13 +1597,7 @@ module sdl2
                 return
 
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_video_driver)])
-
-            do i = 1, size(ptrs)
-                if (ptrs(i) == c_null_char) &
-                    exit
-
-                sdl_get_video_driver(i:i) = ptrs(i)
-            end do
+            call c_f_string_chars(ptrs, sdl_get_video_driver)
         end function sdl_get_video_driver
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
