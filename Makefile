@@ -24,6 +24,8 @@ MUSIC        = music
 TEXT         = text
 DRAW         = draw
 
+.PHONY: all clean
+
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
 sdl2: $(SDL_OBJ)
@@ -46,34 +48,32 @@ $(MIX_OBJ):
 $(TTF_OBJ):
 	$(FC) -c $(TTF_SRC)
 
-$(WINDOW): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(IMAGE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(EVENTS): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(SCALING): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(SCALING): $(EXAMPLES)/$(SCALING)/$(SCALING).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(TRANSLUCENCE): $(EXAMPLES)/$(TRANSLUCENCE)/$(TRANSLUCENCE).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(BOUNCE): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(IMG_OBJ)
+$(BOUNCE): $(EXAMPLES)/$(BOUNCE)/$(BOUNCE).f90 $(SDL_OBJ) $(IMG_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
 
-$(MUSIC): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+$(MUSIC): $(EXAMPLES)/$(MUSIC)/$(MUSIC).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
 
-$(TEXT): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ) $(TTF_OBJ)
+$(TEXT): $(EXAMPLES)/$(TEXT)/$(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_ttf
 
-$(DRAW): $(EXAMPLES)/$*/$*.f90 $(SDL_OBJ)
+$(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
-
-.PHONY: clean
 
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
