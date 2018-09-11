@@ -63,55 +63,55 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDL_WINDOW_VULKAN             = int(z'10000000')
 
     ! SDL_EventType
-    integer(kind=c_int), parameter :: SDL_FIRST_EVENT                = 0
-    integer(kind=c_int), parameter :: SDL_QUIT_TYPE                  = int(z'100')
-    integer(kind=c_int), parameter :: SDL_APP_TERMINATING            = int(z'101')
-    integer(kind=c_int), parameter :: SDL_APP_LOW_MEMORY             = int(z'102')
-    integer(kind=c_int), parameter :: SDL_APP_WILL_ENTER_BACKGROUND  = int(z'103')
-    integer(kind=c_int), parameter :: SDL_APP_DID_ENTER_BACKGROUND   = int(z'104')
-    integer(kind=c_int), parameter :: SDL_APP_WILL_ENTER_FOREGROUND  = int(z'105')
-    integer(kind=c_int), parameter :: SDL_APP_DID_ENTER_FOREGROUND   = int(z'106')
-    integer(kind=c_int), parameter :: SDL_WINDOW                     = int(z'200')
-    integer(kind=c_int), parameter :: SDL_SYS_WM                     = int(z'201')
-    integer(kind=c_int), parameter :: SDL_KEY_DOWN                   = int(z'300')
-    integer(kind=c_int), parameter :: SDL_KEY_UP                     = int(z'301')
-    integer(kind=c_int), parameter :: SDL_TEXT_EDITING               = int(z'302')
-    integer(kind=c_int), parameter :: SDL_TEXT_INPUT                 = int(z'303')
-    integer(kind=c_int), parameter :: SDL_KEY_MAP_CHANGED            = int(z'304')
-    integer(kind=c_int), parameter :: SDL_MOUSE_MOTION               = int(z'400')
-    integer(kind=c_int), parameter :: SDL_MOUSE_BUTTON_DOWN          = int(z'401')
-    integer(kind=c_int), parameter :: SDL_MOUSE_BUTTON_UP            = int(z'402')
-    integer(kind=c_int), parameter :: SDL_MOUSE_WHEEL                = int(z'403')
-    integer(kind=c_int), parameter :: SDL_JOY_AXIS_MOTION            = int(z'600')
-    integer(kind=c_int), parameter :: SDL_JOY_BALL_MOTION            = int(z'601')
-    integer(kind=c_int), parameter :: SDL_JOY_HAT_MOTION             = int(z'602')
-    integer(kind=c_int), parameter :: SDL_JOY_BUTTON_DOWN            = int(z'603')
-    integer(kind=c_int), parameter :: SDL_JOY_BUTTON_UP              = int(z'604')
-    integer(kind=c_int), parameter :: SDL_JOY_DEVICE_ADDED           = int(z'605')
-    integer(kind=c_int), parameter :: SDL_JOY_DEVICE_REMOVED         = int(z'606')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_AXIS_MOTION     = int(z'650')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_BUTTON_DOWN     = int(z'651')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_BUTTON_UP       = int(z'652')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_DEVICE_ADDED    = int(z'653')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_DEVICE_REMOVED  = int(z'654')
-    integer(kind=c_int), parameter :: SDL_CONTROLLER_DEVICE_REMAPPED = int(z'655')
-    integer(kind=c_int), parameter :: SDL_FINGER_DOWN                = int(z'700')
-    integer(kind=c_int), parameter :: SDL_FINGER_UP                  = int(z'701')
-    integer(kind=c_int), parameter :: SDL_FINGER_MOTION              = int(z'702')
-    integer(kind=c_int), parameter :: SDL_DOLLAR_GESTURE             = int(z'800')
-    integer(kind=c_int), parameter :: SDL_DOLLAR_RECORD              = int(z'801')
-    integer(kind=c_int), parameter :: SDL_MULTI_GESTURE              = int(z'802')
-    integer(kind=c_int), parameter :: SDL_CLIPBOARD_UPDATE           = int(z'900')
-    integer(kind=c_int), parameter :: SDL_DROP_FILE                  = int(z'1000')
-    integer(kind=c_int), parameter :: SDL_DROP_TEXT                  = int(z'1001')
-    integer(kind=c_int), parameter :: SDL_DROP_BEGIN                 = int(z'1002')
-    integer(kind=c_int), parameter :: SDL_DROP_COMPLETE              = int(z'1003')
-    integer(kind=c_int), parameter :: SDL_AUDIO_DEVICE_ADDED         = int(z'1100')
-    integer(kind=c_int), parameter :: SDL_AUDIO_DEVICE_REMOVED       = int(z'1101')
-    integer(kind=c_int), parameter :: SDL_RENDER_TARGETS_RESET       = int(z'2000')
-    integer(kind=c_int), parameter :: SDL_RENDER_DEVICE_RESET        = int(z'2001')
-    integer(kind=c_int), parameter :: SDL_USER                       = int(z'8000')
-    integer(kind=c_int), parameter :: SDL_LAST                       = int(z'FFFF')
+    integer(kind=c_int), parameter :: SDL_FIRSTEVENT               = 0
+    integer(kind=c_int), parameter :: SDL_QUITEVENT                = int(z'100')
+    integer(kind=c_int), parameter :: SDL_APP_TERMINATING          = int(z'101')
+    integer(kind=c_int), parameter :: SDL_APP_LOWMEMORY            = int(z'102')
+    integer(kind=c_int), parameter :: SDL_APP_WILLENTERBACKGROUND  = int(z'103')
+    integer(kind=c_int), parameter :: SDL_APP_DIDENTERBACKGROUND   = int(z'104')
+    integer(kind=c_int), parameter :: SDL_APP_WILLENTERFOREGROUND  = int(z'105')
+    integer(kind=c_int), parameter :: SDL_APP_DIDENTERFOREGROUND   = int(z'106')
+    integer(kind=c_int), parameter :: SDL_WINDOWEVENT              = int(z'200')
+    integer(kind=c_int), parameter :: SDL_SYSWMEVENT               = int(z'201')
+    integer(kind=c_int), parameter :: SDL_KEYDOWN                  = int(z'300')
+    integer(kind=c_int), parameter :: SDL_KEYUP                    = int(z'301')
+    integer(kind=c_int), parameter :: SDL_TEXTEDITING              = int(z'302')
+    integer(kind=c_int), parameter :: SDL_TEXTINPUT                = int(z'303')
+    integer(kind=c_int), parameter :: SDL_KEYMAPCHANGED            = int(z'304')
+    integer(kind=c_int), parameter :: SDL_MOUSEMOTION              = int(z'400')
+    integer(kind=c_int), parameter :: SDL_MOUSEBUTTON_DOWN         = int(z'401')
+    integer(kind=c_int), parameter :: SDL_MOUSEBUTTON_UP           = int(z'402')
+    integer(kind=c_int), parameter :: SDL_MOUSEWHEEL               = int(z'403')
+    integer(kind=c_int), parameter :: SDL_JOYAXISMOTION            = int(z'600')
+    integer(kind=c_int), parameter :: SDL_JOYBALLMOTION            = int(z'601')
+    integer(kind=c_int), parameter :: SDL_JOYHATMOTION             = int(z'602')
+    integer(kind=c_int), parameter :: SDL_JOYBUTTONDOWN            = int(z'603')
+    integer(kind=c_int), parameter :: SDL_JOYBUTTONUP              = int(z'604')
+    integer(kind=c_int), parameter :: SDL_JOYDEVICEADDED           = int(z'605')
+    integer(kind=c_int), parameter :: SDL_JOYDEVICEREMOVED         = int(z'606')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERAXISMOTION     = int(z'650')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERBUTTONDOWN     = int(z'651')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERBUTTONUP       = int(z'652')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERDEVICEADDED    = int(z'653')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERDEVICEREMOVED  = int(z'654')
+    integer(kind=c_int), parameter :: SDL_CONTROLLERDEVICEREMAPPED = int(z'655')
+    integer(kind=c_int), parameter :: SDL_FINGERDOWN               = int(z'700')
+    integer(kind=c_int), parameter :: SDL_FINGERUP                 = int(z'701')
+    integer(kind=c_int), parameter :: SDL_FINGERMOTION             = int(z'702')
+    integer(kind=c_int), parameter :: SDL_DOLLARGESTURE            = int(z'800')
+    integer(kind=c_int), parameter :: SDL_DOLLARRECORD             = int(z'801')
+    integer(kind=c_int), parameter :: SDL_MULTIGESTURE             = int(z'802')
+    integer(kind=c_int), parameter :: SDL_CLIPBOARDUPDATE          = int(z'900')
+    integer(kind=c_int), parameter :: SDL_DROPFILE                 = int(z'1000')
+    integer(kind=c_int), parameter :: SDL_DROPTEXT                 = int(z'1001')
+    integer(kind=c_int), parameter :: SDL_DROPBEGIN                = int(z'1002')
+    integer(kind=c_int), parameter :: SDL_DROPCOMPLETE             = int(z'1003')
+    integer(kind=c_int), parameter :: SDL_AUDIODEVICEADDED         = int(z'1100')
+    integer(kind=c_int), parameter :: SDL_AUDIODEVICEREMOVED       = int(z'1101')
+    integer(kind=c_int), parameter :: SDL_RENDERTARGETSRESET       = int(z'2000')
+    integer(kind=c_int), parameter :: SDL_RENDERDEVICERESET        = int(z'2001')
+    integer(kind=c_int), parameter :: SDL_USEREVENT                = int(z'8000')
+    integer(kind=c_int), parameter :: SDL_LASTEVEMT                = int(z'FFFF')
 
     ! SDL_Scancode
     ! (All values are increased by 1, since Fortran array indices begin at 1!)
@@ -1089,7 +1089,7 @@ module sdl2_types
         integer(kind=c_uint8_t)           :: padding(56)
     end type sdl_event
 
-    ! SDL_Version
+    ! SDL_version
     type, bind(c) :: sdl_version
         integer(kind=c_uint8_t) :: major
         integer(kind=c_uint8_t) :: minor
@@ -1163,6 +1163,8 @@ module sdl2
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
     public :: sdl_wait_event
+    public :: sdl_warp_mouse_in_window
+    public :: sdl_warp_mouse_global
 
     interface
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
@@ -1676,6 +1678,23 @@ module sdl2
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')
         end subroutine sdl_quit
+
+        ! void SDL_WarpMouseInWindow(SDL_Window *window, int x, int y)
+        subroutine sdl_warp_mouse_in_window(window, x, y) bind(c, name='SDL_WarpMouseInWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: x
+            integer(kind=c_int), intent(in), value :: y
+        subroutine sdl_warp_mouse_in_window
+
+        ! void SDL_WarpMouseGlobal(int x, int y)
+        subroutine sdl_warp_mouse_global(x, y) bind(c, name='SDL_WarpMouseGlobal')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int), intent(in), value :: x
+            integer(kind=c_int), intent(in), value :: y
+        subroutine sdl_warp_mouse_global
     end interface
 
     contains
