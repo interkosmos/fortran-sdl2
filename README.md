@@ -495,7 +495,7 @@ SDL_SetMainReady                      |   –   |
 SDL_SetModState                       |   –   |
 SDL_SetPaletteColors                  |   –   |
 SDL_SetPixelFormatPalette             |   –   |
-SDL_SetRelativeMouseMode              |   –   |
+SDL_SetRelativeMouseMode              |   ✓   |
 SDL_SetRenderDrawBlendMode            |   ✓   |
 SDL_SetRenderDrawColor                |   ✓   |
 SDL_SetRenderTarget                   |   ✓   |
@@ -523,7 +523,7 @@ SDL_SetWindowMinimumSize              |   –   |
 SDL_SetWindowPosition                 |   –   |
 SDL_SetWindowSize                     |   –   |
 SDL_SetWindowTitle                    |   –   |
-SDL_ShowCursor                        |   –   |
+SDL_ShowCursor                        |   ✓   |
 SDL_ShowMessageBox                    |   –   |
 SDL_ShowSimpleMessageBox              |   –   |
 SDL_ShowWindow                        |   –   |
@@ -569,8 +569,8 @@ SDL_VideoQuit                         |   –   |
 SDL_WaitEvent                         |   ✓   |
 SDL_WaitEventTimeout                  |   –   |
 SDL_WaitThread                        |   –   |
-SDL_WarpMouseGlobal                   |   –   |
-SDL_WarpMouseInWindow                 |   –   |
+SDL_WarpMouseGlobal                   |   ✓   |
+SDL_WarpMouseInWindow                 |   ✓   |
 SDL_WasInit                           |   –   |
 SDL_WinRTGetFSPathUNICODE             |   –   |
 SDL_WinRTGetFSPathUTF8                |   –   |
