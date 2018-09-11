@@ -77,7 +77,7 @@ program main
 
         if (rc > 0) then
             select case (event%type)
-                case (SDL_QUIT_TYPE)
+                case (SDL_QUITEVENT)
                     exit
             end select
         end if
