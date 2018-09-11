@@ -20,6 +20,9 @@ module sdl2_consts
     integer, parameter :: c_unsigned_long_long = c_long_long
     integer, parameter :: c_unsigned_short     = c_short
 
+    integer(kind=c_int), parameter :: SDL_FALSE = 0
+    integer(kind=c_int), parameter :: SDL_TRUE  = 1
+
     ! SDL video
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
