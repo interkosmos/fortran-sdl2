@@ -1155,10 +1155,12 @@ module sdl2
     public :: sdl_set_clip_rect
     public :: sdl_set_color_key
     public :: sdl_set_hint
+    public :: sdl_set_relative_mouse_mode
     public :: sdl_set_render_draw_blend_mode
     public :: sdl_set_render_draw_color
     public :: sdl_set_render_target
     public :: sdl_set_texture_color_mod
+    public :: sdl_show_cursor
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
@@ -1535,6 +1537,13 @@ module sdl2
             integer(kind=c_int)                :: sdl_set_hint_
         end function sdl_set_hint_
 
+        ! int SDL_SetRelativeMouseMode(SDL_bool enabled)
+        function sdl_set_relative_mouse_mode(enabled) bind(c, name='SDL_SetRelativeMouseMode')
+            use, intrinsic :: iso_c_binding
+            integer(kind=c_int), intent(in), value :: enabled
+            integer(kind=c_int)                    :: sdl_set_relative_mouse_mode
+        end function sdl_set_relative_mouse_mode
+
         ! int SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode)
         function sdl_set_render_draw_blend_mode(renderer, blend_mode) bind(c, name='SDL_SetRenderDrawBlendMode')
             use, intrinsic :: iso_c_binding
@@ -1577,6 +1586,14 @@ module sdl2
             integer(kind=c_uint16_t), intent(in), value :: b
             integer(kind=c_int)                         :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
+
+        ! int SDL_ShowCursor(int toggle)
+        function sdl_show_cursor(toggle) bind(c, name='SDL_ShowCursor')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int), intent(in), value :: toggle
+            integer(kind=c_int)                    :: sdl_show_cursor
+        end function sdl_show_cursor
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')
