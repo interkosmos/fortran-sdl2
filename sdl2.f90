@@ -363,6 +363,18 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDL_SCANCODE_AUDIOFASTFORWARD   = 287
     integer(kind=c_int), parameter :: SDL_NUM_SCANCODES               = 513
 
+    ! SDL_mouse
+    integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
+    integer(kind=c_int), parameter :: SDL_BUTTON_MIDDLE = 2
+    integer(kind=c_int), parameter :: SDL_BUTTON_RIGHT  = 3
+    integer(kind=c_int), parameter :: SDL_BUTTON_X1     = 4
+    integer(kind=c_int), parameter :: SDL_BUTTON_X2     = 5
+    integer(kind=c_int), parameter :: SDL_BUTTON_LMASK  = ishft(1, -SDL_BUTTON_LEFT - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_MMASK  = ishft(1, -SDL_BUTTON_MIDDLE - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_RMASK  = ishft(1, -SDL_BUTTON_RIGHT - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_X1MASK = ishft(1, -SDL_BUTTON_X1 - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_X2MASK = ishft(1, -SDL_BUTTON_X2 - 1)
+
     ! SDL_RendererFlags
     integer(kind=c_int), parameter :: SDL_RENDERER_SOFTWARE      = int(z'00000001')
     integer(kind=c_int), parameter :: SDL_RENDERER_ACCELERATED   = int(z'00000002')

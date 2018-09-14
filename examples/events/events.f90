@@ -61,6 +61,11 @@ program main
                     print *, 'mouse motion event'
                 case (SDL_WINDOWEVENT)
                     print *, 'window event'
+                case (SDL_MOUSEBUTTONDOWN)
+                    print *, 'mouse button down event'
+
+                    if (event%button%button == SDL_BUTTON_LEFT ) &
+                        print *, 'left mouse button clicked'
             end select
         end if
     end do
