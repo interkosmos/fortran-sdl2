@@ -1134,6 +1134,7 @@ module sdl2
     public :: sdl_get_keyboard_state
     public :: sdl_get_mouse_state
     public :: sdl_get_pixel_format
+    public :: sdl_get_platform
     public :: sdl_get_render_target
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
@@ -1290,6 +1291,13 @@ module sdl2
             character(kind=c_char), intent(in) :: name
             type(c_ptr)                        :: sdl_get_hint_
         end function sdl_get_hint_
+
+        ! const char *SDL_GetPlatform(void)
+        function sdl_get_platform_() bind(c, name='SDL_GetPlatform')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr) :: sdl_get_platform_
+        end function sdl_get_platform_
 
         ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
         function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')
@@ -1814,7 +1822,7 @@ module sdl2
             implicit none
             type(c_ptr)                     :: ptr
             character(kind=c_char), pointer :: ptrs(:)
-            character(len=10)               :: sdl_get_current_video_driver
+            character(len=30)               :: sdl_get_current_video_driver
 
             ptr = sdl_get_current_video_driver_()
 
@@ -1889,6 +1897,25 @@ module sdl2
 
             call c_f_pointer(surface%format, sdl_get_pixel_format)
         end function
+
+        ! const char *SDL_GetPlatform(void)
+        function sdl_get_platform()
+            !! Calls `sdl_get_platform_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(len=30)                  :: sdl_get_platform
+            type(c_ptr)                        :: ptr
+            character(kind=c_char), pointer    :: ptrs(:)
+
+            ptr = sdl_get_platform_()
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_platform)])
+            call c_f_string_chars(ptrs, sdl_get_platform)
+        end function sdl_get_platform
 
         ! const char *SDL_GetVideoDriver(int index)
         function sdl_get_video_driver(index)
