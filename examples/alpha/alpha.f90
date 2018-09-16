@@ -1,6 +1,6 @@
-! translucence.f90
+! alpha.f90
 !
-! Makes one colour of an image translucent.
+! Makes one colour of an image transparent.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -14,7 +14,7 @@ program main
 
     integer,          parameter :: WIDTH     = 640
     integer,          parameter :: HEIGHT    = 240
-    character(len=*), parameter :: FILE_NAME = 'examples/translucence/fortran.bmp'
+    character(len=*), parameter :: FILE_NAME = 'examples/alpha/fortran.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface

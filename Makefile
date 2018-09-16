@@ -1,28 +1,28 @@
-FC           = gfortran8
-SDL_CFLAGS   = `sdl2-config --cflags`
-SDL_LDFLAGS  = `sdl2-config --libs`
-CFLAGS       = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2008 $(SDL_CFLAGS)
-LDFLAGS      = $(SDL_LDFLAGS)
-EXAMPLES     = examples
+FC          = gfortran8
+SDL_CFLAGS  = `sdl2-config --cflags`
+SDL_LDFLAGS = `sdl2-config --libs`
+CFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2008 $(SDL_CFLAGS)
+LDFLAGS     = $(SDL_LDFLAGS)
+EXAMPLES    = examples
 
-SDL_SRC      = sdl2.f90
-SDL_OBJ      = sdl2.o
-IMG_SRC      = sdl2_image.f90
-IMG_OBJ      = sdl2_image.o
-MIX_SRC      = sdl2_mixer.f90
-MIX_OBJ      = sdl2_mixer.o
-TTF_SRC      = sdl2_ttf.f90
-TTF_OBJ      = sdl2_ttf.o
+SDL_SRC = sdl2.f90
+SDL_OBJ = sdl2.o
+IMG_SRC = sdl2_image.f90
+IMG_OBJ = sdl2_image.o
+MIX_SRC = sdl2_mixer.f90
+MIX_OBJ = sdl2_mixer.o
+TTF_SRC = sdl2_ttf.f90
+TTF_OBJ = sdl2_ttf.o
 
-WINDOW       = window
-IMAGE        = image
-EVENTS       = events
-SCALING      = scaling
-TRANSLUCENCE = translucence
-BOUNCE       = bounce
-MUSIC        = music
-TEXT         = text
-DRAW         = draw
+WINDOW  = window
+IMAGE   = image
+EVENTS  = events
+SCALING = scaling
+ALPHA   = alpha
+BOUNCE  = bounce
+MUSIC   = music
+TEXT    = text
+DRAW    = draw
 
 .PHONY: all clean
 
@@ -60,7 +60,7 @@ $(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
 $(SCALING): $(EXAMPLES)/$(SCALING)/$(SCALING).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(TRANSLUCENCE): $(EXAMPLES)/$(TRANSLUCENCE)/$(TRANSLUCENCE).f90 $(SDL_OBJ)
+$(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 $(BOUNCE): $(EXAMPLES)/$(BOUNCE)/$(BOUNCE).f90 $(SDL_OBJ) $(IMG_OBJ)
@@ -85,7 +85,7 @@ clean:
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
-	if [ -e $(TRANSLUCENCE) ]; then rm $(TRANSLUCENCE); fi
+	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
 	if [ -e $(BOUNCE) ]; then rm $(BOUNCE); fi
 	if [ -e $(MUSIC) ]; then rm $(MUSIC); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi

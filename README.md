@@ -1,6 +1,7 @@
 # f03sdl2
-Interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/) (SDL 2) for
-Fortran 2003/2008/2018, using ISO C bindings. Versions tested against:
+An ISO C binding interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/)
+(SDL 2), for multimedia and game programming in Fortran. Versions tested
+against:
 
 Library   | Version
 ----------|--------
@@ -9,38 +10,42 @@ SDL_image | 2.0.2
 SDL_mixer | 2.0.1_1
 SDL_ttf   | 2.0.14_1
 
-The interface compiles with GNU Fortran 7/8 and Flang 5.
+The interface compiles with GNU Fortran 7/8.
 
-## Build SDL2
-Use GNU make to build the SDL2 interface:
+## Build SDL2 interface
+Clone the repository and then use GNU make to build the SDL2 interface:
 ```
+$ git clone https://github.com/interkosmos/f03sdl2.git
+$ cd f03sdl2/
 $ make sdl2
 ```
-You can override the default compiler (GNU Fortran 8) by passing the `FC`
+You can override the default compiler (`gfortran8`) by passing the `FC`
 argument, for example:
 ```
-$ make sdl2 FC=flang
+$ make sdl2 FC=gfortran
 ```
 Or just run your favourite Fortran compiler directly:
 ```
-$ flang -c sdl2.f90
+$ gfortran -c sdl2.f90
 ```
+On FreeBSD, you may have to modify the `-Wl,-rpath` parameter in `CFLAGS`
+according to your compiler.
 
-## Build SDL2_image
+## Build SDL2_image interface
 Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
 Add `-lSDL2_image` to your `LD_FLAGS` to link SDL2_image.
 
-## Build SDL2_mixer
+## Build SDL2_mixer interface
 Build the SDL2_mixer interface with:
 ```
 $ make sdl2_mixer
 ```
 Add `-lSDL2_mixer` to your `LD_FLAGS` to link SDL2_mixer.
 
-## Build SDL2_ttf
+## Build SDL2_ttf interface
 Build the SDL2_ttf interface with:
 ```
 $ make sdl2_ttf
@@ -54,7 +59,7 @@ Some demo applications are provided in directory `examples`.
 * **image** loads and displays an image (software renderer).
 * **events** polls SDL events.
 * **scaling** displays a scaled image (software renderer).
-* **translucence** makes one color of an image translucent (software renderer).
+* **alpha** makes one color of an image transparent (software renderer).
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **music** plays an OGG file with SDL_mixer.
 * **text** outputs text with SDL_ttf.
