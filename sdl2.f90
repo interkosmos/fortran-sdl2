@@ -1176,6 +1176,7 @@ module sdl2
     public :: sdl_set_render_draw_color
     public :: sdl_set_render_target
     public :: sdl_set_texture_color_mod
+    public :: sdl_set_window_icon
     public :: sdl_show_cursor
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
@@ -1724,6 +1725,15 @@ module sdl2
             implicit none
             type(c_ptr), intent(in), value :: renderer
         end subroutine sdl_render_present
+
+        ! void SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon)
+        subroutine sdl_set_window_icon(window, icon) bind(c, name='SDL_SetWindowIcon')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),       intent(in), value :: window
+            type(sdl_surface), intent(in)        :: icon
+        subroutine function sdl_set_window_icon
 
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')

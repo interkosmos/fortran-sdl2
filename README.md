@@ -522,7 +522,7 @@ SDL_SetWindowFullscreen               |   –   |
 SDL_SetWindowGammaRamp                |   –   |
 SDL_SetWindowGrab                     |   –   |
 SDL_SetWindowHitTest                  |   –   |
-SDL_SetWindowIcon                     |   –   |
+SDL_SetWindowIcon                     |   ✓   |
 SDL_SetWindowMaximumSize              |   –   |
 SDL_SetWindowMinimumSize              |   –   |
 SDL_SetWindowPosition                 |   –   |
