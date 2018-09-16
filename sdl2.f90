@@ -1733,7 +1733,7 @@ module sdl2
             implicit none
             type(c_ptr),       intent(in), value :: window
             type(sdl_surface), intent(in)        :: icon
-        subroutine function sdl_set_window_icon
+        end subroutine sdl_set_window_icon
 
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')
