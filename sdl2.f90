@@ -1132,6 +1132,7 @@ module sdl2
     public :: sdl_get_error
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
+    public :: sdl_get_mouse_state
     public :: sdl_get_pixel_format
     public :: sdl_get_render_target
     public :: sdl_get_system_ram
@@ -1271,6 +1272,16 @@ module sdl2
             type(c_ptr), intent(in), value :: numkeys
             type(c_ptr)                    :: sdl_get_keyboard_state_
         end function sdl_get_keyboard_state_
+
+        ! Uint32 SDL_GetMouseState(int *x, int *y)
+        function sdl_get_mouse_state(x, y) bind(c, name='SDL_GetMouseState')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            integer(kind=c_int), intent(in) :: x
+            integer(kind=c_int), intent(in) :: y
+            integer(kind=c_uint32_t)        :: sdl_get_mouse_state
+        end function sdl_get_mouse_state
 
         ! const char *SDL_GetHint(const char *name)
         function sdl_get_hint_(name) bind(c, name='SDL_GetHint')
