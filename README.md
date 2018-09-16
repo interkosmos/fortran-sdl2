@@ -235,7 +235,7 @@ SDL_GetKeyboardFocus                  |   –   |
 SDL_GetKeyboardState                  |   ✓   |
 SDL_GetModState                       |   –   |
 SDL_GetMouseFocus                     |   –   |
-SDL_GetMouseState                     |   –   |
+SDL_GetMouseState                     |   ✓   |
 SDL_GetNumAudioDevices                |   –   |
 SDL_GetNumAudioDrivers                |   –   |
 SDL_GetNumDisplayModes                |   –   |
