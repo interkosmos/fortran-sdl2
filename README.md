@@ -247,7 +247,7 @@ SDL_GetNumVideoDrivers                |   –   |
 SDL_GetPerformanceCounter             |   –   |
 SDL_GetPerformanceFrequency           |   –   |
 SDL_GetPixelFormatName                |   –   |
-SDL_GetPlatform                       |   –   |
+SDL_GetPlatform                       |   ✓   |
 SDL_GetPowerInfo                      |   –   |
 SDL_GetPrefPath                       |   –   |
 SDL_GetQueuedAudioSize                |   –   |
@@ -746,7 +746,7 @@ TTF_RenderGlyph_Blended               |   –   |
 TTF_RenderGlyph_Shaded                |   –   |
 TTF_RenderGlyph_Solid                 |   –   |
 TTF_RenderText_Blended                |   –   |
-TTF_RenderText_Shaded                 |   –   |
+TTF_RenderText_Shaded                 |   ✓   |
 TTF_RenderText_Solid                  |   ✓   |
 TTF_RenderUNICODE_Blended             |   –   |
 TTF_RenderUNICODE_Shaded              |   –   |
