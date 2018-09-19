@@ -23,6 +23,7 @@ BOUNCE  = bounce
 MUSIC   = music
 TEXT    = text
 DRAW    = draw
+MSGBOX  = msgbox
 
 .PHONY: all clean
 
@@ -75,6 +76,9 @@ $(TEXT): $(EXAMPLES)/$(TEXT)/$(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
 $(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
+$(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
+
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
 	if [ -e $(SDL_OBJ) ]; then rm $(SDL_OBJ); fi
@@ -90,3 +94,4 @@ clean:
 	if [ -e $(MUSIC) ]; then rm $(MUSIC); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
+	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi

@@ -13,11 +13,7 @@ SDL_ttf   | 2.0.14_1
 The interface compiles with GNU Fortran 7/8.
 
 ## Build SDL2 interface
-Clone the repository and then use GNU make to build the SDL2 interface:
-```
-$ git clone https://github.com/interkosmos/f03sdl2.git
-$ cd f03sdl2/
-$ make sdl2
+
 ```
 You can override the default compiler (`gfortran8`) by passing the `FC`
 argument, for example:
@@ -36,21 +32,21 @@ Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
-Add `-lSDL2_image` to your `LD_FLAGS` to link SDL2_image.
+Add `-lSDL2_image` to your `LDFLAGS` to link SDL2_image.
 
 ## Build SDL2_mixer interface
 Build the SDL2_mixer interface with:
 ```
 $ make sdl2_mixer
 ```
-Add `-lSDL2_mixer` to your `LD_FLAGS` to link SDL2_mixer.
+Add `-lSDL2_mixer` to your `LDFLAGS` to link SDL2_mixer.
 
 ## Build SDL2_ttf interface
 Build the SDL2_ttf interface with:
 ```
 $ make sdl2_ttf
 ```
-Add `-lSDL2_ttf` to your `LD_FLAGS` to link SDL2_ttf.
+Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
 
 ## Examples
 Some demo applications are provided in directory `examples`.
@@ -530,7 +526,7 @@ SDL_SetWindowSize                     |   –   |
 SDL_SetWindowTitle                    |   –   |
 SDL_ShowCursor                        |   ✓   |
 SDL_ShowMessageBox                    |   –   |
-SDL_ShowSimpleMessageBox              |   –   |
+SDL_ShowSimpleMessageBox              |   ✓   |
 SDL_ShowWindow                        |   –   |
 SDL_StartTextInput                    |   –   |
 SDL_StopTextInput                     |   –   |

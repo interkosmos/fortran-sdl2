@@ -362,118 +362,6 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDL_SCANCODE_AUDIOFASTFORWARD   = 286
     integer(kind=c_int), parameter :: SDL_NUM_SCANCODES               = 512
 
-    ! SDL_mouse
-    integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
-    integer(kind=c_int), parameter :: SDL_BUTTON_MIDDLE = 2
-    integer(kind=c_int), parameter :: SDL_BUTTON_RIGHT  = 3
-    integer(kind=c_int), parameter :: SDL_BUTTON_X1     = 4
-    integer(kind=c_int), parameter :: SDL_BUTTON_X2     = 5
-    integer(kind=c_int), parameter :: SDL_BUTTON_LMASK  = ishft(1, SDL_BUTTON_LEFT - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_MMASK  = ishft(1, SDL_BUTTON_MIDDLE - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_RMASK  = ishft(1, SDL_BUTTON_RIGHT - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_X1MASK = ishft(1, SDL_BUTTON_X1 - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_X2MASK = ishft(1, SDL_BUTTON_X2 - 1)
-
-    ! SDL_RendererFlags
-    integer(kind=c_int), parameter :: SDL_RENDERER_SOFTWARE      = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_RENDERER_ACCELERATED   = int(z'00000002')
-    integer(kind=c_int), parameter :: SDL_RENDERER_PRESENTVSYNC  = int(z'00000004')
-    integer(kind=c_int), parameter :: SDL_RENDERER_TARGETTEXTURE = int(z'00000008')
-
-    ! SDL_BlendMode
-    integer(kind=c_int), parameter :: SDL_BLENDMODE_NONE    = int(z'00000000')
-    integer(kind=c_int), parameter :: SDL_BLENDMODE_BLEND   = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_BLENDMODE_ADD     = int(z'00000002')
-    integer(kind=c_int), parameter :: SDL_BLENDMODE_MOD     = int(z'00000004')
-    integer(kind=c_int), parameter :: SDL_BLENDMODE_INVALID = int(z'7FFFFFFF')
-
-    integer(kind=c_int), parameter :: SDL_ALPHA_OPAQUE      = 255
-    integer(kind=c_int), parameter :: SDL_ALPHA_TRANSPARENT = 0
-
-    ! SDL_Hints
-    character(len=*), parameter :: SDL_HINT_FRAMEBUFFER_ACCELERATION                 = 'SDL_FRAMEBUFFER_ACCELERATION'
-    character(len=*), parameter :: SDL_HINT_RENDER_DRIVER                            = 'SDL_RENDER_DRIVER'
-    character(len=*), parameter :: SDL_HINT_RENDER_OPENGL_SHADERS                    = 'SDL_RENDER_OPENGL_SHADERS'
-    character(len=*), parameter :: SDL_HINT_RENDER_DIRECT3D_THREADSAFE               = 'SDL_RENDER_DIRECT3D_THREADSAFE'
-    character(len=*), parameter :: SDL_HINT_RENDER_DIRECT3D11_DEBUG                  = 'SDL_RENDER_DIRECT3D11_DEBUG'
-    character(len=*), parameter :: SDL_HINT_RENDER_LOGICAL_SIZE_MODE                 = 'SDL_RENDER_LOGICAL_SIZE_MODE'
-    character(len=*), parameter :: SDL_HINT_RENDER_SCALE_QUALITY                     = 'SDL_RENDER_SCALE_QUALITY'
-    character(len=*), parameter :: SDL_HINT_RENDER_VSYNC                             = 'SDL_RENDER_VSYNC'
-    character(len=*), parameter :: SDL_HINT_VIDEO_ALLOW_SCREENSAVER                  = 'SDL_VIDEO_ALLOW_SCREENSAVER'
-    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XVIDMODE                       = 'SDL_VIDEO_X11_XVIDMODE'
-    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XINERAMA                       = 'SDL_VIDEO_X11_XINERAMA'
-    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XRANDR                         = 'SDL_VIDEO_X11_XRANDR'
-    character(len=*), parameter :: SDL_HINT_VIDEO_X11_NET_WM_PING                    = 'SDL_VIDEO_X11_NET_WM_PING'
-    character(len=*), parameter :: SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN  = 'SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN'
-    character(len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON                 = 'SDL_WINDOWS_INTRESOURCE_ICON'
-    character(len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = 'SDL_WINDOWS_INTRESOURCE_ICON_SMALL'
-    character(len=*), parameter :: SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP               = 'SDL_WINDOWS_ENABLE_MESSAGELOOP'
-    character(len=*), parameter :: SDL_HINT_GRAB_KEYBOARD                            = 'SDL_GRAB_KEYBOARD'
-    character(len=*), parameter :: SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 = 'SDL_MOUSE_NORMAL_SPEED_SCALE'
-    character(len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               = 'SDL_MOUSE_RELATIVE_SPEED_SCALE'
-    character(len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_MODE_WARP                 = 'SDL_MOUSE_RELATIVE_MODE_WARP'
-    character(len=*), parameter :: SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH                 = 'SDL_MOUSE_FOCUS_CLICKTHROUGH'
-    character(len=*), parameter :: SDL_HINT_TOUCH_MOUSE_EVENTS                       = 'SDL_TOUCH_MOUSE_EVENTS'
-    character(len=*), parameter :: SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS             = 'SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS'
-    character(len=*), parameter :: SDL_HINT_IDLE_TIMER_DISABLED                      = 'SDL_IOS_IDLE_TIMER_DISABLED'
-    character(len=*), parameter :: SDL_HINT_ORIENTATIONS                             = 'SDL_IOS_ORIENTATIONS'
-    character(len=*), parameter :: SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS            = 'SDL_APPLE_TV_CONTROLLER_UI_EVENTS'
-    character(len=*), parameter :: SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION           = 'SDL_APPLE_TV_REMOTE_ALLOW_ROTATION'
-    character(len=*), parameter :: SDL_HINT_ACCELEROMETER_AS_JOYSTICK                = 'SDL_ACCELEROMETER_AS_JOYSTICK'
-    character(len=*), parameter :: SDL_HINT_XINPUT_ENABLED                           = 'SDL_XINPUT_ENABLED'
-    character(len=*), parameter :: SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING          = 'SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING'
-    character(len=*), parameter :: SDL_HINT_GAMECONTROLLERCONFIG                     = 'SDL_GAMECONTROLLERCONFIG'
-    character(len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES            = 'SDL_GAMECONTROLLER_IGNORE_DEVICES'
-    character(len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT     = 'SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT'
-    character(len=*), parameter :: SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS         = 'SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS'
-    character(len=*), parameter :: SDL_HINT_ALLOW_TOPMOST                            = 'SDL_ALLOW_TOPMOST'
-    character(len=*), parameter :: SDL_HINT_TIMER_RESOLUTION                         = 'SDL_TIMER_RESOLUTION'
-    character(len=*), parameter :: SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION            = 'SDL_QTWAYLAND_CONTENT_ORIENTATION'
-    character(len=*), parameter :: SDL_HINT_QTWAYLAND_WINDOW_FLAGS                   = 'SDL_QTWAYLAND_WINDOW_FLAGS'
-    character(len=*), parameter :: SDL_HINT_THREAD_STACK_SIZE                        = 'SDL_THREAD_STACK_SIZE'
-    character(len=*), parameter :: SDL_HINT_VIDEO_HIGHDPI_DISABLED                   = 'SDL_VIDEO_HIGHDPI_DISABLED'
-    character(len=*), parameter :: SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK       = 'SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK'
-    character(len=*), parameter :: SDL_HINT_VIDEO_WIN_D3DCOMPILER                    = 'SDL_VIDEO_WIN_D3DCOMPILER'
-    character(len=*), parameter :: SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT          = 'SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT'
-    character(len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_URL                 = 'SDL_WINRT_PRIVACY_POLICY_URL'
-    character(len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_LABEL               = 'SDL_WINRT_PRIVACY_POLICY_LABEL'
-    character(len=*), parameter :: SDL_HINT_WINRT_HANDLE_BACK_BUTTON                 = 'SDL_WINRT_HANDLE_BACK_BUTTON'
-    character(len=*), parameter :: SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES              = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
-    character(len=*), parameter :: SDL_HINT_MAC_BACKGROUND_APP                       = 'SDL_MAC_BACKGROUND_APP'
-    character(len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = 'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
-    character(len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = &
-        'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
-    character(len=*), parameter :: SDL_HINT_IME_INTERNAL_EDITING                     = 'SDL_IME_INTERNAL_EDITING'
-    character(len=*), parameter :: SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         = 'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
-    character(len=*), parameter :: SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT              = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
-    character(len=*), parameter :: SDL_HINT_NO_SIGNAL_HANDLERS                       = 'SDL_NO_SIGNAL_HANDLERS'
-    character(len=*), parameter :: SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4               = 'SDL_WINDOWS_NO_CLOSE_ON_ALT_F4'
-    character(len=*), parameter :: SDL_HINT_BMP_SAVE_LEGACY_FORMAT                   = 'SDL_BMP_SAVE_LEGACY_FORMAT'
-    character(len=*), parameter :: SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING            = 'SDL_WINDOWS_DISABLE_THREAD_NAMING'
-    character(len=*), parameter :: SDL_HINT_RPI_VIDEO_LAYER                          = 'SDL_RPI_VIDEO_LAYER'
-    character(len=*), parameter :: SDL_HINT_OPENGL_ES_DRIVER                         = 'SDL_OPENGL_ES_DRIVER'
-    character(len=*), parameter :: SDL_HINT_AUDIO_RESAMPLING_MODE                    = 'SDL_AUDIO_RESAMPLING_MODE'
-    character(len=*), parameter :: SDL_HINT_AUDIO_CATEGORY                           = 'SDL_AUDIO_CATEGORY'
-
-    ! SDL_HintPriority
-    enum, bind(c)
-        enumerator :: SDL_HINT_DEFAULT
-        enumerator :: SDL_HINT_NORMAL
-        enumerator :: SDL_HINT_OVERRIDE
-    end enum
-
-    ! SDL_TextureAccess
-    enum, bind(c)
-        enumerator :: SDL_TEXTUREACCESS_STATIC
-        enumerator :: SDL_TEXTUREACCESS_STREAMING
-        enumerator :: SDL_TEXTUREACCESS_TARGET
-    end enum
-
-    ! SDL_RenderFlip
-    integer(kind=c_int), parameter :: SDL_FLIP_NONE       = int(z'00000000')
-    integer(kind=c_int), parameter :: SDL_FLIP_HORIZONTAL = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_FLIP_VERTICAL   = int(z'00000002')
-
     ! SDL_keycode
     integer(kind=c_int), parameter :: SDLK_SCANCODE_MASK      = ishft(1, 30)
     integer(kind=c_int), parameter :: SDLK_UNKNOWN            = 0
@@ -729,7 +617,124 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDLK_APP2               = ior(SDL_SCANCODE_APP2, SDLK_SCANCODE_MASK)
 
     integer(kind=c_int), parameter :: SDLK_AUDIOREWIND        = ior(SDL_SCANCODE_AUDIOREWIND, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD   = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD   = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK) 
+
+    ! SDL_mouse
+    integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
+    integer(kind=c_int), parameter :: SDL_BUTTON_MIDDLE = 2
+    integer(kind=c_int), parameter :: SDL_BUTTON_RIGHT  = 3
+    integer(kind=c_int), parameter :: SDL_BUTTON_X1     = 4
+    integer(kind=c_int), parameter :: SDL_BUTTON_X2     = 5
+    integer(kind=c_int), parameter :: SDL_BUTTON_LMASK  = ishft(1, SDL_BUTTON_LEFT - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_MMASK  = ishft(1, SDL_BUTTON_MIDDLE - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_RMASK  = ishft(1, SDL_BUTTON_RIGHT - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_X1MASK = ishft(1, SDL_BUTTON_X1 - 1)
+    integer(kind=c_int), parameter :: SDL_BUTTON_X2MASK = ishft(1, SDL_BUTTON_X2 - 1)
+
+    ! SDL_RendererFlags
+    integer(kind=c_int), parameter :: SDL_RENDERER_SOFTWARE      = int(z'00000001')
+    integer(kind=c_int), parameter :: SDL_RENDERER_ACCELERATED   = int(z'00000002')
+    integer(kind=c_int), parameter :: SDL_RENDERER_PRESENTVSYNC  = int(z'00000004')
+    integer(kind=c_int), parameter :: SDL_RENDERER_TARGETTEXTURE = int(z'00000008')
+
+    ! SDL_BlendMode
+    integer(kind=c_int), parameter :: SDL_BLENDMODE_NONE    = int(z'00000000')
+    integer(kind=c_int), parameter :: SDL_BLENDMODE_BLEND   = int(z'00000001')
+    integer(kind=c_int), parameter :: SDL_BLENDMODE_ADD     = int(z'00000002')
+    integer(kind=c_int), parameter :: SDL_BLENDMODE_MOD     = int(z'00000004')
+    integer(kind=c_int), parameter :: SDL_BLENDMODE_INVALID = int(z'7FFFFFFF')
+
+    integer(kind=c_int), parameter :: SDL_ALPHA_OPAQUE      = 255
+    integer(kind=c_int), parameter :: SDL_ALPHA_TRANSPARENT = 0
+
+    ! SDL_Hints
+    character(len=*), parameter :: SDL_HINT_FRAMEBUFFER_ACCELERATION                 = 'SDL_FRAMEBUFFER_ACCELERATION'
+    character(len=*), parameter :: SDL_HINT_RENDER_DRIVER                            = 'SDL_RENDER_DRIVER'
+    character(len=*), parameter :: SDL_HINT_RENDER_OPENGL_SHADERS                    = 'SDL_RENDER_OPENGL_SHADERS'
+    character(len=*), parameter :: SDL_HINT_RENDER_DIRECT3D_THREADSAFE               = 'SDL_RENDER_DIRECT3D_THREADSAFE'
+    character(len=*), parameter :: SDL_HINT_RENDER_DIRECT3D11_DEBUG                  = 'SDL_RENDER_DIRECT3D11_DEBUG'
+    character(len=*), parameter :: SDL_HINT_RENDER_LOGICAL_SIZE_MODE                 = 'SDL_RENDER_LOGICAL_SIZE_MODE'
+    character(len=*), parameter :: SDL_HINT_RENDER_SCALE_QUALITY                     = 'SDL_RENDER_SCALE_QUALITY'
+    character(len=*), parameter :: SDL_HINT_RENDER_VSYNC                             = 'SDL_RENDER_VSYNC'
+    character(len=*), parameter :: SDL_HINT_VIDEO_ALLOW_SCREENSAVER                  = 'SDL_VIDEO_ALLOW_SCREENSAVER'
+    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XVIDMODE                       = 'SDL_VIDEO_X11_XVIDMODE'
+    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XINERAMA                       = 'SDL_VIDEO_X11_XINERAMA'
+    character(len=*), parameter :: SDL_HINT_VIDEO_X11_XRANDR                         = 'SDL_VIDEO_X11_XRANDR'
+    character(len=*), parameter :: SDL_HINT_VIDEO_X11_NET_WM_PING                    = 'SDL_VIDEO_X11_NET_WM_PING'
+    character(len=*), parameter :: SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN  = 'SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN'
+    character(len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON                 = 'SDL_WINDOWS_INTRESOURCE_ICON'
+    character(len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = 'SDL_WINDOWS_INTRESOURCE_ICON_SMALL'
+    character(len=*), parameter :: SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP               = 'SDL_WINDOWS_ENABLE_MESSAGELOOP'
+    character(len=*), parameter :: SDL_HINT_GRAB_KEYBOARD                            = 'SDL_GRAB_KEYBOARD'
+    character(len=*), parameter :: SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 = 'SDL_MOUSE_NORMAL_SPEED_SCALE'
+    character(len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               = 'SDL_MOUSE_RELATIVE_SPEED_SCALE'
+    character(len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_MODE_WARP                 = 'SDL_MOUSE_RELATIVE_MODE_WARP'
+    character(len=*), parameter :: SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH                 = 'SDL_MOUSE_FOCUS_CLICKTHROUGH'
+    character(len=*), parameter :: SDL_HINT_TOUCH_MOUSE_EVENTS                       = 'SDL_TOUCH_MOUSE_EVENTS'
+    character(len=*), parameter :: SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS             = 'SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS'
+    character(len=*), parameter :: SDL_HINT_IDLE_TIMER_DISABLED                      = 'SDL_IOS_IDLE_TIMER_DISABLED'
+    character(len=*), parameter :: SDL_HINT_ORIENTATIONS                             = 'SDL_IOS_ORIENTATIONS'
+    character(len=*), parameter :: SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS            = 'SDL_APPLE_TV_CONTROLLER_UI_EVENTS'
+    character(len=*), parameter :: SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION           = 'SDL_APPLE_TV_REMOTE_ALLOW_ROTATION'
+    character(len=*), parameter :: SDL_HINT_ACCELEROMETER_AS_JOYSTICK                = 'SDL_ACCELEROMETER_AS_JOYSTICK'
+    character(len=*), parameter :: SDL_HINT_XINPUT_ENABLED                           = 'SDL_XINPUT_ENABLED'
+    character(len=*), parameter :: SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING          = 'SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING'
+    character(len=*), parameter :: SDL_HINT_GAMECONTROLLERCONFIG                     = 'SDL_GAMECONTROLLERCONFIG'
+    character(len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES            = 'SDL_GAMECONTROLLER_IGNORE_DEVICES'
+    character(len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT     = 'SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT'
+    character(len=*), parameter :: SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS         = 'SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS'
+    character(len=*), parameter :: SDL_HINT_ALLOW_TOPMOST                            = 'SDL_ALLOW_TOPMOST'
+    character(len=*), parameter :: SDL_HINT_TIMER_RESOLUTION                         = 'SDL_TIMER_RESOLUTION'
+    character(len=*), parameter :: SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION            = 'SDL_QTWAYLAND_CONTENT_ORIENTATION'
+    character(len=*), parameter :: SDL_HINT_QTWAYLAND_WINDOW_FLAGS                   = 'SDL_QTWAYLAND_WINDOW_FLAGS'
+    character(len=*), parameter :: SDL_HINT_THREAD_STACK_SIZE                        = 'SDL_THREAD_STACK_SIZE'
+    character(len=*), parameter :: SDL_HINT_VIDEO_HIGHDPI_DISABLED                   = 'SDL_VIDEO_HIGHDPI_DISABLED'
+    character(len=*), parameter :: SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK       = 'SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK'
+    character(len=*), parameter :: SDL_HINT_VIDEO_WIN_D3DCOMPILER                    = 'SDL_VIDEO_WIN_D3DCOMPILER'
+    character(len=*), parameter :: SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT          = 'SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT'
+    character(len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_URL                 = 'SDL_WINRT_PRIVACY_POLICY_URL'
+    character(len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_LABEL               = 'SDL_WINRT_PRIVACY_POLICY_LABEL'
+    character(len=*), parameter :: SDL_HINT_WINRT_HANDLE_BACK_BUTTON                 = 'SDL_WINRT_HANDLE_BACK_BUTTON'
+    character(len=*), parameter :: SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES              = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
+    character(len=*), parameter :: SDL_HINT_MAC_BACKGROUND_APP                       = 'SDL_MAC_BACKGROUND_APP'
+    character(len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = 'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
+    character(len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = &
+        'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
+    character(len=*), parameter :: SDL_HINT_IME_INTERNAL_EDITING                     = 'SDL_IME_INTERNAL_EDITING'
+    character(len=*), parameter :: SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         = 'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
+    character(len=*), parameter :: SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT              = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
+    character(len=*), parameter :: SDL_HINT_NO_SIGNAL_HANDLERS                       = 'SDL_NO_SIGNAL_HANDLERS'
+    character(len=*), parameter :: SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4               = 'SDL_WINDOWS_NO_CLOSE_ON_ALT_F4'
+    character(len=*), parameter :: SDL_HINT_BMP_SAVE_LEGACY_FORMAT                   = 'SDL_BMP_SAVE_LEGACY_FORMAT'
+    character(len=*), parameter :: SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING            = 'SDL_WINDOWS_DISABLE_THREAD_NAMING'
+    character(len=*), parameter :: SDL_HINT_RPI_VIDEO_LAYER                          = 'SDL_RPI_VIDEO_LAYER'
+    character(len=*), parameter :: SDL_HINT_OPENGL_ES_DRIVER                         = 'SDL_OPENGL_ES_DRIVER'
+    character(len=*), parameter :: SDL_HINT_AUDIO_RESAMPLING_MODE                    = 'SDL_AUDIO_RESAMPLING_MODE'
+    character(len=*), parameter :: SDL_HINT_AUDIO_CATEGORY                           = 'SDL_AUDIO_CATEGORY'
+
+    ! SDL_HintPriority
+    enum, bind(c)
+        enumerator :: SDL_HINT_DEFAULT
+        enumerator :: SDL_HINT_NORMAL
+        enumerator :: SDL_HINT_OVERRIDE
+    end enum
+
+    ! SDL_TextureAccess
+    enum, bind(c)
+        enumerator :: SDL_TEXTUREACCESS_STATIC
+        enumerator :: SDL_TEXTUREACCESS_STREAMING
+        enumerator :: SDL_TEXTUREACCESS_TARGET
+    end enum
+
+    ! SDL_RenderFlip
+    integer(kind=c_int), parameter :: SDL_FLIP_NONE       = int(z'00000000')
+    integer(kind=c_int), parameter :: SDL_FLIP_HORIZONTAL = int(z'00000001')
+    integer(kind=c_int), parameter :: SDL_FLIP_VERTICAL   = int(z'00000002')
+
+    ! SDL_MessageBoxFlags
+    integer(kind=c_int), parameter :: SDL_MESSAGEBOX_ERROR       = int(z'00000010')
+    integer(kind=c_int), parameter :: SDL_MESSAGEBOX_WARNING     = int(z'00000020')
+    integer(kind=c_int), parameter :: SDL_MESSAGEBOX_INFORMATION = int(z'00000040')
 end module sdl2_consts
 
 module sdl2_types
@@ -1178,6 +1183,7 @@ module sdl2
     public :: sdl_set_texture_color_mod
     public :: sdl_set_window_icon
     public :: sdl_show_cursor
+    public :: sdl_show_simple_message_box
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
@@ -1628,6 +1634,18 @@ module sdl2
             integer(kind=c_int), intent(in), value :: toggle
             integer(kind=c_int)                    :: sdl_show_cursor
         end function sdl_show_cursor
+
+        ! int SDL_ShowSimpleMessageBox(Uint32 flags, const char *title, const char *message, SDL_Window *window)
+        function sdl_show_simple_message_box(flags, title, message, window) bind(c, name='SDL_ShowSimpleMessageBox')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            integer(kind=c_uint32_t), intent(in), value :: flags
+            character(kind=c_char),   intent(in)        :: title
+            character(kind=c_char),   intent(in)        :: message
+            type(c_ptr),              intent(in), value :: window
+            integer(kind=c_int)                         :: sdl_show_simple_message_box
+        end function sdl_show_simple_message_box
 
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')
