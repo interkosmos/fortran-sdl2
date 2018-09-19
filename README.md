@@ -13,7 +13,11 @@ SDL_ttf   | 2.0.14_1
 The interface compiles with GNU Fortran 7/8.
 
 ## Build SDL2 interface
-
+Clone the repository and then use GNU make to build the SDL2 interface:
+```
+$ git clone https://github.com/interkosmos/f03sdl2.git
+$ cd f03sdl2/
+$ make sdl2
 ```
 You can override the default compiler (`gfortran8`) by passing the `FC`
 argument, for example:
