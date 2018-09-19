@@ -60,6 +60,7 @@ Some demo applications are provided in directory `examples`.
 * **music** plays an OGG file with SDL_mixer.
 * **text** outputs text with SDL_ttf.
 * **draw** draws some shapes (hardware renderer).
+* **msgbox** shows a simple message box (software renderer).
 
 Build the examples with:
 ```
