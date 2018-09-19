@@ -12,7 +12,7 @@ SDL_ttf   | 2.0.14_1
 
 The interface compiles with GNU Fortran 7/8.
 
-## Build SDL2 interface
+## Build the SDL 2 interfaces
 Clone the repository and then use GNU make to build the SDL2 interface:
 ```
 $ git clone https://github.com/interkosmos/f03sdl2.git
@@ -31,21 +31,21 @@ $ gfortran -c sdl2.f90
 On FreeBSD, you may have to modify the `-Wl,-rpath` parameter in `CFLAGS`
 according to your compiler.
 
-## Build SDL2_image interface
+### SDL2_image
 Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
 Add `-lSDL2_image` to your `LDFLAGS` to link SDL2_image.
 
-## Build SDL2_mixer interface
+### SDL2_mixer
 Build the SDL2_mixer interface with:
 ```
 $ make sdl2_mixer
 ```
 Add `-lSDL2_mixer` to your `LDFLAGS` to link SDL2_mixer.
 
-## Build SDL2_ttf interface
+### SDL2_ttf
 Build the SDL2_ttf interface with:
 ```
 $ make sdl2_ttf
@@ -53,7 +53,7 @@ $ make sdl2_ttf
 Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
 
 ## Examples
-Some demo applications are provided in directory `examples`.
+Some demo applications are provided in directory `examples/`.
 
 * **window** opens a  window and fills a rectangle (software renderer).
 * **image** loads and displays an image (software renderer).
