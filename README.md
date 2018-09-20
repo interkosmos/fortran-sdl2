@@ -61,8 +61,8 @@ Some demo applications are provided in directory `examples/`.
 * **scaling** displays a scaled image (software renderer).
 * **alpha** makes one color of an image transparent (software renderer).
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
-* **music** plays an OGG file with SDL_mixer.
-* **text** outputs text with SDL_ttf.
+* **music** plays an OGG file with SDL_mixer (software renderer).
+* **text** outputs text with SDL_ttf (hardware renderer).
 * **draw** draws some shapes (hardware renderer).
 * **msgbox** shows a simple message box (software renderer).
 
