@@ -617,7 +617,7 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDLK_APP2               = ior(SDL_SCANCODE_APP2, SDLK_SCANCODE_MASK)
 
     integer(kind=c_int), parameter :: SDLK_AUDIOREWIND        = ior(SDL_SCANCODE_AUDIOREWIND, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD   = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK) 
+    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD   = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK)
 
     ! SDL_mouse
     integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
@@ -711,6 +711,27 @@ module sdl2_consts
     character(len=*), parameter :: SDL_HINT_OPENGL_ES_DRIVER                         = 'SDL_OPENGL_ES_DRIVER'
     character(len=*), parameter :: SDL_HINT_AUDIO_RESAMPLING_MODE                    = 'SDL_AUDIO_RESAMPLING_MODE'
     character(len=*), parameter :: SDL_HINT_AUDIO_CATEGORY                           = 'SDL_AUDIO_CATEGORY'
+
+    ! SDL_WindowEventID
+    enum, bind(c)
+        enumerator :: SDL_WINDOWEVENT_NONE
+        enumerator :: SDL_WINDOWEVENT_SHOWN
+        enumerator :: SDL_WINDOWEVENT_HIDDEN
+        enumerator :: SDL_WINDOWEVENT_EXPOSED
+        enumerator :: SDL_WINDOWEVENT_MOVED
+        enumerator :: SDL_WINDOWEVENT_RESIZED
+        enumerator :: SDL_WINDOWEVENT_SIZE_CHANGED
+        enumerator :: SDL_WINDOWEVENT_MINIMIZED
+        enumerator :: SDL_WINDOWEVENT_MAXIMIZED
+        enumerator :: SDL_WINDOWEVENT_RESTORED
+        enumerator :: SDL_WINDOWEVENT_ENTER
+        enumerator :: SDL_WINDOWEVENT_LEAVE
+        enumerator :: SDL_WINDOWEVENT_FOCUS_GAINED
+        enumerator :: SDL_WINDOWEVENT_FOCUS_LOST
+        enumerator :: SDL_WINDOWEVENT_CLOSE
+        enumerator :: SDL_WINDOWEVENT_TAKE_FOCUS
+        enumerator :: SDL_WINDOWEVENT_HIT_TEST
+    end enum
 
     ! SDL_HintPriority
     enum, bind(c)
