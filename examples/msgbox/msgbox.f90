@@ -35,7 +35,7 @@ program main
     rc = sdl_show_simple_message_box(SDL_MESSAGEBOX_INFORMATION, &
                                      MSG_TITLE // c_null_char, &
                                      MSG_TEXT // c_null_char, &
-                                     window)
+                                     c_null_ptr)
 
     ! Create the SDL window.
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
