@@ -57,7 +57,7 @@ Some demo applications are provided in directory `examples/`.
 
 * **window** opens a  window and fills a rectangle (software renderer).
 * **image** loads and displays an image (software renderer).
-* **events** polls SDL events.
+* **events** polls SDL events (software renderer).
 * **scaling** displays a scaled image (software renderer).
 * **alpha** makes one color of an image transparent (software renderer).
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).

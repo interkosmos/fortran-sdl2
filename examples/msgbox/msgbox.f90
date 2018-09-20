@@ -12,8 +12,8 @@ program main
     use :: sdl2_types
     implicit none
 
-    integer,          parameter :: WIDTH  = 320
-    integer,          parameter :: HEIGHT = 240
+    integer,          parameter :: WIDTH     = 320
+    integer,          parameter :: HEIGHT    = 240
     character(len=*), parameter :: MSG_TITLE = 'Hello, World!'
     character(len=*), parameter :: MSG_TEXT  = 'Welcome to wherever you are.'
 
