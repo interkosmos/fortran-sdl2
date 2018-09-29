@@ -1153,11 +1153,13 @@ module sdl2
     public :: sdl_destroy_window
     public :: sdl_fill_rect
     public :: sdl_free_surface
+    public :: sdl_get_audio_driver
     public :: sdl_get_cpu_count
     public :: sdl_get_current_video_driver
     public :: sdl_get_error
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
+    public :: sdl_get_num_audio_devices
     public :: sdl_get_mouse_state
     public :: sdl_get_pixel_format
     public :: sdl_get_platform
@@ -1273,6 +1275,14 @@ module sdl2
             integer(kind=c_int)                         :: sdl_fill_rect
         end function sdl_fill_rect
 
+        ! const char* SDL_GetAudioDriver(int index)
+        function sdl_get_audio_driver_(index) bind(c, name='SDL_GetAudioDriver')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int), intent(in) :: index
+            type(c_ptr)                     :: sdl_get_audio_driver_
+        end function sdl_get_audio_driver_
+
         ! int SDL_GetCPUCount(void)
         function sdl_get_cpu_count() bind(c, name='SDL_GetCPUCount')
             use, intrinsic :: iso_c_binding
@@ -1294,6 +1304,14 @@ module sdl2
             type(c_ptr) :: sdl_get_error_
         end function sdl_get_error_
 
+        ! const char *SDL_GetHint(const char *name)
+        function sdl_get_hint_(name) bind(c, name='SDL_GetHint')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            character(kind=c_char), intent(in) :: name
+            type(c_ptr)                        :: sdl_get_hint_
+        end function sdl_get_hint_
+
         ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
         function sdl_get_keyboard_state_(numkeys) bind(c, name='SDL_GetKeyboardState')
             use, intrinsic :: iso_c_binding
@@ -1312,13 +1330,12 @@ module sdl2
             integer(kind=c_uint32_t)        :: sdl_get_mouse_state
         end function sdl_get_mouse_state
 
-        ! const char *SDL_GetHint(const char *name)
-        function sdl_get_hint_(name) bind(c, name='SDL_GetHint')
+        ! int SDL_GetNumAudioDevices(int iscapture)
+        function sdl_get_num_audio_devices(is_capture) bind(c, name='SDL_GetNumAudioDevices')
             use, intrinsic :: iso_c_binding
-            implicit none
-            character(kind=c_char), intent(in) :: name
-            type(c_ptr)                        :: sdl_get_hint_
-        end function sdl_get_hint_
+            integer(kind=c_int), intent(in) :: is_capture
+            integer(kind=c_int)             :: sdl_get_num_audio_devices
+        end function sdl_get_num_audio_devices
 
         ! const char *SDL_GetPlatform(void)
         function sdl_get_platform_() bind(c, name='SDL_GetPlatform')
@@ -1774,6 +1791,13 @@ module sdl2
             type(sdl_surface), intent(in)        :: icon
         end subroutine sdl_set_window_icon
 
+        ! void SDL_SetWindowTitle(SDL_Window* window, const char* title)
+        subroutine sdl_set_window_title(window, title) bind(c, name='SDL_SetWindowTitle')
+            use, intrinsic :: iso_c_binding
+            type(c_ptr),            intent(in), value :: window
+            character(kind=c_char), intent(in)        :: title
+        end subroutine sdl_set_window_title
+
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')
         end subroutine sdl_quit
@@ -1797,6 +1821,7 @@ module sdl2
     end interface
 
     contains
+        pure &
         subroutine c_f_string_chars(c_string, f_string)
             !! Copies a C string, passed as a char-array reference, to a Fortran
             !! string.
@@ -1804,7 +1829,9 @@ module sdl2
             implicit none
             character(len=1, kind=c_char), intent(in)  :: c_string(*)
             character(len=*),              intent(out) :: f_string
-            integer                                    :: i = 1
+            integer                                    :: i
+
+            i = 1
 
             do while (c_string(i) /= c_null_char .and. i <= len(f_string))
                 f_string(i:i) = c_string(i)
@@ -1862,6 +1889,26 @@ module sdl2
             ptr = sdl_convert_surface_(src, fmt, flags)
             call c_f_pointer(ptr, sdl_convert_surface)
         end function sdl_convert_surface
+
+        ! const char* SDL_GetAudioDriver(int index)
+        function sdl_get_audio_driver(index)
+            !! Calls `sdl_get_audio_driver_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int)             :: index
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            character(len=30)               :: sdl_get_audio_driver
+
+            ptr = sdl_get_audio_driver_(index)
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
+            call c_f_string_chars(ptrs, sdl_get_audio_driver)
+        end function sdl_get_audio_driver
 
         ! const char *SDL_GetCurrentVideoDriver(void)
         function sdl_get_current_video_driver()

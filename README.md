@@ -10,7 +10,8 @@ SDL_image | 2.0.2
 SDL_mixer | 2.0.1_1
 SDL_ttf   | 2.0.14_1
 
-The interface compiles with GNU Fortran 7/8.
+Compilation has been tested with GNU Fortran 7/8, but other modern compilers
+should work to.
 
 ## Build the SDL 2 interfaces
 Clone the repository and then use GNU make to build the SDL2 interface:
@@ -206,7 +207,7 @@ SDL_GetAssertionHandler               |   –   |
 SDL_GetAssertionReport                |   –   |
 SDL_GetAudioDeviceName                |   –   |
 SDL_GetAudioDeviceStatus              |   –   |
-SDL_GetAudioDriver                    |   –   |
+SDL_GetAudioDriver                    |   ✓   |
 SDL_GetAudioStatus                    |   –   |
 SDL_GetBasePath                       |   –   |
 SDL_GetCPUCacheLineSize               |   –   |
@@ -237,7 +238,7 @@ SDL_GetKeyboardState                  |   ✓   |
 SDL_GetModState                       |   –   |
 SDL_GetMouseFocus                     |   –   |
 SDL_GetMouseState                     |   ✓   |
-SDL_GetNumAudioDevices                |   –   |
+SDL_GetNumAudioDevices                |   ✓   |
 SDL_GetNumAudioDrivers                |   –   |
 SDL_GetNumDisplayModes                |   –   |
 SDL_GetNumRenderDrivers               |   –   |
@@ -424,7 +425,7 @@ SDL_PointInRect                       |   –   |
 SDL_PollEvent                         |   ✓   |
 SDL_PumpEvents                        |   ✓   |
 SDL_PushEvent                         |   –   |
-SDL_QueryTexture                      |   –   |
+SDL_QueryTexture                      |   ✓   |
 SDL_QueueAudio                        |   –   |
 SDL_Quit                              |   ✓   |
 SDL_QuitRequested                     |   –   |
@@ -528,7 +529,7 @@ SDL_SetWindowMaximumSize              |   –   |
 SDL_SetWindowMinimumSize              |   –   |
 SDL_SetWindowPosition                 |   –   |
 SDL_SetWindowSize                     |   –   |
-SDL_SetWindowTitle                    |   –   |
+SDL_SetWindowTitle                    |   ✓   |
 SDL_ShowCursor                        |   ✓   |
 SDL_ShowMessageBox                    |   –   |
 SDL_ShowSimpleMessageBox              |   ✓   |
