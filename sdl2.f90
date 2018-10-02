@@ -1155,6 +1155,7 @@ module sdl2
     public :: sdl_free_surface
     public :: sdl_get_audio_driver
     public :: sdl_get_cpu_count
+    public :: sdl_get_current_audio_driver
     public :: sdl_get_current_video_driver
     public :: sdl_get_error
     public :: sdl_get_hint
@@ -1168,7 +1169,11 @@ module sdl2
     public :: sdl_get_ticks
     public :: sdl_get_version
     public :: sdl_get_video_driver
+    public :: sdl_get_window_id
+    public :: sdl_get_window_position
+    public :: sdl_get_window_size
     public :: sdl_get_window_surface
+    public :: sdl_get_window_title
     public :: sdl_has_3dnow
     public :: sdl_has_alti_vec
     public :: sdl_has_avx
@@ -1275,7 +1280,7 @@ module sdl2
             integer(kind=c_int)                         :: sdl_fill_rect
         end function sdl_fill_rect
 
-        ! const char* SDL_GetAudioDriver(int index)
+        ! const char *SDL_GetAudioDriver(int index)
         function sdl_get_audio_driver_(index) bind(c, name='SDL_GetAudioDriver')
             use, intrinsic :: iso_c_binding
             implicit none
@@ -1289,6 +1294,13 @@ module sdl2
             implicit none
             integer(kind=c_int) :: sdl_get_cpu_count
         end function sdl_get_cpu_count
+
+        ! const char *SDL_GetCurrentAudioDriver(void)
+        function sdl_get_current_audio_driver_() bind(c, name='SDL_GetCurrentAudioDriver')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr) :: sdl_get_current_audio_driver_
+        end function sdl_get_current_audio_driver_
 
         ! const char *SDL_GetCurrentVideoDriver(void)
         function sdl_get_current_video_driver_() bind(c, name='SDL_GetCurrentVideoDriver')
@@ -1375,6 +1387,15 @@ module sdl2
             type(c_ptr)                     :: sdl_get_video_driver_
         end function sdl_get_video_driver_
 
+        ! Uint32 SDL_GetWindowID(SDL_Window *window)
+        function sdl_get_window_id(window) bind(c, name='SDL_GetWindowID')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            type(c_ptr), intent(in), value :: window
+            integer(kind=c_uint32_t)       :: sdl_get_window_id
+        end function sdl_get_window_id
+
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface_(window) bind(c, name='SDL_GetWindowSurface')
             use, intrinsic :: iso_c_binding
@@ -1382,6 +1403,14 @@ module sdl2
             type(c_ptr), intent(in), value :: window
             type(c_ptr)                    :: sdl_get_window_surface_
         end function sdl_get_window_surface_
+
+        ! const char *SDL_GetWindowTitle(SDL_Window *window)
+        function sdl_get_window_title_(window) bind(c, name='SDL_GetWindowTitle')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+            type(c_ptr)                    :: sdl_get_window_title_
+        end function sdl_get_window_title_
 
         ! SDL_bool SDL_Has3DNow(void)
         function sdl_has_3dnow() bind(c, name='SDL_Has3DNow')
@@ -1771,6 +1800,24 @@ module sdl2
             type(sdl_version), intent(in out) :: ver
         end subroutine sdl_get_version
 
+        ! void SDL_GetWindowPosition(SDL_Window *window, int *x, int *y)
+        subroutine sdl_get_window_position(window, x, y) bind(c, name='SDL_GetWindowPosition')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in out)    :: x
+            integer(kind=c_int), intent(in out)    :: y
+        end subroutine sdl_get_window_position
+
+        ! void SDL_GetWindowSize(SDL_Window *window, int *w, int *h)
+        subroutine sdl_get_window_size(window, w, h) bind(c, name='SDL_GetWindowSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in out)    :: w
+            integer(kind=c_int), intent(in out)    :: h
+        end subroutine sdl_get_window_size
+
         ! void SDL_PumpEvents(void)
         subroutine sdl_pump_events() bind(c, name='SDL_PumpEvents')
         end subroutine sdl_pump_events
@@ -1791,7 +1838,7 @@ module sdl2
             type(sdl_surface), intent(in)        :: icon
         end subroutine sdl_set_window_icon
 
-        ! void SDL_SetWindowTitle(SDL_Window* window, const char* title)
+        ! void SDL_SetWindowTitle(SDL_Window *window, const char *title)
         subroutine sdl_set_window_title(window, title) bind(c, name='SDL_SetWindowTitle')
             use, intrinsic :: iso_c_binding
             type(c_ptr),            intent(in), value :: window
@@ -1890,7 +1937,7 @@ module sdl2
             call c_f_pointer(ptr, sdl_convert_surface)
         end function sdl_convert_surface
 
-        ! const char* SDL_GetAudioDriver(int index)
+        ! const char *SDL_GetAudioDriver(int index)
         function sdl_get_audio_driver(index)
             !! Calls `sdl_get_audio_driver_()` and converts the returned
             !! C char pointer to Fortran character.
@@ -1909,6 +1956,25 @@ module sdl2
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
             call c_f_string_chars(ptrs, sdl_get_audio_driver)
         end function sdl_get_audio_driver
+
+        ! const char *SDL_GetCurrentAudioDriver(void)
+        function sdl_get_current_audio_driver()
+            !! Calls `sdl_get_current_audio_driver_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            character(len=30)               :: sdl_get_current_audio_driver
+
+            ptr = sdl_get_current_audio_driver_()
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_audio_driver)])
+            call c_f_string_chars(ptrs, sdl_get_current_audio_driver)
+        end function sdl_get_current_audio_driver
 
         ! const char *SDL_GetCurrentVideoDriver(void)
         function sdl_get_current_video_driver()
@@ -2047,6 +2113,26 @@ module sdl2
             ptr = sdl_get_window_surface_(window)
             call c_f_pointer(ptr, sdl_get_window_surface)
         end function sdl_get_window_surface
+
+        ! const char *SDL_GetWindowTitle(SDL_Window *window)
+        function sdl_get_window_title(window)
+            !! Calls `sdl_get_window_title_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in)         :: window
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            character(len=100)              :: sdl_get_window_title
+
+            ptr = sdl_get_window_title_(window)
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_window_title)])
+            call c_f_string_chars(ptrs, sdl_get_window_title)
+        end function sdl_get_window_title
 
         ! SDL_Surface *SDL_LoadBMP(const char *file)
         function sdl_load_bmp(file)

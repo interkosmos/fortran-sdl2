@@ -216,7 +216,7 @@ SDL_GetClipRect                       |   –   |
 SDL_GetClipboardText                  |   –   |
 SDL_GetClosestDisplayMode             |   –   |
 SDL_GetColorKey                       |   –   |
-SDL_GetCurrentAudioDriver             |   –   |
+SDL_GetCurrentAudioDriver             |   ✓   |
 SDL_GetCurrentDisplayMode             |   –   |
 SDL_GetCurrentVideoDriver             |   ✓   |
 SDL_GetCursor                         |   –   |
@@ -291,12 +291,12 @@ SDL_GetWindowFlags                    |   –   |
 SDL_GetWindowFromID                   |   –   |
 SDL_GetWindowGammaRamp                |   –   |
 SDL_GetWindowGrab                     |   –   |
-SDL_GetWindowID                       |   –   |
+SDL_GetWindowID                       |   ✓   |
 SDL_GetWindowMaximumSize              |   –   |
 SDL_GetWindowMinimumSize              |   –   |
 SDL_GetWindowPixelFormat              |   –   |
-SDL_GetWindowPosition                 |   –   |
-SDL_GetWindowSize                     |   –   |
+SDL_GetWindowPosition                 |   ✓   |
+SDL_GetWindowSize                     |   ✓   |
 SDL_GetWindowSurface                  |   ✓   |
 SDL_GetWindowTitle                    |   –   |
 SDL_GetWindowWMInfo                   |   –   |
