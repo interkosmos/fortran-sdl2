@@ -298,7 +298,7 @@ SDL_GetWindowPixelFormat              |   –   |
 SDL_GetWindowPosition                 |   ✓   |
 SDL_GetWindowSize                     |   ✓   |
 SDL_GetWindowSurface                  |   ✓   |
-SDL_GetWindowTitle                    |   –   |
+SDL_GetWindowTitle                    |   ✓   |
 SDL_GetWindowWMInfo                   |   –   |
 SDL_HapticClose                       |   –   |
 SDL_HapticDestroyEffect               |   –   |
