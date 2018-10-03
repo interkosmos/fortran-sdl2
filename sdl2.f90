@@ -1654,7 +1654,7 @@ module sdl2
             use :: sdl2_types
             implicit none
             type(c_ptr),         intent(in), value :: renderer
-            type(sdl_point),     intent(in)        :: points(:)
+            type(sdl_point),     intent(in)        :: points(*)
             integer(kind=c_int), intent(in), value :: count
             integer(kind=c_int)                    :: sdl_render_draw_lines
         end function sdl_render_draw_lines
@@ -1675,7 +1675,7 @@ module sdl2
             use :: sdl2_types
             implicit none
             type(c_ptr),         intent(in), value :: renderer
-            type(sdl_point),     intent(in)        :: points(:)
+            type(sdl_point),     intent(in)        :: points(*)
             integer(kind=c_int), intent(in), value :: count
             integer(kind=c_int)                    :: sdl_render_draw_points
         end function sdl_render_draw_points
