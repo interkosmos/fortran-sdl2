@@ -19,6 +19,7 @@ module sdl2_consts
     integer, parameter :: c_unsigned_long      = c_long
     integer, parameter :: c_unsigned_long_long = c_long_long
     integer, parameter :: c_unsigned_short     = c_short
+    integer, parameter :: sdl_bool             = c_int
 
     integer(kind=c_int), parameter :: SDL_FALSE = 0
     integer(kind=c_int), parameter :: SDL_TRUE  = 1
@@ -1465,78 +1466,89 @@ module sdl2
         ! SDL_bool SDL_Has3DNow(void)
         function sdl_has_3dnow() bind(c, name='SDL_Has3DNow')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_3dnow
+            integer(kind=sdl_bool) :: sdl_has_3dnow
         end function sdl_has_3dnow
 
         ! SDL_bool SDL_HasAltiVec(void)
         function sdl_has_alti_vec() bind(c, name='SDL_HasAltiVec')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_alti_vec
+            integer(kind=sdl_bool) :: sdl_has_alti_vec
         end function sdl_has_alti_vec
 
         ! SDL_bool SDL_HasAVX(void)
         function sdl_has_avx() bind(c, name='SDL_HasAVX')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_avx
+            integer(kind=sdl_bool) :: sdl_has_avx
         end function sdl_has_avx
 
         ! SDL_bool SDL_HasAVX2(void)
         function sdl_has_avx2() bind(c, name='SDL_HasAVX2')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_avx2
+            integer(kind=sdl_bool) :: sdl_has_avx2
         end function sdl_has_avx2
 
         ! SDL_bool SDL_HasMMX(void)
         function sdl_has_mmx() bind(c, name='SDL_HasMMX')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_mmx
+            integer(kind=sdl_bool) :: sdl_has_mmx
         end function sdl_has_mmx
 
         ! SDL_bool SDL_HasRDTSC(void)
         function sdl_has_rdtsc() bind(c, name='SDL_HasRDTSC')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_rdtsc
+            integer(kind=sdl_bool) :: sdl_has_rdtsc
         end function sdl_has_rdtsc
 
         ! SDL_bool SDL_HasSSE(void)
         function sdl_has_sse() bind(c, name='SDL_HasSSE')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_sse
+            integer(kind=sdl_bool) :: sdl_has_sse
         end function sdl_has_sse
 
         ! SDL_bool SDL_HasSSE2(void)
         function sdl_has_sse2() bind(c, name='SDL_HasSSE2')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_sse2
+            integer(kind=sdl_bool) :: sdl_has_sse2
         end function sdl_has_sse2
 
         ! SDL_bool SDL_HasSSE3(void)
         function sdl_has_sse3() bind(c, name='SDL_HasSSE3')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_sse3
+            integer(kind=sdl_bool) :: sdl_has_sse3
         end function sdl_has_sse3
 
         ! SDL_bool SDL_HasSSE41(void)
         function sdl_has_sse41() bind(c, name='SDL_HasSSE41')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_sse41
+            integer(kind=sdl_bool) :: sdl_has_sse41
         end function sdl_has_sse41
 
         ! SDL_bool SDL_HasSSE42(void)
         function sdl_has_sse42() bind(c, name='SDL_HasSSE42')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
-            integer(kind=c_int) :: sdl_has_sse42
+            integer(kind=sdl_bool) :: sdl_has_sse42
         end function sdl_has_sse42
 
         ! int SDL_Init(Uint32 flags)
@@ -1669,7 +1681,7 @@ module sdl2
             integer(kind=c_int)                    :: sdl_render_draw_point
         end function sdl_render_draw_point
 
-      ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, const SDL_Point *points, int count)
+        ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, const SDL_Point *points, int count)
         function sdl_render_draw_points(renderer, points, count) bind(c, name='SDL_RenderDrawPoints')
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
@@ -1725,11 +1737,12 @@ module sdl2
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
             type(sdl_surface), intent(in) :: surface
             type(sdl_rect),    intent(in) :: rect
-            integer(kind=c_int)           :: sdl_set_clip_rect
+            integer(kind=sdl_bool)        :: sdl_set_clip_rect
         end function sdl_set_clip_rect
 
         ! int SDL_SetColorKey(SDL_Surface *surface, int flag, Uint32 key)
@@ -1747,17 +1760,19 @@ module sdl2
         ! SDL_bool SDL_SetHint(const char *name, const char *value)
         function sdl_set_hint_(name, value) bind(c, name='SDL_SetHint')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             implicit none
             character(kind=c_char), intent(in) :: name
             character(kind=c_char), intent(in) :: value
-            integer(kind=c_int)                :: sdl_set_hint_
+            integer(kind=sdl_bool)             :: sdl_set_hint_
         end function sdl_set_hint_
 
         ! int SDL_SetRelativeMouseMode(SDL_bool enabled)
         function sdl_set_relative_mouse_mode(enabled) bind(c, name='SDL_SetRelativeMouseMode')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             integer(kind=c_int), intent(in), value :: enabled
-            integer(kind=c_int)                    :: sdl_set_relative_mouse_mode
+            integer(kind=sdl_bool)                 :: sdl_set_relative_mouse_mode
         end function sdl_set_relative_mouse_mode
 
         ! int SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode)
@@ -2040,10 +2055,11 @@ module sdl2
         ! void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
         subroutine sdl_set_window_resizable(window, resizable) bind(c, name='SDL_SetWindowResizable')
             use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
             use :: sdl2_types
             implicit none
-            type(c_ptr),         intent(in), value :: window
-            integer(kind=c_int), intent(in), value :: resizable
+            type(c_ptr),            intent(in), value :: window
+            integer(kind=sdl_bool), intent(in), value :: resizable
         end subroutine sdl_set_window_resizable
 
         ! void SDL_SetWindowSize(SDL_Window *window, int w, int h)
