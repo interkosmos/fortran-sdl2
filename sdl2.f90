@@ -1170,6 +1170,8 @@ module sdl2
     public :: sdl_get_version
     public :: sdl_get_video_driver
     public :: sdl_get_window_id
+    public :: sdl_get_window_maximum_size
+    public :: sdl_get_window_minimum_size
     public :: sdl_get_window_position
     public :: sdl_get_window_size
     public :: sdl_get_window_surface
@@ -1189,16 +1191,24 @@ module sdl2
     public :: sdl_load_bmp
     public :: sdl_load_bmp_rw
     public :: sdl_map_rgb
+    public :: sdl_maximize_window
+    public :: sdl_minimize_window
     public :: sdl_poll_event
     public :: sdl_pump_events
     public :: sdl_query_texture
     public :: sdl_quit
+    public :: sdl_raise_window
+    public :: sdl_restore_window
     public :: sdl_render_clear
     public :: sdl_render_copy
     public :: sdl_render_draw_line
+    public :: sdl_render_draw_lines
     public :: sdl_render_draw_point
+    public :: sdl_render_draw_points
     public :: sdl_render_draw_rect
+    public :: sdl_render_draw_rects
     public :: sdl_render_fill_rect
+    public :: sdl_render_fill_rects
     public :: sdl_render_present
     public :: sdl_rw_from_file
     public :: sdl_set_clip_rect
@@ -1209,9 +1219,17 @@ module sdl2
     public :: sdl_set_render_draw_color
     public :: sdl_set_render_target
     public :: sdl_set_texture_color_mod
+    public :: sdl_set_window_fullscreen
     public :: sdl_set_window_icon
+    public :: sdl_set_window_maximum_size
+    public :: sdl_set_window_minimum_size
+    public :: sdl_set_window_position
+    public :: sdl_set_window_resizable
+    public :: sdl_set_window_size
+    public :: sdl_set_window_title
     public :: sdl_show_cursor
     public :: sdl_show_simple_message_box
+    public :: sdl_show_window
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
@@ -1583,6 +1601,17 @@ module sdl2
             integer(kind=c_int)                    :: sdl_render_draw_line
         end function sdl_render_draw_line
 
+        ! int SDL_RenderDrawLines(SDL_Renderer *renderer, const SDL_Point *points, int count)
+        function sdl_render_draw_lines(renderer, points, count) bind(c, name='SDL_RenderDrawLines')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            type(sdl_point),     intent(in)        :: points(:)
+            integer(kind=c_int), intent(in), value :: count
+            integer(kind=c_int)                    :: sdl_render_draw_lines
+        end function sdl_render_draw_lines
+
         ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, int x, int y)
         function sdl_render_draw_point(renderer, x, y) bind(c, name='SDL_RenderDrawPoint')
             use, intrinsic :: iso_c_binding
@@ -1592,6 +1621,17 @@ module sdl2
             integer(kind=c_int), intent(in), value :: y
             integer(kind=c_int)                    :: sdl_render_draw_point
         end function sdl_render_draw_point
+
+      ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, const SDL_Point *points, int count)
+        function sdl_render_draw_points(renderer, points, count) bind(c, name='SDL_RenderDrawPoints')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            type(sdl_point),     intent(in)        :: points(:)
+            integer(kind=c_int), intent(in), value :: count
+            integer(kind=c_int)                    :: sdl_render_draw_points
+        end function sdl_render_draw_points
 
         ! int SDL_RenderDrawRect(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_draw_rect(renderer, rect) bind(c, name='SDL_RenderDrawRect')
@@ -1603,6 +1643,17 @@ module sdl2
             integer(kind=c_int)               :: sdl_render_draw_rect
         end function sdl_render_draw_rect
 
+        ! int SDL_RenderDrawRects(SDL_Renderer *renderer, const SDL_Rect *rects, int count)
+        function sdl_render_draw_rects(renderer, rects, count) bind(c, name='SDL_RenderDrawRects')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            type(sdl_rect),      intent(in)        :: rects(:)
+            integer(kind=c_int), intent(in), value :: count
+            integer(kind=c_int)                    :: sdl_render_draw_rects
+        end function sdl_render_draw_rects
+
         ! int SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_fill_rect(renderer, rect) bind(c, name='SDL_RenderFillRect')
             use, intrinsic :: iso_c_binding
@@ -1612,6 +1663,17 @@ module sdl2
             type(sdl_rect), intent(in)        :: rect
             integer(kind=c_int)               :: sdl_render_fill_rect
         end function sdl_render_fill_rect
+
+        ! int SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_Rect *rects, int count)
+        function sdl_render_fill_rects(renderer, rects, count) bind(c, name='SDL_RenderFillRects')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            type(sdl_rect),      intent(in)        :: rects(:)
+            integer(kind=c_int), intent(in), value :: count
+            integer(kind=c_int)                    :: sdl_render_fill_rects
+        end function sdl_render_fill_rects
 
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
@@ -1693,6 +1755,16 @@ module sdl2
             integer(kind=c_uint16_t), intent(in), value :: b
             integer(kind=c_int)                         :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
+
+        ! int SDL_SetWindowFullscreen(SDL_Window* window, Uint32 flags)
+        function sdl_set_window_fullscreen(window, flags) bind(c, name='SDL_SetWindowFullscreen')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            type(c_ptr),              intent(in), value :: window
+            integer(kind=c_uint32_t), intent(in), value :: flags
+            integer(kind=c_int)                         :: sdl_set_window_fullscreen
+        end function sdl_set_window_fullscreen
 
         ! int SDL_ShowCursor(int toggle)
         function sdl_show_cursor(toggle) bind(c, name='SDL_ShowCursor')
@@ -1800,6 +1872,24 @@ module sdl2
             type(sdl_version), intent(in out) :: ver
         end subroutine sdl_get_version
 
+        ! void SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h)
+        subroutine sdl_get_window_maximum_size(window, w, h) bind(c, name='SDL_GetWindowMaximumSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in out)    :: w
+            integer(kind=c_int), intent(in out)    :: h
+        end subroutine sdl_get_window_maximum_size
+
+        ! void SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h)
+        subroutine sdl_get_window_minimum_size(window, w, h) bind(c, name='SDL_GetWindowMinimumSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in out)    :: w
+            integer(kind=c_int), intent(in out)    :: h
+        end subroutine sdl_get_window_minimum_size
+
         ! void SDL_GetWindowPosition(SDL_Window *window, int *x, int *y)
         subroutine sdl_get_window_position(window, x, y) bind(c, name='SDL_GetWindowPosition')
             use, intrinsic :: iso_c_binding
@@ -1818,9 +1908,30 @@ module sdl2
             integer(kind=c_int), intent(in out)    :: h
         end subroutine sdl_get_window_size
 
+        ! void SDL_MaximizeWindow(SDL_Window *window)
+        subroutine sdl_maximize_window(window) bind(c, name='SDL_MaximizeWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_maximize_window
+
+        ! void SDL_MinimizeWindow(SDL_Window *window)
+        subroutine sdl_minimize_window(window) bind(c, name='SDL_MinimizeWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_minimize_window
+
         ! void SDL_PumpEvents(void)
         subroutine sdl_pump_events() bind(c, name='SDL_PumpEvents')
         end subroutine sdl_pump_events
+
+        ! void SDL_RaiseWindow(SDL_Window *window)
+        subroutine sdl_raise_window(window) bind(c, name='SDL_RaiseWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_raise_window
 
         ! void SDL_RenderPresent(SDL_Renderer *renderer)
         subroutine sdl_render_present(renderer) bind(c, name='SDL_RenderPresent')
@@ -1828,6 +1939,13 @@ module sdl2
             implicit none
             type(c_ptr), intent(in), value :: renderer
         end subroutine sdl_render_present
+
+        ! void SDL_RestoreWindow(SDL_Window *window)
+        subroutine sdl_restore_window(window) bind(c, name='SDL_RestoreWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_restore_window
 
         ! void SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon)
         subroutine sdl_set_window_icon(window, icon) bind(c, name='SDL_SetWindowIcon')
@@ -1838,12 +1956,64 @@ module sdl2
             type(sdl_surface), intent(in)        :: icon
         end subroutine sdl_set_window_icon
 
+        ! void SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h)
+        subroutine sdl_set_window_maximum_size(window, max_w, max_h) bind(c, name='SDL_SetWindowMaximumSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: max_w
+            integer(kind=c_int), intent(in), value :: max_h
+        end subroutine sdl_set_window_maximum_size
+
+        ! void SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h)
+        subroutine sdl_set_window_minimum_size(window, min_w, min_h) bind(c, name='SDL_SetWindowMinimumSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: min_w
+            integer(kind=c_int), intent(in), value :: min_h
+        end subroutine sdl_set_window_minimum_size
+
+        ! void SDL_SetWindowPosition(SDL_Window *window, int x, int y)
+        subroutine sdl_set_window_position(window, x, y) bind(c, name='SDL_SetWindowPosition')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: x
+            integer(kind=c_int), intent(in), value :: y
+        end subroutine sdl_set_window_position
+
+        ! void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
+        subroutine sdl_set_window_resizable(window, resizable) bind(c, name='SDL_SetWindowResizable')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: resizable
+        end subroutine sdl_set_window_resizable
+
+        ! void SDL_SetWindowSize(SDL_Window *window, int w, int h)
+        subroutine sdl_set_window_size(window, x, y) bind(c, name='SDL_SetWindowSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr),         intent(in), value :: window
+            integer(kind=c_int), intent(in), value :: x
+            integer(kind=c_int), intent(in), value :: y
+        end subroutine sdl_set_window_size
+
         ! void SDL_SetWindowTitle(SDL_Window *window, const char *title)
         subroutine sdl_set_window_title(window, title) bind(c, name='SDL_SetWindowTitle')
             use, intrinsic :: iso_c_binding
             type(c_ptr),            intent(in), value :: window
             character(kind=c_char), intent(in)        :: title
         end subroutine sdl_set_window_title
+
+        ! void SDL_ShowWindow(SDL_Window *window)
+        subroutine sdl_show_window(window) bind(c, name='SDL_ShowWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_show_window
 
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')
