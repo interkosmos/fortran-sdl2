@@ -19,7 +19,7 @@ program main
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: surface
     type(sdl_pixel_format), pointer :: pixel_format
-    type(sdl_rect),         target  :: rects(2)
+    type(sdl_rect)                  :: rects(2)
     integer                         :: rc
     integer                         :: color
 
