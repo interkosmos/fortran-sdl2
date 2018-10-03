@@ -56,7 +56,7 @@ Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
 ## Examples
 Some demo applications are provided in directory `examples/`.
 
-* **window** opens a  window and fills a rectangle (software renderer).
+* **window** opens a window and fills rectangles (software renderer).
 * **image** loads and displays an image (software renderer).
 * **events** polls SDL events (software renderer).
 * **scaling** displays a scaled image (software renderer).
@@ -154,7 +154,7 @@ SDL_EnableScreenSaver                 |   –   |
 SDL_EnclosePoints                     |   –   |
 SDL_EventState                        |   –   |
 SDL_FillRect                          |   ✓   |
-SDL_FillRects                         |   –   |
+SDL_FillRects                         |   ✓   |
 SDL_FilterEvents                      |   –   |
 SDL_FlushEvent                        |   –   |
 SDL_FlushEvents                       |   –   |
@@ -456,7 +456,7 @@ SDL_RegisterEvents                    |   –   |
 SDL_RemoveTimer                       |   –   |
 SDL_RenderClear                       |   ✓   |
 SDL_RenderCopy                        |   ✓   |
-SDL_RenderCopyEx                      |   –   |
+SDL_RenderCopyEx                      |   ✓   |
 SDL_RenderDrawLine                    |   ✓   |
 SDL_RenderDrawLines                   |   ✓   |
 SDL_RenderDrawPoint                   |   ✓   |

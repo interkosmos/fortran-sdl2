@@ -1,8 +1,7 @@
 ! window.f90
 !
-! Shows an SDL 2 window and fills a rectangle in it, using the
-! software renderer. Example is taken from:
-! http://lazyfoo.net/tutorials/SDL/01_hello_SDL/index2.php
+! Shows an SDL 2 window and fills two rectangles in it, using the
+! software renderer.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -20,14 +19,19 @@ program main
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: surface
     type(sdl_pixel_format), pointer :: pixel_format
-    type(sdl_rect)                  :: rect
+    type(sdl_rect),         target  :: rects(2)
     integer                         :: rc
     integer                         :: color
 
-    rect%x = 100
-    rect%y = 100
-    rect%w = 200
-    rect%h = 100
+    rects(1)%x = 100
+    rects(1)%y = 100
+    rects(1)%w = 200
+    rects(1)%h = 100
+
+    rects(2)%x = 150
+    rects(2)%y = 150
+    rects(2)%w = 200
+    rects(2)%h = 100
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -58,7 +62,7 @@ program main
     color = sdl_map_rgb(pixel_format, int(255, 2), int(0, 2), int(0, 2))
 
     ! Draw and update.
-    rc = sdl_fill_rect(surface, rect, color)
+    rc = sdl_fill_rects(surface, rects, 2, color)
     rc = sdl_update_window_surface(window)
 
     call sdl_delay(3000)

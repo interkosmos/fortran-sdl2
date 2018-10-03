@@ -1152,6 +1152,7 @@ module sdl2
     public :: sdl_destroy_texture
     public :: sdl_destroy_window
     public :: sdl_fill_rect
+    public :: sdl_fill_rects
     public :: sdl_free
     public :: sdl_free_surface
     public :: sdl_get_audio_driver
@@ -1204,6 +1205,7 @@ module sdl2
     public :: sdl_restore_window
     public :: sdl_render_clear
     public :: sdl_render_copy
+    public :: sdl_render_copy_ex
     public :: sdl_render_draw_line
     public :: sdl_render_draw_lines
     public :: sdl_render_draw_point
@@ -1300,6 +1302,19 @@ module sdl2
             integer(kind=c_uint32_t), intent(in), value :: color
             integer(kind=c_int)                         :: sdl_fill_rect
         end function sdl_fill_rect
+
+        ! int SDL_FillRects(SDL_Surface* dst, const SDL_Rect* rects, int count, Uint32 color)
+        function sdl_fill_rects(dst, rects, count, color) bind(c, name='SDL_FillRects')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface),        intent(in)        :: dst
+            type(sdl_rect),           intent(in)        :: rects(*)
+            integer(kind=c_int),      intent(in), value :: count
+            integer(kind=c_uint32_t), intent(in), value :: color
+            integer(kind=c_int)                         :: sdl_fill_rects
+        end function sdl_fill_rects
 
         ! const char *SDL_GetAudioDriver(int index)
         function sdl_get_audio_driver_(index) bind(c, name='SDL_GetAudioDriver')
@@ -1606,6 +1621,21 @@ module sdl2
             integer(kind=c_int)               :: sdl_render_copy
         end function sdl_render_copy
 
+        ! int SDL_RenderCopyEx(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect, const double angle, const SDL_Point *center, const SDL_RendererFlip flip)
+        function sdl_render_copy_ex(renderer, texture, src_rect, dst_rect, angle, center, flip) bind(c, name='SDL_RenderCopyEx')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),         intent(in), value :: renderer
+            type(c_ptr),         intent(in), value :: texture
+            type(sdl_rect),      intent(in)        :: src_rect
+            type(sdl_rect),      intent(in)        :: dst_rect
+            real(kind=c_double), intent(in), value :: angle
+            type(sdl_point),     intent(in)        :: center
+            integer(kind=c_int), intent(in), value :: flip
+            integer(kind=c_int)                    :: sdl_render_copy_ex
+        end function sdl_render_copy_ex
+
         ! int SDL_RenderDrawLine(SDL_Renderer *renderer, int x1, int y1, int x2, int y2)
         function sdl_render_draw_line(renderer, x1, y1, x2, y2) bind(c, name='SDL_RenderDrawLine')
             use, intrinsic :: iso_c_binding
@@ -1666,7 +1696,7 @@ module sdl2
             use :: sdl2_types
             implicit none
             type(c_ptr),         intent(in), value :: renderer
-            type(sdl_rect),      intent(in)        :: rects(:)
+            type(sdl_rect),      intent(in)        :: rects(*)
             integer(kind=c_int), intent(in), value :: count
             integer(kind=c_int)                    :: sdl_render_draw_rects
         end function sdl_render_draw_rects
@@ -1687,7 +1717,7 @@ module sdl2
             use :: sdl2_types
             implicit none
             type(c_ptr),         intent(in), value :: renderer
-            type(sdl_rect),      intent(in)        :: rects(:)
+            type(sdl_rect),      intent(in)        :: rects(*)
             integer(kind=c_int), intent(in), value :: count
             integer(kind=c_int)                    :: sdl_render_fill_rects
         end function sdl_render_fill_rects
@@ -1773,7 +1803,7 @@ module sdl2
             integer(kind=c_int)                         :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
 
-        ! int SDL_SetWindowFullscreen(SDL_Window* window, Uint32 flags)
+        ! int SDL_SetWindowFullscreen(SDL_Window *window, Uint32 flags)
         function sdl_set_window_fullscreen(window, flags) bind(c, name='SDL_SetWindowFullscreen')
             use, intrinsic :: iso_c_binding
             use :: sdl2_consts
