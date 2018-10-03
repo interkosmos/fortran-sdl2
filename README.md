@@ -209,8 +209,8 @@ SDL_GetAudioDeviceName                |   –   |
 SDL_GetAudioDeviceStatus              |   –   |
 SDL_GetAudioDriver                    |   ✓   |
 SDL_GetAudioStatus                    |   –   |
-SDL_GetBasePath                       |   –   |
-SDL_GetCPUCacheLineSize               |   –   |
+SDL_GetBasePath                       |   ✓   |
+SDL_GetCPUCacheLineSize               |   ✓   |
 SDL_GetCPUCount                       |   ✓   |
 SDL_GetClipRect                       |   –   |
 SDL_GetClipboardText                  |   –   |

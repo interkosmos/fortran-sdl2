@@ -1152,8 +1152,11 @@ module sdl2
     public :: sdl_destroy_texture
     public :: sdl_destroy_window
     public :: sdl_fill_rect
+    public :: sdl_free
     public :: sdl_free_surface
     public :: sdl_get_audio_driver
+    public :: sdl_get_base_path
+    public :: sdl_get_cpu_cache_line_size
     public :: sdl_get_cpu_count
     public :: sdl_get_current_audio_driver
     public :: sdl_get_current_video_driver
@@ -1305,6 +1308,20 @@ module sdl2
             integer(kind=c_int), intent(in) :: index
             type(c_ptr)                     :: sdl_get_audio_driver_
         end function sdl_get_audio_driver_
+
+        ! char *SDL_GetBasePath(void)
+        function sdl_get_base_path_() bind(c, name='SDL_GetBasePath')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr) :: sdl_get_base_path_
+        end function sdl_get_base_path_
+
+        ! int SDL_GetCPUCacheLineSize(void)
+        function sdl_get_cpu_cache_line_size() bind(c, name='SDL_GetCPUCacheLineSize')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            integer(kind=c_int) :: sdl_get_cpu_cache_line_size
+        end function sdl_get_cpu_cache_line_size
 
         ! int SDL_GetCPUCount(void)
         function sdl_get_cpu_count() bind(c, name='SDL_GetCPUCount')
@@ -1856,6 +1873,13 @@ module sdl2
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_destroy_window
 
+        ! void free(void *ptr);
+        subroutine sdl_free(ptr) bind(c, name='free')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), value, intent(in) :: ptr
+        end subroutine sdl_free
+
         ! void SDL_FreeSurface(SDL_Surface *surface)
         subroutine sdl_free_surface(surface) bind(c, name='SDL_FreeSurface')
             use, intrinsic :: iso_c_binding
@@ -2126,6 +2150,26 @@ module sdl2
             call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
             call c_f_string_chars(ptrs, sdl_get_audio_driver)
         end function sdl_get_audio_driver
+
+        ! char *SDL_GetBasePath(void)
+        function sdl_get_base_path()
+            !! Calls `sdl_get_base_path_()` and converts the returned
+            !! C char pointer to Fortran character.
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr)                     :: ptr
+            character(kind=c_char), pointer :: ptrs(:)
+            character(len=100)              :: sdl_get_base_path
+
+            ptr = sdl_get_base_path_()
+
+            if (.not. c_associated(ptr)) &
+                return
+
+            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_base_path)])
+            call c_f_string_chars(ptrs, sdl_get_base_path)
+            call sdl_free(ptr)
+        end function sdl_get_base_path
 
         ! const char *SDL_GetCurrentAudioDriver(void)
         function sdl_get_current_audio_driver()
