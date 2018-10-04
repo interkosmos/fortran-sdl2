@@ -1192,6 +1192,7 @@ module sdl2
     public :: sdl_has_sse3
     public :: sdl_has_sse41
     public :: sdl_has_sse42
+    public :: sdl_hide_window
     public :: sdl_init
     public :: sdl_load_bmp
     public :: sdl_load_bmp_rw
@@ -1976,6 +1977,13 @@ module sdl2
             integer(kind=c_int), intent(in out)    :: w
             integer(kind=c_int), intent(in out)    :: h
         end subroutine sdl_get_window_size
+
+        ! void SDL_HideWindow(SDL_Window *window)
+        subroutine sdl_hide_window(window) bind(c, name='SDL_HideWindow')
+            use, intrinsic :: iso_c_binding
+            implicit none
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_hide_window
 
         ! void SDL_MaximizeWindow(SDL_Window *window)
         subroutine sdl_maximize_window(window) bind(c, name='SDL_MaximizeWindow')

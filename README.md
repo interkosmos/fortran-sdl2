@@ -10,8 +10,8 @@ SDL_image | 2.0.2
 SDL_mixer | 2.0.1_1
 SDL_ttf   | 2.0.14_1
 
-Compilation has been tested with GNU Fortran 7/8, but other modern compilers
-should work to.
+The interfaces have been build successfully with GNU Fortran 7/8, but other
+modern compilers should work to.
 
 ## Build the SDL 2 interfaces
 Clone the repository and then use GNU make to build the SDL2 interface:
@@ -53,19 +53,105 @@ $ make sdl2_ttf
 ```
 Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
 
-## Examples
+## Example
+An example that shows how to fill a rectangle, using the hardware renderer.
+```
+! example.f90
+program main
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
+    use :: sdl2
+    use :: sdl2_consts
+    use :: sdl2_types
+    implicit none
+
+    integer, parameter :: WIDTH  = 640
+    integer, parameter :: HEIGHT = 480
+
+    type(c_ptr)     :: window
+    type(c_ptr)     :: renderer
+    type(sdl_event) :: event
+    type(sdl_rect)  :: rect
+    integer         :: rc
+
+    ! Initialise SDL.
+    rc = sdl_init(SDL_INIT_VIDEO)
+
+    if (rc < 0) then
+        print *, 'SDL Error: ', sdl_get_error()
+        stop
+    end if
+
+    ! Create the SDL window.
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               SDL_WINDOWPOS_UNDEFINED, &
+                               WIDTH, &
+                               HEIGHT, &
+                               SDL_WINDOW_SHOWN)
+
+    if (.not. c_associated(window)) then
+        print *, 'SDL Error: ', sdl_get_error()
+        stop
+    end if
+
+    ! The rectangle.
+    rect%x = 50
+    rect%y = 50
+    rect%w = 250
+    rect%h = 250
+
+    ! Create the renderer.
+    renderer = sdl_create_renderer(window, -1, 0)
+
+    do while (.true.)
+        rc = sdl_poll_event(event)
+
+        if (rc > 0) then
+            select case (event%type)
+                case (SDL_QUITEVENT)
+                    exit
+            end select
+        end if
+
+        ! Clear screen.
+        rc = sdl_set_render_draw_color(renderer, int(0, 2), int(0, 2), int(0, 2), int(255, 2))
+        rc = sdl_render_clear(renderer)
+
+        ! Fill a rectangle.
+        rc = sdl_set_render_draw_color(renderer, int(127, 2), int(255, 2), int(0, 2), int(255, 2))
+        rc = sdl_render_fill_rect(renderer, rect)
+
+        ! Do render.
+        call sdl_render_present(renderer)
+        call sdl_delay(20)
+    end do
+
+    ! Quit gracefully.
+    call sdl_destroy_renderer(renderer)
+    call sdl_destroy_window(window)
+    call sdl_quit()
+end program main
+```
+
+Compile it with:
+```
+$ gfortran8 -Wall -Wl,-rpath=/usr/local/lib/gcc8/ `sdl2-config --cflags` \
+  -o example example.f90 sdl2.o `sdl2-config --libs`
+```
+
+## Further examples
 Some demo applications are provided in directory `examples/`.
 
-* **window** opens a window and fills rectangles (software renderer).
-* **image** loads and displays an image (software renderer).
-* **events** polls SDL events (software renderer).
-* **scaling** displays a scaled image (software renderer).
 * **alpha** makes one color of an image transparent (software renderer).
 * **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
-* **music** plays an OGG file with SDL_mixer (software renderer).
-* **text** outputs text with SDL_ttf (hardware renderer).
 * **draw** draws some shapes (hardware renderer).
+* **events** polls SDL events (software renderer).
+* **image** loads and displays an image (software renderer).
 * **msgbox** shows a simple message box (software renderer).
+* **music** plays an OGG file with SDL_mixer (software renderer).
+* **scaling** displays a scaled image (software renderer).
+* **text** outputs text with SDL_ttf (hardware renderer).
+* **window** opens a window and fills rectangles (software renderer).
 
 Build the examples with:
 ```

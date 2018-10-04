@@ -18,16 +18,16 @@ program main
     integer,          parameter :: HEIGHT    = 480
     character(len=*), parameter :: FILE_NAME = 'examples/scaling/wall.bmp'
 
-    type(c_ptr)                          :: window
-    type(sdl_surface),      pointer      :: window_surface
-    type(sdl_surface),      pointer      :: image_loaded
-    type(sdl_surface),      pointer      :: image_optimised
-    type(sdl_pixel_format), pointer      :: pixel_format
-    type(sdl_rect)                       :: window_rect
-    type(sdl_rect)                       :: image_rect
-    type(sdl_event)                      :: event
-    integer                              :: rc
-    logical                              :: done = .false.
+    type(c_ptr)                     :: window
+    type(sdl_surface),      pointer :: window_surface
+    type(sdl_surface),      pointer :: image_loaded
+    type(sdl_surface),      pointer :: image_optimised
+    type(sdl_pixel_format), pointer :: pixel_format
+    type(sdl_rect)                  :: window_rect
+    type(sdl_rect)                  :: image_rect
+    type(sdl_event)                 :: event
+    integer                         :: rc
+    logical                         :: done = .false.
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)

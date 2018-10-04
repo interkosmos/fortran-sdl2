@@ -1,7 +1,7 @@
 FC          = gfortran8
 SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDFLAGS = `sdl2-config --libs`
-CFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2008 $(SDL_CFLAGS)
+CFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2003 $(SDL_CFLAGS)
 LDFLAGS     = $(SDL_LDFLAGS)
 EXAMPLES    = examples
 
@@ -14,16 +14,16 @@ MIX_OBJ = sdl2_mixer.o
 TTF_SRC = sdl2_ttf.f90
 TTF_OBJ = sdl2_ttf.o
 
-WINDOW  = window
-IMAGE   = image
-EVENTS  = events
-SCALING = scaling
 ALPHA   = alpha
 BOUNCE  = bounce
-MUSIC   = music
-TEXT    = text
 DRAW    = draw
+EVENTS  = events
+IMAGE   = image
 MSGBOX  = msgbox
+MUSIC   = music
+SCALING = scaling
+TEXT    = text
+WINDOW  = window
 
 .PHONY: all clean
 
@@ -85,13 +85,13 @@ clean:
 	if [ -e $(IMG_OBJ) ]; then rm $(IMG_OBJ); fi
 	if [ -e $(MIX_OBJ) ]; then rm $(MIX_OBJ); fi
 	if [ -e $(TTF_OBJ) ]; then rm $(TTF_OBJ); fi
-	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi
-	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
-	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
-	if [ -e $(SCALING) ]; then rm $(SCALING); fi
 	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
 	if [ -e $(BOUNCE) ]; then rm $(BOUNCE); fi
-	if [ -e $(MUSIC) ]; then rm $(MUSIC); fi
-	if [ -e $(TEXT) ]; then rm $(TEXT); fi
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
+	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
+	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
+	if [ -e $(MUSIC) ]; then rm $(MUSIC); fi
+	if [ -e $(SCALING) ]; then rm $(SCALING); fi
+	if [ -e $(TEXT) ]; then rm $(TEXT); fi
+	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi
