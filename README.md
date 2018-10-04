@@ -55,7 +55,7 @@ Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
-```
+```fortran
 ! example.f90
 program main
     use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
