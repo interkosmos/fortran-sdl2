@@ -429,7 +429,7 @@ SDL_HasSSE3                           |   ✓   |
 SDL_HasSSE41                          |   ✓   |
 SDL_HasSSE42                          |   ✓   |
 SDL_HasScreenKeyboardSupport          |   –   |
-SDL_HideWindow                        |   –   |
+SDL_HideWindow                        |   ✓   |
 SDL_Init                              |   ✓   |
 SDL_InitSubSystem                     |   –   |
 SDL_IntersectRect                     |   –   |
