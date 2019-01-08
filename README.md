@@ -5,13 +5,13 @@ against:
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.7
+SDL       | 2.0.9_2
 SDL_image | 2.0.2
 SDL_mixer | 2.0.1_1
 SDL_ttf   | 2.0.14_1
 
 The interfaces have been build successfully with GNU Fortran 7/8, but other
-modern compilers should work to.
+modern compilers should work, too.
 
 ## Build the SDL 2 interfaces
 Clone the repository and then use GNU make to build the SDL2 interface:
@@ -29,8 +29,8 @@ Or just run your favourite Fortran compiler directly:
 ```
 $ gfortran -c sdl2.f90
 ```
-On FreeBSD, you may have to modify the `-Wl,-rpath` parameter in `CFLAGS`
-according to your compiler.
+On FreeBSD, you may have to modify the `Makefile`: change the `-Wl,-rpath`
+parameter in `CFLAGS` according to your compiler.
 
 ### SDL2_image
 Build the SDL2_image interface with:
@@ -114,14 +114,22 @@ program main
         end if
 
         ! Clear screen.
-        rc = sdl_set_render_draw_color(renderer, int(0, 2), int(0, 2), int(0, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(0, 2), &
+                                       int(0, 2), &
+                                       int(0, 2), &
+                                       int(255, 2))
         rc = sdl_render_clear(renderer)
 
         ! Fill a rectangle.
-        rc = sdl_set_render_draw_color(renderer, int(127, 2), int(255, 2), int(0, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(127, 2), &
+                                       int(255, 2), &
+                                       int(0, 2), &
+                                       int(255, 2))
         rc = sdl_render_fill_rect(renderer, rect)
 
-        ! Do render.
+        ! Render to screen.
         call sdl_render_present(renderer)
         call sdl_delay(20)
     end do
@@ -339,7 +347,7 @@ SDL_GetPlatform                       |   ✓   |
 SDL_GetPowerInfo                      |   –   |
 SDL_GetPrefPath                       |   –   |
 SDL_GetQueuedAudioSize                |   –   |
-SDL_GetRGB                            |   –   |
+SDL_GetRGB                            |   ✓   |
 SDL_GetRGBA                           |   –   |
 SDL_GetRelativeMouseMode              |   –   |
 SDL_GetRelativeMouseState             |   –   |

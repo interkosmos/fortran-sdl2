@@ -1170,6 +1170,7 @@ module sdl2
     public :: sdl_get_pixel_format
     public :: sdl_get_platform
     public :: sdl_get_render_target
+    public :: sdl_get_rgb
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
     public :: sdl_get_version
@@ -1934,7 +1935,19 @@ module sdl2
             type(sdl_surface), intent(in) :: surface
         end subroutine sdl_free_surface
 
-        ! void SDLCALL SDL_GetVersion(SDL_version *ver)
+        ! void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b)
+        subroutine sdl_get_rgb(pixel, format, r, g, b) bind(c, name='SDL_GetRGB')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            integer(kind=c_uint32_t), intent(in), value :: pixel
+            type(c_ptr),              intent(in), value :: format
+            integer(kind=c_uint8_t),  intent(in out)    :: r
+            integer(kind=c_uint8_t),  intent(in out)    :: g
+            integer(kind=c_uint8_t),  intent(in out)    :: b
+        end subroutine sdl_get_rgb
+
+        ! void SDL_GetVersion(SDL_version *ver)
         subroutine sdl_get_version(ver) bind(c, name='SDL_GetVersion')
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
