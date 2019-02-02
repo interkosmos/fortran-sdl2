@@ -68,39 +68,40 @@ module sdl2_ttf
         end subroutine ttf_quit
     end interface
 
-    contains
-        ! SDL_Surface *TTF_RenderText_Shaded(TTF_Font *font, const char *text, SDL_Color fg, SDL_Color bg)
-        function ttf_render_text_shaded(font, text, fg, bg)
-            !! Calls `ttf_render_text_shaded_()` and converts the returned
-            !! C pointer to derived type `sdl_surface`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(c_ptr),            intent(in) :: font
-            character(kind=c_char), intent(in) :: text
-            type(sdl_color),        intent(in) :: fg
-            type(sdl_color),        intent(in) :: bg
-            type(sdl_surface),      pointer    :: ttf_render_text_shaded
-            type(c_ptr)                        :: ptr
+contains
 
-            ptr = ttf_render_text_shaded_(font, text, fg, bg)
-            call c_f_pointer(ptr, ttf_render_text_shaded)
-        end function ttf_render_text_shaded
+    ! SDL_Surface *TTF_RenderText_Shaded(TTF_Font *font, const char *text, SDL_Color fg, SDL_Color bg)
+    function ttf_render_text_shaded(font, text, fg, bg)
+        !! Calls `ttf_render_text_shaded_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(c_ptr),            intent(in) :: font
+        character(kind=c_char), intent(in) :: text
+        type(sdl_color),        intent(in) :: fg
+        type(sdl_color),        intent(in) :: bg
+        type(sdl_surface),      pointer    :: ttf_render_text_shaded
+        type(c_ptr)                        :: ptr
 
-        ! SDL_Surface *TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color fg)
-        function ttf_render_text_solid(font, text, fg)
-            !! Calls `ttf_render_text_solid_()` and converts the returned
-            !! C pointer to derived type `sdl_surface`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(c_ptr),            intent(in) :: font
-            character(kind=c_char), intent(in) :: text
-            type(sdl_color),        intent(in) :: fg
-            type(sdl_surface),      pointer    :: ttf_render_text_solid
-            type(c_ptr)                        :: ptr
+        ptr = ttf_render_text_shaded_(font, text, fg, bg)
+        call c_f_pointer(ptr, ttf_render_text_shaded)
+    end function ttf_render_text_shaded
 
-            ptr = ttf_render_text_solid_(font, text, fg)
-            call c_f_pointer(ptr, ttf_render_text_solid)
-        end function ttf_render_text_solid
+    ! SDL_Surface *TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color fg)
+    function ttf_render_text_solid(font, text, fg)
+        !! Calls `ttf_render_text_solid_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(c_ptr),            intent(in) :: font
+        character(kind=c_char), intent(in) :: text
+        type(sdl_color),        intent(in) :: fg
+        type(sdl_surface),      pointer    :: ttf_render_text_solid
+        type(c_ptr)                        :: ptr
+
+        ptr = ttf_render_text_solid_(font, text, fg)
+        call c_f_pointer(ptr, ttf_render_text_solid)
+    end function ttf_render_text_solid
 end module sdl2_ttf

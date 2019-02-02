@@ -91,8 +91,8 @@ program main
             dx = -1
         end if
 
-       ! Bounce vertically.
-       if (dst_rect%y < 0) then
+        ! Bounce vertically.
+        if (dst_rect%y < 0) then
             dst_rect%y = 0
             dy = 1
         else if (dst_rect%y + texture_height > height) then

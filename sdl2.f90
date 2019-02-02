@@ -2128,450 +2128,450 @@ module sdl2
         end subroutine sdl_warp_mouse_global
     end interface
 
-    contains
-        pure &
-        subroutine c_f_string_chars(c_string, f_string)
-            !! Copies a C string, passed as a char-array reference, to a Fortran
-            !! string.
-            use, intrinsic :: iso_c_binding, only: c_char, c_null_char
-            implicit none
-            character(len=1, kind=c_char), intent(in)  :: c_string(*)
-            character(len=*),              intent(out) :: f_string
-            integer                                    :: i
-
-            i = 1
-
-            do while (c_string(i) /= c_null_char .and. i <= len(f_string))
-                f_string(i:i) = c_string(i)
-                i = i + 1
-            end do
-
-            if (i < len(f_string)) &
-                f_string(i:) = ' '
-        end subroutine c_f_string_chars
-
-        ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
-        function sdl_blit_scaled(src, src_rect, dst, dst_rect)
-            !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(sdl_surface), intent(in) :: src
-            type(sdl_rect),    intent(in) :: src_rect
-            type(sdl_surface), intent(in) :: dst
-            type(sdl_rect),    intent(in) :: dst_rect
-            integer(kind=c_int)           :: sdl_blit_scaled
-
-            sdl_blit_scaled = sdl_upper_blit_scaled(src, src_rect, dst, dst_rect)
-        end function sdl_blit_scaled
-
-        ! int SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
-        function sdl_blit_surface(src, src_rect, dst, dst_rect)
-            !! Macro for `sdl_upper_blit()`, as defined in `SDL_surface.h`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(sdl_surface), intent(in) :: src
-            type(sdl_rect),    intent(in) :: src_rect
-            type(sdl_surface), intent(in) :: dst
-            type(sdl_rect),    intent(in) :: dst_rect
-            integer(kind=c_int)           :: sdl_blit_surface
-
-            sdl_blit_surface = sdl_upper_blit(src, src_rect, dst, dst_rect)
-        end function sdl_blit_surface
-
-        ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
-        function sdl_convert_surface(src, fmt, flags)
-            !! Calls `sdl_convert_surface_()` and converts the returned
-            !! C pointer to derived type `sdl_surface`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_consts
-            use :: sdl2_types
-            implicit none
-            type(sdl_surface),        intent(in) :: src
-            type(sdl_pixel_format),   intent(in) :: fmt
-            integer(kind=c_uint32_t), intent(in) :: flags
-            type(sdl_surface),        pointer    :: sdl_convert_surface
-            type(c_ptr)                          :: ptr
-
-            ptr = sdl_convert_surface_(src, fmt, flags)
-            call c_f_pointer(ptr, sdl_convert_surface)
-        end function sdl_convert_surface
-
-        ! const char *SDL_GetAudioDriver(int index)
-        function sdl_get_audio_driver(index)
-            !! Calls `sdl_get_audio_driver_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            integer(kind=c_int)             :: index
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            character(len=30)               :: sdl_get_audio_driver
-
-            ptr = sdl_get_audio_driver_(index)
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
-            call c_f_string_chars(ptrs, sdl_get_audio_driver)
-        end function sdl_get_audio_driver
-
-        ! char *SDL_GetBasePath(void)
-        function sdl_get_base_path()
-            !! Calls `sdl_get_base_path_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            character(len=100)              :: sdl_get_base_path
-
-            ptr = sdl_get_base_path_()
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_base_path)])
-            call c_f_string_chars(ptrs, sdl_get_base_path)
-            call sdl_free(ptr)
-        end function sdl_get_base_path
-
-        ! const char *SDL_GetCurrentAudioDriver(void)
-        function sdl_get_current_audio_driver()
-            !! Calls `sdl_get_current_audio_driver_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            character(len=30)               :: sdl_get_current_audio_driver
-
-            ptr = sdl_get_current_audio_driver_()
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_audio_driver)])
-            call c_f_string_chars(ptrs, sdl_get_current_audio_driver)
-        end function sdl_get_current_audio_driver
-
-        ! const char *SDL_GetCurrentVideoDriver(void)
-        function sdl_get_current_video_driver()
-            !! Calls `sdl_get_current_video_driver_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            character(len=30)               :: sdl_get_current_video_driver
-
-            ptr = sdl_get_current_video_driver_()
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_video_driver)])
-            call c_f_string_chars(ptrs, sdl_get_current_video_driver)
-        end function sdl_get_current_video_driver
-
-        ! const char *SDL_GetError(void)
-        function sdl_get_error()
-            !! Calls `sdl_get_error_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(len=100)              :: sdl_get_error
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-
-            ptr = sdl_get_error_()
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_error)])
-            call c_f_string_chars(ptrs, sdl_get_error)
-        end function sdl_get_error
-
-        ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
-        function sdl_get_keyboard_state()
-            !! Calls `sdl_get_keyboard_state_()` and converts the returned
-            !! C pointer to Fortran pointers.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_consts
-            implicit none
-            integer(kind=c_uint8_t), pointer :: sdl_get_keyboard_state(:)
-            type(c_ptr)                      :: ptr
-
-            ptr = sdl_get_keyboard_state_(c_null_ptr)
-            call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
-        end function sdl_get_keyboard_state
-
-        ! const char *SDL_GetHint(const char *name)
-        function sdl_get_hint(name)
-            !! Calls `sdl_get_hint_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(len=*),       intent(in) :: name
-            character(len=100)                 :: sdl_get_hint
-            type(c_ptr)                        :: ptr
-            character(kind=c_char), pointer    :: ptrs(:)
-
-            ptr = sdl_get_hint_(name // c_null_char)
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
-            call c_f_string_chars(ptrs, sdl_get_hint)
-        end function sdl_get_hint
-
-        function sdl_get_pixel_format(surface)
-            !! Converts the `*SDL_PixelFormat` pointer inside `surface`
-            !! to `sdl_pixel_format`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(sdl_surface),      intent(in) :: surface
-            type(sdl_pixel_format), pointer    :: sdl_get_pixel_format
-
-            call c_f_pointer(surface%format, sdl_get_pixel_format)
-        end function
-
-        ! const char *SDL_GetPlatform(void)
-        function sdl_get_platform()
-            !! Calls `sdl_get_platform_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(len=30)                  :: sdl_get_platform
-            type(c_ptr)                        :: ptr
-            character(kind=c_char), pointer    :: ptrs(:)
-
-            ptr = sdl_get_platform_()
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_platform)])
-            call c_f_string_chars(ptrs, sdl_get_platform)
-        end function sdl_get_platform
-
-        ! const char *SDL_GetVideoDriver(int index)
-        function sdl_get_video_driver(index)
-            !! Calls `sdl_get_video_driver_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            integer,                intent(in) :: index
-            type(c_ptr)                        :: ptr
-            character(kind=c_char), pointer    :: ptrs(:)
-            character(len=10)                  :: sdl_get_video_driver
-
-            ptr = sdl_get_video_driver_(index)
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_video_driver)])
-            call c_f_string_chars(ptrs, sdl_get_video_driver)
-        end function sdl_get_video_driver
-
-        ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
-        function sdl_get_window_surface(window)
-            !! Calls `sdl_get_window_surface_()` and converts the returned
-            !! C pointer to derived type `sdl_surface`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            type(c_ptr),       intent(in) :: window
-            type(sdl_surface), pointer    :: sdl_get_window_surface
-            type(c_ptr)                   :: ptr
-
-            ptr = sdl_get_window_surface_(window)
-            call c_f_pointer(ptr, sdl_get_window_surface)
-        end function sdl_get_window_surface
-
-        ! const char *SDL_GetWindowTitle(SDL_Window *window)
-        function sdl_get_window_title(window)
-            !! Calls `sdl_get_window_title_()` and converts the returned
-            !! C char pointer to Fortran character.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            type(c_ptr), intent(in)         :: window
-            type(c_ptr)                     :: ptr
-            character(kind=c_char), pointer :: ptrs(:)
-            character(len=100)              :: sdl_get_window_title
-
-            ptr = sdl_get_window_title_(window)
-
-            if (.not. c_associated(ptr)) &
-                return
-
-            call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_window_title)])
-            call c_f_string_chars(ptrs, sdl_get_window_title)
-        end function sdl_get_window_title
-
-        ! SDL_Surface *SDL_LoadBMP(const char *file)
-        function sdl_load_bmp(file)
-            !! Calls `sdl_load_bmp_rw()` and converts the returned
-            !! C pointer to derived type `sdl_surface`.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
-            implicit none
-            character(kind=c_char), intent(in) :: file
-            type(sdl_surface),      pointer    :: sdl_load_bmp
-            type(c_ptr)                        :: ptr
-
-            ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
-            call c_f_pointer(ptr, sdl_load_bmp)
-        end function sdl_load_bmp
-
-        ! int SDL_PollEvent(SDL_Event *event)
-        function sdl_poll_event(event)
-            !! Calls `sdl_poll_event_()` and transfers the returned
-            !! union to the respective event type.
-            use :: sdl2_consts
-            use :: sdl2_types
-            implicit none
-            type(sdl_event), intent(in out) :: event
-            integer                         :: sdl_poll_event
-
-            sdl_poll_event = sdl_poll_event_(event)
-            call sdl_transfer_event(event)
-        end function sdl_poll_event
-
-        ! SDL_bool SDL_SetHint(const char *name, const char *value)
-        function sdl_set_hint(name, value)
-            !! Adds `c_null_char` to name and value before calling
-            !! `sdl_set_hint_()`.
-            use, intrinsic :: iso_c_binding
-            implicit none
-            character(len=*) :: name
-            character(len=*) :: value
-            integer          :: sdl_set_hint
-
-            sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
-        end function sdl_set_hint
-
-        ! int SDL_WaitEvent(SDL_Event *event)
-        function sdl_wait_event(event)
-            !! Calls `sdl_wait_event_()` and transfers the returned
-            !! union to the respective event type.
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_consts
-            use :: sdl2_types
-            implicit none
-            type(sdl_event), intent(in out) :: event
-            integer                         :: sdl_wait_event
-
-            sdl_wait_event = sdl_wait_event_(event)
-            call sdl_transfer_event(event)
-        end function sdl_wait_event
-
-        subroutine sdl_transfer_event(event)
-            !! Transfers a given event union to the respective event type
-            !! (since there are no unions in Fortran).
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_consts
-            use :: sdl2_types
-            type(sdl_event), intent(in out) :: event
-
-            select case (event%type)
-                ! SDL_WindowEvent
-                case (SDL_WINDOWEVENT)
-                    event%window = transfer(event, event%window)
-
-                ! SDL_KeyboardEvent
-                case (SDL_KEYDOWN : SDL_KEYUP)
-                    event%key = transfer(event, event%key)
-
-                ! SDL_TextEditingEvent
-                case (SDL_TEXTEDITING)
-                    event%edit = transfer(event, event%edit)
-
-                ! SDL_TextInputEvent
-                case (SDL_TEXTINPUT)
-                    event%text = transfer(event, event%text)
-
-                ! SDL_MouseMotionEvent
-                case (SDL_MOUSEMOTION)
-                    event%motion = transfer(event, event%motion)
-
-                ! SDL_MouseButtonEvent
-                case (SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP)
-                    event%button = transfer(event, event%button)
-
-                ! SDL_MouseWheelEvent
-                case (SDL_MOUSEWHEEL)
-                    event%wheel = transfer(event, event%wheel)
-
-                ! SDL_JoyAxisEvent
-                case (SDL_JOYAXISMOTION)
-                    event%j_axis = transfer(event, event%j_axis)
-
-                ! SDL_JoyBallEvent
-                case (SDL_JOYBALLMOTION)
-                    event%j_ball = transfer(event, event%j_ball)
-
-                ! SDL_JoyHatEvent
-                case (SDL_JOYHATMOTION)
-                    event%j_hat = transfer(event, event%j_hat)
-
-                ! SDL_JoyButtonEvent
-                case (SDL_JOYBUTTONDOWN : SDL_JOYBUTTONUP)
-                    event%j_button = transfer(event, event%j_button)
-
-                ! SDL_JoyDeviceEvent
-                case (SDL_JOYDEVICEADDED : SDL_JOYDEVICEREMOVED)
-                    event%j_device = transfer(event, event%j_device)
-
-                ! SDL_ControllerAxisEvent
-                case (SDL_CONTROLLERAXISMOTION)
-                    event%c_axis = transfer(event, event%c_axis)
-
-                ! SDL_ControllerButtonEvent
-                case (SDL_CONTROLLERBUTTONDOWN : SDL_CONTROLLERBUTTONUP)
-                    event%c_button = transfer(event, event%c_button)
-
-                ! SDL_ControllerDeviceEvent
-                case (SDL_CONTROLLERDEVICEADDED : SDL_CONTROLLERDEVICEREMAPPED)
-                    event%c_device = transfer(event, event%c_device)
-
-                ! SDL_AudioDeviceEvent
-                case (SDL_AUDIODEVICEADDED : SDL_AUDIODEVICEREMOVED)
-                    event%a_device = transfer(event, event%a_device)
-
-                ! SDL_QuitEvent
-                case (SDL_QUITEVENT)
-                    event%quit = transfer(event, event%quit)
-
-                ! SDL_UserEvent
-                case (SDL_USEREVENT)
-                    event%user = transfer(event, event%user)
-
-                ! SDL_SysWMEvent
-                case (SDL_SYSWMEVENT)
-                    event%sys_wm = transfer(event, event%sys_wm)
-
-                ! SDL_TouchFingerEvent
-                case (SDL_FINGERDOWN : SDL_FINGERMOTION)
-                    event%t_finger = transfer(event, event%t_finger)
-
-                ! SDL_MultiGestureEvent
-                case (SDL_MULTIGESTURE)
-                    event%m_gesture = transfer(event, event%m_gesture)
-
-                ! SDL_DollarGestureEvent
-                case (SDL_DOLLARGESTURE : SDL_DOLLARRECORD)
-                    event%d_gesture = transfer(event, event%d_gesture)
-
-                ! SDL_DropEvent
-                case (SDL_DROPFILE : SDL_DROPCOMPLETE)
-                    event%drop = transfer(event, event%drop)
-            end select
-        end subroutine sdl_transfer_event
+contains
+
+    pure subroutine c_f_string_chars(c_string, f_string)
+        !! Copies a C string, passed as a char-array reference, to a Fortran
+        !! string.
+        use, intrinsic :: iso_c_binding, only: c_char, c_null_char
+        implicit none
+        character(len=1, kind=c_char), intent(in)  :: c_string(*)
+        character(len=*),              intent(out) :: f_string
+        integer                                    :: i
+
+        i = 1
+
+        do while (c_string(i) /= c_null_char .and. i <= len(f_string))
+            f_string(i:i) = c_string(i)
+            i = i + 1
+        end do
+
+        if (i < len(f_string)) &
+            f_string(i:) = ' '
+    end subroutine c_f_string_chars
+
+    ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
+    function sdl_blit_scaled(src, src_rect, dst, dst_rect)
+        !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(sdl_surface), intent(in) :: src
+        type(sdl_rect),    intent(in) :: src_rect
+        type(sdl_surface), intent(in) :: dst
+        type(sdl_rect),    intent(in) :: dst_rect
+        integer(kind=c_int)           :: sdl_blit_scaled
+
+        sdl_blit_scaled = sdl_upper_blit_scaled(src, src_rect, dst, dst_rect)
+    end function sdl_blit_scaled
+
+    ! int SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
+    function sdl_blit_surface(src, src_rect, dst, dst_rect)
+        !! Macro for `sdl_upper_blit()`, as defined in `SDL_surface.h`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(sdl_surface), intent(in) :: src
+        type(sdl_rect),    intent(in) :: src_rect
+        type(sdl_surface), intent(in) :: dst
+        type(sdl_rect),    intent(in) :: dst_rect
+        integer(kind=c_int)           :: sdl_blit_surface
+
+        sdl_blit_surface = sdl_upper_blit(src, src_rect, dst, dst_rect)
+    end function sdl_blit_surface
+
+    ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
+    function sdl_convert_surface(src, fmt, flags)
+        !! Calls `sdl_convert_surface_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_consts
+        use :: sdl2_types
+        implicit none
+        type(sdl_surface),        intent(in) :: src
+        type(sdl_pixel_format),   intent(in) :: fmt
+        integer(kind=c_uint32_t), intent(in) :: flags
+        type(sdl_surface),        pointer    :: sdl_convert_surface
+        type(c_ptr)                          :: ptr
+
+        ptr = sdl_convert_surface_(src, fmt, flags)
+        call c_f_pointer(ptr, sdl_convert_surface)
+    end function sdl_convert_surface
+
+    ! const char *SDL_GetAudioDriver(int index)
+    function sdl_get_audio_driver(index)
+        !! Calls `sdl_get_audio_driver_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        integer(kind=c_int)             :: index
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+        character(len=30)               :: sdl_get_audio_driver
+
+        ptr = sdl_get_audio_driver_(index)
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
+        call c_f_string_chars(ptrs, sdl_get_audio_driver)
+    end function sdl_get_audio_driver
+
+    ! char *SDL_GetBasePath(void)
+    function sdl_get_base_path()
+        !! Calls `sdl_get_base_path_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+        character(len=100)              :: sdl_get_base_path
+
+        ptr = sdl_get_base_path_()
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_base_path)])
+        call c_f_string_chars(ptrs, sdl_get_base_path)
+        call sdl_free(ptr)
+    end function sdl_get_base_path
+
+    ! const char *SDL_GetCurrentAudioDriver(void)
+    function sdl_get_current_audio_driver()
+        !! Calls `sdl_get_current_audio_driver_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+        character(len=30)               :: sdl_get_current_audio_driver
+
+        ptr = sdl_get_current_audio_driver_()
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_audio_driver)])
+        call c_f_string_chars(ptrs, sdl_get_current_audio_driver)
+    end function sdl_get_current_audio_driver
+
+    ! const char *SDL_GetCurrentVideoDriver(void)
+    function sdl_get_current_video_driver()
+        !! Calls `sdl_get_current_video_driver_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+        character(len=30)               :: sdl_get_current_video_driver
+
+        ptr = sdl_get_current_video_driver_()
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_video_driver)])
+        call c_f_string_chars(ptrs, sdl_get_current_video_driver)
+    end function sdl_get_current_video_driver
+
+    ! const char *SDL_GetError(void)
+    function sdl_get_error()
+        !! Calls `sdl_get_error_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        character(len=100)              :: sdl_get_error
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+
+        ptr = sdl_get_error_()
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_error)])
+        call c_f_string_chars(ptrs, sdl_get_error)
+    end function sdl_get_error
+
+    ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
+    function sdl_get_keyboard_state()
+        !! Calls `sdl_get_keyboard_state_()` and converts the returned
+        !! C pointer to Fortran pointers.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_consts
+        implicit none
+        integer(kind=c_uint8_t), pointer :: sdl_get_keyboard_state(:)
+        type(c_ptr)                      :: ptr
+
+        ptr = sdl_get_keyboard_state_(c_null_ptr)
+        call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
+    end function sdl_get_keyboard_state
+
+    ! const char *SDL_GetHint(const char *name)
+    function sdl_get_hint(name)
+        !! Calls `sdl_get_hint_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        character(len=*),       intent(in) :: name
+        character(len=100)                 :: sdl_get_hint
+        type(c_ptr)                        :: ptr
+        character(kind=c_char), pointer    :: ptrs(:)
+
+        ptr = sdl_get_hint_(name // c_null_char)
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
+        call c_f_string_chars(ptrs, sdl_get_hint)
+    end function sdl_get_hint
+
+    function sdl_get_pixel_format(surface)
+        !! Converts the `*SDL_PixelFormat` pointer inside `surface`
+        !! to `sdl_pixel_format`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(sdl_surface),      intent(in) :: surface
+        type(sdl_pixel_format), pointer    :: sdl_get_pixel_format
+
+        call c_f_pointer(surface%format, sdl_get_pixel_format)
+    end function
+
+    ! const char *SDL_GetPlatform(void)
+    function sdl_get_platform()
+        !! Calls `sdl_get_platform_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        character(len=30)                  :: sdl_get_platform
+        type(c_ptr)                        :: ptr
+        character(kind=c_char), pointer    :: ptrs(:)
+
+        ptr = sdl_get_platform_()
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_platform)])
+        call c_f_string_chars(ptrs, sdl_get_platform)
+    end function sdl_get_platform
+
+    ! const char *SDL_GetVideoDriver(int index)
+    function sdl_get_video_driver(index)
+        !! Calls `sdl_get_video_driver_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        integer,                intent(in) :: index
+        type(c_ptr)                        :: ptr
+        character(kind=c_char), pointer    :: ptrs(:)
+        character(len=10)                  :: sdl_get_video_driver
+
+        ptr = sdl_get_video_driver_(index)
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_video_driver)])
+        call c_f_string_chars(ptrs, sdl_get_video_driver)
+    end function sdl_get_video_driver
+
+    ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
+    function sdl_get_window_surface(window)
+        !! Calls `sdl_get_window_surface_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        type(c_ptr),       intent(in) :: window
+        type(sdl_surface), pointer    :: sdl_get_window_surface
+        type(c_ptr)                   :: ptr
+
+        ptr = sdl_get_window_surface_(window)
+        call c_f_pointer(ptr, sdl_get_window_surface)
+    end function sdl_get_window_surface
+
+    ! const char *SDL_GetWindowTitle(SDL_Window *window)
+    function sdl_get_window_title(window)
+        !! Calls `sdl_get_window_title_()` and converts the returned
+        !! C char pointer to Fortran character.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        type(c_ptr), intent(in)         :: window
+        type(c_ptr)                     :: ptr
+        character(kind=c_char), pointer :: ptrs(:)
+        character(len=100)              :: sdl_get_window_title
+
+        ptr = sdl_get_window_title_(window)
+
+        if (.not. c_associated(ptr)) &
+            return
+
+        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_window_title)])
+        call c_f_string_chars(ptrs, sdl_get_window_title)
+    end function sdl_get_window_title
+
+    ! SDL_Surface *SDL_LoadBMP(const char *file)
+    function sdl_load_bmp(file)
+        !! Calls `sdl_load_bmp_rw()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        character(kind=c_char), intent(in) :: file
+        type(sdl_surface),      pointer    :: sdl_load_bmp
+        type(c_ptr)                        :: ptr
+
+        ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
+        call c_f_pointer(ptr, sdl_load_bmp)
+    end function sdl_load_bmp
+
+    ! int SDL_PollEvent(SDL_Event *event)
+    function sdl_poll_event(event)
+        !! Calls `sdl_poll_event_()` and transfers the returned
+        !! union to the respective event type.
+        use :: sdl2_consts
+        use :: sdl2_types
+        implicit none
+        type(sdl_event), intent(in out) :: event
+        integer                         :: sdl_poll_event
+
+        sdl_poll_event = sdl_poll_event_(event)
+        call sdl_transfer_event(event)
+    end function sdl_poll_event
+
+    ! SDL_bool SDL_SetHint(const char *name, const char *value)
+    function sdl_set_hint(name, value)
+        !! Adds `c_null_char` to name and value before calling
+        !! `sdl_set_hint_()`.
+        use, intrinsic :: iso_c_binding
+        implicit none
+        character(len=*) :: name
+        character(len=*) :: value
+        integer          :: sdl_set_hint
+
+        sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
+    end function sdl_set_hint
+
+    ! int SDL_WaitEvent(SDL_Event *event)
+    function sdl_wait_event(event)
+        !! Calls `sdl_wait_event_()` and transfers the returned
+        !! union to the respective event type.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_consts
+        use :: sdl2_types
+        implicit none
+        type(sdl_event), intent(in out) :: event
+        integer                         :: sdl_wait_event
+
+        sdl_wait_event = sdl_wait_event_(event)
+        call sdl_transfer_event(event)
+    end function sdl_wait_event
+
+    subroutine sdl_transfer_event(event)
+        !! Transfers a given event union to the respective event type
+        !! (since there are no unions in Fortran).
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_consts
+        use :: sdl2_types
+        type(sdl_event), intent(in out) :: event
+
+        select case (event%type)
+            ! SDL_WindowEvent
+            case (SDL_WINDOWEVENT)
+                event%window = transfer(event, event%window)
+
+            ! SDL_KeyboardEvent
+            case (SDL_KEYDOWN : SDL_KEYUP)
+                event%key = transfer(event, event%key)
+
+            ! SDL_TextEditingEvent
+            case (SDL_TEXTEDITING)
+                event%edit = transfer(event, event%edit)
+
+            ! SDL_TextInputEvent
+            case (SDL_TEXTINPUT)
+                event%text = transfer(event, event%text)
+
+            ! SDL_MouseMotionEvent
+            case (SDL_MOUSEMOTION)
+                event%motion = transfer(event, event%motion)
+
+            ! SDL_MouseButtonEvent
+            case (SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP)
+                event%button = transfer(event, event%button)
+
+            ! SDL_MouseWheelEvent
+            case (SDL_MOUSEWHEEL)
+                event%wheel = transfer(event, event%wheel)
+
+            ! SDL_JoyAxisEvent
+            case (SDL_JOYAXISMOTION)
+                event%j_axis = transfer(event, event%j_axis)
+
+            ! SDL_JoyBallEvent
+            case (SDL_JOYBALLMOTION)
+                event%j_ball = transfer(event, event%j_ball)
+
+            ! SDL_JoyHatEvent
+            case (SDL_JOYHATMOTION)
+                event%j_hat = transfer(event, event%j_hat)
+
+            ! SDL_JoyButtonEvent
+            case (SDL_JOYBUTTONDOWN : SDL_JOYBUTTONUP)
+                event%j_button = transfer(event, event%j_button)
+
+            ! SDL_JoyDeviceEvent
+            case (SDL_JOYDEVICEADDED : SDL_JOYDEVICEREMOVED)
+                event%j_device = transfer(event, event%j_device)
+
+            ! SDL_ControllerAxisEvent
+            case (SDL_CONTROLLERAXISMOTION)
+                event%c_axis = transfer(event, event%c_axis)
+
+            ! SDL_ControllerButtonEvent
+            case (SDL_CONTROLLERBUTTONDOWN : SDL_CONTROLLERBUTTONUP)
+                event%c_button = transfer(event, event%c_button)
+
+            ! SDL_ControllerDeviceEvent
+            case (SDL_CONTROLLERDEVICEADDED : SDL_CONTROLLERDEVICEREMAPPED)
+                event%c_device = transfer(event, event%c_device)
+
+            ! SDL_AudioDeviceEvent
+            case (SDL_AUDIODEVICEADDED : SDL_AUDIODEVICEREMOVED)
+                event%a_device = transfer(event, event%a_device)
+
+            ! SDL_QuitEvent
+            case (SDL_QUITEVENT)
+                event%quit = transfer(event, event%quit)
+
+            ! SDL_UserEvent
+            case (SDL_USEREVENT)
+                event%user = transfer(event, event%user)
+
+            ! SDL_SysWMEvent
+            case (SDL_SYSWMEVENT)
+                event%sys_wm = transfer(event, event%sys_wm)
+
+            ! SDL_TouchFingerEvent
+            case (SDL_FINGERDOWN : SDL_FINGERMOTION)
+                event%t_finger = transfer(event, event%t_finger)
+
+            ! SDL_MultiGestureEvent
+            case (SDL_MULTIGESTURE)
+                event%m_gesture = transfer(event, event%m_gesture)
+
+            ! SDL_DollarGestureEvent
+            case (SDL_DOLLARGESTURE : SDL_DOLLARRECORD)
+                event%d_gesture = transfer(event, event%d_gesture)
+
+            ! SDL_DropEvent
+            case (SDL_DROPFILE : SDL_DROPCOMPLETE)
+                event%drop = transfer(event, event%drop)
+        end select
+    end subroutine sdl_transfer_event
 end module sdl2
