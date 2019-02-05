@@ -58,6 +58,7 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
+    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
     use :: sdl2_consts
@@ -77,7 +78,7 @@ program main
     rc = sdl_init(SDL_INIT_VIDEO)
 
     if (rc < 0) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
@@ -90,7 +91,7 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
