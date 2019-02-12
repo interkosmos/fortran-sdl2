@@ -1589,8 +1589,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(sdl_event), intent(in out) :: event
-            integer(kind=c_int)             :: sdl_poll_event_
+            type(sdl_event), intent(inout) :: event
+            integer(kind=c_int)            :: sdl_poll_event_
         end function sdl_poll_event_
 
         ! int SDL_QueryTexture(SDL_Texture *texture, Uint32 *format, int *access, int *w, int *h)
@@ -1599,10 +1599,10 @@ module sdl2
             use :: sdl2_consts
             implicit none
             type(c_ptr),              intent(in), value :: texture
-            integer(kind=c_uint32_t), intent(in out)    :: format
-            integer(kind=c_int),      intent(in out)    :: access
-            integer(kind=c_int),      intent(in out)    :: w
-            integer(kind=c_int),      intent(in out)    :: h
+            integer(kind=c_uint32_t), intent(inout)     :: format
+            integer(kind=c_int),      intent(inout)     :: access
+            integer(kind=c_int),      intent(inout)     :: w
+            integer(kind=c_int),      intent(inout)     :: h
             integer(kind=c_int)                         :: sdl_query_texture
         end function sdl_query_texture
 
@@ -1887,8 +1887,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(sdl_event), intent(in out) :: event
-            integer(kind=c_int)             :: sdl_wait_event_
+            type(sdl_event), intent(inout) :: event
+            integer(kind=c_int)            :: sdl_wait_event_
         end function sdl_wait_event_
 
         ! void SDL_Delay(Uint32 ms)
@@ -1942,9 +1942,9 @@ module sdl2
             implicit none
             integer(kind=c_uint32_t), intent(in), value :: pixel
             type(c_ptr),              intent(in), value :: format
-            integer(kind=c_uint8_t),  intent(in out)    :: r
-            integer(kind=c_uint8_t),  intent(in out)    :: g
-            integer(kind=c_uint8_t),  intent(in out)    :: b
+            integer(kind=c_uint8_t),  intent(inout)     :: r
+            integer(kind=c_uint8_t),  intent(inout)     :: g
+            integer(kind=c_uint8_t),  intent(inout)     :: b
         end subroutine sdl_get_rgb
 
         ! void SDL_GetVersion(SDL_version *ver)
@@ -1952,7 +1952,7 @@ module sdl2
             use, intrinsic :: iso_c_binding
             use :: sdl2_types
             implicit none
-            type(sdl_version), intent(in out) :: ver
+            type(sdl_version), intent(inout) :: ver
         end subroutine sdl_get_version
 
         ! void SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h)
@@ -1960,8 +1960,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr),         intent(in), value :: window
-            integer(kind=c_int), intent(in out)    :: w
-            integer(kind=c_int), intent(in out)    :: h
+            integer(kind=c_int), intent(inout)     :: w
+            integer(kind=c_int), intent(inout)     :: h
         end subroutine sdl_get_window_maximum_size
 
         ! void SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h)
@@ -1969,8 +1969,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr),         intent(in), value :: window
-            integer(kind=c_int), intent(in out)    :: w
-            integer(kind=c_int), intent(in out)    :: h
+            integer(kind=c_int), intent(inout)     :: w
+            integer(kind=c_int), intent(inout)     :: h
         end subroutine sdl_get_window_minimum_size
 
         ! void SDL_GetWindowPosition(SDL_Window *window, int *x, int *y)
@@ -1978,8 +1978,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr),         intent(in), value :: window
-            integer(kind=c_int), intent(in out)    :: x
-            integer(kind=c_int), intent(in out)    :: y
+            integer(kind=c_int), intent(inout)     :: x
+            integer(kind=c_int), intent(inout)     :: y
         end subroutine sdl_get_window_position
 
         ! void SDL_GetWindowSize(SDL_Window *window, int *w, int *h)
@@ -1987,8 +1987,8 @@ module sdl2
             use, intrinsic :: iso_c_binding
             implicit none
             type(c_ptr),         intent(in), value :: window
-            integer(kind=c_int), intent(in out)    :: w
-            integer(kind=c_int), intent(in out)    :: h
+            integer(kind=c_int), intent(inout)     :: w
+            integer(kind=c_int), intent(inout)     :: h
         end subroutine sdl_get_window_size
 
         ! void SDL_HideWindow(SDL_Window *window)
@@ -2437,8 +2437,8 @@ contains
         use :: sdl2_consts
         use :: sdl2_types
         implicit none
-        type(sdl_event), intent(in out) :: event
-        integer                         :: sdl_poll_event
+        type(sdl_event), intent(inout) :: event
+        integer                        :: sdl_poll_event
 
         sdl_poll_event = sdl_poll_event_(event)
         call sdl_transfer_event(event)
@@ -2465,8 +2465,8 @@ contains
         use :: sdl2_consts
         use :: sdl2_types
         implicit none
-        type(sdl_event), intent(in out) :: event
-        integer                         :: sdl_wait_event
+        type(sdl_event), intent(inout) :: event
+        integer                        :: sdl_wait_event
 
         sdl_wait_event = sdl_wait_event_(event)
         call sdl_transfer_event(event)
@@ -2478,7 +2478,7 @@ contains
         use, intrinsic :: iso_c_binding
         use :: sdl2_consts
         use :: sdl2_types
-        type(sdl_event), intent(in out) :: event
+        type(sdl_event), intent(inout) :: event
 
         select case (event%type)
             ! SDL_WindowEvent

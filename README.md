@@ -6,8 +6,8 @@ against:
 Library   | Version
 ----------|--------
 SDL       | 2.0.9_2
-SDL_image | 2.0.2
-SDL_mixer | 2.0.1_1
+SDL_image | 2.0.4
+SDL_mixer | 2.0.4
 SDL_ttf   | 2.0.14_1
 
 The interfaces have been build successfully with GNU Fortran 7/8, but other
@@ -152,8 +152,8 @@ $ gfortran8 -Wall -Wl,-rpath=/usr/local/lib/gcc8/ `sdl2-config --cflags` \
 Some demo applications are provided in directory `examples/`.
 
 * **alpha** makes one color of an image transparent (software renderer).
-* **bounce** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **draw** draws some shapes (hardware renderer).
+* **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * **image** loads and displays an image (software renderer).
 * **msgbox** shows a simple message box (software renderer).

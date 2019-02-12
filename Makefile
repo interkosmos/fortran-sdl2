@@ -15,8 +15,8 @@ TTF_SRC = sdl2_ttf.f90
 TTF_OBJ = sdl2_ttf.o
 
 ALPHA   = alpha
-BOUNCE  = bounce
 DRAW    = draw
+DVD     = dvd
 EVENTS  = events
 IMAGE   = image
 MSGBOX  = msgbox
@@ -49,34 +49,34 @@ $(MIX_OBJ):
 $(TTF_OBJ):
 	$(FC) -Wall -c $(TTF_SRC)
 
-$(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
+$(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
+
+$(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
+
+$(DVD): $(EXAMPLES)/$(DVD)/$(DVD).f90 $(SDL_OBJ) $(IMG_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
+
+$(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 $(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
+$(MUSIC): $(EXAMPLES)/$(MUSIC)/$(MUSIC).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
+
+$(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 $(SCALING): $(EXAMPLES)/$(SCALING)/$(SCALING).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
-$(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
-	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
-
-$(BOUNCE): $(EXAMPLES)/$(BOUNCE)/$(BOUNCE).f90 $(SDL_OBJ) $(IMG_OBJ)
-	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
-
-$(MUSIC): $(EXAMPLES)/$(MUSIC)/$(MUSIC).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
-	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
-
 $(TEXT): $(EXAMPLES)/$(TEXT)/$(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_ttf
 
-$(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
-	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
-
-$(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
+$(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
 	$(FC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 clean:
@@ -86,8 +86,8 @@ clean:
 	if [ -e $(MIX_OBJ) ]; then rm $(MIX_OBJ); fi
 	if [ -e $(TTF_OBJ) ]; then rm $(TTF_OBJ); fi
 	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
-	if [ -e $(BOUNCE) ]; then rm $(BOUNCE); fi
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
+	if [ -e $(DVD) ]; then rm $(DVD); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi

@@ -1,4 +1,4 @@
-! bounce.f90
+! dvd.f90
 !
 ! Loads a PNG file with SDL2_image and lets it bounce on the screen
 ! using the hardware renderer.
@@ -14,13 +14,20 @@ program main
     use :: sdl2_image
     implicit none
 
-    integer,          parameter :: WIDTH     = 640
-    integer,          parameter :: HEIGHT    = 480
-    character(len=*), parameter :: FILE_NAME = 'examples/bounce/fortran.png'
+    type :: color
+        integer(kind=2) :: r
+        integer(kind=2) :: g
+        integer(kind=2) :: b
+    end type color
+
+    integer,          parameter :: WIDTH     = 800
+    integer,          parameter :: HEIGHT    = 600
+    character(len=*), parameter :: FILE_NAME = 'examples/dvd/logo.png'
 
     type(c_ptr)             :: window
     type(c_ptr)             :: renderer
     type(c_ptr)             :: texture
+    type(color)             :: colors(5)
     type(sdl_rect)          :: src_rect
     type(sdl_rect)          :: dst_rect
     type(sdl_event)         :: event
@@ -31,6 +38,14 @@ program main
     integer                 :: dx = 1
     integer                 :: dy = 1
     integer                 :: rc
+
+    colors(1)%r = 255; colors(1)%g = 0;   colors(1)%b = 0
+    colors(2)%r = 255; colors(2)%g = 0;   colors(2)%b = 255
+    colors(3)%r = 255; colors(3)%g = 255; colors(3)%b = 0
+    colors(4)%r = 0;   colors(4)%g = 0;   colors(4)%b = 255
+    colors(5)%r = 0;   colors(5)%g = 255; colors(5)%b = 255
+
+    call random_seed()
 
     ! Initialise SDL and SDL2_image.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -72,6 +87,8 @@ program main
 
     dst_rect = src_rect
 
+    call color_mod(texture, colors)
+
     do while (.true.)
         rc = sdl_poll_event(event)
 
@@ -86,18 +103,22 @@ program main
         if (dst_rect%x < 0) then
             dst_rect%x = 0
             dx = 1
+            call color_mod(texture, colors)
         else if (dst_rect%x + texture_width > width) then
             dst_rect%x = width - texture_width
             dx = -1
+            call color_mod(texture, colors)
         end if
 
         ! Bounce vertically.
         if (dst_rect%y < 0) then
             dst_rect%y = 0
             dy = 1
+            call color_mod(texture, colors)
         else if (dst_rect%y + texture_height > height) then
             dst_rect%y = height - texture_height
             dy = -1
+            call color_mod(texture, colors)
         end if
 
         dst_rect%x = dst_rect%x + dx
@@ -107,8 +128,7 @@ program main
         rc = sdl_render_clear(renderer)
         rc = sdl_render_copy(renderer, texture, src_rect, dst_rect)
         call sdl_render_present(renderer)
-
-        call sdl_delay(20)
+        call sdl_delay(10)
     end do
 
     ! Quit gracefully.
@@ -118,4 +138,28 @@ program main
 
     call img_quit()
     call sdl_quit()
+
+contains
+
+    subroutine color_mod(texture, colors)
+        implicit none
+        type(c_ptr), intent(in) :: texture
+        type(color), intent(in) :: colors(:)
+        integer, save           :: c = 0
+        integer                 :: n
+        real                    :: r
+
+        n = c
+
+        do while (c == n)
+            call random_number(r)
+            n = 1 + int(r * size(colors) - 1)
+        end do
+
+        c = n
+
+        rc = sdl_set_texture_color_mod(texture, colors(c)%r, &
+                                                colors(c)%g, &
+                                                colors(c)%b)
+    end subroutine color_mod
 end program main
