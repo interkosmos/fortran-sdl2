@@ -153,7 +153,7 @@ contains
 
         do while (c == n)
             call random_number(r)
-            n = 1 + int(r * size(colors) - 1)
+            n = 1 + int(r * size(colors))
         end do
 
         c = n
