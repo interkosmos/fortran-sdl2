@@ -757,6 +757,44 @@ module sdl2_consts
     integer(kind=c_int), parameter :: SDL_MESSAGEBOX_ERROR       = int(z'00000010')
     integer(kind=c_int), parameter :: SDL_MESSAGEBOX_WARNING     = int(z'00000020')
     integer(kind=c_int), parameter :: SDL_MESSAGEBOX_INFORMATION = int(z'00000040')
+
+    ! SDL_PixelFormat
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_UNKNOWN     = int(z'0')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX1LSB   = int(z'11100100')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX1MSB   = int(z'11200100')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX4LSB   = int(z'12100400')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX4MSB   = int(z'12200400')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX8      = int(z'13000801')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB332      = int(z'14110801')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB444      = int(z'15120c02')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB555      = int(z'15130f02')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR555      = int(z'15530f02')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB4444    = int(z'15321002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA4444    = int(z'15421002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR4444    = int(z'15721002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA4444    = int(z'15821002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB1555    = int(z'15331002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA5551    = int(z'15441002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR1555    = int(z'15731002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA5551    = int(z'15841002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB565      = int(z'15151002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR565      = int(z'15551002')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB24       = int(z'17101803')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR24       = int(z'17401803')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB888      = int(z'16161804')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBX8888    = int(z'16261804')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR888      = int(z'16561804')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRX8888    = int(z'16661804')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB8888    = int(z'16362004')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA8888    = int(z'16462004')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR8888    = int(z'16762004')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA8888    = int(z'16862004')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB2101010 = int(z'16372004')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YV12        = int(z'32315659')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_IYUV        = int(z'56555949')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YUY2        = int(z'32595559')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_UYVY        = int(z'59565955')
+    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YVYU        = int(z'55595659')
 end module sdl2_consts
 
 module sdl2_types
@@ -1145,6 +1183,7 @@ module sdl2
     public :: sdl_blit_scaled
     public :: sdl_blit_surface
     public :: sdl_convert_surface
+    public :: sdl_create_rgb_surface
     public :: sdl_create_renderer
     public :: sdl_create_texture_from_surface
     public :: sdl_create_window
@@ -1218,7 +1257,10 @@ module sdl2
     public :: sdl_render_fill_rect
     public :: sdl_render_fill_rects
     public :: sdl_render_present
+    public :: sdl_render_read_pixels
     public :: sdl_rw_from_file
+    public :: sdl_save_bmp
+    public :: sdl_save_bmp_rw
     public :: sdl_set_clip_rect
     public :: sdl_set_color_key
     public :: sdl_set_hint
@@ -1268,6 +1310,23 @@ module sdl2
             integer(kind=c_uint32_t), intent(in), value :: flags
             type(c_ptr)                                 :: sdl_create_renderer
         end function sdl_create_renderer
+
+        !SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+        function sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask) &
+            bind(c, name='SDL_CreateRGBSurface')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            implicit none
+            integer(kind=c_uint32_t), intent(in), value :: flags
+            integer(kind=c_int),      intent(in), value :: width
+            integer(kind=c_int),      intent(in), value :: height
+            integer(kind=c_int),      intent(in), value :: depth
+            integer(kind=c_int64_t),  intent(in), value :: r_mask
+            integer(kind=c_int64_t),  intent(in), value :: g_mask
+            integer(kind=c_int64_t),  intent(in), value :: b_mask
+            integer(kind=c_int64_t),  intent(in), value :: a_mask
+            type(c_ptr)                                 :: sdl_create_rgb_surface_
+        end function sdl_create_rgb_surface_
 
         ! SDL_Texture *SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface)
         function sdl_create_texture_from_surface(renderer, surface) bind(c, name='SDL_CreateTextureFromSurface')
@@ -1736,6 +1795,31 @@ module sdl2
             integer(kind=c_int)                    :: sdl_render_fill_rects
         end function sdl_render_fill_rects
 
+        ! int SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect, Uint32 format, void *pixels, int pitch)
+        function sdl_render_read_pixels(renderer, rect, format, pixels, pitch) bind(c, name='SDL_RenderReadPixels')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_consts
+            use :: sdl2_types
+            implicit none
+            type(c_ptr),              intent(in), value :: renderer
+            type(sdl_rect),           intent(in)        :: rect
+            integer(kind=c_uint32_t), intent(in), value :: format
+            type(c_ptr),              intent(in), value :: pixels
+            integer(kind=c_int),      intent(in), value :: pitch
+            integer(kind=c_int)                         :: sdl_render_read_pixels
+        end function sdl_render_read_pixels
+
+        ! int SDL_SaveBMP_RW(SDL_Surface *surface, SDL_RWops *dst, int freedst)
+        function sdl_save_bmp_rw(surface, dst, free_dst) bind(c, name='SDL_SaveBMP_RW')
+            use, intrinsic :: iso_c_binding
+            use :: sdl2_types
+            implicit none
+            type(sdl_surface),   intent(in)        :: surface
+            type(c_ptr),         intent(in), value :: dst
+            integer(kind=c_int), intent(in), value :: free_dst
+            integer(kind=c_int)                    :: sdl_save_bmp_rw
+        end function sdl_save_bmp_rw
+
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
             use, intrinsic :: iso_c_binding
@@ -2198,6 +2282,28 @@ contains
         call c_f_pointer(ptr, sdl_convert_surface)
     end function sdl_convert_surface
 
+    !SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+    function sdl_create_rgb_surface(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
+        !! Calls `sdl_create_rgb_surface_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        use, intrinsic :: iso_c_binding
+        use :: sdl2_types
+        implicit none
+        integer(kind=c_uint32_t), intent(in) :: flags
+        integer(kind=c_int),      intent(in) :: width
+        integer(kind=c_int),      intent(in) :: height
+        integer(kind=c_int),      intent(in) :: depth
+        integer(kind=c_int64_t),  intent(in) :: r_mask
+        integer(kind=c_int64_t),  intent(in) :: g_mask
+        integer(kind=c_int64_t),  intent(in) :: b_mask
+        integer(kind=c_int64_t),  intent(in) :: a_mask
+        type(sdl_surface), pointer           :: sdl_create_rgb_surface
+        type(c_ptr)                          :: ptr
+
+        ptr = sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
+        call c_f_pointer(ptr, sdl_create_rgb_surface)
+    end function sdl_create_rgb_surface
+
     ! const char *SDL_GetAudioDriver(int index)
     function sdl_get_audio_driver(index)
         !! Calls `sdl_get_audio_driver_()` and converts the returned
@@ -2443,6 +2549,17 @@ contains
         sdl_poll_event = sdl_poll_event_(event)
         call sdl_transfer_event(event)
     end function sdl_poll_event
+
+    ! int SDL_SaveBMP(SDL_Surface *surface, const char *file)
+    function sdl_save_bmp(surface, file)
+        use :: sdl2_types
+        implicit none
+        type(sdl_surface),      intent(in) :: surface
+        character(kind=c_char), intent(in) :: file
+        integer                            :: sdl_save_bmp
+
+        sdl_save_bmp = sdl_save_bmp_rw(surface, sdl_rw_from_file(file, 'wb' // c_null_char), 1)
+    end function sdl_save_bmp
 
     ! SDL_bool SDL_SetHint(const char *name, const char *value)
     function sdl_set_hint(name, value)
