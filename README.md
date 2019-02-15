@@ -220,7 +220,7 @@ SDL_CreateColorCursor                 |   –   |
 SDL_CreateCond                        |   –   |
 SDL_CreateCursor                      |   –   |
 SDL_CreateMutex                       |   –   |
-SDL_CreateRGBSurface                  |   –   |
+SDL_CreateRGBSurface                  |   ✓   |
 SDL_CreateRGBSurfaceFrom              |   –   |
 SDL_CreateRenderer                    |   ✓   |
 SDL_CreateSemaphore                   |   –   |
@@ -567,7 +567,7 @@ SDL_RenderGetScale                    |   –   |
 SDL_RenderGetViewport                 |   –   |
 SDL_RenderIsClipEnabled               |   –   |
 SDL_RenderPresent                     |   ✓   |
-SDL_RenderReadPixels                  |   –   |
+SDL_RenderReadPixels                  |   ✓   |
 SDL_RenderSetClipRect                 |   –   |
 SDL_RenderSetLogicalSize              |   –   |
 SDL_RenderSetScale                    |   –   |
@@ -576,8 +576,8 @@ SDL_RenderTargetSupported             |   –   |
 SDL_ResetAssertionReport              |   –   |
 SDL_RestoreWindow                     |   ✓   |
 SDL_SaveAllDollarTemplates            |   –   |
-SDL_SaveBMP                           |   –   |
-SDL_SaveBMP_RW                        |   –   |
+SDL_SaveBMP                           |   ✓   |
+SDL_SaveBMP_RW                        |   ✓   |
 SDL_SaveDollarTemplate                |   –   |
 SDL_SemPost                           |   –   |
 SDL_SemTryWait                        |   –   |
