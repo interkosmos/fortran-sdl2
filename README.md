@@ -58,8 +58,8 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
+    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
-    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -83,7 +83,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -116,18 +116,18 @@ program main
 
         ! Clear screen.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(0, 2), &
-                                       int(0, 2), &
-                                       int(0, 2), &
-                                       int(255, 2))
+                                       int(  0, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_clear(renderer)
 
         ! Fill a rectangle.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(127, 2), &
-                                       int(255, 2), &
-                                       int(0, 2), &
-                                       int(255, 2))
+                                       int(127, kind=2), &
+                                       int(255, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_fill_rect(renderer, rect)
 
         ! Render to screen.

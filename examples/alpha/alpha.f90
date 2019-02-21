@@ -6,7 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -32,12 +33,12 @@ program main
     rc = sdl_init(SDL_INIT_VIDEO)
 
     if (rc < 0) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -45,16 +46,19 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     window_surface  => sdl_get_window_surface(window)                                   ! Get surface of window.
-    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)                           ! Load BMP file.
+    image_loaded    => sdl_load_bmp(FILE_NAME // C_NULL_CHAR)                           ! Load BMP file.
     pixel_format    => sdl_get_pixel_format(window_surface)                             ! Get pixel format of window.
     image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)               ! Optimise pixel format of image.
-    color           = sdl_map_rgb(pixel_format, int(255, 2), int(0, 2), int(255, 2))    ! Get translucent color (#FF00FF).
-    rc              = sdl_set_color_key(image_optimised, 1, color)                     ! Set translucent color.
+    color           = sdl_map_rgb(pixel_format, &                                       ! Get translucent color (#FF00FF).
+                                  int(255, kind=2), &
+                                  int(  0, kind=2), &
+                                  int(255, kind=2))
+    rc              = sdl_set_color_key(image_optimised, 1, color)                      ! Set translucent color.
 
     window_rect%w = WIDTH
     window_rect%h = HEIGHT

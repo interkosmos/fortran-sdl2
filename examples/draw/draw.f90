@@ -6,7 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -26,12 +27,12 @@ program main
     rc = sdl_init(SDL_INIT_VIDEO)
 
     if (rc < 0) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -39,7 +40,7 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
@@ -68,24 +69,44 @@ program main
         end if
 
         ! Clear screen.
-        rc = sdl_set_render_draw_color(renderer, int(0, 2), int(0, 2), int(0, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(  0, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_clear(renderer)
 
         ! Draw lines.
-        rc = sdl_set_render_draw_color(renderer, int(255, 2), int(0, 2), int(127, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(255, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(127, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_draw_line(renderer, 10, 10, 400, 100)
         rc = sdl_render_draw_line(renderer, 80, 400, 525, 300)
 
         ! Fill a rectangle.
-        rc = sdl_set_render_draw_color(renderer, int(127, 2), int(255, 2), int(0, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(127, kind=2), &
+                                       int(255, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_fill_rect(renderer, rect1)
 
         ! Draw a rectangle.
-        rc = sdl_set_render_draw_color(renderer, int(127, 2), int(0, 2), int(255, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(127, kind=2), &
+                                       int(  0, kind=2), &
+                                       int(255, kind=2), &
+                                       int(255, kind=2))
         rc = sdl_render_draw_rect(renderer, rect2)
 
         ! Draw some points.
-        rc = sdl_set_render_draw_color(renderer, int(255, 2), int(255, 2), int(255, 2), int(255, 2))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       int(255, kind=2), &
+                                       int(255, kind=2), &
+                                       int(255, kind=2), &
+                                       int(255, kind=2))
 
         do i = 0, 345, 15
             x  = int(100.0 * cos(i * RAD))
@@ -101,6 +122,5 @@ program main
     ! Quit gracefully.
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
-
     call sdl_quit()
 end program main

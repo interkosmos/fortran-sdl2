@@ -7,7 +7,8 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -36,7 +37,7 @@ program main
     rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
 
     if (rc < 0) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
@@ -44,14 +45,14 @@ program main
     rc = ttf_init()
 
     if (rc < 0) then
-        print *, 'TTF Error: ', sdl_get_error()
+        write (stderr, *) 'TTF Error: ', sdl_get_error()
         stop
     end if
 
     ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-    font    = ttf_open_font(TTF_PATH // c_null_char, 12)
-    text    => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
+    font    = ttf_open_font(TTF_PATH // C_NULL_CHAR, 12)
+    text    => ttf_render_text_solid(font, MESSAGE // C_NULL_CHAR, color)
 
     rect%x = 0
     rect%y = 0
@@ -65,21 +66,21 @@ program main
                         4096)
 
     if (rc < 0) then
-        print *, 'MIX Error: ', sdl_get_error()
+        write (stderr, *) 'MIX Error: ', sdl_get_error()
         stop
     end if
 
     ! Play music.
-    music = mix_load_mus(OGG_PATH // c_null_char)
+    music = mix_load_mus(OGG_PATH // C_NULL_CHAR)
     rc    = mix_play_music(music, -1)
 
     if (rc < 0) then
-        print *, 'MIX Error: ', sdl_get_error()
+        write (stderr, *) 'MIX Error: ', sdl_get_error()
         stop
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -87,7 +88,7 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 

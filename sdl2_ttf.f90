@@ -67,9 +67,7 @@ module sdl2_ttf
         subroutine ttf_quit() bind(c, name='TTF_Quit')
         end subroutine ttf_quit
     end interface
-
 contains
-
     ! SDL_Surface *TTF_RenderText_Shaded(TTF_Font *font, const char *text, SDL_Color fg, SDL_Color bg)
     function ttf_render_text_shaded(font, text, fg, bg)
         !! Calls `ttf_render_text_shaded_()` and converts the returned
@@ -85,6 +83,10 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = ttf_render_text_shaded_(font, text, fg, bg)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, ttf_render_text_shaded)
     end function ttf_render_text_shaded
 
@@ -102,6 +104,10 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = ttf_render_text_solid_(font, text, fg)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, ttf_render_text_solid)
     end function ttf_render_text_solid
 end module sdl2_ttf

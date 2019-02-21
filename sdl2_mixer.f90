@@ -158,9 +158,7 @@ module sdl2_mixer
         subroutine mix_quit() bind(c, name='Mix_Quit')
         end subroutine mix_quit
     end interface
-
 contains
-
     function mix_load_wav(file)
         use, intrinsic :: iso_c_binding
         use :: sdl2
@@ -168,7 +166,7 @@ contains
         character(kind=c_char), intent(in) :: file
         type(c_ptr)                        :: mix_load_wav
 
-        mix_load_wav = mix_load_wav_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
+        mix_load_wav = mix_load_wav_rw(sdl_rw_from_file(file, 'rb' // C_NULL_CHAR), 1)
     end function mix_load_wav
 
     function mix_play_channel(channel, chunk, loops)

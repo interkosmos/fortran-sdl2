@@ -7,7 +7,8 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_int, c_int32_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_int, c_int32_t, C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_consts
     use :: sdl2_types
@@ -52,12 +53,12 @@ program main
     rc = img_init(IMG_INIT_PNG)
 
     if (rc < 0) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -65,13 +66,13 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        print *, 'SDL Error: ', sdl_get_error()
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Create renderer and load PNG image.
     renderer = sdl_create_renderer(window, -1, 0)
-    texture  = img_load_texture(renderer, FILE_NAME // c_null_char)
+    texture  = img_load_texture(renderer, FILE_NAME // C_NULL_CHAR)
 
     ! Get texture size.
     rc = sdl_query_texture(texture, &
@@ -138,9 +139,7 @@ program main
 
     call img_quit()
     call sdl_quit()
-
 contains
-
     subroutine color_mod(texture, colors)
         implicit none
         type(c_ptr), intent(in) :: texture

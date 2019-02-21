@@ -2211,13 +2211,11 @@ module sdl2
             integer(kind=c_int), intent(in), value :: y
         end subroutine sdl_warp_mouse_global
     end interface
-
 contains
-
-    pure subroutine c_f_string_chars(c_string, f_string)
+    subroutine c_f_string_chars(c_string, f_string)
         !! Copies a C string, passed as a char-array reference, to a Fortran
         !! string.
-        use, intrinsic :: iso_c_binding, only: c_char, c_null_char
+        use, intrinsic :: iso_c_binding, only: c_char, C_NULL_CHAR
         implicit none
         character(len=1, kind=c_char), intent(in)  :: c_string(*)
         character(len=*),              intent(out) :: f_string
@@ -2225,7 +2223,7 @@ contains
 
         i = 1
 
-        do while (c_string(i) /= c_null_char .and. i <= len(f_string))
+        do while (c_string(i) /= C_NULL_CHAR .and. i <= len(f_string))
             f_string(i:i) = c_string(i)
             i = i + 1
         end do
@@ -2279,6 +2277,10 @@ contains
         type(c_ptr)                          :: ptr
 
         ptr = sdl_convert_surface_(src, fmt, flags)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, sdl_convert_surface)
     end function sdl_convert_surface
 
@@ -2301,6 +2303,10 @@ contains
         type(c_ptr)                          :: ptr
 
         ptr = sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, sdl_create_rgb_surface)
     end function sdl_create_rgb_surface
 
@@ -2412,6 +2418,10 @@ contains
         type(c_ptr)                      :: ptr
 
         ptr = sdl_get_keyboard_state_(c_null_ptr)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
     end function sdl_get_keyboard_state
 
@@ -2426,7 +2436,7 @@ contains
         type(c_ptr)                        :: ptr
         character(kind=c_char), pointer    :: ptrs(:)
 
-        ptr = sdl_get_hint_(name // c_null_char)
+        ptr = sdl_get_hint_(name // C_NULL_CHAR)
 
         if (.not. c_associated(ptr)) &
             return
@@ -2498,6 +2508,10 @@ contains
         type(c_ptr)                   :: ptr
 
         ptr = sdl_get_window_surface_(window)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, sdl_get_window_surface)
     end function sdl_get_window_surface
 
@@ -2532,7 +2546,11 @@ contains
         type(sdl_surface),      pointer    :: sdl_load_bmp
         type(c_ptr)                        :: ptr
 
-        ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
+        ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // C_NULL_CHAR), 1)
+
+        if (.not. c_associated(ptr)) &
+            return
+
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp
 
@@ -2558,12 +2576,12 @@ contains
         character(kind=c_char), intent(in) :: file
         integer                            :: sdl_save_bmp
 
-        sdl_save_bmp = sdl_save_bmp_rw(surface, sdl_rw_from_file(file, 'wb' // c_null_char), 1)
+        sdl_save_bmp = sdl_save_bmp_rw(surface, sdl_rw_from_file(file, 'wb' // C_NULL_CHAR), 1)
     end function sdl_save_bmp
 
     ! SDL_bool SDL_SetHint(const char *name, const char *value)
     function sdl_set_hint(name, value)
-        !! Adds `c_null_char` to name and value before calling
+        !! Adds `C_NULL_CHAR` to name and value before calling
         !! `sdl_set_hint_()`.
         use, intrinsic :: iso_c_binding
         implicit none
@@ -2571,7 +2589,7 @@ contains
         character(len=*) :: value
         integer          :: sdl_set_hint
 
-        sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
+        sdl_set_hint = sdl_set_hint_(name // C_NULL_CHAR, value // C_NULL_CHAR)
     end function sdl_set_hint
 
     ! int SDL_WaitEvent(SDL_Event *event)

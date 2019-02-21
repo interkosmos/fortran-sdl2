@@ -1,7 +1,7 @@
 FC          = gfortran8
-SDL_FFLAGS  = `sdl2-config --cflags`
+SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDFLAGS = `sdl2-config --libs`
-FFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2003 $(SDL_FFLAGS)
+FFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2003 $(SDL_CFLAGS)
 LDFLAGS     = $(SDL_LDFLAGS)
 EXAMPLES    = examples
 
