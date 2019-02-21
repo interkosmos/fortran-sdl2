@@ -83,10 +83,6 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = ttf_render_text_shaded_(font, text, fg, bg)
-
-        if (.not. c_associated(ptr)) &
-            return
-
         call c_f_pointer(ptr, ttf_render_text_shaded)
     end function ttf_render_text_shaded
 
@@ -104,10 +100,6 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = ttf_render_text_solid_(font, text, fg)
-
-        if (.not. c_associated(ptr)) &
-            return
-
         call c_f_pointer(ptr, ttf_render_text_solid)
     end function ttf_render_text_solid
 end module sdl2_ttf

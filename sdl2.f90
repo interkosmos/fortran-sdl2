@@ -2277,10 +2277,6 @@ contains
         type(c_ptr)                          :: ptr
 
         ptr = sdl_convert_surface_(src, fmt, flags)
-
-        if (.not. c_associated(ptr)) &
-            return
-
         call c_f_pointer(ptr, sdl_convert_surface)
     end function sdl_convert_surface
 
@@ -2303,10 +2299,6 @@ contains
         type(c_ptr)                          :: ptr
 
         ptr = sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
-
-        if (.not. c_associated(ptr)) &
-            return
-
         call c_f_pointer(ptr, sdl_create_rgb_surface)
     end function sdl_create_rgb_surface
 
@@ -2508,10 +2500,6 @@ contains
         type(c_ptr)                   :: ptr
 
         ptr = sdl_get_window_surface_(window)
-
-        if (.not. c_associated(ptr)) &
-            return
-
         call c_f_pointer(ptr, sdl_get_window_surface)
     end function sdl_get_window_surface
 
@@ -2547,9 +2535,6 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // C_NULL_CHAR), 1)
-
-        if (.not. c_associated(ptr)) &
-            return
 
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp

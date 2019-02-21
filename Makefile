@@ -1,8 +1,9 @@
 FC          = gfortran8
+RPATH       = -Wall -Wl,-rpath=/usr/local/lib/gcc8/
 SDL_CFLAGS  = `sdl2-config --cflags`
-SDL_LDFLAGS = `sdl2-config --libs`
-FFLAGS      = -Wall -Wl,-rpath=/usr/local/lib/gcc8/ -std=f2003 $(SDL_CFLAGS)
-LDFLAGS     = $(SDL_LDFLAGS)
+SDL_LDLIBS  = `sdl2-config --libs`
+FFLAGS      = $(RPATH) -std=f2003 $(SDL_CFLAGS)
+LDLIBS      = $(SDL_LDLIBS)
 EXAMPLES    = examples
 
 SDL_SRC = sdl2.f90
@@ -50,34 +51,34 @@ $(TTF_OBJ):
 	$(FC) -Wall -c $(TTF_SRC)
 
 $(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(DVD): $(EXAMPLES)/$(DVD)/$(DVD).f90 $(SDL_OBJ) $(IMG_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_image
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
 
 $(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(MUSIC): $(EXAMPLES)/$(MUSIC)/$(MUSIC).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_mixer -lSDL2_ttf
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
 $(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(SCALING): $(EXAMPLES)/$(SCALING)/$(SCALING).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(TEXT): $(EXAMPLES)/$(TEXT)/$(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS) -lSDL2_ttf
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_ttf
 
 $(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
-	$(FC) $(FFLAGS) -o $@ $? $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
