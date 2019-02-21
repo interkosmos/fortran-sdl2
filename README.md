@@ -29,29 +29,29 @@ Or just run your favourite Fortran compiler directly:
 ```
 $ gfortran -c sdl2.f90
 ```
-On FreeBSD, you may have to modify the `Makefile`: change the `-Wl,-rpath`
-parameter in `CFLAGS` according to your compiler.
+On FreeBSD, you may have to modify the `Makefile`: change the `RPATH` variable
+according to your compiler.
 
 ### SDL2_image
 Build the SDL2_image interface with:
 ```
 $ make sdl2_image
 ```
-Add `-lSDL2_image` to your `LDFLAGS` to link SDL2_image.
+Add `-lSDL2_image` to your `LDLIBS` to link SDL2_image.
 
 ### SDL2_mixer
 Build the SDL2_mixer interface with:
 ```
 $ make sdl2_mixer
 ```
-Add `-lSDL2_mixer` to your `LDFLAGS` to link SDL2_mixer.
+Add `-lSDL2_mixer` to your `LDLIBS` to link SDL2_mixer.
 
 ### SDL2_ttf
 Build the SDL2_ttf interface with:
 ```
 $ make sdl2_ttf
 ```
-Add `-lSDL2_ttf` to your `LDFLAGS` to link SDL2_ttf.
+Add `-lSDL2_ttf` to your `LDLIBS` to link SDL2_ttf.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
