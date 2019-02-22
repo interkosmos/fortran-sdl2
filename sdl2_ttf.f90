@@ -6,6 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 module sdl2_ttf
+    use, intrinsic :: iso_c_binding
     implicit none
     private
 
@@ -19,14 +20,14 @@ module sdl2_ttf
     interface
         ! int TTF_Init(void)
         function ttf_init() bind(c, name='TTF_Init')
-            use, intrinsic :: iso_c_binding
+            import :: c_int
             implicit none
             integer(kind=c_int) :: ttf_init
         end function ttf_init
 
         ! TTF_Font *TTF_OpenFont(const char *file, int ptsize)
         function ttf_open_font(file, ptsize) bind(c, name='TTF_OpenFont')
-            use, intrinsic :: iso_c_binding
+            import :: c_char, c_int, c_ptr
             implicit none
             character(kind=c_char), intent(in)        :: file
             integer(kind=c_int),    intent(in), value :: ptsize
@@ -35,8 +36,8 @@ module sdl2_ttf
 
         ! SDL_Surface *TTF_RenderText_Shaded(TTF_Font *font, const char *text, SDL_Color fg, SDL_Color bg)
         function ttf_render_text_shaded_(font, text, fg, bg) bind(c, name='TTF_RenderText_Shaded')
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
+            use :: sdl2, only: sdl_color
+            import :: c_char, c_ptr
             implicit none
             type(c_ptr),            intent(in), value :: font
             character(kind=c_char), intent(in)        :: text
@@ -47,8 +48,8 @@ module sdl2_ttf
 
         ! SDL_Surface *TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color fg)
         function ttf_render_text_solid_(font, text, fg) bind(c, name='TTF_RenderText_Solid')
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
+            use :: sdl2, only: sdl_color
+            import :: c_char, c_ptr
             implicit none
             type(c_ptr),            intent(in), value :: font
             character(kind=c_char), intent(in)        :: text
@@ -58,7 +59,7 @@ module sdl2_ttf
 
         ! void TTF_CloseFont(TTF_Font *font)
         subroutine ttf_close_font(font) bind(c, name='TTF_CloseFont')
-            use, intrinsic :: iso_c_binding
+            import :: c_ptr
             implicit none
             type(c_ptr), intent(in), value :: font
         end subroutine ttf_close_font
@@ -72,8 +73,7 @@ contains
     function ttf_render_text_shaded(font, text, fg, bg)
         !! Calls `ttf_render_text_shaded_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        use, intrinsic :: iso_c_binding
-        use :: sdl2_types
+        use :: sdl2, only: sdl_color, sdl_surface
         implicit none
         type(c_ptr),            intent(in) :: font
         character(kind=c_char), intent(in) :: text
@@ -90,8 +90,7 @@ contains
     function ttf_render_text_solid(font, text, fg)
         !! Calls `ttf_render_text_solid_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        use, intrinsic :: iso_c_binding
-        use :: sdl2_types
+        use :: sdl2, only: sdl_color, sdl_surface
         implicit none
         type(c_ptr),            intent(in) :: font
         character(kind=c_char), intent(in) :: text

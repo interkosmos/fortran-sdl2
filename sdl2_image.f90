@@ -17,7 +17,7 @@ module sdl2_image
     interface
         ! int IMG_Init(int flags)
         function img_init(flags) bind(c, name='IMG_Init')
-            use, intrinsic :: iso_c_binding
+            import :: c_int
             implicit none
             integer(kind=c_int), intent(in), value :: flags
             integer(kind=c_int)                    :: img_init
@@ -25,8 +25,8 @@ module sdl2_image
 
         ! SDL_Surface *IMG_Load(const char *file)
         function img_load(file_name) bind(c, name='IMG_LoadTexture')
-            use, intrinsic :: iso_c_binding
-            use :: sdl2_types
+            use :: sdl2, only: sdl_surface
+            import :: c_char
             implicit none
             character(kind=c_char), intent(in) :: file_name
             type(sdl_surface)                  :: img_load
@@ -34,7 +34,7 @@ module sdl2_image
 
         ! SDL_Texture *IMG_LoadTexture(SDL_Renderer *renderer, const char *file)
         function img_load_texture(renderer, file_name) bind(c, name='IMG_LoadTexture')
-            use, intrinsic :: iso_c_binding
+            import :: c_char, c_ptr
             implicit none
             type(c_ptr),            intent(in), value :: renderer
             character(kind=c_char), intent(in)        :: file_name

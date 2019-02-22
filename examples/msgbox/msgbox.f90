@@ -9,8 +9,6 @@ program main
     use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_null_ptr, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
-    use :: sdl2_consts
-    use :: sdl2_types
     implicit none
 
     integer,          parameter :: WIDTH     = 320

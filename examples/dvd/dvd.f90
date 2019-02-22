@@ -10,8 +10,6 @@ program main
     use, intrinsic :: iso_c_binding, only: c_int, c_int32_t, C_NULL_CHAR, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
-    use :: sdl2_consts
-    use :: sdl2_types
     use :: sdl2_image
     implicit none
 
@@ -105,8 +103,8 @@ program main
             dst_rect%x = 0
             dx = 1
             call color_mod(texture, colors)
-        else if (dst_rect%x + texture_width > width) then
-            dst_rect%x = width - texture_width
+        else if (dst_rect%x + texture_width > WIDTH) then
+            dst_rect%x = WIDTH - texture_width
             dx = -1
             call color_mod(texture, colors)
         end if
@@ -116,8 +114,8 @@ program main
             dst_rect%y = 0
             dy = 1
             call color_mod(texture, colors)
-        else if (dst_rect%y + texture_height > height) then
-            dst_rect%y = height - texture_height
+        else if (dst_rect%y + texture_height > HEIGHT) then
+            dst_rect%y = HEIGHT - texture_height
             dy = -1
             call color_mod(texture, colors)
         end if
