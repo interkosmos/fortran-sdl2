@@ -10,11 +10,11 @@ SDL_image | 2.0.4
 SDL_mixer | 2.0.4
 SDL_ttf   | 2.0.14_1
 
-The interfaces have been build successfully with GNU Fortran 7/8, but other
+The interfaces have been built successfully with GNU Fortran 7/8, but other
 modern compilers should work, too.
 
-## Build the SDL 2 interfaces
-Clone the repository and then use GNU make to build the SDL2 interface:
+## Building the SDL 2 interfaces
+Clone the repository and then run `make` to build the SDL2 interface:
 ```
 $ git clone https://github.com/interkosmos/f03sdl2.git
 $ cd f03sdl2/
