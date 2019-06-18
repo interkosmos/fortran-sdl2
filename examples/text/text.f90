@@ -7,7 +7,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_ttf
@@ -46,7 +46,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -62,7 +62,7 @@ program main
     renderer = sdl_create_renderer(window, -1, SDL_RENDERER_ACCELERATED)
 
     ! Load font and set font color.
-    font    = ttf_open_font(PATH // C_NULL_CHAR, 12)
+    font    = ttf_open_font(PATH // c_null_char, 12)
     color%r = 255; color%g = 0; color%b = 0; color%a = 0
 
     ! Event loop.
@@ -77,7 +77,7 @@ program main
         end if
 
         ! Prepare texture.
-        surface => ttf_render_text_solid(font, STRING // C_NULL_CHAR, color)
+        surface => ttf_render_text_solid(font, STRING // c_null_char, color)
         texture = sdl_create_texture_from_surface(renderer, surface)
 
         rect%x = 0

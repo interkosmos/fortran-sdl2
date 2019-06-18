@@ -8,7 +8,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -31,7 +31,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -47,7 +47,7 @@ program main
     screen => sdl_get_window_surface(window)
 
     ! Load the image.
-    image  => sdl_load_bmp('examples/image/chess.bmp' // C_NULL_CHAR)
+    image  => sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
 
     rect%w = image%w
     rect%h = image%h

@@ -1,17 +1,17 @@
 # f03sdl2
 An ISO C binding interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/)
-(SDL 2), for multimedia and game programming in Fortran. Versions tested
+(SDL 2), for multimedia and game programming in Fortran. SDL versions tested
 against:
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.9_2
-SDL_image | 2.0.4
-SDL_mixer | 2.0.4
-SDL_ttf   | 2.0.14_1
+SDL       | 2.0.9_3
+SDL_image | 2.0.4_1
+SDL_mixer | 2.0.4_1
+SDL_ttf   | 2.0.4_1
 
 The interfaces have been built successfully with GNU Fortran 7/8, but other
-modern compilers should work, too.
+modern compilers should work as well.
 
 ## Building the SDL 2 interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
@@ -58,13 +58,13 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
-    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 480
+    integer, parameter :: WIN_WIDTH  = 640
+    integer, parameter :: WIN_HEIGHT = 480
 
     type(c_ptr)     :: window
     type(c_ptr)     :: renderer
@@ -81,11 +81,11 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               WIN_WIDTH, &
+                               WIN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -93,7 +93,7 @@ program main
         stop
     end if
 
-    ! The rectangle.
+    ! Set position and size of the rectangle.
     rect%x = 50
     rect%y = 50
     rect%w = 250
@@ -102,17 +102,17 @@ program main
     ! Create the renderer.
     renderer = sdl_create_renderer(window, -1, 0)
 
-    do while (.true.)
-        rc = sdl_poll_event(event)
-
-        if (rc > 0) then
+    ! Event loop.
+    do
+        ! Catch events.
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit
             end select
         end if
 
-        ! Clear screen.
+        ! Fill screen black.
         rc = sdl_set_render_draw_color(renderer, &
                                        int(  0, kind=2), &
                                        int(  0, kind=2), &
@@ -120,7 +120,7 @@ program main
                                        int(255, kind=2))
         rc = sdl_render_clear(renderer)
 
-        ! Fill a rectangle.
+        ! Fill the rectangle.
         rc = sdl_set_render_draw_color(renderer, &
                                        int(127, kind=2), &
                                        int(255, kind=2), &
@@ -128,7 +128,7 @@ program main
                                        int(255, kind=2))
         rc = sdl_render_fill_rect(renderer, rect)
 
-        ! Render to screen.
+        ! Render to screen and wait 20 ms.
         call sdl_render_present(renderer)
         call sdl_delay(20)
     end do
@@ -145,6 +145,7 @@ Compile it with:
 $ gfortran8 -Wall -Wl,-rpath=/usr/local/lib/gcc8/ `sdl2-config --cflags` \
   -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
+The `-Wl,-rpath` parameter is required on FreeBSD only.
 
 ## Further examples
 Some demo applications are provided in directory `examples/`.

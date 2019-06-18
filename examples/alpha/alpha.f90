@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -36,7 +36,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
@@ -49,7 +49,7 @@ program main
     end if
 
     window_surface  => sdl_get_window_surface(window)                                   ! Get surface of window.
-    image_loaded    => sdl_load_bmp(FILE_NAME // C_NULL_CHAR)                           ! Load BMP file.
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)                           ! Load BMP file.
     pixel_format    => sdl_get_pixel_format(window_surface)                             ! Get pixel format of window.
     image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)               ! Optimise pixel format of image.
     color           = sdl_map_rgb(pixel_format, &                                       ! Get translucent color (#FF00FF).

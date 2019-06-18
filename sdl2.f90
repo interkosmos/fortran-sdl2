@@ -1172,8 +1172,8 @@ module sdl2
     public :: sdl_blit_scaled
     public :: sdl_blit_surface
     public :: sdl_convert_surface
-    public :: sdl_create_rgb_surface
     public :: sdl_create_renderer
+    public :: sdl_create_rgb_surface
     public :: sdl_create_texture_from_surface
     public :: sdl_create_window
     public :: sdl_delay
@@ -1193,8 +1193,8 @@ module sdl2
     public :: sdl_get_error
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
-    public :: sdl_get_num_audio_devices
     public :: sdl_get_mouse_state
+    public :: sdl_get_num_audio_devices
     public :: sdl_get_pixel_format
     public :: sdl_get_platform
     public :: sdl_get_render_target
@@ -1233,7 +1233,6 @@ module sdl2
     public :: sdl_query_texture
     public :: sdl_quit
     public :: sdl_raise_window
-    public :: sdl_restore_window
     public :: sdl_render_clear
     public :: sdl_render_copy
     public :: sdl_render_copy_ex
@@ -1247,6 +1246,7 @@ module sdl2
     public :: sdl_render_fill_rects
     public :: sdl_render_present
     public :: sdl_render_read_pixels
+    public :: sdl_restore_window
     public :: sdl_rw_from_file
     public :: sdl_save_bmp
     public :: sdl_save_bmp_rw
@@ -1273,8 +1273,8 @@ module sdl2
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
     public :: sdl_wait_event
-    public :: sdl_warp_mouse_in_window
     public :: sdl_warp_mouse_global
+    public :: sdl_warp_mouse_in_window
 
     interface
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
@@ -1955,13 +1955,13 @@ module sdl2
 
         ! void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b)
         subroutine sdl_get_rgb(pixel, format, r, g, b) bind(c, name='SDL_GetRGB')
-            import :: c_ptr, c_uint8_t, c_uint32_t
+            import :: c_ptr, c_uint16_t, c_uint32_t
             implicit none
             integer(kind=c_uint32_t), intent(in), value :: pixel
             type(c_ptr),              intent(in), value :: format
-            integer(kind=c_uint8_t),  intent(inout)     :: r
-            integer(kind=c_uint8_t),  intent(inout)     :: g
-            integer(kind=c_uint8_t),  intent(inout)     :: b
+            integer(kind=c_uint16_t), intent(inout)     :: r
+            integer(kind=c_uint16_t), intent(inout)     :: g
+            integer(kind=c_uint16_t), intent(inout)     :: b
         end subroutine sdl_get_rgb
 
         ! void SDL_GetVersion(SDL_version *ver)
@@ -2152,7 +2152,7 @@ contains
 
         i = 1
 
-        do while (c_string(i) /= C_NULL_CHAR .and. i <= len(f_string))
+        do while (c_string(i) /= c_null_char .and. i <= len(f_string))
             f_string(i:i) = c_string(i)
             i = i + 1
         end do
@@ -2340,7 +2340,7 @@ contains
         type(c_ptr)                        :: ptr
         character(kind=c_char), pointer    :: ptrs(:)
 
-        ptr = sdl_get_hint_(name // C_NULL_CHAR)
+        ptr = sdl_get_hint_(name // c_null_char)
 
         if (.not. c_associated(ptr)) &
             return
@@ -2437,7 +2437,7 @@ contains
         type(sdl_surface),      pointer    :: sdl_load_bmp
         type(c_ptr)                        :: ptr
 
-        ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // C_NULL_CHAR), 1)
+        ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
 
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp
@@ -2461,19 +2461,19 @@ contains
         character(kind=c_char), intent(in) :: file
         integer                            :: sdl_save_bmp
 
-        sdl_save_bmp = sdl_save_bmp_rw(surface, sdl_rw_from_file(file, 'wb' // C_NULL_CHAR), 1)
+        sdl_save_bmp = sdl_save_bmp_rw(surface, sdl_rw_from_file(file, 'wb' // c_null_char), 1)
     end function sdl_save_bmp
 
     ! SDL_bool SDL_SetHint(const char *name, const char *value)
     function sdl_set_hint(name, value)
-        !! Adds `C_NULL_CHAR` to name and value before calling
+        !! Adds `c_null_char` to name and value before calling
         !! `sdl_set_hint_()`.
         implicit none
         character(len=*) :: name
         character(len=*) :: value
         integer          :: sdl_set_hint
 
-        sdl_set_hint = sdl_set_hint_(name // C_NULL_CHAR, value // C_NULL_CHAR)
+        sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
     end function sdl_set_hint
 
     ! int SDL_WaitEvent(SDL_Event *event)

@@ -7,7 +7,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: C_NULL_CHAR, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_mixer
@@ -49,8 +49,8 @@ program main
 
     ! Open font and draw to surface.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-    font    = ttf_open_font(TTF_PATH // C_NULL_CHAR, 12)
-    text    => ttf_render_text_solid(font, MESSAGE // C_NULL_CHAR, color)
+    font    = ttf_open_font(TTF_PATH // c_null_char, 12)
+    text    => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
     rect%x = 0
     rect%y = 0
@@ -69,7 +69,7 @@ program main
     end if
 
     ! Play music.
-    music = mix_load_mus(OGG_PATH // C_NULL_CHAR)
+    music = mix_load_mus(OGG_PATH // c_null_char)
     rc    = mix_play_music(music, -1)
 
     if (rc < 0) then
@@ -78,7 +78,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // C_NULL_CHAR, &
+    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
