@@ -21,14 +21,12 @@ module sdl2_ttf
         ! int TTF_Init(void)
         function ttf_init() bind(c, name='TTF_Init')
             import :: c_int
-            implicit none
             integer(kind=c_int) :: ttf_init
         end function ttf_init
 
         ! TTF_Font *TTF_OpenFont(const char *file, int ptsize)
         function ttf_open_font(file, ptsize) bind(c, name='TTF_OpenFont')
             import :: c_char, c_int, c_ptr
-            implicit none
             character(kind=c_char), intent(in)        :: file
             integer(kind=c_int),    intent(in), value :: ptsize
             type(c_ptr)                               :: ttf_open_font
@@ -38,7 +36,6 @@ module sdl2_ttf
         function ttf_render_text_shaded_(font, text, fg, bg) bind(c, name='TTF_RenderText_Shaded')
             use :: sdl2, only: sdl_color
             import :: c_char, c_ptr
-            implicit none
             type(c_ptr),            intent(in), value :: font
             character(kind=c_char), intent(in)        :: text
             type(sdl_color),        intent(in), value :: fg
@@ -50,7 +47,6 @@ module sdl2_ttf
         function ttf_render_text_solid_(font, text, fg) bind(c, name='TTF_RenderText_Solid')
             use :: sdl2, only: sdl_color
             import :: c_char, c_ptr
-            implicit none
             type(c_ptr),            intent(in), value :: font
             character(kind=c_char), intent(in)        :: text
             type(sdl_color),        intent(in), value :: fg
@@ -60,7 +56,6 @@ module sdl2_ttf
         ! void TTF_CloseFont(TTF_Font *font)
         subroutine ttf_close_font(font) bind(c, name='TTF_CloseFont')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: font
         end subroutine ttf_close_font
 
@@ -74,7 +69,6 @@ contains
         !! Calls `ttf_render_text_shaded_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
         use :: sdl2, only: sdl_color, sdl_surface
-        implicit none
         type(c_ptr),            intent(in) :: font
         character(kind=c_char), intent(in) :: text
         type(sdl_color),        intent(in) :: fg
@@ -91,7 +85,6 @@ contains
         !! Calls `ttf_render_text_solid_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
         use :: sdl2, only: sdl_color, sdl_surface
-        implicit none
         type(c_ptr),            intent(in) :: font
         character(kind=c_char), intent(in) :: text
         type(sdl_color),        intent(in) :: fg
