@@ -563,14 +563,14 @@ SDL_RenderGetClipRect                 |   –   |
 SDL_RenderGetD3D9Device               |   –   |
 SDL_RenderGetLogicalSize              |   –   |
 SDL_RenderGetScale                    |   –   |
-SDL_RenderGetViewport                 |   –   |
+SDL_RenderGetViewport                 |   ✓   |
 SDL_RenderIsClipEnabled               |   –   |
 SDL_RenderPresent                     |   ✓   |
 SDL_RenderReadPixels                  |   ✓   |
 SDL_RenderSetClipRect                 |   –   |
 SDL_RenderSetLogicalSize              |   –   |
 SDL_RenderSetScale                    |   –   |
-SDL_RenderSetViewport                 |   –   |
+SDL_RenderSetViewport                 |   ✓   |
 SDL_RenderTargetSupported             |   –   |
 SDL_ResetAssertionReport              |   –   |
 SDL_RestoreWindow                     |   ✓   |

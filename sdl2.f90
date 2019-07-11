@@ -1244,8 +1244,10 @@ module sdl2
     public :: sdl_render_draw_rects
     public :: sdl_render_fill_rect
     public :: sdl_render_fill_rects
+    public :: sdl_render_get_viewport
     public :: sdl_render_present
     public :: sdl_render_read_pixels
+    public :: sdl_render_set_viewport
     public :: sdl_restore_window
     public :: sdl_rw_from_file
     public :: sdl_save_bmp
@@ -1280,7 +1282,6 @@ module sdl2
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')
             import :: c_ptr, c_uint32_t, sdl_pixel_format, sdl_surface
-            implicit none
             type(sdl_surface),        intent(in)        :: src
             type(sdl_pixel_format),   intent(in)        :: fmt
             integer(kind=c_uint32_t), intent(in), value :: flags
@@ -1290,7 +1291,6 @@ module sdl2
         ! SDL_Renderer *SDL_CreateRenderer(SDL_Window *window, int index, Uint32 flags)
         function sdl_create_renderer(window, index, flags) bind(c, name='SDL_CreateRenderer')
             import :: c_int, c_ptr, c_uint32_t
-            implicit none
             type(c_ptr),              intent(in), value :: window
             integer(kind=c_int),      intent(in), value :: index
             integer(kind=c_uint32_t), intent(in), value :: flags
@@ -1301,7 +1301,6 @@ module sdl2
         function sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask) &
             bind(c, name='SDL_CreateRGBSurface')
             import :: c_int, c_int64_t, c_ptr, c_uint32_t
-            implicit none
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int),      intent(in), value :: width
             integer(kind=c_int),      intent(in), value :: height
@@ -1316,7 +1315,6 @@ module sdl2
         ! SDL_Texture *SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface)
         function sdl_create_texture_from_surface(renderer, surface) bind(c, name='SDL_CreateTextureFromSurface')
             import :: c_ptr, sdl_surface
-            implicit none
             type(c_ptr),       intent(in), value :: renderer
             type(sdl_surface), intent(in)        :: surface
             type(c_ptr)                          :: sdl_create_texture_from_surface
@@ -1325,7 +1323,6 @@ module sdl2
         ! SDL_Window *SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
             import :: c_char, c_int, c_uint32_t, c_ptr
-            implicit none
             character(kind=c_char),   intent(in)        :: title
             integer(kind=c_int),      intent(in), value :: x
             integer(kind=c_int),      intent(in), value :: y
@@ -1338,7 +1335,6 @@ module sdl2
         ! int SDL_FillRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color)
         function sdl_fill_rect(dst, rect, color) bind(c, name='SDL_FillRect')
             import :: c_int, c_uint32_t, sdl_rect, sdl_surface
-            implicit none
             type(sdl_surface),        intent(in)        :: dst
             type(sdl_rect),           intent(in)        :: rect
             integer(kind=c_uint32_t), intent(in), value :: color
@@ -1348,7 +1344,6 @@ module sdl2
         ! int SDL_FillRects(SDL_Surface* dst, const SDL_Rect* rects, int count, Uint32 color)
         function sdl_fill_rects(dst, rects, count, color) bind(c, name='SDL_FillRects')
             import :: c_int, c_uint32_t, sdl_rect, sdl_surface
-            implicit none
             type(sdl_surface),        intent(in)        :: dst
             type(sdl_rect),           intent(in)        :: rects(*)
             integer(kind=c_int),      intent(in), value :: count
@@ -1359,7 +1354,6 @@ module sdl2
         ! const char *SDL_GetAudioDriver(int index)
         function sdl_get_audio_driver_(index) bind(c, name='SDL_GetAudioDriver')
             import :: c_int, c_ptr
-            implicit none
             integer(kind=c_int), intent(in) :: index
             type(c_ptr)                     :: sdl_get_audio_driver_
         end function sdl_get_audio_driver_
@@ -1367,49 +1361,42 @@ module sdl2
         ! char *SDL_GetBasePath(void)
         function sdl_get_base_path_() bind(c, name='SDL_GetBasePath')
             import :: c_ptr
-            implicit none
             type(c_ptr) :: sdl_get_base_path_
         end function sdl_get_base_path_
 
         ! int SDL_GetCPUCacheLineSize(void)
         function sdl_get_cpu_cache_line_size() bind(c, name='SDL_GetCPUCacheLineSize')
             import :: c_int
-            implicit none
             integer(kind=c_int) :: sdl_get_cpu_cache_line_size
         end function sdl_get_cpu_cache_line_size
 
         ! int SDL_GetCPUCount(void)
         function sdl_get_cpu_count() bind(c, name='SDL_GetCPUCount')
             import :: c_int
-            implicit none
             integer(kind=c_int) :: sdl_get_cpu_count
         end function sdl_get_cpu_count
 
         ! const char *SDL_GetCurrentAudioDriver(void)
         function sdl_get_current_audio_driver_() bind(c, name='SDL_GetCurrentAudioDriver')
             import :: c_ptr
-            implicit none
             type(c_ptr) :: sdl_get_current_audio_driver_
         end function sdl_get_current_audio_driver_
 
         ! const char *SDL_GetCurrentVideoDriver(void)
         function sdl_get_current_video_driver_() bind(c, name='SDL_GetCurrentVideoDriver')
             import :: c_ptr
-            implicit none
             type(c_ptr) :: sdl_get_current_video_driver_
         end function sdl_get_current_video_driver_
 
         ! const char *SDL_GetError(void)
         function sdl_get_error_() bind(c, name='SDL_GetError')
             import :: c_ptr
-            implicit none
             type(c_ptr) :: sdl_get_error_
         end function sdl_get_error_
 
         ! const char *SDL_GetHint(const char *name)
         function sdl_get_hint_(name) bind(c, name='SDL_GetHint')
             import :: c_char, c_ptr
-            implicit none
             character(kind=c_char), intent(in) :: name
             type(c_ptr)                        :: sdl_get_hint_
         end function sdl_get_hint_
@@ -1417,7 +1404,6 @@ module sdl2
         ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
         function sdl_get_keyboard_state_(numkeys) bind(c, name='SDL_GetKeyboardState')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: numkeys
             type(c_ptr)                    :: sdl_get_keyboard_state_
         end function sdl_get_keyboard_state_
@@ -1425,7 +1411,6 @@ module sdl2
         ! Uint32 SDL_GetMouseState(int *x, int *y)
         function sdl_get_mouse_state(x, y) bind(c, name='SDL_GetMouseState')
             import :: c_int, c_uint32_t
-            implicit none
             integer(kind=c_int), intent(in) :: x
             integer(kind=c_int), intent(in) :: y
             integer(kind=c_uint32_t)        :: sdl_get_mouse_state
@@ -1441,14 +1426,12 @@ module sdl2
         ! const char *SDL_GetPlatform(void)
         function sdl_get_platform_() bind(c, name='SDL_GetPlatform')
             import :: c_ptr
-            implicit none
             type(c_ptr) :: sdl_get_platform_
         end function sdl_get_platform_
 
         ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
         function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: renderer
             type(c_ptr)                    :: sdl_get_render_target
         end function sdl_get_render_target
@@ -1456,21 +1439,18 @@ module sdl2
         ! int SDL_GetSystemRAM(void)
         function sdl_get_system_ram() bind(c, name='SDL_GetSystemRAM')
             import :: c_int
-            implicit none
             integer(kind=c_int) :: sdl_get_system_ram
         end function sdl_get_system_ram
 
         ! Uint32 SDL_GetTicks(void)
         function sdl_get_ticks() bind(c, name='SDL_GetTicks')
             import :: c_uint32_t
-            implicit none
             integer(kind=c_uint32_t) :: sdl_get_ticks
         end function sdl_get_ticks
 
         ! const char *SDL_GetVideoDriver(int index)
         function sdl_get_video_driver_(index) bind(c, name='SDL_GetVideoDriver')
             import :: c_int, c_ptr
-            implicit none
             integer(kind=c_int), intent(in) :: index
             type(c_ptr)                     :: sdl_get_video_driver_
         end function sdl_get_video_driver_
@@ -1478,7 +1458,6 @@ module sdl2
         ! Uint32 SDL_GetWindowID(SDL_Window *window)
         function sdl_get_window_id(window) bind(c, name='SDL_GetWindowID')
             import :: c_ptr, c_uint32_t
-            implicit none
             type(c_ptr), intent(in), value :: window
             integer(kind=c_uint32_t)       :: sdl_get_window_id
         end function sdl_get_window_id
@@ -1486,7 +1465,6 @@ module sdl2
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface_(window) bind(c, name='SDL_GetWindowSurface')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
             type(c_ptr)                    :: sdl_get_window_surface_
         end function sdl_get_window_surface_
@@ -1494,7 +1472,6 @@ module sdl2
         ! const char *SDL_GetWindowTitle(SDL_Window *window)
         function sdl_get_window_title_(window) bind(c, name='SDL_GetWindowTitle')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
             type(c_ptr)                    :: sdl_get_window_title_
         end function sdl_get_window_title_
@@ -1502,84 +1479,72 @@ module sdl2
         ! SDL_bool SDL_Has3DNow(void)
         function sdl_has_3dnow() bind(c, name='SDL_Has3DNow')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_3dnow
         end function sdl_has_3dnow
 
         ! SDL_bool SDL_HasAltiVec(void)
         function sdl_has_alti_vec() bind(c, name='SDL_HasAltiVec')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_alti_vec
         end function sdl_has_alti_vec
 
         ! SDL_bool SDL_HasAVX(void)
         function sdl_has_avx() bind(c, name='SDL_HasAVX')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_avx
         end function sdl_has_avx
 
         ! SDL_bool SDL_HasAVX2(void)
         function sdl_has_avx2() bind(c, name='SDL_HasAVX2')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_avx2
         end function sdl_has_avx2
 
         ! SDL_bool SDL_HasMMX(void)
         function sdl_has_mmx() bind(c, name='SDL_HasMMX')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_mmx
         end function sdl_has_mmx
 
         ! SDL_bool SDL_HasRDTSC(void)
         function sdl_has_rdtsc() bind(c, name='SDL_HasRDTSC')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_rdtsc
         end function sdl_has_rdtsc
 
         ! SDL_bool SDL_HasSSE(void)
         function sdl_has_sse() bind(c, name='SDL_HasSSE')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_sse
         end function sdl_has_sse
 
         ! SDL_bool SDL_HasSSE2(void)
         function sdl_has_sse2() bind(c, name='SDL_HasSSE2')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_sse2
         end function sdl_has_sse2
 
         ! SDL_bool SDL_HasSSE3(void)
         function sdl_has_sse3() bind(c, name='SDL_HasSSE3')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_sse3
         end function sdl_has_sse3
 
         ! SDL_bool SDL_HasSSE41(void)
         function sdl_has_sse41() bind(c, name='SDL_HasSSE41')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_sse41
         end function sdl_has_sse41
 
         ! SDL_bool SDL_HasSSE42(void)
         function sdl_has_sse42() bind(c, name='SDL_HasSSE42')
             import :: sdl_bool
-            implicit none
             integer(kind=sdl_bool) :: sdl_has_sse42
         end function sdl_has_sse42
 
         ! int SDL_Init(Uint32 flags)
         function sdl_init(flags) bind(c, name='SDL_Init')
             import :: c_int, c_uint32_t
-            implicit none
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int)                         :: sdl_init
         end function sdl_init
@@ -1587,7 +1552,6 @@ module sdl2
         ! SDL_Surface *SDL_LoadBMP_RW(SDL_RWops *src, int freesrc)
         function sdl_load_bmp_rw(src, free_src) bind(c, name='SDL_LoadBMP_RW')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: src
             integer(kind=c_int), intent(in), value :: free_src
             type(c_ptr)                            :: sdl_load_bmp_rw
@@ -1596,7 +1560,6 @@ module sdl2
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
         function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
             import :: c_uint16_t, c_uint32_t, sdl_pixel_format
-            implicit none
             type(sdl_pixel_format) ,  intent(in)        :: format
             integer(kind=c_uint16_t), intent(in), value :: r
             integer(kind=c_uint16_t), intent(in), value :: g
@@ -1607,7 +1570,6 @@ module sdl2
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
             import :: c_int, sdl_event
-            implicit none
             type(sdl_event), intent(inout) :: event
             integer(kind=c_int)            :: sdl_poll_event_
         end function sdl_poll_event_
@@ -1615,7 +1577,6 @@ module sdl2
         ! int SDL_QueryTexture(SDL_Texture *texture, Uint32 *format, int *access, int *w, int *h)
         function sdl_query_texture(texture, format, access, w, h) bind(c, name='SDL_QueryTexture')
             import :: c_int, c_ptr, c_uint32_t
-            implicit none
             type(c_ptr),              intent(in), value :: texture
             integer(kind=c_uint32_t), intent(inout)     :: format
             integer(kind=c_int),      intent(inout)     :: access
@@ -1627,7 +1588,6 @@ module sdl2
         ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
         function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
             import :: c_char, c_ptr
-            implicit none
             character(kind=c_char), intent(in) :: file
             character(kind=c_char), intent(in) :: mode
             type(c_ptr)                        :: sdl_rw_from_file
@@ -1636,7 +1596,6 @@ module sdl2
         ! int SDL_RenderClear(SDL_Renderer *renderer)
         function sdl_render_clear(renderer) bind(c, name='SDL_RenderClear')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: renderer
             integer(kind=c_int)            :: sdl_render_clear
         end function sdl_render_clear
@@ -1644,7 +1603,6 @@ module sdl2
         ! int SDL_RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect)
         function sdl_render_copy(renderer, texture, src_rect, dst_rect) bind(c, name='SDL_RenderCopy')
             import :: c_int, c_ptr, sdl_rect
-            implicit none
             type(c_ptr),    intent(in), value :: renderer
             type(c_ptr),    intent(in), value :: texture
             type(sdl_rect), intent(in)        :: src_rect
@@ -1655,7 +1613,6 @@ module sdl2
         ! int SDL_RenderCopyEx(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect, const double angle, const SDL_Point *center, const SDL_RendererFlip flip)
         function sdl_render_copy_ex(renderer, texture, src_rect, dst_rect, angle, center, flip) bind(c, name='SDL_RenderCopyEx')
             import :: c_double, c_int, c_ptr, sdl_point, sdl_rect
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             type(c_ptr),         intent(in), value :: texture
             type(sdl_rect),      intent(in)        :: src_rect
@@ -1669,7 +1626,6 @@ module sdl2
         ! int SDL_RenderDrawLine(SDL_Renderer *renderer, int x1, int y1, int x2, int y2)
         function sdl_render_draw_line(renderer, x1, y1, x2, y2) bind(c, name='SDL_RenderDrawLine')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             integer(kind=c_int), intent(in), value :: x1
             integer(kind=c_int), intent(in), value :: y1
@@ -1681,7 +1637,6 @@ module sdl2
         ! int SDL_RenderDrawLines(SDL_Renderer *renderer, const SDL_Point *points, int count)
         function sdl_render_draw_lines(renderer, points, count) bind(c, name='SDL_RenderDrawLines')
             import :: c_int, c_ptr, sdl_point
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             type(sdl_point),     intent(in)        :: points(*)
             integer(kind=c_int), intent(in), value :: count
@@ -1691,17 +1646,15 @@ module sdl2
         ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, int x, int y)
         function sdl_render_draw_point(renderer, x, y) bind(c, name='SDL_RenderDrawPoint')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             integer(kind=c_int), intent(in), value :: x
             integer(kind=c_int), intent(in), value :: y
             integer(kind=c_int)                    :: sdl_render_draw_point
         end function sdl_render_draw_point
 
-        ! int SDL_RenderDrawPoint(SDL_Renderer *renderer, const SDL_Point *points, int count)
+        ! int SDL_RenderDrawPoints(SDL_Renderer *renderer, const SDL_Point *points, int count)
         function sdl_render_draw_points(renderer, points, count) bind(c, name='SDL_RenderDrawPoints')
             import :: c_int, c_ptr, sdl_point
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             type(sdl_point),     intent(in)        :: points(*)
             integer(kind=c_int), intent(in), value :: count
@@ -1711,7 +1664,6 @@ module sdl2
         ! int SDL_RenderDrawRect(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_draw_rect(renderer, rect) bind(c, name='SDL_RenderDrawRect')
             import :: c_int, c_ptr, sdl_rect
-            implicit none
             type(c_ptr),    intent(in), value :: renderer
             type(sdl_rect), intent(in)        :: rect
             integer(kind=c_int)               :: sdl_render_draw_rect
@@ -1720,7 +1672,6 @@ module sdl2
         ! int SDL_RenderDrawRects(SDL_Renderer *renderer, const SDL_Rect *rects, int count)
         function sdl_render_draw_rects(renderer, rects, count) bind(c, name='SDL_RenderDrawRects')
             import :: c_int, c_ptr, sdl_rect
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             type(sdl_rect),      intent(in)        :: rects(*)
             integer(kind=c_int), intent(in), value :: count
@@ -1730,7 +1681,6 @@ module sdl2
         ! int SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_fill_rect(renderer, rect) bind(c, name='SDL_RenderFillRect')
             import :: c_int, c_ptr, sdl_rect
-            implicit none
             type(c_ptr),    intent(in), value :: renderer
             type(sdl_rect), intent(in)        :: rect
             integer(kind=c_int)               :: sdl_render_fill_rect
@@ -1739,7 +1689,6 @@ module sdl2
         ! int SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_Rect *rects, int count)
         function sdl_render_fill_rects(renderer, rects, count) bind(c, name='SDL_RenderFillRects')
             import :: c_int, c_ptr, sdl_rect
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             type(sdl_rect),      intent(in)        :: rects(*)
             integer(kind=c_int), intent(in), value :: count
@@ -1749,7 +1698,6 @@ module sdl2
         ! int SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect, Uint32 format, void *pixels, int pitch)
         function sdl_render_read_pixels(renderer, rect, format, pixels, pitch) bind(c, name='SDL_RenderReadPixels')
             import :: c_int, c_ptr, c_uint32_t, sdl_rect
-            implicit none
             type(c_ptr),              intent(in), value :: renderer
             type(sdl_rect),           intent(in)        :: rect
             integer(kind=c_uint32_t), intent(in), value :: format
@@ -1758,10 +1706,17 @@ module sdl2
             integer(kind=c_int)                         :: sdl_render_read_pixels
         end function sdl_render_read_pixels
 
+        ! int SDL_RenderSetViewport(SDL_Renderer *renderer, const SDL_Rect *rect)
+        function sdl_render_set_viewport(renderer, rect) bind(c, name='SDL_RenderSetViewport')
+            import :: c_int, c_ptr, sdl_rect
+            type(c_ptr),    intent(in), value :: renderer
+            type(sdl_rect), intent(in)        :: rect
+            integer(kind=c_int)               :: sdl_render_set_viewport
+        end function sdl_render_set_viewport
+
         ! int SDL_SaveBMP_RW(SDL_Surface *surface, SDL_RWops *dst, int freedst)
         function sdl_save_bmp_rw(surface, dst, free_dst) bind(c, name='SDL_SaveBMP_RW')
             import :: c_int, c_ptr, sdl_surface
-            implicit none
             type(sdl_surface),   intent(in)        :: surface
             type(c_ptr),         intent(in), value :: dst
             integer(kind=c_int), intent(in), value :: free_dst
@@ -1771,7 +1726,6 @@ module sdl2
         ! SDL_bool SDL_SetClipRect(SDL_Surface *surface, const SDL_Rect *rect)
         function sdl_set_clip_rect(surface, rect) bind(c, name='SDL_SetClipRect')
             import :: sdl_bool, sdl_rect, sdl_surface
-            implicit none
             type(sdl_surface), intent(in) :: surface
             type(sdl_rect),    intent(in) :: rect
             integer(kind=sdl_bool)        :: sdl_set_clip_rect
@@ -1780,7 +1734,6 @@ module sdl2
         ! int SDL_SetColorKey(SDL_Surface *surface, int flag, Uint32 key)
         function sdl_set_color_key(surface, flag, key) bind(c, name='SDL_SetColorKey')
             import :: c_int, c_uint32_t, sdl_surface
-            implicit none
             type(sdl_surface),        intent(in)        :: surface
             integer(kind=c_int),      intent(in), value :: flag
             integer(kind=c_uint32_t), intent(in), value :: key
@@ -1790,7 +1743,6 @@ module sdl2
         ! SDL_bool SDL_SetHint(const char *name, const char *value)
         function sdl_set_hint_(name, value) bind(c, name='SDL_SetHint')
             import :: c_char, sdl_bool
-            implicit none
             character(kind=c_char), intent(in) :: name
             character(kind=c_char), intent(in) :: value
             integer(kind=sdl_bool)             :: sdl_set_hint_
@@ -1799,7 +1751,6 @@ module sdl2
         ! int SDL_SetRelativeMouseMode(SDL_bool enabled)
         function sdl_set_relative_mouse_mode(enabled) bind(c, name='SDL_SetRelativeMouseMode')
             import :: c_int, sdl_bool
-            implicit none
             integer(kind=c_int), intent(in), value :: enabled
             integer(kind=sdl_bool)                 :: sdl_set_relative_mouse_mode
         end function sdl_set_relative_mouse_mode
@@ -1807,7 +1758,6 @@ module sdl2
         ! int SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode)
         function sdl_set_render_draw_blend_mode(renderer, blend_mode) bind(c, name='SDL_SetRenderDrawBlendMode')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: renderer
             integer(kind=c_int), intent(in), value :: blend_mode
             integer(kind=c_int)                    :: sdl_set_render_draw_blend_mode
@@ -1816,7 +1766,6 @@ module sdl2
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
         function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
             import :: c_int, c_ptr, c_uint16_t
-            implicit none
             type(c_ptr),              intent(in), value :: renderer
             integer(kind=c_uint16_t), intent(in), value :: r
             integer(kind=c_uint16_t), intent(in), value :: g
@@ -1828,7 +1777,6 @@ module sdl2
         ! int SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
         function sdl_set_render_target(renderer, texture) bind(c, name='SDL_SetRenderTarget')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),             intent(in), value :: renderer
             type(c_ptr),             intent(in), value :: texture
             integer(kind=c_int)                        :: sdl_set_render_target
@@ -1837,7 +1785,6 @@ module sdl2
         ! int SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b)
         function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
             import :: c_int, c_ptr, c_uint16_t
-            implicit none
             type(c_ptr),              intent(in), value :: texture
             integer(kind=c_uint16_t), intent(in), value :: r
             integer(kind=c_uint16_t), intent(in), value :: g
@@ -1848,7 +1795,6 @@ module sdl2
         ! int SDL_SetWindowFullscreen(SDL_Window *window, Uint32 flags)
         function sdl_set_window_fullscreen(window, flags) bind(c, name='SDL_SetWindowFullscreen')
             import :: c_int, c_ptr, c_uint32_t
-            implicit none
             type(c_ptr),              intent(in), value :: window
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int)                         :: sdl_set_window_fullscreen
@@ -1857,7 +1803,6 @@ module sdl2
         ! int SDL_ShowCursor(int toggle)
         function sdl_show_cursor(toggle) bind(c, name='SDL_ShowCursor')
             import :: c_int
-            implicit none
             integer(kind=c_int), intent(in), value :: toggle
             integer(kind=c_int)                    :: sdl_show_cursor
         end function sdl_show_cursor
@@ -1865,7 +1810,6 @@ module sdl2
         ! int SDL_ShowSimpleMessageBox(Uint32 flags, const char *title, const char *message, SDL_Window *window)
         function sdl_show_simple_message_box(flags, title, message, window) bind(c, name='SDL_ShowSimpleMessageBox')
             import :: c_char, c_int, c_ptr, c_uint32_t
-            implicit none
             integer(kind=c_uint32_t), intent(in), value :: flags
             character(kind=c_char),   intent(in)        :: title
             character(kind=c_char),   intent(in)        :: message
@@ -1876,7 +1820,6 @@ module sdl2
         ! int SDL_UpdateWindowSurface(SDL_Window *window)
         function sdl_update_window_surface(window) bind(c, name='SDL_UpdateWindowSurface')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
             integer(kind=c_int)            :: sdl_update_window_surface
         end function sdl_update_window_surface
@@ -1884,7 +1827,6 @@ module sdl2
         ! int SDL_UpperBlit(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
         function sdl_upper_blit(src, src_rect, dst, dst_rect) bind(c, name='SDL_UpperBlit')
             import :: c_int, sdl_rect, sdl_surface
-            implicit none
             type(sdl_surface), intent(in) :: src
             type(sdl_rect),    intent(in) :: src_rect
             type(sdl_surface), intent(in) :: dst
@@ -1895,7 +1837,6 @@ module sdl2
         ! int SDL_UpperBlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
         function sdl_upper_blit_scaled(src, src_rect, dst, dst_rect) bind(c, name='SDL_UpperBlitScaled')
             import :: c_int, sdl_rect, sdl_surface
-            implicit none
             type(sdl_surface), intent(in) :: src
             type(sdl_rect),    intent(in) :: src_rect
             type(sdl_surface), intent(in) :: dst
@@ -1906,7 +1847,6 @@ module sdl2
         ! int SDL_WaitEvent(SDL_Event *event)
         function sdl_wait_event_(event) bind(c, name='SDL_WaitEvent')
             import :: c_int, sdl_event
-            implicit none
             type(sdl_event), intent(inout) :: event
             integer(kind=c_int)            :: sdl_wait_event_
         end function sdl_wait_event_
@@ -1914,49 +1854,42 @@ module sdl2
         ! void SDL_Delay(Uint32 ms)
         subroutine sdl_delay(ms) bind(c, name='SDL_Delay')
             import :: c_uint32_t
-            implicit none
             integer(kind=c_uint32_t), intent(in), value :: ms
         end subroutine sdl_delay
 
         ! void SDL_DestroyRenderer(SDL_Renderer *renderer)
         subroutine sdl_destroy_renderer(renderer) bind(c, name='SDL_DestroyRenderer')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: renderer
         end subroutine sdl_destroy_renderer
 
         ! void SDL_DestroyTexture(SDL_Texture *texture)
         subroutine sdl_destroy_texture(texture) bind(c, name='SDL_DestroyTexture')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: texture
         end subroutine sdl_destroy_texture
 
         ! void SDL_DestroyWindow(SDL_Window *window)
         subroutine sdl_destroy_window(window) bind(c, name='SDL_DestroyWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_destroy_window
 
         ! void free(void *ptr);
         subroutine sdl_free(ptr) bind(c, name='free')
             import :: c_ptr
-            implicit none
             type(c_ptr), value, intent(in) :: ptr
         end subroutine sdl_free
 
         ! void SDL_FreeSurface(SDL_Surface *surface)
         subroutine sdl_free_surface(surface) bind(c, name='SDL_FreeSurface')
             import :: sdl_surface
-            implicit none
             type(sdl_surface), intent(in) :: surface
         end subroutine sdl_free_surface
 
         ! void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b)
         subroutine sdl_get_rgb(pixel, format, r, g, b) bind(c, name='SDL_GetRGB')
             import :: c_ptr, c_uint16_t, c_uint32_t
-            implicit none
             integer(kind=c_uint32_t), intent(in), value :: pixel
             type(c_ptr),              intent(in), value :: format
             integer(kind=c_uint16_t), intent(inout)     :: r
@@ -1967,14 +1900,12 @@ module sdl2
         ! void SDL_GetVersion(SDL_version *ver)
         subroutine sdl_get_version(ver) bind(c, name='SDL_GetVersion')
             import :: sdl_version
-            implicit none
             type(sdl_version), intent(inout) :: ver
         end subroutine sdl_get_version
 
         ! void SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h)
         subroutine sdl_get_window_maximum_size(window, w, h) bind(c, name='SDL_GetWindowMaximumSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(inout)     :: w
             integer(kind=c_int), intent(inout)     :: h
@@ -1983,7 +1914,6 @@ module sdl2
         ! void SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h)
         subroutine sdl_get_window_minimum_size(window, w, h) bind(c, name='SDL_GetWindowMinimumSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(inout)     :: w
             integer(kind=c_int), intent(inout)     :: h
@@ -1992,7 +1922,6 @@ module sdl2
         ! void SDL_GetWindowPosition(SDL_Window *window, int *x, int *y)
         subroutine sdl_get_window_position(window, x, y) bind(c, name='SDL_GetWindowPosition')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(inout)     :: x
             integer(kind=c_int), intent(inout)     :: y
@@ -2001,7 +1930,6 @@ module sdl2
         ! void SDL_GetWindowSize(SDL_Window *window, int *w, int *h)
         subroutine sdl_get_window_size(window, w, h) bind(c, name='SDL_GetWindowSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(inout)     :: w
             integer(kind=c_int), intent(inout)     :: h
@@ -2010,21 +1938,18 @@ module sdl2
         ! void SDL_HideWindow(SDL_Window *window)
         subroutine sdl_hide_window(window) bind(c, name='SDL_HideWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_hide_window
 
         ! void SDL_MaximizeWindow(SDL_Window *window)
         subroutine sdl_maximize_window(window) bind(c, name='SDL_MaximizeWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_maximize_window
 
         ! void SDL_MinimizeWindow(SDL_Window *window)
         subroutine sdl_minimize_window(window) bind(c, name='SDL_MinimizeWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_minimize_window
 
@@ -2035,28 +1960,31 @@ module sdl2
         ! void SDL_RaiseWindow(SDL_Window *window)
         subroutine sdl_raise_window(window) bind(c, name='SDL_RaiseWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_raise_window
+
+        ! void SDL_RenderGetViewport(SDL_Renderer *renderer, SDL_Rect *rect)
+        subroutine sdl_render_get_viewport(renderer, rect) bind(c, name='SDL_RenderGetViewport')
+            import :: c_int, c_ptr, sdl_rect
+            type(c_ptr),    intent(in), value :: renderer
+            type(sdl_rect), intent(inout)     :: rect
+        end subroutine sdl_render_get_viewport
 
         ! void SDL_RenderPresent(SDL_Renderer *renderer)
         subroutine sdl_render_present(renderer) bind(c, name='SDL_RenderPresent')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: renderer
         end subroutine sdl_render_present
 
         ! void SDL_RestoreWindow(SDL_Window *window)
         subroutine sdl_restore_window(window) bind(c, name='SDL_RestoreWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_restore_window
 
         ! void SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon)
         subroutine sdl_set_window_icon(window, icon) bind(c, name='SDL_SetWindowIcon')
             import :: c_ptr, sdl_surface
-            implicit none
             type(c_ptr),       intent(in), value :: window
             type(sdl_surface), intent(in)        :: icon
         end subroutine sdl_set_window_icon
@@ -2064,7 +1992,6 @@ module sdl2
         ! void SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h)
         subroutine sdl_set_window_maximum_size(window, max_w, max_h) bind(c, name='SDL_SetWindowMaximumSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(in), value :: max_w
             integer(kind=c_int), intent(in), value :: max_h
@@ -2073,7 +2000,6 @@ module sdl2
         ! void SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h)
         subroutine sdl_set_window_minimum_size(window, min_w, min_h) bind(c, name='SDL_SetWindowMinimumSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(in), value :: min_w
             integer(kind=c_int), intent(in), value :: min_h
@@ -2082,7 +2008,6 @@ module sdl2
         ! void SDL_SetWindowPosition(SDL_Window *window, int x, int y)
         subroutine sdl_set_window_position(window, x, y) bind(c, name='SDL_SetWindowPosition')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(in), value :: x
             integer(kind=c_int), intent(in), value :: y
@@ -2091,7 +2016,6 @@ module sdl2
         ! void SDL_SetWindowResizable(SDL_Window *window, SDL_bool resizable)
         subroutine sdl_set_window_resizable(window, resizable) bind(c, name='SDL_SetWindowResizable')
             import :: c_ptr, sdl_bool
-            implicit none
             type(c_ptr),            intent(in), value :: window
             integer(kind=sdl_bool), intent(in), value :: resizable
         end subroutine sdl_set_window_resizable
@@ -2099,7 +2023,6 @@ module sdl2
         ! void SDL_SetWindowSize(SDL_Window *window, int w, int h)
         subroutine sdl_set_window_size(window, x, y) bind(c, name='SDL_SetWindowSize')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(in), value :: x
             integer(kind=c_int), intent(in), value :: y
@@ -2108,7 +2031,6 @@ module sdl2
         ! void SDL_SetWindowTitle(SDL_Window *window, const char *title)
         subroutine sdl_set_window_title(window, title) bind(c, name='SDL_SetWindowTitle')
             import :: c_char, c_ptr
-            implicit none
             type(c_ptr),            intent(in), value :: window
             character(kind=c_char), intent(in)        :: title
         end subroutine sdl_set_window_title
@@ -2116,7 +2038,6 @@ module sdl2
         ! void SDL_ShowWindow(SDL_Window *window)
         subroutine sdl_show_window(window) bind(c, name='SDL_ShowWindow')
             import :: c_ptr
-            implicit none
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_show_window
 
@@ -2127,7 +2048,6 @@ module sdl2
         ! void SDL_WarpMouseInWindow(SDL_Window *window, int x, int y)
         subroutine sdl_warp_mouse_in_window(window, x, y) bind(c, name='SDL_WarpMouseInWindow')
             import :: c_int, c_ptr
-            implicit none
             type(c_ptr),         intent(in), value :: window
             integer(kind=c_int), intent(in), value :: x
             integer(kind=c_int), intent(in), value :: y
@@ -2136,7 +2056,6 @@ module sdl2
         ! void SDL_WarpMouseGlobal(int x, int y)
         subroutine sdl_warp_mouse_global(x, y) bind(c, name='SDL_WarpMouseGlobal')
             import :: c_int
-            implicit none
             integer(kind=c_int), intent(in), value :: x
             integer(kind=c_int), intent(in), value :: y
         end subroutine sdl_warp_mouse_global
@@ -2145,7 +2064,6 @@ contains
     subroutine c_f_string_chars(c_string, f_string)
         !! Copies a C string, passed as a char-array reference, to a Fortran
         !! string.
-        implicit none
         character(len=1, kind=c_char), intent(in)  :: c_string(*)
         character(len=*),              intent(out) :: f_string
         integer                                    :: i
@@ -2164,7 +2082,6 @@ contains
     ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
     function sdl_blit_scaled(src, src_rect, dst, dst_rect)
         !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
-        implicit none
         type(sdl_surface), intent(in) :: src
         type(sdl_rect),    intent(in) :: src_rect
         type(sdl_surface), intent(in) :: dst
@@ -2177,7 +2094,6 @@ contains
     ! int SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
     function sdl_blit_surface(src, src_rect, dst, dst_rect)
         !! Macro for `sdl_upper_blit()`, as defined in `SDL_surface.h`.
-        implicit none
         type(sdl_surface), intent(in) :: src
         type(sdl_rect),    intent(in) :: src_rect
         type(sdl_surface), intent(in) :: dst
@@ -2191,7 +2107,6 @@ contains
     function sdl_convert_surface(src, fmt, flags)
         !! Calls `sdl_convert_surface_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        implicit none
         type(sdl_surface),        intent(in) :: src
         type(sdl_pixel_format),   intent(in) :: fmt
         integer(kind=c_uint32_t), intent(in) :: flags
@@ -2206,7 +2121,6 @@ contains
     function sdl_create_rgb_surface(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
         !! Calls `sdl_create_rgb_surface_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        implicit none
         integer(kind=c_uint32_t), intent(in) :: flags
         integer(kind=c_int),      intent(in) :: width
         integer(kind=c_int),      intent(in) :: height
@@ -2226,7 +2140,6 @@ contains
     function sdl_get_audio_driver(index)
         !! Calls `sdl_get_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         integer(kind=c_int)             :: index
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
@@ -2245,7 +2158,6 @@ contains
     function sdl_get_base_path()
         !! Calls `sdl_get_base_path_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
         character(len=100)              :: sdl_get_base_path
@@ -2264,7 +2176,6 @@ contains
     function sdl_get_current_audio_driver()
         !! Calls `sdl_get_current_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
         character(len=30)               :: sdl_get_current_audio_driver
@@ -2282,7 +2193,6 @@ contains
     function sdl_get_current_video_driver()
         !! Calls `sdl_get_current_video_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
         character(len=30)               :: sdl_get_current_video_driver
@@ -2300,7 +2210,6 @@ contains
     function sdl_get_error()
         !! Calls `sdl_get_error_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         character(len=100)              :: sdl_get_error
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
@@ -2318,7 +2227,6 @@ contains
     function sdl_get_keyboard_state()
         !! Calls `sdl_get_keyboard_state_()` and converts the returned
         !! C pointer to Fortran pointers.
-        implicit none
         integer(kind=c_uint8_t), pointer :: sdl_get_keyboard_state(:)
         type(c_ptr)                      :: ptr
 
@@ -2334,7 +2242,6 @@ contains
     function sdl_get_hint(name)
         !! Calls `sdl_get_hint_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         character(len=*),       intent(in) :: name
         character(len=100)                 :: sdl_get_hint
         type(c_ptr)                        :: ptr
@@ -2352,7 +2259,6 @@ contains
     function sdl_get_pixel_format(surface)
         !! Converts the `*SDL_PixelFormat` pointer inside `surface`
         !! to `sdl_pixel_format`.
-        implicit none
         type(sdl_surface),      intent(in) :: surface
         type(sdl_pixel_format), pointer    :: sdl_get_pixel_format
 
@@ -2363,7 +2269,6 @@ contains
     function sdl_get_platform()
         !! Calls `sdl_get_platform_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         character(len=30)                  :: sdl_get_platform
         type(c_ptr)                        :: ptr
         character(kind=c_char), pointer    :: ptrs(:)
@@ -2381,7 +2286,6 @@ contains
     function sdl_get_video_driver(index)
         !! Calls `sdl_get_video_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         integer,                intent(in) :: index
         type(c_ptr)                        :: ptr
         character(kind=c_char), pointer    :: ptrs(:)
@@ -2400,7 +2304,6 @@ contains
     function sdl_get_window_surface(window)
         !! Calls `sdl_get_window_surface_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        implicit none
         type(c_ptr),       intent(in) :: window
         type(sdl_surface), pointer    :: sdl_get_window_surface
         type(c_ptr)                   :: ptr
@@ -2413,7 +2316,6 @@ contains
     function sdl_get_window_title(window)
         !! Calls `sdl_get_window_title_()` and converts the returned
         !! C char pointer to Fortran character.
-        implicit none
         type(c_ptr), intent(in)         :: window
         type(c_ptr)                     :: ptr
         character(kind=c_char), pointer :: ptrs(:)
@@ -2432,7 +2334,6 @@ contains
     function sdl_load_bmp(file)
         !! Calls `sdl_load_bmp_rw()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        implicit none
         character(kind=c_char), intent(in) :: file
         type(sdl_surface),      pointer    :: sdl_load_bmp
         type(c_ptr)                        :: ptr
@@ -2446,7 +2347,6 @@ contains
     function sdl_poll_event(event)
         !! Calls `sdl_poll_event_()` and transfers the returned
         !! union to the respective event type.
-        implicit none
         type(sdl_event), intent(inout) :: event
         integer                        :: sdl_poll_event
 
@@ -2456,7 +2356,6 @@ contains
 
     ! int SDL_SaveBMP(SDL_Surface *surface, const char *file)
     function sdl_save_bmp(surface, file)
-        implicit none
         type(sdl_surface),      intent(in) :: surface
         character(kind=c_char), intent(in) :: file
         integer                            :: sdl_save_bmp
@@ -2468,7 +2367,6 @@ contains
     function sdl_set_hint(name, value)
         !! Adds `c_null_char` to name and value before calling
         !! `sdl_set_hint_()`.
-        implicit none
         character(len=*) :: name
         character(len=*) :: value
         integer          :: sdl_set_hint
@@ -2480,7 +2378,6 @@ contains
     function sdl_wait_event(event)
         !! Calls `sdl_wait_event_()` and transfers the returned
         !! union to the respective event type.
-        implicit none
         type(sdl_event), intent(inout) :: event
         integer                        :: sdl_wait_event
 
