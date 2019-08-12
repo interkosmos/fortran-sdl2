@@ -857,7 +857,7 @@ module sdl2
         integer(kind=c_int)      :: h
         integer(kind=c_int)      :: pitch
         type(c_ptr)              :: pixels
-        type(c_ptr)              :: userdata
+        type(c_ptr)              :: user_data
         integer(kind=c_int)      :: locked
         type(c_ptr)              :: lock_data
         type(sdl_rect)           :: clip_rect
@@ -1297,7 +1297,7 @@ module sdl2
             type(c_ptr)                                 :: sdl_create_renderer
         end function sdl_create_renderer
 
-        !SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+        ! SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
         function sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask) &
             bind(c, name='SDL_CreateRGBSurface')
             import :: c_int, c_int64_t, c_ptr, c_uint32_t
@@ -2117,7 +2117,7 @@ contains
         call c_f_pointer(ptr, sdl_convert_surface)
     end function sdl_convert_surface
 
-    !SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+    ! SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
     function sdl_create_rgb_surface(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
         !! Calls `sdl_create_rgb_surface_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
