@@ -145,7 +145,7 @@ Compile it with:
 $ gfortran8 -Wall -Wl,-rpath=/usr/local/lib/gcc8/ `sdl2-config --cflags` \
   -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
-The `-Wl,-rpath` parameter is required on FreeBSD only.
+The `-Wl,-rpath` parameter may be optional.
 
 ## Further examples
 Some demo applications are provided in directory `examples/`.
