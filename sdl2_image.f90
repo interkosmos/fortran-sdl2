@@ -23,7 +23,7 @@ module sdl2_image
         end function img_init
 
         ! SDL_Surface *IMG_Load(const char *file)
-        function img_load(file_name) bind(c, name='IMG_LoadTexture')
+        function img_load(file_name) bind(c, name='IMG_Load')
             use :: sdl2, only: sdl_surface
             import :: c_char
             character(kind=c_char), intent(in) :: file_name
