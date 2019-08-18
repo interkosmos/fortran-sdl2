@@ -163,8 +163,9 @@ Some demo applications are provided in directory `examples/`.
 
 Build the examples with:
 ```
-$ make <name>
+$ make examples
 ```
+Or select the name of one example.
 
 ## Coverage
 ### SDL
