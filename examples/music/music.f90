@@ -14,22 +14,28 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: WIDTH    = 320
-    integer,          parameter :: HEIGHT   = 240
-    character(len=*), parameter :: OGG_PATH = 'examples/music/music.ogg'
-    character(len=*), parameter :: TTF_PATH = 'examples/music/font.ttf'
-    character(len=*), parameter :: MESSAGE  = 'Playing ' // OGG_PATH // ' ...'
+    integer,          parameter :: SCREEN_WIDTH  = 320
+    integer,          parameter :: SCREEN_HEIGHT = 240
+    character(len=*), parameter :: FILE_NAME     = 'examples/music/italy.bmp'
+    character(len=*), parameter :: OGG_PATH      = 'examples/music/music.ogg'
+    character(len=*), parameter :: TTF_PATH      = 'examples/music/font.ttf'
+    character(len=*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
 
-    logical                    :: done = .false.
-    type(c_ptr)                :: window
-    type(sdl_surface), pointer :: screen
-    type(sdl_surface), pointer :: text
-    type(sdl_rect)             :: rect
-    type(sdl_event)            :: event
-    type(sdl_color)            :: color
-    type(c_ptr)                :: font
-    type(c_ptr)                :: music
-    integer                    :: rc
+    integer         :: rc
+    logical         :: done = .false.
+    type(c_ptr)     :: font
+    type(c_ptr)     :: music
+    type(c_ptr)     :: window
+    type(sdl_color) :: color
+    type(sdl_event) :: event
+    type(sdl_rect)  :: rect_text
+    type(sdl_rect)  :: rect_image
+
+    type(sdl_surface),      pointer :: window_surface
+    type(sdl_surface),      pointer :: text
+    type(sdl_surface),      pointer :: image_loaded
+    type(sdl_surface),      pointer :: image_opt
+    type(sdl_pixel_format), pointer :: pixel_format
 
     ! Initialise SDL.
     rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
@@ -52,10 +58,10 @@ program main
     font    = ttf_open_font(TTF_PATH // c_null_char, 12)
     text    => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
-    rect%x = 0
-    rect%y = 0
-    rect%w = text%w
-    rect%h = text%h
+    rect_text%x = 0
+    rect_text%y = 0
+    rect_text%w = text%w
+    rect_text%h = text%h
 
     ! Initialise SDL_mixer.
     rc = mix_open_audio(MIX_DEFAULT_FREQUENCY, &
@@ -81,8 +87,8 @@ program main
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -90,8 +96,16 @@ program main
         stop
     end if
 
-    ! Get the window surface.
-    screen => sdl_get_window_surface(window)
+    window_surface  => sdl_get_window_surface(window)                     ! Get surface of window.
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)             ! Load BMP file.
+    pixel_format    => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
+    image_opt       => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
+
+    rect_image%x = 0
+    rect_image%y = 0
+    rect_image%w = SCREEN_WIDTH
+    rect_image%h = SCREEN_HEIGHT
+
     rc = sdl_update_window_surface(window)
 
     ! Event loop.
@@ -104,8 +118,8 @@ program main
                     done = .true.
             end select
 
-            ! Copy text surface to screen.
-            rc = sdl_blit_surface(text, rect, screen, rect)
+            rc = sdl_blit_surface(image_opt, rect_image, window_surface, rect_image)
+            rc = sdl_blit_surface(text, rect_text, window_surface, rect_text)
             rc = sdl_update_window_surface(window)
         else
             call sdl_delay(50)
@@ -120,6 +134,9 @@ program main
     call ttf_quit()
 
     call sdl_free_surface(text)
+    call sdl_free_surface(image_opt)
+    call sdl_free_surface(image_loaded)
+
     call sdl_destroy_window(window)
     call sdl_quit()
 end program main
