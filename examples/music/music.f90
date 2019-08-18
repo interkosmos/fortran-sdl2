@@ -14,12 +14,12 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 320
-    integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME     = 'examples/music/italy.bmp'
-    character(len=*), parameter :: OGG_PATH      = 'examples/music/music.ogg'
-    character(len=*), parameter :: TTF_PATH      = 'examples/music/font.ttf'
-    character(len=*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
+    integer,          parameter :: WIN_WIDTH  = 320
+    integer,          parameter :: WIN_HEIGHT = 240
+    character(len=*), parameter :: FILE_NAME  = 'examples/music/italy.bmp'
+    character(len=*), parameter :: OGG_PATH   = 'examples/music/music.ogg'
+    character(len=*), parameter :: TTF_PATH   = 'examples/music/font.ttf'
+    character(len=*), parameter :: MESSAGE    = 'Playing ' // OGG_PATH // ' ...'
 
     integer         :: rc
     logical         :: done = .false.
@@ -89,8 +89,8 @@ program main
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               SCREEN_WIDTH, &
-                               SCREEN_HEIGHT, &
+                               WIN_WIDTH, &
+                               WIN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -105,8 +105,8 @@ program main
 
     rect_image%x = 0
     rect_image%y = 0
-    rect_image%w = SCREEN_WIDTH
-    rect_image%h = SCREEN_HEIGHT
+    rect_image%w = WIN_WIDTH
+    rect_image%h = WIN_HEIGHT
 
     rc = sdl_update_window_surface(window)
 
