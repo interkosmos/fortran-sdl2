@@ -26,9 +26,12 @@ SCALING = scaling
 TEXT    = text
 WINDOW  = window
 
-.PHONY: all clean
+.PHONY: all clean examples
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+
+examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(IMAGE) $(MSGBOX) $(MUSIC) \
+          $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
 sdl2: $(SDL_OBJ)
 
@@ -39,16 +42,16 @@ sdl2_mixer: $(MIX_OBJ)
 sdl2_ttf: $(TTF_OBJ)
 
 $(SDL_OBJ):
-	$(FC) -Wall -c $(SDL_SRC)
+	$(FC) -Wall -c src/$(SDL_SRC)
 
 $(IMG_OBJ):
-	$(FC) -Wall -c $(IMG_SRC)
+	$(FC) -Wall -c src/$(IMG_SRC)
 
 $(MIX_OBJ):
-	$(FC) -Wall -c $(MIX_SRC)
+	$(FC) -Wall -c src/$(MIX_SRC)
 
 $(TTF_OBJ):
-	$(FC) -Wall -c $(TTF_SRC)
+	$(FC) -Wall -c src/$(TTF_SRC)
 
 $(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
