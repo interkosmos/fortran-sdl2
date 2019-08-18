@@ -153,7 +153,6 @@ program main
     call sdl_quit()
 contains
     subroutine color_mod(texture, colors)
-        implicit none
         type(c_ptr), intent(inout) :: texture
         type(color), intent(inout) :: colors(:)
         integer, save              :: c = 0

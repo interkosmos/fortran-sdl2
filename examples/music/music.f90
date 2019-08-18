@@ -53,10 +53,12 @@ program main
         stop
     end if
 
-    ! Open font and draw to surface.
+    ! Set font colour.
     color%r = 255; color%g = 165; color%b = 0; color%a = 255
-    font    = ttf_open_font(TTF_PATH // c_null_char, 12)
-    text    => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
+
+    ! Open font and draw to surface.
+    font = ttf_open_font(TTF_PATH // c_null_char, 12)
+    text => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
     rect_text%x = 0
     rect_text%y = 0
