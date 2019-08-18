@@ -1,14 +1,14 @@
-# f03sdl2
+# f03sdl2: Fortran 2003 Interface to SDL 2
 An ISO C binding interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/)
 (SDL 2), for multimedia and game programming in Fortran. SDL versions tested
 against:
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.9_3
-SDL_image | 2.0.4_1
+SDL       | 2.0.10
+SDL_image | 2.0.5
 SDL_mixer | 2.0.4_1
-SDL_ttf   | 2.0.4_1
+SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 7/8, but other
 modern compilers should work as well.
