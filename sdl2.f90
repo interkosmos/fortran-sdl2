@@ -1278,6 +1278,16 @@ module sdl2
     public :: sdl_warp_mouse_global
     public :: sdl_warp_mouse_in_window
 
+    ! Function and routine interfaces to libc.
+    interface
+        function c_strlen(str) bind(c, name='strlen')
+            import :: c_ptr, c_size_t
+            type(c_ptr), intent(in), value :: str
+            integer(c_size_t)              :: c_strlen
+        end function c_strlen
+    end interface
+
+    ! Function and routine interfaces to SDL2.
     interface
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')
@@ -2079,6 +2089,30 @@ contains
             f_string(i:) = ' '
     end subroutine c_f_string_chars
 
+    subroutine c_f_string_ptr(c_string, f_string)
+        !! Copies a C string, passed as a C pointer, to a Fortran string.
+        type(c_ptr),      intent(in)           :: c_string
+        character(len=*), intent(out)          :: f_string
+        character(kind=c_char, len=1), pointer :: p_chars(:)
+        integer                                :: i
+
+        if (.not. c_associated(c_string)) then
+            f_string = ' '
+        else
+            call c_f_pointer(c_string, p_chars, [huge(0)])
+
+            i = 1
+
+            do while (p_chars(i) /= c_null_char .and. i <= len(f_string))
+                f_string(i:i) = p_chars(i)
+                i = i + 1
+            end do
+
+            if (i < len(f_string)) &
+                f_string(i:) = ' '
+        end if
+    end subroutine c_f_string_ptr
+
     ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
     function sdl_blit_scaled(src, src_rect, dst, dst_rect)
         !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
@@ -2140,35 +2174,37 @@ contains
     function sdl_get_audio_driver(index)
         !! Calls `sdl_get_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        integer(kind=c_int)             :: index
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
-        character(len=30)               :: sdl_get_audio_driver
+        integer(kind=c_int)           :: index
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_audio_driver
+        integer(kind=8)               :: size
 
         ptr = sdl_get_audio_driver_(index)
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_audio_driver)])
-        call c_f_string_chars(ptrs, sdl_get_audio_driver)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_audio_driver)
+        call c_f_string_ptr(ptr, sdl_get_audio_driver)
     end function sdl_get_audio_driver
 
     ! char *SDL_GetBasePath(void)
     function sdl_get_base_path()
         !! Calls `sdl_get_base_path_()` and converts the returned
         !! C char pointer to Fortran character.
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
-        character(len=100)              :: sdl_get_base_path
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_base_path
+        integer(kind=8)               :: size
 
         ptr = sdl_get_base_path_()
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_base_path)])
-        call c_f_string_chars(ptrs, sdl_get_base_path)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_base_path)
+        call c_f_string_ptr(ptr, sdl_get_base_path)
         call sdl_free(ptr)
     end function sdl_get_base_path
 
@@ -2176,51 +2212,54 @@ contains
     function sdl_get_current_audio_driver()
         !! Calls `sdl_get_current_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
-        character(len=30)               :: sdl_get_current_audio_driver
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_current_audio_driver
+        integer(kind=8)               :: size
 
         ptr = sdl_get_current_audio_driver_()
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_audio_driver)])
-        call c_f_string_chars(ptrs, sdl_get_current_audio_driver)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_current_audio_driver)
+        call c_f_string_ptr(ptr, sdl_get_current_audio_driver)
     end function sdl_get_current_audio_driver
 
     ! const char *SDL_GetCurrentVideoDriver(void)
     function sdl_get_current_video_driver()
         !! Calls `sdl_get_current_video_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
-        character(len=30)               :: sdl_get_current_video_driver
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_current_video_driver
+        integer(kind=8)               :: size
 
         ptr = sdl_get_current_video_driver_()
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_current_video_driver)])
-        call c_f_string_chars(ptrs, sdl_get_current_video_driver)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_current_video_driver)
+        call c_f_string_ptr(ptr, sdl_get_current_video_driver)
     end function sdl_get_current_video_driver
 
     ! const char *SDL_GetError(void)
     function sdl_get_error()
         !! Calls `sdl_get_error_()` and converts the returned
         !! C char pointer to Fortran character.
-        character(len=100)              :: sdl_get_error
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
+        character(len=:), allocatable :: sdl_get_error
+        type(c_ptr)                   :: ptr
+        integer(kind=8)               :: size
 
         ptr = sdl_get_error_()
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_error)])
-        call c_f_string_chars(ptrs, sdl_get_error)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_error)
+        call c_f_string_ptr(ptr, sdl_get_error)
     end function sdl_get_error
 
     ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
@@ -2242,18 +2281,19 @@ contains
     function sdl_get_hint(name)
         !! Calls `sdl_get_hint_()` and converts the returned
         !! C char pointer to Fortran character.
-        character(len=*),       intent(in) :: name
-        character(len=100)                 :: sdl_get_hint
-        type(c_ptr)                        :: ptr
-        character(kind=c_char), pointer    :: ptrs(:)
+        character(len=*), intent(in)  :: name
+        character(len=:), allocatable :: sdl_get_hint
+        type(c_ptr)                   :: ptr
+        integer(kind=8)               :: size
 
         ptr = sdl_get_hint_(name // c_null_char)
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_hint)])
-        call c_f_string_chars(ptrs, sdl_get_hint)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_hint)
+        call c_f_string_ptr(ptr, sdl_get_hint)
     end function sdl_get_hint
 
     function sdl_get_pixel_format(surface)
@@ -2269,35 +2309,37 @@ contains
     function sdl_get_platform()
         !! Calls `sdl_get_platform_()` and converts the returned
         !! C char pointer to Fortran character.
-        character(len=30)                  :: sdl_get_platform
-        type(c_ptr)                        :: ptr
-        character(kind=c_char), pointer    :: ptrs(:)
+        character(len=:), allocatable :: sdl_get_platform
+        type(c_ptr)                   :: ptr
+        integer(kind=8)               :: size
 
         ptr = sdl_get_platform_()
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_platform)])
-        call c_f_string_chars(ptrs, sdl_get_platform)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_platform)
+        call c_f_string_ptr(ptr, sdl_get_platform)
     end function sdl_get_platform
 
     ! const char *SDL_GetVideoDriver(int index)
     function sdl_get_video_driver(index)
         !! Calls `sdl_get_video_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        integer,                intent(in) :: index
-        type(c_ptr)                        :: ptr
-        character(kind=c_char), pointer    :: ptrs(:)
-        character(len=10)                  :: sdl_get_video_driver
+        integer,          intent(in)  :: index
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_video_driver
+        integer(kind=8)               :: size
 
         ptr = sdl_get_video_driver_(index)
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_video_driver)])
-        call c_f_string_chars(ptrs, sdl_get_video_driver)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_video_driver)
+        call c_f_string_ptr(ptr, sdl_get_video_driver)
     end function sdl_get_video_driver
 
     ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
@@ -2316,18 +2358,19 @@ contains
     function sdl_get_window_title(window)
         !! Calls `sdl_get_window_title_()` and converts the returned
         !! C char pointer to Fortran character.
-        type(c_ptr), intent(in)         :: window
-        type(c_ptr)                     :: ptr
-        character(kind=c_char), pointer :: ptrs(:)
-        character(len=100)              :: sdl_get_window_title
+        type(c_ptr),      intent(in)  :: window
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_window_title
+        integer(kind=8)               :: size
 
         ptr = sdl_get_window_title_(window)
 
         if (.not. c_associated(ptr)) &
             return
 
-        call c_f_pointer(ptr, ptrs, shape=[len(sdl_get_window_title)])
-        call c_f_string_chars(ptrs, sdl_get_window_title)
+        size = c_strlen(ptr)
+        allocate (character(len=size) :: sdl_get_window_title)
+        call c_f_string_ptr(ptr, sdl_get_window_title)
     end function sdl_get_window_title
 
     ! SDL_Surface *SDL_LoadBMP(const char *file)
@@ -2339,7 +2382,6 @@ contains
         type(c_ptr)                        :: ptr
 
         ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
-
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp
 
