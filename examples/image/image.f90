@@ -1,6 +1,7 @@
 ! image.f90
 !
 ! Loads an image and displays it in the SDL 2 window.
+!
 ! Example is taken from:
 ! http://lazyfoo.net/tutorials/SDL/02_getting_an_image_on_the_screen/index.php
 !
@@ -13,8 +14,8 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 480
+    integer, parameter :: WIN_WIDTH  = 640
+    integer, parameter :: WIN_HEIGHT = 480
 
     type(c_ptr)                :: window
     type(sdl_surface), pointer :: screen
@@ -34,8 +35,8 @@ program main
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               WIN_WIDTH, &
+                               WIN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -43,10 +44,7 @@ program main
         stop
     end if
 
-    ! Get the window surface.
     screen => sdl_get_window_surface(window)
-
-    ! Load the image.
     image  => sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
 
     rect%w = image%w
@@ -57,7 +55,6 @@ program main
     ! Output to the window.
     rc = sdl_blit_surface(image, rect, screen, rect)
     rc = sdl_update_window_surface(window)
-
     call sdl_delay(3000)
 
     ! Quit gracefully.

@@ -1,6 +1,6 @@
 ! music.f90
 !
-! Plays an OGG file using SDL2_mixer and outputs some text
+! Plays an OGG file using SDL2_mixer and outputs some text on a background image
 ! with SDL2_ttf (software renderer).
 !
 ! Author:  Philipp Engel
@@ -21,21 +21,21 @@ program main
     character(len=*), parameter :: TTF_PATH   = 'examples/music/font.ttf'
     character(len=*), parameter :: MESSAGE    = 'Playing ' // OGG_PATH // ' ...'
 
-    integer         :: rc
-    logical         :: done = .false.
-    type(c_ptr)     :: font
-    type(c_ptr)     :: music
-    type(c_ptr)     :: window
-    type(sdl_color) :: color
-    type(sdl_event) :: event
-    type(sdl_rect)  :: rect_text
-    type(sdl_rect)  :: rect_image
+    integer     :: rc
+    logical     :: done = .false.
+    type(c_ptr) :: font
+    type(c_ptr) :: music
+    type(c_ptr) :: window
 
-    type(sdl_surface),      pointer :: window_surface
-    type(sdl_surface),      pointer :: text
+    type(sdl_color)                 :: color
+    type(sdl_event)                 :: event
+    type(sdl_pixel_format), pointer :: pixel_format
+    type(sdl_rect)                  :: rect_image
+    type(sdl_rect)                  :: rect_text
     type(sdl_surface),      pointer :: image_loaded
     type(sdl_surface),      pointer :: image_opt
-    type(sdl_pixel_format), pointer :: pixel_format
+    type(sdl_surface),      pointer :: text
+    type(sdl_surface),      pointer :: window_surface
 
     ! Initialise SDL.
     rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
@@ -98,10 +98,10 @@ program main
         stop
     end if
 
-    window_surface  => sdl_get_window_surface(window)                     ! Get surface of window.
-    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)             ! Load BMP file.
-    pixel_format    => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
-    image_opt       => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
+    window_surface => sdl_get_window_surface(window)                     ! Get surface of window.
+    image_loaded   => sdl_load_bmp(FILE_NAME // c_null_char)             ! Load BMP file.
+    pixel_format   => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
+    image_opt      => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
 
     rect_image%x = 0
     rect_image%y = 0
