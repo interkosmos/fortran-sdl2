@@ -1169,6 +1169,25 @@ module sdl2
         integer(kind=c_uint8_t) :: patch
     end type sdl_version
 
+    ! Private interfaces that require wrapper functions in Fortran.
+    private :: sdl_convert_surface_
+    private :: sdl_create_rgb_surface_
+    private :: sdl_get_audio_driver_
+    private :: sdl_get_base_path_
+    private :: sdl_get_current_audio_driver_
+    private :: sdl_get_current_video_driver_
+    private :: sdl_get_error_
+    private :: sdl_get_hint_
+    private :: sdl_get_keyboard_state_
+    private :: sdl_get_platform_
+    private :: sdl_get_video_driver_
+    private :: sdl_get_window_surface_
+    private :: sdl_get_window_title_
+    private :: sdl_poll_event_
+    private :: sdl_set_hint_
+    private :: sdl_wait_event_
+
+    ! Public interfaces and wrapper functions in Fortran.
     public :: sdl_blit_scaled
     public :: sdl_blit_surface
     public :: sdl_convert_surface
