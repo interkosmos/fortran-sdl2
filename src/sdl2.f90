@@ -2014,7 +2014,7 @@ module sdl2
 
         ! void SDL_SetWindowBordered(SDL_Window *window, SDL_bool bordered)
         subroutine sdl_set_window_bordered(window, bordered) bind(c, name='SDL_SetWindowBordered')
-            import :: c_ptr
+            import :: c_ptr, sdl_bool
             type(c_ptr),            intent(in), value :: window
             integer(kind=sdl_bool), intent(in), value :: bordered
         end subroutine sdl_set_window_bordered
