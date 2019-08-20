@@ -1127,7 +1127,7 @@ module sdl2
 
     ! SDL_SysWMEvent
     type, bind(c) :: sdl_sys_wm_event
-        integer(kind=c_uint32_t)  :: type
+        integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         type(c_ptr)              :: msg
     end type sdl_sys_wm_event
@@ -1279,6 +1279,7 @@ module sdl2
     public :: sdl_set_render_draw_color
     public :: sdl_set_render_target
     public :: sdl_set_texture_color_mod
+    public :: sdl_set_window_bordered
     public :: sdl_set_window_fullscreen
     public :: sdl_set_window_icon
     public :: sdl_set_window_maximum_size
@@ -2011,6 +2012,13 @@ module sdl2
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_restore_window
 
+        ! void SDL_SetWindowBordered(SDL_Window *window, SDL_bool bordered)
+        subroutine sdl_set_window_bordered(window, bordered) bind(c, name='SDL_SetWindowBordered')
+            import :: c_ptr
+            type(c_ptr),            intent(in), value :: window
+            integer(kind=sdl_bool), intent(in), value :: bordered
+        end subroutine sdl_set_window_bordered
+
         ! void SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon)
         subroutine sdl_set_window_icon(window, icon) bind(c, name='SDL_SetWindowIcon')
             import :: c_ptr, sdl_surface
@@ -2193,10 +2201,10 @@ contains
     function sdl_get_audio_driver(index)
         !! Calls `sdl_get_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        integer(kind=c_int)           :: index
-        type(c_ptr)                   :: ptr
-        character(len=:), allocatable :: sdl_get_audio_driver
-        integer(kind=8)               :: size
+        integer(kind=c_int), intent(in) :: index
+        type(c_ptr)                     :: ptr
+        character(len=:), allocatable   :: sdl_get_audio_driver
+        integer(kind=8)                 :: size
 
         ptr = sdl_get_audio_driver_(index)
 
@@ -2428,9 +2436,9 @@ contains
     function sdl_set_hint(name, value)
         !! Adds `c_null_char` to name and value before calling
         !! `sdl_set_hint_()`.
-        character(len=*) :: name
-        character(len=*) :: value
-        integer          :: sdl_set_hint
+        character(len=*), intent(in) :: name
+        character(len=*), intent(in) :: value
+        integer                      :: sdl_set_hint
 
         sdl_set_hint = sdl_set_hint_(name // c_null_char, value // c_null_char)
     end function sdl_set_hint

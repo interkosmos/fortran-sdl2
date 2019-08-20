@@ -58,7 +58,7 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
-    use, intrinsic :: iso_c_binding, only: c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -611,7 +611,7 @@ Or use the name of a particular example.
 | SDL_SetTextureBlendMode               |   –   |
 | SDL_SetTextureColorMod                |   ✓   |
 | SDL_SetThreadPriority                 |   –   |
-| SDL_SetWindowBordered                 |   –   |
+| SDL_SetWindowBordered                 |   ✓   |
 | SDL_SetWindowBrightness               |   –   |
 | SDL_SetWindowData                     |   –   |
 | SDL_SetWindowDisplayMode              |   –   |
