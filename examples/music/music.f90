@@ -17,7 +17,7 @@ program main
     integer,          parameter :: WIN_WIDTH  = 320
     integer,          parameter :: WIN_HEIGHT = 240
     character(len=*), parameter :: FILE_NAME  = 'examples/music/italy.bmp'
-    character(len=*), parameter :: OGG_PATH   = 'examples/music/music.ogg'
+    character(len=*), parameter :: OGG_PATH   = 'examples/music/opera.ogg'
     character(len=*), parameter :: TTF_PATH   = 'examples/music/font.ttf'
     character(len=*), parameter :: MESSAGE    = 'Playing ' // OGG_PATH // ' ...'
 
