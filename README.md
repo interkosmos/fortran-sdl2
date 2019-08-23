@@ -10,8 +10,8 @@ SDL_image | 2.0.5
 SDL_mixer | 2.0.4_1
 SDL_ttf   | 2.0.15
 
-The interfaces have been built successfully with GNU Fortran 7/8, but other
-modern compilers should work as well.
+The interfaces have been built successfully with GNU Fortran 9, but other modern
+compilers should work as well.
 
 ## Building the SDL 2 interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
@@ -20,7 +20,7 @@ $ git clone https://github.com/interkosmos/f03sdl2.git
 $ cd f03sdl2/
 $ make sdl2
 ```
-You can override the default compiler (`gfortran8`) by passing the `FC`
+You can override the default compiler (`gfortran9`) by passing the `FC`
 argument, for example:
 ```
 $ make sdl2 FC=gfortran
@@ -142,7 +142,7 @@ end program main
 
 Compile it with:
 ```
-$ gfortran8 -Wall -Wl,-rpath=/usr/local/lib/gcc8/ `sdl2-config --cflags` \
+$ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
   -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
 The `-Wl,-rpath` parameter may be optional.
