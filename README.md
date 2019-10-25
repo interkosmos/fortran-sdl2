@@ -341,8 +341,8 @@ Or use the name of a particular example.
 | SDL_GetNumTouchFingers                |   –   |
 | SDL_GetNumVideoDisplays               |   –   |
 | SDL_GetNumVideoDrivers                |   –   |
-| SDL_GetPerformanceCounter             |   –   |
-| SDL_GetPerformanceFrequency           |   –   |
+| SDL_GetPerformanceCounter             |   ✓   |
+| SDL_GetPerformanceFrequency           |   ✓   |
 | SDL_GetPixelFormatName                |   –   |
 | SDL_GetPlatform                       |   ✓   |
 | SDL_GetPowerInfo                      |   –   |
