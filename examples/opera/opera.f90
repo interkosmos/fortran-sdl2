@@ -1,4 +1,4 @@
-! music.f90
+! opera.f90
 !
 ! Plays an OGG file using SDL2_mixer and outputs some text on a background image
 ! with SDL2_ttf (software renderer).

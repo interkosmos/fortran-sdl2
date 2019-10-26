@@ -156,9 +156,10 @@ Some demo applications can be found in `examples/`.
 * **events** polls SDL events (software renderer).
 * **image** loads and displays an image (software renderer).
 * **msgbox** shows a simple message box (software renderer).
-* **music** plays an OGG file with SDL_mixer (software renderer).
+* **opera** plays an OGG file with SDL_mixer (software renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
+* **voxel** renders a voxel space (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Build all examples with:
