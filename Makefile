@@ -102,4 +102,5 @@ clean:
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi
+	if [ -e $(VOXEL) ]; then rm $(VOXEL); fi
 	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi

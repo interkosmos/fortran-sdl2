@@ -481,7 +481,7 @@ Or use the name of a particular example.
 | SDL_LockAudioDevice                   |   –   |
 | SDL_LockMutex                         |   –   |
 | SDL_LockSurface                       |   –   |
-| SDL_LockTexture                       |   –   |
+| SDL_LockTexture                       |   ✓   |
 | SDL_Log                               |   –   |
 | SDL_LogCritical                       |   –   |
 | SDL_LogDebug                          |   –   |
@@ -658,8 +658,8 @@ Or use the name of a particular example.
 | SDL_UnlockAudioDevice                 |   –   |
 | SDL_UnlockMutex                       |   –   |
 | SDL_UnlockSurface                     |   –   |
-| SDL_UnlockTexture                     |   –   |
-| SDL_UpdateTexture                     |   –   |
+| SDL_UnlockTexture                     |   ✓   |
+| SDL_UpdateTexture                     |   ✓   |
 | SDL_UpdateWindowSurface               |   ✓   |
 | SDL_UpdateWindowSurfaceRects          |   –   |
 | SDL_UpdateYUVTexture                  |   –   |

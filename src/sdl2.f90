@@ -1245,6 +1245,7 @@ module sdl2
     public :: sdl_init
     public :: sdl_load_bmp
     public :: sdl_load_bmp_rw
+    public :: sdl_lock_texture
     public :: sdl_map_rgb
     public :: sdl_maximize_window
     public :: sdl_minimize_window
@@ -1292,6 +1293,8 @@ module sdl2
     public :: sdl_show_cursor
     public :: sdl_show_simple_message_box
     public :: sdl_show_window
+    public :: sdl_unlock_texture
+    public :: sdl_update_texture
     public :: sdl_update_window_surface
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
@@ -1600,6 +1603,16 @@ module sdl2
             type(c_ptr)                            :: sdl_load_bmp_rw
         end function sdl_load_bmp_rw
 
+        ! int SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch)
+        function sdl_lock_texture(texture, rect, pixels, pitch) bind(c, name='SDL_LockTexture')
+            import :: c_int, c_ptr, sdl_rect
+            type(c_ptr),         intent(in), value :: texture
+            type(sdl_rect),      intent(in)        :: rect
+            type(c_ptr),         intent(in), value :: pixels
+            integer(kind=c_int), intent(in)        :: pitch
+            integer(kind=c_int)                    :: sdl_lock_texture
+        end function sdl_lock_texture
+
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
         function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
             import :: c_uint16_t, c_uint32_t, sdl_pixel_format
@@ -1627,6 +1640,16 @@ module sdl2
             integer(kind=c_int),      intent(inout)     :: h
             integer(kind=c_int)                         :: sdl_query_texture
         end function sdl_query_texture
+
+        ! int SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch)
+        function sdl_update_texture(texture, rect, pixels, pitch) bind(c, name='SDL_UpdateTexture')
+            import :: c_int, c_ptr, sdl_rect
+            type(c_ptr),         intent(in), value :: texture
+            type(sdl_rect),      intent(in)        :: rect
+            type(c_ptr),         intent(in), value :: pixels
+            integer(kind=c_int), intent(in)        :: pitch
+            integer(kind=c_int)                    :: sdl_update_texture
+        end function sdl_update_texture
 
         ! SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
         function sdl_rw_from_file(file, mode) bind(c, name='SDL_RWFromFile')
@@ -2000,6 +2023,10 @@ module sdl2
         subroutine sdl_pump_events() bind(c, name='SDL_PumpEvents')
         end subroutine sdl_pump_events
 
+        ! void SDL_Quit(void)
+        subroutine sdl_quit() bind(c, name='SDL_Quit')
+        end subroutine sdl_quit
+
         ! void SDL_RaiseWindow(SDL_Window *window)
         subroutine sdl_raise_window(window) bind(c, name='SDL_RaiseWindow')
             import :: c_ptr
@@ -2091,9 +2118,11 @@ module sdl2
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_show_window
 
-        ! void SDL_Quit(void)
-        subroutine sdl_quit() bind(c, name='SDL_Quit')
-        end subroutine sdl_quit
+        ! void SDL_UnlockTexture(SDL_Texture *texture)
+        subroutine sdl_unlock_texture(texture) bind(c, name='SDL_UnlockTexture')
+            import :: c_int, c_ptr
+            type(c_ptr), intent(in), value :: texture
+        end subroutine sdl_unlock_texture
 
         ! void SDL_WarpMouseInWindow(SDL_Window *window, int x, int y)
         subroutine sdl_warp_mouse_in_window(window, x, y) bind(c, name='SDL_WarpMouseInWindow')
