@@ -1,6 +1,6 @@
 ! voxel.f90
 !
-! Slow voxel space engine.
+! Slow voxel space engine. Use keys W, A, S, D for camera movement.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -88,7 +88,7 @@ program main
     call map_rgb(HEIGHT_MAP_FILE, height_map)
 
     ! Get renderer and window surface.
-    renderer = sdl_create_renderer(window, -1, SDL_RENDERER_ACCELERATED)
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
 
     ! Main loop.
     loop: do
@@ -106,6 +106,18 @@ program main
                     ! Quit on Escape.
                     if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) &
                         exit loop
+
+                    if (keys(int(SDL_SCANCODE_A, kind=1)) == 1) &
+                        call rotate_camera(.01)
+
+                    if (keys(int(SDL_SCANCODE_D, kind=1)) == 1) &
+                        call rotate_camera(-.01)
+
+                    if (keys(int(SDL_SCANCODE_S, kind=1)) == 1) &
+                        call move_camera(0., 1.)
+
+                    if (keys(int(SDL_SCANCODE_W, kind=1)) == 1) &
+                        call move_camera(0., -1.)
             end select
         end do
 
@@ -129,7 +141,6 @@ program main
         call sdl_render_present(renderer)
 
         ! Turn camera.
-        camera%angle = camera%angle + .005
 
         ! Display frames per second.
         fps = calculate_fps(t1)
@@ -172,7 +183,6 @@ contains
 
     logical function file_exists(file_path)
         !! Returns whether the given file exists.
-        implicit none
         character(len=*), intent(in) :: file_path
 
         inquire (file=file_path, exist=file_exists)
@@ -186,8 +196,8 @@ contains
         integer          :: norm_y
 
         ! Normalise and limit coordinates.
-        norm_x = max(1, modulo(int(x), MAP_WIDTH))
-        norm_y = max(1, modulo(int(y), MAP_HEIGHT))
+        norm_x = max(1, 1 + modulo(int(x), MAP_WIDTH - 1))
+        norm_y = max(1, 1 + modulo(int(y), MAP_HEIGHT - 1))
 
         get_color = color_map(norm_y, norm_x)
     end function get_color
@@ -200,8 +210,8 @@ contains
         integer          :: norm_y
 
         ! Normalise and limit coordinates.
-        norm_x = max(1, modulo(int(x), MAP_WIDTH))
-        norm_y = max(1, modulo(int(y), MAP_HEIGHT))
+        norm_x = max(1, 1 + modulo(int(x), MAP_WIDTH - 1))
+        norm_y = max(1, 1 + modulo(int(y), MAP_HEIGHT - 1))
 
         get_height = height_map(norm_y, norm_x)%r
     end function get_height
@@ -210,7 +220,6 @@ contains
         !! Reads an image file from the given file path and stores the RGB
         !! values of all pixels in a 2D array of derived type `rgb_type`.
         use, intrinsic :: iso_c_binding, only: c_int8_t, c_int32_t, c_null_char
-        implicit none
         character(len=*),            intent(in)    :: file_path
         type(rgb_type), allocatable, intent(inout) :: map(:, :)
         type(sdl_surface),           pointer       :: image
@@ -249,11 +258,19 @@ contains
         call sdl_free_surface(image)
     end subroutine map_rgb
 
+    subroutine move_camera(x, y)
+        !! Moves camera in X and Y direction.
+        real, intent(in) :: x
+        real, intent(in) :: y
+
+        camera%x = modulo(camera%x + x, real(MAP_WIDTH))
+        camera%y = modulo(camera%y + y, real(MAP_WIDTH))
+    end subroutine move_camera
+
     subroutine render(renderer, camera_x, camera_y, phi, height, horizon, scale_height, distance, &
             screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
-        implicit none
         type(c_ptr), intent(in) :: renderer
         real,        intent(in) :: camera_x
         real,        intent(in) :: camera_y
@@ -316,4 +333,11 @@ contains
             dz = dz + .005
         end do
     end subroutine render
+
+    subroutine rotate_camera(a)
+        !! Rotates camera by given angle a [rad].
+        real, intent(in) :: a
+
+        camera%angle = camera%angle + a
+    end subroutine rotate_camera
 end program main
