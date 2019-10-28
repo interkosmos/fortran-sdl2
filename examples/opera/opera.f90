@@ -53,8 +53,12 @@ program main
         stop
     end if
 
-    ! Set font colour.
-    color%r = 255; color%g = 165; color%b = 0; color%a = 255
+    ! Set font colour. We need some `transfer()` magic to cast
+    ! from Fortran integer to C `Uint8`.
+    color%r = transfer([255, 0], 1_c_int8_t)
+    color%g = transfer([165, 0], 1_c_int8_t)
+    color%b = transfer([  0, 0], 1_c_int8_t)
+    color%a = transfer([255, 0], 1_c_int8_t)
 
     ! Open font and draw to surface.
     font = ttf_open_font(TTF_PATH // c_null_char, 12)

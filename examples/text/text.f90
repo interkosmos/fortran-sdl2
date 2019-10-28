@@ -13,10 +13,10 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: WIDTH  = 320
-    integer,          parameter :: HEIGHT = 240
-    character(len=*), parameter :: STRING = 'Hello, World!'
-    character(len=*), parameter :: PATH   = 'examples/text/font.ttf'
+    integer,          parameter :: SCREEN_WIDTH  = 320
+    integer,          parameter :: SCREEN_HEIGHT = 240
+    character(len=*), parameter :: STRING        = 'Hello, World!'
+    character(len=*), parameter :: PATH          = 'examples/text/font.ttf'
 
     logical                    :: done = .false.
     type(c_ptr)                :: window
@@ -49,8 +49,8 @@ program main
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -61,15 +61,19 @@ program main
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, SDL_RENDERER_ACCELERATED)
 
-    ! Load font and set font color.
-    font    = ttf_open_font(PATH // c_null_char, 12)
-    color%r = 255; color%g = 0; color%b = 0; color%a = 0
+    ! Load font and set font colour.
+    font = ttf_open_font(PATH // c_null_char, 12)
+
+    ! Set font colour. We need some `transfer()` magic to cast
+    ! from Fortran integer to C `Uint8`.
+    color%r = transfer([255, 0], 1_c_int8_t)
+    color%g = transfer([  0, 0], 1_c_int8_t)
+    color%b = transfer([  0, 0], 1_c_int8_t)
+    color%a = transfer([255, 0], 1_c_int8_t)
 
     ! Event loop.
     do while (.not. done)
-        rc = sdl_wait_event(event)
-
-        if (rc > 0) then
+        if (sdl_wait_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     done = .true.

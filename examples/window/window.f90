@@ -58,7 +58,7 @@ program main
     pixel_format => sdl_get_pixel_format(surface)
 
     ! Set color to red (#FF0000).
-    color = sdl_map_rgb(pixel_format, int(255, kind=2), int(0, kind=2), int(0, kind=2))
+    color = sdl_map_rgb(pixel_format, 255, 0, 0)
 
     ! Draw and update.
     rc = sdl_fill_rects(surface, rects, 2, color)

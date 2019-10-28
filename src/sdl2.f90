@@ -811,10 +811,10 @@ module sdl2
 
     ! SDL_Color
     type, bind(c) :: sdl_color
-        integer(kind=c_uint16_t) :: r
-        integer(kind=c_uint16_t) :: g
-        integer(kind=c_uint16_t) :: b
-        integer(kind=c_uint16_t) :: a
+        integer(kind=c_uint8_t) :: r
+        integer(kind=c_uint8_t) :: g
+        integer(kind=c_uint8_t) :: b
+        integer(kind=c_uint8_t) :: a
     end type sdl_color
 
     ! SDL_Palette
@@ -1182,6 +1182,7 @@ module sdl2
     public :: sdl_get_video_driver_
     public :: sdl_get_window_surface_
     public :: sdl_get_window_title_
+    public :: sdl_map_rgb_
     public :: sdl_poll_event_
     public :: sdl_set_hint_
     public :: sdl_wait_event_
@@ -1192,6 +1193,7 @@ module sdl2
     public :: sdl_convert_surface
     public :: sdl_create_renderer
     public :: sdl_create_rgb_surface
+    public :: sdl_create_texture
     public :: sdl_create_texture_from_surface
     public :: sdl_create_window
     public :: sdl_delay
@@ -1345,6 +1347,17 @@ module sdl2
             integer(kind=c_int64_t),  intent(in), value :: a_mask
             type(c_ptr)                                 :: sdl_create_rgb_surface_
         end function sdl_create_rgb_surface_
+
+        ! SDL_Texture *SDL_CreateTexture(SDL_Renderer *renderer, Uint32 format, int access, int w, int h)
+        function sdl_create_texture(renderer, format, access, w, h) bind(c, name='SDL_CreateTexture')
+            import :: c_int, c_ptr, c_uint32_t
+            type(c_ptr),              intent(in), value :: renderer
+            integer(kind=c_uint32_t), intent(in), value :: format
+            integer(kind=c_int),      intent(in), value :: access
+            integer(kind=c_int),      intent(in), value :: w
+            integer(kind=c_int),      intent(in), value :: h
+            type(c_ptr)                                 :: sdl_create_texture
+        end function sdl_create_texture
 
         ! SDL_Texture *SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface)
         function sdl_create_texture_from_surface(renderer, surface) bind(c, name='SDL_CreateTextureFromSurface')
@@ -1608,20 +1621,20 @@ module sdl2
             import :: c_int, c_ptr, sdl_rect
             type(c_ptr),         intent(in), value :: texture
             type(sdl_rect),      intent(in)        :: rect
-            type(c_ptr),         intent(in), value :: pixels
-            integer(kind=c_int), intent(in)        :: pitch
+            type(c_ptr),         intent(in)        :: pixels
+            integer(kind=c_int), intent(inout)     :: pitch
             integer(kind=c_int)                    :: sdl_lock_texture
         end function sdl_lock_texture
 
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
-        function sdl_map_rgb(format, r, g, b) bind(c, name='SDL_MapRGB')
-            import :: c_uint16_t, c_uint32_t, sdl_pixel_format
+        function sdl_map_rgb_(format, r, g, b) bind(c, name='SDL_MapRGB')
+            import :: c_uint8_t, c_uint32_t, sdl_pixel_format
             type(sdl_pixel_format) ,  intent(in)        :: format
-            integer(kind=c_uint16_t), intent(in), value :: r
-            integer(kind=c_uint16_t), intent(in), value :: g
-            integer(kind=c_uint16_t), intent(in), value :: b
-            integer(kind=c_uint32_t)                    :: sdl_map_rgb
-        end function sdl_map_rgb
+            integer(kind=c_uint8_t), intent(in), value :: r
+            integer(kind=c_uint8_t), intent(in), value :: g
+            integer(kind=c_uint8_t), intent(in), value :: b
+            integer(kind=c_uint32_t)                    :: sdl_map_rgb_
+        end function sdl_map_rgb_
 
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
@@ -1641,7 +1654,7 @@ module sdl2
             integer(kind=c_int)                         :: sdl_query_texture
         end function sdl_query_texture
 
-        ! int SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch)
+        ! int SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, void *pixels, int *pitch)
         function sdl_update_texture(texture, rect, pixels, pitch) bind(c, name='SDL_UpdateTexture')
             import :: c_int, c_ptr, sdl_rect
             type(c_ptr),         intent(in), value :: texture
@@ -2453,6 +2466,21 @@ contains
         ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp
+
+    ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
+    function sdl_map_rgb(format, r, g, b)
+        !! Calls `sdl_map_rgb_()` with RGB values casted to `Uint8`.
+        type(sdl_pixel_format) , intent(in) :: format
+        integer,                 intent(in) :: r
+        integer,                 intent(in) :: g
+        integer,                 intent(in) :: b
+        integer                             :: sdl_map_rgb
+
+        sdl_map_rgb = sdl_map_rgb_(format, &
+                                   transfer([r, 0], 1_c_int8_t), &
+                                   transfer([g, 0], 1_c_int8_t), &
+                                   transfer([b, 0], 1_c_int8_t))
+    end function sdl_map_rgb
 
     ! int SDL_PollEvent(SDL_Event *event)
     function sdl_poll_event(event)

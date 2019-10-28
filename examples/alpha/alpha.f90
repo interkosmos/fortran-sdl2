@@ -48,15 +48,12 @@ program main
         stop
     end if
 
-    window_surface  => sdl_get_window_surface(window)                                   ! Get surface of window.
-    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)                           ! Load BMP file.
-    pixel_format    => sdl_get_pixel_format(window_surface)                             ! Get pixel format of window.
-    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)               ! Optimise pixel format of image.
-    color           = sdl_map_rgb(pixel_format, &                                       ! Get translucent color (#FF00FF).
-                                  int(255, kind=2), &
-                                  int(  0, kind=2), &
-                                  int(255, kind=2))
-    rc              = sdl_set_color_key(image_optimised, 1, color)                      ! Set translucent color.
+    window_surface  => sdl_get_window_surface(window)                     ! Get surface of window.
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)             ! Load BMP file.
+    pixel_format    => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
+    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
+    color           = sdl_map_rgb(pixel_format, 255, 0, 255)              ! Get translucent color (#FF00FF).
+    rc              = sdl_set_color_key(image_optimised, 1, color)        ! Set translucent color.
 
     window_rect%w = WIDTH
     window_rect%h = HEIGHT
