@@ -317,12 +317,7 @@ contains
         call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[SCREEN_WIDTH * SCREEN_HEIGHT])
 
         ! Fill frame buffer.
-        do y = 1, screen_height
-            do x = 1, screen_width
-                offset = (y * screen_width) + x
-                buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
-            end do
-        end do
+        buffer%pixels(:) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
 
         do while (z < camera%distance)
             ! Find line on map. This calculation corresponds to a field of view of 90°.
