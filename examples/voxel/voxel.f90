@@ -13,6 +13,7 @@ program main
 
     ! Colour and height map type.
     type :: map_type
+        type(sdl_pixel_format), pointer :: pixel_format
         type(sdl_surface),      pointer :: image
         integer(kind=c_int8_t), pointer :: pixels(:)
     end type map_type
@@ -89,6 +90,10 @@ program main
     color_map%image  => sdl_load_bmp(COLOR_MAP_FILE // c_null_char)
     height_map%image => sdl_load_bmp(HEIGHT_MAP_FILE // c_null_char)
 
+    ! Get SDL_PixelFormat.
+    call c_f_pointer(color_map%image%format, color_map%pixel_format)
+    call c_f_pointer(height_map%image%format, height_map%pixel_format)
+
     ! Convert C pointer to Fortran `map_type%pixels` pointer array.
     call c_f_pointer(color_map%image%pixels, &
                      color_map%pixels, &
@@ -146,7 +151,11 @@ program main
 
         if (has_moved) then
             ! Clear screen.
-            rc = sdl_set_render_draw_color(renderer, blue%r, blue%g, blue%b, int(SDL_ALPHA_OPAQUE, kind=2))
+            rc = sdl_set_render_draw_color(renderer, &
+                                           transfer([blue%r, 1_2], 1_c_int8_t), &
+                                           transfer([blue%g, 1_2], 1_c_int8_t), &
+                                           transfer([blue%b, 1_2], 1_c_int8_t), &
+                                           transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
             rc = sdl_render_clear(renderer)
 
             ! Render voxel space.
@@ -210,11 +219,11 @@ contains
 
     type(rgb_type) function get_color(x, y)
         !! Returns colour of given coordinates in color map.
-        real, intent(in)        :: x
-        real, intent(in)        :: y
-        integer                 :: norm_x
-        integer                 :: norm_y
-        integer(kind=c_int32_t) :: pixel
+        real, intent(in) :: x
+        real, intent(in) :: y
+        integer          :: norm_x
+        integer          :: norm_y
+        integer          :: pixel
 
         ! Normalise coordinates.
         norm_x = 1 + modulo(int(x), MAP_WIDTH - 1)
@@ -222,17 +231,17 @@ contains
 
         ! Return colour as RGB. Use some transfer magic to handle unsigned pixel values.
         pixel = ichar(transfer(color_map%pixels(norm_y * color_map%image%pitch + norm_x), 'a'))
-        call sdl_get_rgb(pixel, color_map%image%format, get_color%r, get_color%g, get_color%b)
+        call sdl_get_rgb(pixel, color_map%pixel_format, get_color%r, get_color%g, get_color%b)
     end function get_color
 
     integer function get_height(x, y)
         !! Returns height of given coordinates in height map.
-        real, intent(in)        :: x
-        real, intent(in)        :: y
-        integer                 :: norm_x
-        integer                 :: norm_y
-        integer(kind=2)         :: r, g, b
-        integer(kind=c_int32_t) :: pixel
+        real, intent(in) :: x
+        real, intent(in) :: y
+        integer          :: norm_x
+        integer          :: norm_y
+        integer(kind=2)  :: r, g, b
+        integer          :: pixel
 
         ! Normalise coordinates.
         norm_x = 1 + modulo(int(x), MAP_WIDTH - 1)
@@ -240,7 +249,7 @@ contains
 
         ! Return height. Use some transfer magic to handle unsigned pixel values.
         pixel = ichar(transfer(height_map%pixels(norm_y * height_map%image%pitch + norm_x), 'a'))
-        call sdl_get_rgb(pixel, height_map%image%format, r, g, b)
+        call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
 
         get_height = r
     end function get_height
@@ -299,7 +308,11 @@ contains
                 if (height_on_screen < y_buffer(x)) then
                     color = get_color(left%x, left%y)
 
-                    rc = sdl_set_render_draw_color(renderer, color%r, color%g, color%b, int(SDL_ALPHA_OPAQUE, kind=2))
+                    rc = sdl_set_render_draw_color(renderer, &
+                                                   transfer([color%r, 1_2], 1_c_int8_t), &
+                                                   transfer([color%g, 1_2], 1_c_int8_t), &
+                                                   transfer([color%b, 1_2], 1_c_int8_t), &
+                                                   transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
                     rc = sdl_render_draw_line(renderer, x, int(y_buffer(x)), x, int(height_on_screen))
 
                     y_buffer(x) = height_on_screen

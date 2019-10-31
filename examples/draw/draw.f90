@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -22,9 +22,7 @@ program main
     integer         :: i, rc, x, y
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -43,23 +41,17 @@ program main
     end if
 
     ! Rectangles.
-    rect1%x = 50
-    rect1%y = 50
-    rect1%w = 250
-    rect1%h = 250
+    rect1%x =  50; rect1%y =  50
+    rect1%w = 250; rect1%h = 250
 
-    rect2%x = 75
-    rect2%y = 75
-    rect2%w = 250
-    rect2%h = 250
+    rect2%x =  75; rect2%y =  75
+    rect2%w = 250; rect2%h = 250
 
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, 0)
 
     do while (.true.)
-        rc = sdl_poll_event(event)
-
-        if (rc > 0) then
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit
@@ -68,43 +60,43 @@ program main
 
         ! Clear screen.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(  0, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_clear(renderer)
 
         ! Draw lines.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(255, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(127, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([  0, 1], 1_c_int8_t), &
+                                       transfer([127, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_draw_line(renderer, 10, 10, 400, 100)
         rc = sdl_render_draw_line(renderer, 80, 400, 525, 300)
 
         ! Fill a rectangle.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(127, kind=2), &
-                                       int(255, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([127, 1], 1_c_int8_t), &
+                                       transfer([  0, 1], 1_c_int8_t), &
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_fill_rect(renderer, rect1)
 
         ! Draw a rectangle.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(127, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(255, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([127, 1], 1_c_int8_t), &
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_draw_rect(renderer, rect2)
 
         ! Draw some points.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(255, kind=2), &
-                                       int(255, kind=2), &
-                                       int(255, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
 
         do i = 0, 345, 15
             x  = int(100.0 * cos(i * RAD))

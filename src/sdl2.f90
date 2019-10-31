@@ -1169,6 +1169,7 @@ module sdl2
     end type sdl_version
 
     ! Public interfaces that have wrapper functions in Fortran.
+    public :: sdl_alloc_format_
     public :: sdl_convert_surface_
     public :: sdl_create_rgb_surface_
     public :: sdl_get_audio_driver_
@@ -1188,6 +1189,7 @@ module sdl2
     public :: sdl_wait_event_
 
     ! Public interfaces and wrapper functions in Fortran.
+    public :: sdl_alloc_format
     public :: sdl_blit_scaled
     public :: sdl_blit_surface
     public :: sdl_convert_surface
@@ -1203,6 +1205,7 @@ module sdl2
     public :: sdl_fill_rect
     public :: sdl_fill_rects
     public :: sdl_free
+    public :: sdl_free_format
     public :: sdl_free_surface
     public :: sdl_get_audio_driver
     public :: sdl_get_base_path
@@ -1228,6 +1231,7 @@ module sdl2
     public :: sdl_get_window_id
     public :: sdl_get_window_maximum_size
     public :: sdl_get_window_minimum_size
+    public :: sdl_get_window_pixel_format
     public :: sdl_get_window_position
     public :: sdl_get_window_size
     public :: sdl_get_window_surface
@@ -1315,6 +1319,13 @@ module sdl2
 
     ! Function and routine interfaces to SDL2.
     interface
+        ! SDL_PixelFormat* SDL_AllocFormat(Uint32 pixel_format)
+        function sdl_alloc_format_(pixel_format) bind(c, name='SDL_AllocFormat')
+            import :: c_ptr, c_uint32_t
+            integer(kind=c_uint32_t), intent(in), value :: pixel_format
+            type(c_ptr)                                 :: sdl_alloc_format_
+        end function sdl_alloc_format_
+
         ! SDL_Surface *SDL_ConvertSurface(SDL_Surface *src, const SDL_PixelFormat *fmt, Uint32 flags)
         function sdl_convert_surface_(src, fmt, flags) bind(c, name='SDL_ConvertSurface')
             import :: c_ptr, c_uint32_t, sdl_pixel_format, sdl_surface
@@ -1520,6 +1531,13 @@ module sdl2
             type(c_ptr), intent(in), value :: window
             integer(kind=c_uint32_t)       :: sdl_get_window_id
         end function sdl_get_window_id
+
+        ! Uint32 SDL_GetWindowPixelFormat(SDL_Window* window)
+        function sdl_get_window_pixel_format(window) bind(c, name='SDL_GetWindowPixelFormat')
+            import :: c_ptr, c_uint32_t
+            type(c_ptr), intent(in), value :: window
+            integer(kind=c_uint32_t)       :: sdl_get_window_pixel_format
+        end function sdl_get_window_pixel_format
 
         ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
         function sdl_get_window_surface_(window) bind(c, name='SDL_GetWindowSurface')
@@ -1844,12 +1862,12 @@ module sdl2
 
         ! int SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
         function sdl_set_render_draw_color(renderer, r, g, b, a) bind(c, name='SDL_SetRenderDrawColor')
-            import :: c_int, c_ptr, c_uint16_t
-            type(c_ptr),              intent(in), value :: renderer
-            integer(kind=c_uint16_t), intent(in), value :: r
-            integer(kind=c_uint16_t), intent(in), value :: g
-            integer(kind=c_uint16_t), intent(in), value :: b
-            integer(kind=c_uint16_t), intent(in), value :: a
+            import :: c_int, c_ptr, c_uint8_t
+            type(c_ptr),             intent(in), value :: renderer
+            integer(kind=c_uint8_t), intent(in), value :: r
+            integer(kind=c_uint8_t), intent(in), value :: g
+            integer(kind=c_uint8_t), intent(in), value :: b
+            integer(kind=c_uint8_t), intent(in), value :: a
             integer(kind=c_int)                         :: sdl_set_render_draw_color
         end function sdl_set_render_draw_color
 
@@ -1960,6 +1978,12 @@ module sdl2
             type(c_ptr), value, intent(in) :: ptr
         end subroutine sdl_free
 
+        ! void SDL_FreeFormat(SDL_PixelFormat* format)
+        subroutine sdl_free_format(format) bind(c, name='SDL_FreeFormat')
+            import :: sdl_pixel_format
+            type(sdl_pixel_format), intent(in) :: format
+        end subroutine sdl_free_format
+
         ! void SDL_FreeSurface(SDL_Surface *surface)
         subroutine sdl_free_surface(surface) bind(c, name='SDL_FreeSurface')
             import :: sdl_surface
@@ -1968,9 +1992,9 @@ module sdl2
 
         ! void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b)
         subroutine sdl_get_rgb(pixel, format, r, g, b) bind(c, name='SDL_GetRGB')
-            import :: c_ptr, c_uint16_t, c_uint32_t
+            import :: c_ptr, c_uint16_t, c_uint32_t, sdl_pixel_format
             integer(kind=c_uint32_t), intent(in), value :: pixel
-            type(c_ptr),              intent(in), value :: format
+            type(sdl_pixel_format),   intent(in)        :: format
             integer(kind=c_uint16_t), intent(inout)     :: r
             integer(kind=c_uint16_t), intent(inout)     :: g
             integer(kind=c_uint16_t), intent(inout)     :: b
@@ -2195,6 +2219,17 @@ contains
         end if
     end subroutine c_f_string_ptr
 
+    function sdl_alloc_format(pixel_format)
+        !! Call `sdl_alloc_format_()` and converts the returned C pointer to
+        !! derived type `sdl_pixel_format`.
+        integer, intent(in)             :: pixel_format
+        type(sdl_pixel_format), pointer :: sdl_alloc_format
+        type(c_ptr)                     :: ptr
+
+        ptr = sdl_alloc_format_(pixel_format)
+        call c_f_pointer(ptr, sdl_alloc_format)
+    end function sdl_alloc_format
+
     ! int SDL_BlitScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
     function sdl_blit_scaled(src, src_rect, dst, dst_rect)
         !! Macro for `sdl_upper_blit_scaled()`, as defined in `SDL_surface.h`.
@@ -2385,7 +2420,7 @@ contains
         type(sdl_pixel_format), pointer    :: sdl_get_pixel_format
 
         call c_f_pointer(surface%format, sdl_get_pixel_format)
-    end function
+    end function sdl_get_pixel_format
 
     ! const char *SDL_GetPlatform(void)
     function sdl_get_platform()
@@ -2477,9 +2512,9 @@ contains
         integer                             :: sdl_map_rgb
 
         sdl_map_rgb = sdl_map_rgb_(format, &
-                                   transfer([r, 0], 1_c_int8_t), &
-                                   transfer([g, 0], 1_c_int8_t), &
-                                   transfer([b, 0], 1_c_int8_t))
+                                   transfer([r, 1], 1_c_uint8_t), &
+                                   transfer([g, 1], 1_c_uint8_t), &
+                                   transfer([b, 1], 1_c_uint8_t))
     end function sdl_map_rgb
 
     ! int SDL_PollEvent(SDL_Event *event)

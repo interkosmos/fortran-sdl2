@@ -58,7 +58,7 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -73,9 +73,7 @@ program main
     integer         :: rc
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -94,10 +92,8 @@ program main
     end if
 
     ! Set position and size of the rectangle.
-    rect%x = 50
-    rect%y = 50
-    rect%w = 250
-    rect%h = 250
+    rect%x =  50; rect%y =  50
+    rect%w = 250; rect%h = 250
 
     ! Create the renderer.
     renderer = sdl_create_renderer(window, -1, 0)
@@ -112,20 +108,20 @@ program main
             end select
         end if
 
-        ! Fill screen black.
+        ! Fill screen black. We have to use `transfer()` to cast to Uint8.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(  0, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_clear(renderer)
 
         ! Fill the rectangle.
         rc = sdl_set_render_draw_color(renderer, &
-                                       int(127, kind=2), &
-                                       int(255, kind=2), &
-                                       int(  0, kind=2), &
-                                       int(255, kind=2))
+                                       transfer([127, 1], 1_c_int8_t), &
+                                       transfer([255, 1], 1_c_int8_t), &
+                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_fill_rect(renderer, rect)
 
         ! Render to screen and wait 20 ms.
@@ -227,7 +223,7 @@ Or use the name of a particular example.
 | SDL_CreateSemaphore                   |   –   |
 | SDL_CreateSoftwareRenderer            |   –   |
 | SDL_CreateSystemCursor                |   –   |
-| SDL_CreateTexture                     |   –   |
+| SDL_CreateTexture                     |   ✓   |
 | SDL_CreateTextureFromSurface          |   ✓   |
 | SDL_CreateThread                      |   –   |
 | SDL_CreateWindow                      |   ✓   |
