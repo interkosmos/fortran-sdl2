@@ -1,7 +1,7 @@
 ! voxel.f90
 !
-! Slow voxel space engine that modifies pixels of a frame buffer texture.
-! Use arrow keys for camera movement.
+! Voxel space engine that modifies the pixels of a frame buffer texture. Use
+! arrow keys for camera movement.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -172,13 +172,13 @@ program main
         end do
 
         if (has_moved) then
-            ! Only render if camera has moved.
+            ! Only re-render if camera has moved.
             call render(buffer, camera, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
-            rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
             has_moved = .false.
         end if
 
         ! Flush to screen.
+        rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
         call sdl_render_present(renderer)
 
         ! Display frames per second.
@@ -290,10 +290,10 @@ contains
         integer,           intent(in)    :: scale_height
         integer,           intent(in)    :: screen_width
         integer,           intent(in)    :: screen_height
-        integer                          :: i
+        integer                          :: line_y
         integer                          :: offset
         integer                          :: rc
-        integer                          :: x, y
+        integer                          :: x
         real                             :: cos_phi, sin_phi
         real                             :: dx, dy, dz
         real                             :: height_on_screen
@@ -316,7 +316,7 @@ contains
         ! Convert C pointer to Fortran pointer.
         call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[SCREEN_WIDTH * SCREEN_HEIGHT])
 
-        ! Fill frame buffer.
+        ! Fill frame buffer in light blue.
         buffer%pixels(:) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
 
         do while (z < camera%distance)
@@ -332,15 +332,16 @@ contains
 
             ! Raster line and draw a vertical line for each segment.
             do x = 0, screen_width
-                height_on_screen = (camera%height - get_height(left%x, left%y)) / z * scale_height + camera%horizon
+                height_on_screen = (camera%height - get_height(left%x, left%y)) / &
+                                   z * scale_height + camera%horizon
 
                 ! Only draw if visible.
                 if (height_on_screen < y_buffer(x)) then
                     color = get_color(left%x, left%y)
 
-                    ! Draw vertical line.
-                    do i = int(height_on_screen), int(y_buffer(x))
-                        offset = (i * SCREEN_WIDTH) + x
+                    ! Draw vertical line by setting the pixels of the frame buffer texture.
+                    do line_y = int(height_on_screen), int(y_buffer(x))
+                        offset = (line_y * SCREEN_WIDTH) + x
                         buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
                                                             int(color%r, kind=4), &
                                                             int(color%g, kind=4), &
