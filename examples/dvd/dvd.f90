@@ -7,7 +7,7 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int, c_int32_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_int, c_int8_t, c_int32_t, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_image
@@ -168,8 +168,8 @@ contains
 
         c = n
 
-        rc = sdl_set_texture_color_mod(texture, colors(c)%r, &
-                                                colors(c)%g, &
-                                                colors(c)%b)
+        rc = sdl_set_texture_color_mod(texture, transfer([colors(c)%r, 1_2], 1_c_int8_t), &
+                                                transfer([colors(c)%g, 1_2], 1_c_int8_t), &
+                                                transfer([colors(c)%b, 1_2], 1_c_int8_t))
     end subroutine color_mod
 end program main

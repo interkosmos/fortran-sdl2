@@ -1881,12 +1881,12 @@ module sdl2
 
         ! int SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b)
         function sdl_set_texture_color_mod(texture, r, g, b) bind(c, name='SDL_SetTextureColorMod')
-            import :: c_int, c_ptr, c_uint16_t
-            type(c_ptr),              intent(in), value :: texture
-            integer(kind=c_uint16_t), intent(in), value :: r
-            integer(kind=c_uint16_t), intent(in), value :: g
-            integer(kind=c_uint16_t), intent(in), value :: b
-            integer(kind=c_int)                         :: sdl_set_texture_color_mod
+            import :: c_int, c_ptr, c_uint8_t
+            type(c_ptr),             intent(in), value :: texture
+            integer(kind=c_uint8_t), intent(in), value :: r
+            integer(kind=c_uint8_t), intent(in), value :: g
+            integer(kind=c_uint8_t), intent(in), value :: b
+            integer(kind=c_int)                        :: sdl_set_texture_color_mod
         end function sdl_set_texture_color_mod
 
         ! int SDL_SetWindowFullscreen(SDL_Window *window, Uint32 flags)
