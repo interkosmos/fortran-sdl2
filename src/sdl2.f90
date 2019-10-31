@@ -1647,7 +1647,7 @@ module sdl2
         ! Uint32 SDL_MapRGB(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b)
         function sdl_map_rgb_(format, r, g, b) bind(c, name='SDL_MapRGB')
             import :: c_uint8_t, c_uint32_t, sdl_pixel_format
-            type(sdl_pixel_format) ,  intent(in)        :: format
+            type(sdl_pixel_format) , intent(in)        :: format
             integer(kind=c_uint8_t), intent(in), value :: r
             integer(kind=c_uint8_t), intent(in), value :: g
             integer(kind=c_uint8_t), intent(in), value :: b

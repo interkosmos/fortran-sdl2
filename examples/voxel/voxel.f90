@@ -1,6 +1,7 @@
 ! voxel.f90
 !
-! Slow voxel space engine. Use arrow keys for camera movement.
+! Slow voxel space engine that modifies pixels of a frame buffer texture.
+! Use arrow keys for camera movement.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
@@ -17,6 +18,18 @@ program main
         type(sdl_surface),      pointer :: image
         integer(kind=c_int8_t), pointer :: pixels(:)
     end type map_type
+
+    ! Frame buffer type.
+    type :: buffer_type
+        integer                          :: access
+        integer                          :: format
+        integer                          :: pitch
+        integer(kind=c_int32_t), pointer :: pixels(:)
+        type(c_ptr)                      :: pixels_ptr
+        type(c_ptr)                      :: texture
+        type(sdl_pixel_format),  pointer :: pixel_format
+        type(sdl_rect)                   :: rect
+    end type buffer_type
 
     ! RGB type.
     type :: rgb_type
@@ -46,24 +59,19 @@ program main
     integer,          parameter :: MAP_WIDTH       = 1024
     integer,          parameter :: MAP_HEIGHT      = 1024
     integer,          parameter :: SCREEN_WIDTH    = 640
-    integer,          parameter :: SCREEN_HEIGHT   = 480
+    integer,          parameter :: SCREEN_HEIGHT   = 400
 
     character(len=30)        :: window_title
     integer                  :: fps, t1, rc
-    integer(kind=1), pointer :: keys(:) => null()
-    logical                  :: has_moved = .true.
+    integer(kind=1), pointer :: keys(:)            => null()
+    logical                  :: has_moved          = .true.
+    type(buffer_type)        :: buffer
     type(c_ptr)              :: renderer
     type(c_ptr)              :: window
     type(camera_type)        :: camera
     type(map_type)           :: color_map
     type(map_type)           :: height_map
-    type(rgb_type)           :: black
-    type(rgb_type)           :: blue
     type(sdl_event)          :: event
-
-    ! Set colours.
-    black%r = 0; black%g =   0; black%b =   0
-    blue%r  = 0; blue%g  = 150; blue%b  = 200
 
     ! Initialise SDL.
     rc = sdl_init(SDL_INIT_VIDEO)
@@ -86,25 +94,39 @@ program main
         stop
     end if
 
-    ! Load colour and height map.
+    ! Create renderer.
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
+                                                   SDL_RENDERER_PRESENTVSYNC)) 
+    ! Create frame buffer texture.
+    buffer%texture = sdl_create_texture(renderer, &
+                                        SDL_PIXELFORMAT_ARGB8888, &
+                                        SDL_TEXTUREACCESS_STREAMING, &
+                                        SCREEN_WIDTH, &
+                                        SCREEN_HEIGHT)
+
+    ! Set frame buffer rectangle.
+    buffer%rect%x = 0;            buffer%rect%y = 0
+    buffer%rect%w = SCREEN_WIDTH; buffer%rect%h = SCREEN_HEIGHT
+
+    ! Set frame buffer pixel format.
+    buffer%format = sdl_get_window_pixel_format(window)
+    buffer%pixel_format => sdl_alloc_format(buffer%format)
+
+    ! Load colour map and height map.
     color_map%image  => sdl_load_bmp(COLOR_MAP_FILE // c_null_char)
     height_map%image => sdl_load_bmp(HEIGHT_MAP_FILE // c_null_char)
 
-    ! Get SDL_PixelFormat.
+    ! Get SDL_PixelFormat of colour map and height map.
     call c_f_pointer(color_map%image%format, color_map%pixel_format)
     call c_f_pointer(height_map%image%format, height_map%pixel_format)
 
-    ! Convert C pointer to Fortran `map_type%pixels` pointer array.
+    ! Convert C pointer to Fortran pointer array.
     call c_f_pointer(color_map%image%pixels, &
                      color_map%pixels, &
                      shape=[color_map%image%pitch * color_map%image%h])
     call c_f_pointer(height_map%image%pixels, &
                      height_map%pixels, &
                      shape=[height_map%image%pitch * height_map%image%h])
-
-    ! Get renderer and window surface.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
 
     ! Main loop.
     loop: do
@@ -150,16 +172,9 @@ program main
         end do
 
         if (has_moved) then
-            ! Clear screen.
-            rc = sdl_set_render_draw_color(renderer, &
-                                           transfer([blue%r, 1_2], 1_c_int8_t), &
-                                           transfer([blue%g, 1_2], 1_c_int8_t), &
-                                           transfer([blue%b, 1_2], 1_c_int8_t), &
-                                           transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
-            rc = sdl_render_clear(renderer)
-
-            ! Render voxel space.
-            call render(renderer, camera, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+            ! Only render if camera has moved.
+            call render(buffer, camera, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+            rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
             has_moved = .false.
         end if
 
@@ -173,8 +188,12 @@ program main
     end do loop
 
     ! Quit gracefully.
+    buffer%pixels     => null()
     color_map%pixels  => null()
     height_map%pixels => null()
+
+    call sdl_free_format(buffer%pixel_format)
+    call sdl_destroy_texture(buffer%texture)
 
     call sdl_free_surface(color_map%image)
     call sdl_free_surface(height_map%image)
@@ -263,23 +282,25 @@ contains
         camera%y = modulo(camera%y + y, real(MAP_WIDTH))
     end subroutine move_camera
 
-    subroutine render(renderer, camera, scale_height, screen_width, screen_height)
+    subroutine render(buffer, camera, scale_height, screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
-        type(c_ptr),       intent(in) :: renderer
-        type(camera_type), intent(in) :: camera
-        integer,           intent(in) :: scale_height
-        integer,           intent(in) :: screen_width
-        integer,           intent(in) :: screen_height
-        integer                       :: rc
-        integer                       :: x
-        real                          :: cos_phi, sin_phi
-        real                          :: dx, dy, dz
-        real                          :: height_on_screen
-        real                          :: y_buffer(screen_width)
-        real                          :: z
-        type(point_type)              :: left, right
-        type(rgb_type)                :: color
+        type(buffer_type), intent(inout) :: buffer
+        type(camera_type), intent(in)    :: camera
+        integer,           intent(in)    :: scale_height
+        integer,           intent(in)    :: screen_width
+        integer,           intent(in)    :: screen_height
+        integer                          :: i
+        integer                          :: offset
+        integer                          :: rc
+        integer                          :: x, y
+        real                             :: cos_phi, sin_phi
+        real                             :: dx, dy, dz
+        real                             :: height_on_screen
+        real                             :: y_buffer(screen_width)
+        real                             :: z
+        type(point_type)                 :: left, right
+        type(rgb_type)                   :: color
 
         sin_phi = sin(camera%angle)
         cos_phi = cos(camera%angle)
@@ -288,6 +309,20 @@ contains
 
         dz = 1.
         z  = 30.
+
+        ! Lock frame buffer texture.
+        rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
+
+        ! Convert C pointer to Fortran pointer.
+        call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[SCREEN_WIDTH * SCREEN_HEIGHT])
+
+        ! Fill frame buffer.
+        do y = 1, screen_height
+            do x = 1, screen_width
+                offset = (y * screen_width) + x
+                buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
+            end do
+        end do
 
         do while (z < camera%distance)
             ! Find line on map. This calculation corresponds to a field of view of 90°.
@@ -308,12 +343,14 @@ contains
                 if (height_on_screen < y_buffer(x)) then
                     color = get_color(left%x, left%y)
 
-                    rc = sdl_set_render_draw_color(renderer, &
-                                                   transfer([color%r, 1_2], 1_c_int8_t), &
-                                                   transfer([color%g, 1_2], 1_c_int8_t), &
-                                                   transfer([color%b, 1_2], 1_c_int8_t), &
-                                                   transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
-                    rc = sdl_render_draw_line(renderer, x, int(y_buffer(x)), x, int(height_on_screen))
+                    ! Draw vertical line.
+                    do i = int(height_on_screen), int(y_buffer(x))
+                        offset = (i * SCREEN_WIDTH) + x
+                        buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
+                                                            int(color%r, kind=4), &
+                                                            int(color%g, kind=4), &
+                                                            int(color%b, kind=4))
+                    end do
 
                     y_buffer(x) = height_on_screen
                 end if
@@ -326,6 +363,8 @@ contains
             z  = z + dz
             dz = dz + .01
         end do
+
+        call sdl_unlock_texture(buffer%texture)
     end subroutine render
 
     subroutine rotate_camera(a)
