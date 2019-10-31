@@ -120,7 +120,7 @@ program main
         rc = sdl_set_render_draw_color(renderer, &
                                        transfer([127, 1], 1_c_int8_t), &
                                        transfer([255, 1], 1_c_int8_t), &
-                                       transfer([0, 1], 1_c_int8_t), &
+                                       transfer([  0, 1], 1_c_int8_t), &
                                        transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
         rc = sdl_render_fill_rect(renderer, rect)
 
@@ -171,7 +171,7 @@ Or use the name of a particular example.
 | SDL_AddEventWatch                     |   –   |
 | SDL_AddHintCallback                   |   –   |
 | SDL_AddTimer                          |   –   |
-| SDL_AllocFormat                       |   –   |
+| SDL_AllocFormat                       |   ✓   |
 | SDL_AllocPalette                      |   –   |
 | SDL_AllocRW                           |   –   |
 | SDL_AndroidGetActivity                |   –   |
@@ -251,7 +251,7 @@ Or use the name of a particular example.
 | SDL_FlushEvent                        |   –   |
 | SDL_FlushEvents                       |   –   |
 | SDL_FreeCursor                        |   –   |
-| SDL_FreeFormat                        |   –   |
+| SDL_FreeFormat                        |   ✓   |
 | SDL_FreePalette                       |   –   |
 | SDL_FreeRW                            |   –   |
 | SDL_FreeSurface                       |   ✓   |
