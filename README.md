@@ -102,13 +102,13 @@ program main
     ! Event loop.
     do
         ! Catch events.
-        if (sdl_poll_event(event) > 0) then
+        do while (sdl_poll_event(event) > 0)
             select case (event%type)
-                    exit
+                exit
             end select
-        end if
+        end do
 
-        ! Fill screen black. We have to use `transfer()` to cast to Uint8.
+        ! Fill screen black.
         rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_clear(renderer)
 
