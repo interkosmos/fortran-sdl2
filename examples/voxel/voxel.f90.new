@@ -7,16 +7,16 @@
 ! GitHub:  https://github.com/interkosmos/f03sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_int8_t, c_int32_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_funloc, c_int8_t, c_int32_t, c_loc, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
 
     ! Colour and height map type.
     type :: map_type
-        type(sdl_pixel_format), pointer :: pixel_format
-        type(sdl_surface),      pointer :: image
-        integer(kind=c_int8_t), pointer :: pixels(:)
+        type(sdl_pixel_format), pointer :: pixel_format => null()
+        type(sdl_surface),      pointer :: image        => null()
+        integer(kind=c_int8_t), pointer :: pixels(:)    => null()
     end type map_type
 
     ! Frame buffer type.
@@ -24,10 +24,10 @@ program main
         integer                          :: access
         integer                          :: format
         integer                          :: pitch
-        integer(kind=c_int32_t), pointer :: pixels(:)
-        type(c_ptr)                      :: pixels_ptr
+        integer(kind=c_int32_t), pointer :: pixels(:)    => null()
+        type(c_ptr)                      :: pixels_ptr   = c_null_ptr
         type(c_ptr)                      :: texture
-        type(sdl_pixel_format),  pointer :: pixel_format
+        type(sdl_pixel_format),  pointer :: pixel_format => null()
         type(sdl_rect)                   :: rect
     end type buffer_type
 
@@ -54,6 +54,16 @@ program main
         real :: distance = 500. !! Draw distance.
     end type camera_type
 
+    !type :: data_type
+    !    type(buffer_type) :: buffer
+    !    integer           :: scale_height
+    !    integer           :: screen_width
+    !    integer           :: screen_height
+    !    integer           :: x1
+    !    integer           :: x2
+    !    real, allocatable :: y_buffer(:)
+    !end type data_type
+
     character(len=*), parameter :: COLOR_MAP_FILE  = 'examples/voxel/top.bmp'
     character(len=*), parameter :: HEIGHT_MAP_FILE = 'examples/voxel/dem.bmp'
     integer,          parameter :: MAP_WIDTH       = 1024
@@ -61,18 +71,22 @@ program main
     integer,          parameter :: SCREEN_WIDTH    = 640
     integer,          parameter :: SCREEN_HEIGHT   = 400
 
-    character(len=30)        :: window_title
-    integer                  :: fps,t1, rc
-    integer(kind=1), pointer :: keys(:)            => null()
-    logical                  :: has_moved          = .true.
-    logical                  :: is_running         = .true.
-    type(buffer_type)        :: buffer
-    type(c_ptr)              :: renderer
-    type(c_ptr)              :: window
-    type(camera_type)        :: camera
-    type(map_type)           :: color_map
-    type(map_type)           :: height_map
-    type(sdl_event)          :: event
+    character(len=30)         :: window_title
+    integer                   :: fps, i, t1, rc
+    integer(kind=1), pointer  :: keys(:)           => null()
+    logical                   :: has_moved         = .true.
+    logical                   :: is_running        = .true.
+    type(c_ptr)               :: renderer
+    type(c_ptr)               :: threads(1)        = c_null_ptr
+    type(c_ptr)               :: window
+    type(camera_type)         :: camera
+    !type(data_type),   target :: data
+    type(map_type)            :: color_map
+    type(map_type)            :: height_map
+    type(sdl_event)           :: event
+    type(sdl_rect)            :: rects(1)
+    real, allocatable                :: y_buffer(:)
+    type(buffer_type)         :: buffer
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -97,30 +111,61 @@ program main
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
                                                    SDL_RENDERER_PRESENTVSYNC))
 
+    ! Load colour map and height map.
+    color_map%image  => sdl_load_bmp(COLOR_MAP_FILE // c_null_char)
+    height_map%image => sdl_load_bmp(HEIGHT_MAP_FILE // c_null_char)
+
+    ! Get SDL_PixelFormat of colour map and height map.
+    call c_f_pointer(color_map%image%format, color_map%pixel_format)
+    call c_f_pointer(height_map%image%format, color_map%pixel_format)
+
+    ! Convert C pointer to Fortran pointer array.
+    call c_f_pointer(color_map%image%pixels, color_map%pixels, shape=[color_map%image%pitch * color_map%image%h])
+    call c_f_pointer(height_map%image%pixels, height_map%pixels, shape=[height_map%image%pitch * height_map%image%h])
+
+    !call c_f_pointer(color_map%image%pixels, pixels, shape=[color_map%image%pitch * color_map%image%h])
+    !allocate (color_map%pixels, source=pixels)
+
+    !call c_f_pointer(height_map%image%pixels, pixels, shape=[height_map%image%pitch * height_map%image%h])
+    !allocate (height_map%pixels, source=pixels)
+
+    allocate (y_buffer(SCREEN_WIDTH))
+
+    !data%camera => camera
+    !data%color_map => color_map
+    !data%height_map => height_map
+
     ! Create frame buffer texture.
     buffer%texture = sdl_create_texture(renderer, &
-                                        SDL_PIXELFORMAT_ARGB8888, &
-                                        SDL_TEXTUREACCESS_STREAMING, &
-                                        SCREEN_WIDTH, &
-                                        SCREEN_HEIGHT)
-
+                                             SDL_PIXELFORMAT_ARGB8888, &
+                                             SDL_TEXTUREACCESS_STREAMING, &
+                                             SCREEN_WIDTH / 2, &
+                                             SCREEN_HEIGHT)
     ! Set frame buffer rectangle.
-    buffer%rect%x = 0;            buffer%rect%y = 0
-    buffer%rect%w = SCREEN_WIDTH; buffer%rect%h = SCREEN_HEIGHT
+    buffer%rect%x = 0
+    buffer%rect%y = 0
+    buffer%rect%w = SCREEN_WIDTH / 2
+    buffer%rect%h = SCREEN_HEIGHT
 
     ! Set frame buffer pixel format.
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
 
-    ! Load colour map.
-    color_map%image  => sdl_load_bmp(COLOR_MAP_FILE // c_null_char)
-    call c_f_pointer(color_map%image%format, color_map%pixel_format)
-    call c_f_pointer(color_map%image%pixels, color_map%pixels, shape=[color_map%image%pitch * color_map%image%h])
+    !data%screen_width  = SCREEN_WIDTH
+    !data%screen_height = SCREEN_HEIGHT
+    !data%scale_height  = 120
 
-    ! Load height map.
-    height_map%image => sdl_load_bmp(HEIGHT_MAP_FILE // c_null_char)
-    call c_f_pointer(height_map%image%format, height_map%pixel_format)
-    call c_f_pointer(height_map%image%pixels, height_map%pixels, shape=[height_map%image%pitch * height_map%image%h])
+    !data%x1 = 0
+    !data%x2 = SCREEN_WIDTH / 2
+    !data(2)%x1 = SCREEN_WIDTH / 2
+    !data(2)%x2 = SCREEN_WIDTH
+
+    do i = 1, size(rects)
+        rects(i)%x = 0
+        rects(i)%y = 0
+        rects(i)%w = SCREEN_WIDTH
+        rects(i)%h = SCREEN_HEIGHT
+    end do
 
     ! Main loop.
     do while (is_running)
@@ -167,12 +212,24 @@ program main
 
         if (has_moved) then
             ! Only re-render if camera has moved.
-            call render(buffer, camera, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+            !do i = 1, size(threads)
+            !    if (.not. c_associated(threads(i))) &
+            !        threads(i) = sdl_create_thread(c_funloc(render), 'thread' // c_null_char, c_loc(data))
+            !
+            !    if (c_associated(threads(i))) then
+            !        call sdl_wait_thread(threads(i), rc)
+            !        !call sdl_detach_thread(threads(i))
+            !    !    rc = sdl_render_copy(renderer, data%buffer%texture, data%buffer%rect, rects(i))
+            !    end if
+            !end do
+            !rc = render(c_loc(data))
+
+            call render(buffer, camera, y_buffer, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
             has_moved = .false.
         end if
 
         ! Flush to screen.
-        rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
+        rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, rects(1))
         call sdl_render_present(renderer)
 
         ! Display frames per second.
@@ -182,14 +239,22 @@ program main
     end do
 
     ! Quit gracefully.
-    buffer%pixels => null()
+    deallocate (y_buffer)
+
+    !data%color_map => null()
+    !data%height_map => null()
+
+    ! Discard surfaces, as we have copied the pixels.
+    call sdl_free_surface(color_map%image)
+    call sdl_free_surface(height_map%image)
+
     call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
 
-    color_map%pixels  => null()
-    height_map%pixels => null()
-    call sdl_free_surface(color_map%image)
-    call sdl_free_surface(height_map%image)
+    !do i = 1, size(threads)
+    !    if (c_associated(threads(i))) &
+    !        call sdl_detach_thread(threads(i))
+    !end do
 
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
@@ -266,87 +331,97 @@ contains
         get_height = r
     end function get_height
 
-    subroutine move_camera(x, y)
-        !! Moves camera in X and Y direction.
-        real, intent(in) :: x
-        real, intent(in) :: y
-
-        camera%x = modulo(camera%x + x, real(MAP_WIDTH))
-        camera%y = modulo(camera%y + y, real(MAP_WIDTH))
-    end subroutine move_camera
-
-    subroutine render(buffer, camera, scale_height, screen_width, screen_height)
+    !integer(kind=c_int) function render(data_ptr) bind(c)
+    subroutine render(buffer, camera, y_buffer, scale_height, screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
+        !type(c_ptr), intent(in), value :: data_ptr
+        !type(data_type), pointer       :: data
         type(buffer_type), intent(inout) :: buffer
         type(camera_type), intent(inout) :: camera
-        integer,           intent(in)    :: scale_height
-        integer,           intent(in)    :: screen_width
-        integer,           intent(in)    :: screen_height
-        integer                          :: line_y
-        integer                          :: offset
-        integer                          :: rc
-        integer                          :: x
-        real                             :: cos_phi, sin_phi
-        real                             :: dx, dy, dz
-        real                             :: height_on_screen
-        real                             :: y_buffer(screen_width)
-        real                             :: z
-        type(point_type)                 :: left, right
-        type(rgb_type)                   :: color
+        real, intent(inout)              :: y_buffer(:)
+        integer, intent(in) :: scale_height
+        integer, intent(in) :: screen_width
+        integer, intent(in) :: screen_height
+
+        integer                        :: line_y
+        integer                        :: offset
+        integer                        :: rc
+        integer                        :: x
+        real                           :: cos_phi, sin_phi
+        real                           :: dx, dy, dz
+        real                           :: height_on_screen
+        real                           :: z
+        type(point_type)               :: left, right
+        type(rgb_type)                 :: color
+        real :: h
+
+        !if (.not. c_associated(data_ptr)) then
+        !    render = -1
+        !    return
+        !end if
+
+        !call c_f_pointer(data_ptr, data)
+
+        y_buffer(0:) = screen_height
 
         sin_phi = sin(camera%angle)
         cos_phi = cos(camera%angle)
-
-        y_buffer(0:) = screen_height
 
         dz = 1.
         z  = 30.
 
         ! Lock frame buffer texture.
-        rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
+        rc = sdl_lock_texture(buffer%texture, &
+                              buffer%rect, &
+                              buffer%pixels_ptr, &
+                              buffer%pitch)
 
-        ! Convert C pointer to Fortran pointer.
-        call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[screen_width * screen_height])
+        ! Convert C pointer to Fortran pointer array.
+        call c_f_pointer(buffer%pixels_ptr, &
+                         buffer%pixels, &
+                         shape=[buffer%rect%w * buffer%rect%h])
 
         ! Fill frame buffer in light blue.
         buffer%pixels(:) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
 
         do while (z < camera%distance)
-            ! Find line on map. This calculation corresponds to a field of view of 90°.
-            left%x  = (-cos_phi * z - sin_phi * z) + camera%x
-            left%y  = ( sin_phi * z - cos_phi * z) + camera%y
-            right%x = ( cos_phi * z - sin_phi * z) + camera%x
-            right%y = (-sin_phi * z - cos_phi * z) + camera%y
+           ! Find line on map. This calculation corresponds to a field of view of 90°.
+           left%x  = (-cos_phi * z - sin_phi * z) + camera%x
+           left%y  = ( sin_phi * z - cos_phi * z) + camera%y
+           right%x = ( cos_phi * z - sin_phi * z) + camera%x
+           right%y = (-sin_phi * z - cos_phi * z) + camera%y
 
-            ! Segment the line.
-            dx = (right%x - left%x) / screen_width
-            dy = (right%y - left%y) / screen_width
+           ! Segment the line.
+           dx = (right%x - left%x) / screen_width
+           dy = (right%y - left%y) / screen_width
 
-            ! Raster line and draw a vertical line for each segment.
-            do x = 0, screen_width
-                height_on_screen = (camera%height - get_height(left%x, left%y)) / &
-                                   z * scale_height + camera%horizon
+           ! Raster line and draw a vertical line for each segment.
+           do x = 0, screen_width
+                h = get_height(left%x, left%y)
+                print *, h
+                !height_on_screen = (data%camera%height - get_height(left%x, left%y)) / &
+                !                    z * data%scale_height + data%camera%horizon
 
                 ! Only draw if visible.
-                if (height_on_screen < y_buffer(x)) then
-                    color = get_color(left%x, left%y)
+                !if (height_on_screen < data%y_buffer(x)) then
+                !    color = get_color(left%x, left%y)
 
-                    ! Draw vertical line by setting the pixels of the frame buffer texture.
-                    do line_y = int(height_on_screen), int(y_buffer(x))
-                        offset = (line_y * SCREEN_WIDTH) + x
-                        buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
-                                                            int(color%r, kind=4), &
-                                                            int(color%g, kind=4), &
-                                                            int(color%b, kind=4))
-                    end do
+                   ! Draw vertical line by setting the pixels of the frame buffer texture.
+                !   do line_y = int(height_on_screen), int(data%y_buffer(x))
+                !       offset = (line_y * data%screen_width) + x
+                       !data%buffer%pixels(offset) = sdl_map_rgb(data%buffer%pixel_format, &
+                       !                                         int(color%r, kind=4), &
+                       !                                         int(color%g, kind=4), &
+                       !                                         int(color%b, kind=4))
+                !   end do
 
-                    y_buffer(x) = height_on_screen
-                end if
+                !   data%y_buffer(x) = height_on_screen
+               !end if
 
-                left%x = left%x + dx
-                left%y = left%y + dy
-            end do
+               left%x = left%x + dx
+               left%y = left%y + dy
+           end do
 
             ! Increase step-size in Z direction.
             z  = z + dz
@@ -355,6 +430,15 @@ contains
 
         call sdl_unlock_texture(buffer%texture)
     end subroutine render
+
+    subroutine move_camera(x, y)
+        !! Moves camera in X and Y direction.
+        real, intent(in) :: x
+        real, intent(in) :: y
+
+        camera%x = modulo(camera%x + x, real(MAP_WIDTH))
+        camera%y = modulo(camera%y + y, real(MAP_WIDTH))
+    end subroutine move_camera
 
     subroutine rotate_camera(a)
         !! Rotates camera by given angle a [rad].

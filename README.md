@@ -1,17 +1,18 @@
-# f03sdl2: Fortran 2003 Interface to SDL 2
+# f08sdl2: Fortran 2008 Interface to SDL 2
 An ISO C binding interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/)
 (SDL 2), for multimedia and game programming in Fortran. SDL versions tested
 against:
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.10
+SDL       | 2.0.10_1
 SDL_image | 2.0.5
-SDL_mixer | 2.0.4_1
+SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9, but other modern
-compilers should work as well.
+compilers should work as well. A Fortran 2003 compiler is sufficient if
+`SDL_Thread` is not required.
 
 ## Building the SDL 2 interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
@@ -155,7 +156,7 @@ Some demo applications can be found in `examples/`.
 * **opera** plays an OGG file with SDL_mixer (software renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
-* **voxel** renders a voxel space (hardware renderer).
+* **voxel** renders a voxel space with direct pixel manipulation (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Build all examples with:
@@ -225,7 +226,7 @@ Or use the name of a particular example.
 | SDL_CreateSystemCursor                |   –   |
 | SDL_CreateTexture                     |   ✓   |
 | SDL_CreateTextureFromSurface          |   ✓   |
-| SDL_CreateThread                      |   –   |
+| SDL_CreateThread                      |   ✓   |
 | SDL_CreateWindow                      |   ✓   |
 | SDL_CreateWindowAndRenderer           |   –   |
 | SDL_CreateWindowFrom                  |   –   |
@@ -239,7 +240,7 @@ Or use the name of a particular example.
 | SDL_DestroySemaphore                  |   –   |
 | SDL_DestroyTexture                    |   ✓   |
 | SDL_DestroyWindow                     |   ✓   |
-| SDL_DetachThread                      |   –   |
+| SDL_DetachThread                      |   ✓   |
 | SDL_Direct3D9GetAdapterIndex          |   –   |
 | SDL_DisableScreenSaver                |   –   |
 | SDL_EnableScreenSaver                 |   –   |
@@ -668,7 +669,7 @@ Or use the name of a particular example.
 | SDL_VideoQuit                         |   –   |
 | SDL_WaitEvent                         |   ✓   |
 | SDL_WaitEventTimeout                  |   –   |
-| SDL_WaitThread                        |   –   |
+| SDL_WaitThread                        |   ✓   |
 | SDL_WarpMouseGlobal                   |   ✓   |
 | SDL_WarpMouseInWindow                 |   ✓   |
 | SDL_WasInit                           |   –   |

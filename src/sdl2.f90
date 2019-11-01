@@ -1197,11 +1197,13 @@ module sdl2
     public :: sdl_create_rgb_surface
     public :: sdl_create_texture
     public :: sdl_create_texture_from_surface
+    public :: sdl_create_thread
     public :: sdl_create_window
     public :: sdl_delay
     public :: sdl_destroy_renderer
     public :: sdl_destroy_texture
     public :: sdl_destroy_window
+    public :: sdl_detach_thread
     public :: sdl_fill_rect
     public :: sdl_fill_rects
     public :: sdl_free
@@ -1305,6 +1307,7 @@ module sdl2
     public :: sdl_upper_blit
     public :: sdl_upper_blit_scaled
     public :: sdl_wait_event
+    public :: sdl_wait_thread
     public :: sdl_warp_mouse_global
     public :: sdl_warp_mouse_in_window
 
@@ -1377,6 +1380,15 @@ module sdl2
             type(sdl_surface), intent(in)        :: surface
             type(c_ptr)                          :: sdl_create_texture_from_surface
         end function sdl_create_texture_from_surface
+
+        ! SDL_Thread *SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data)
+        function sdl_create_thread(fn, name, data) bind(c, name='SDL_CreateThread')
+            import :: c_char, c_ptr, c_funptr
+            type(c_funptr),         intent(in), value :: fn
+            character(kind=c_char), intent(in)        :: name
+            type(c_ptr),            intent(in), value :: data
+            type(c_ptr)                               :: sdl_create_thread
+        end function sdl_create_thread
 
         ! SDL_Window *SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         function sdl_create_window(title, x, y, w, h, flags) bind(c, name='SDL_CreateWindow')
@@ -1972,6 +1984,12 @@ module sdl2
             type(c_ptr), intent(in), value :: window
         end subroutine sdl_destroy_window
 
+        ! void SDL_DetachThread(SDL_Thread *thread)
+        subroutine sdl_detach_thread(thread) bind(c, name='SDL_DetachThread')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: thread
+        end subroutine sdl_detach_thread
+
         ! void free(void *ptr);
         subroutine sdl_free(ptr) bind(c, name='free')
             import :: c_ptr
@@ -2160,6 +2178,13 @@ module sdl2
             import :: c_int, c_ptr
             type(c_ptr), intent(in), value :: texture
         end subroutine sdl_unlock_texture
+
+        ! void SDL_WaitThread(SDL_Thread *thread, int *status)
+        subroutine sdl_wait_thread(thread, status) bind(c, name='SDL_WaitThread')
+            import :: c_int, c_ptr
+            type(c_ptr),         intent(in), value :: thread
+            integer(kind=c_int), intent(in)        :: status
+        end subroutine sdl_wait_thread
 
         ! void SDL_WarpMouseInWindow(SDL_Window *window, int x, int y)
         subroutine sdl_warp_mouse_in_window(window, x, y) bind(c, name='SDL_WarpMouseInWindow')
