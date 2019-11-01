@@ -72,6 +72,7 @@ program main
     type(sdl_event) :: event
     type(sdl_rect)  :: rect
     integer         :: rc
+    logical         :: is_running = .true.
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -100,11 +101,11 @@ program main
     renderer = sdl_create_renderer(window, -1, 0)
 
     ! Event loop.
-    do
+    do while (is_running)
         ! Catch events.
         do while (sdl_poll_event(event) > 0)
             select case (event%type)
-                exit
+                is_running = .false.
             end select
         end do
 
