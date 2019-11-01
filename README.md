@@ -12,7 +12,7 @@ SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9, but other modern
 compilers should work as well. A Fortran 2003 compiler is sufficient if
-`SDL_Thread` is not required.
+multi-threading with `SDL_Thread` is not desired.
 
 ## Building the SDL 2 interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
@@ -176,7 +176,7 @@ SDL 2 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
 types, the intrinsic procedure `transfer()` has to be used to transfer bit
 patterns directly. For example:
 
-```
+```fortran
 type(sdl_color) :: color
 
 color%r = transfer([255, 1], 1_c_int8_t)
@@ -190,7 +190,7 @@ C pointers in derived types like `SDL_Surface` must be converted to Fortran
 types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
 to assign the `SDL_PixelFormat` pointer in `SDL_Surface`:
 
-```
+```fortran
 type(sdl_pixel_format), pointer :: pixel_format
 type(sdl_surface),      pointer :: surface
 
@@ -204,7 +204,7 @@ simplify the conversion from C pointer to Fortran pointer.
 `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
 to convert `Uint8` to Fortran signed integer. For example:
 
-```
+```fortran
 integer, parameter              :: X = 10
 integer, parameter              :: Y = 20
 integer(kind=2)                 :: r, g, b
