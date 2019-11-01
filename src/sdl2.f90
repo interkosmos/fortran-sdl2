@@ -1222,7 +1222,6 @@ module sdl2
     public :: sdl_get_num_audio_devices
     public :: sdl_get_performance_counter
     public :: sdl_get_performance_frequency
-    public :: sdl_get_pixel_format
     public :: sdl_get_platform
     public :: sdl_get_render_target
     public :: sdl_get_rgb
@@ -1310,6 +1309,16 @@ module sdl2
     public :: sdl_wait_thread
     public :: sdl_warp_mouse_global
     public :: sdl_warp_mouse_in_window
+
+    ! Utility functions.
+    public :: sdl_get_pixel_format
+    public :: uint8
+
+    ! Generic interfaces.
+    interface uint8
+        procedure :: uint8_i2
+        procedure :: uint8_i4
+    end interface
 
     ! Function and routine interfaces to libc.
     interface
@@ -2583,6 +2592,24 @@ contains
         sdl_wait_event = sdl_wait_event_(event)
         call sdl_transfer_event(event)
     end function sdl_wait_event
+
+    pure function uint8_i2(i)
+        !! Utility function that converts Fortran signed integer
+        !! (2 bytes) to Uint8.
+        integer(kind=2), intent(in) :: i
+        integer(kind=c_int8_t)      :: uint8_i2
+
+        uint8_i2 = transfer([i, 1_2], 1_c_int8_t)
+    end function uint8_i2
+
+    pure function uint8_i4(i)
+        !! Utility function that converts Fortran signed integer
+        !! (4 bytes) to Uint8.
+        integer(kind=4), intent(in) :: i
+        integer(kind=c_int8_t)      :: uint8_i4
+
+        uint8_i4 = transfer([i, 1_4], 1_c_int8_t)
+    end function uint8_i4
 
     subroutine sdl_transfer_event(event)
         !! Transfers a given event union to the respective event type

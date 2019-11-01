@@ -104,25 +104,16 @@ program main
         ! Catch events.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
                     exit
             end select
         end if
 
         ! Fill screen black. We have to use `transfer()` to cast to Uint8.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_clear(renderer)
 
         ! Fill the rectangle.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([127, 1], 1_c_int8_t), &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([  0, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(127), uint8(255), uint8(0), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_fill_rect(renderer, rect)
 
         ! Render to screen and wait 20 ms.
@@ -188,6 +179,13 @@ color%r = transfer([255, 1], 1_c_int8_t)
 color%g = transfer([127, 1], 1_c_int8_t)
 color%b = transfer([  0, 1], 1_c_int8_t)
 color%a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+```
+
+The Fortran interface provides a utility function `uint8()` that simplifies the
+conversion:
+
+```fortran
+color%r = uint8(255)
 ```
 
 ### SDL_Surface
@@ -802,7 +800,6 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | IMG_isXV                              |   –   |
 
 ### SDL_mixer
-
 | Name                                  | Bound |
 |---------------------------------------|-------|
 | Mix_AllocateChannels                  |   ✓   |
@@ -928,6 +925,12 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | TTF_SizeUNICODE                       |   –   |
 | TTF_SizeUTF8                          |   –   |
 | TTF_WasInit                           |   –   |
+
+## Utility Functions
+| Name                                  |
+|---------------------------------------|
+| `sdl_get_pixel_format`                |
+| `uint8`                               |
 
 ## Credits
 Thanks go to [angelog0](https://github.com/angelog0).
