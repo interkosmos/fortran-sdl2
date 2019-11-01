@@ -165,6 +165,70 @@ $ make examples
 ```
 Or use the name of a particular example.
 
+## Compatibility
+All Fortran interface names are written in snake case. For instance,
+`SDL_CreateWindow()` can be accessed by Fortran interface `sdl_create_window()`.
+The same is valid for derived types and their components. Enums and constants
+have kept their original names.
+
+### SDL_Color
+SDL 2 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
+types, the intrinsic procedure `transfer()` has to be used to transfer bit
+patterns directly. For example:
+
+```
+type(sdl_color) :: color
+
+color%r = transfer([255, 1], 1_c_int8_t)
+color%g = transfer([127, 1], 1_c_int8_t)
+color%b = transfer([  0, 1], 1_c_int8_t)
+color%a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+```
+
+### SDL_Surface
+C pointers in derived types like `SDL_Surface` must be converted to Fortran
+types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
+to assign the `SDL_PixelFormat` pointer in `SDL_Surface`:
+
+```
+type(sdl_pixel_format), pointer :: pixel_format
+type(sdl_surface),      pointer :: surface
+
+! Convert C pointer to Fortran pointer.
+call c_f_pointer(surface%format, pixel_format)
+```
+
+An utility function `sdl_get_pixel_format()` has been added to the interface to
+simplify the conversion from C pointer to Fortran pointer.
+
+`SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
+to convert `Uint8` to Fortran signed integer. For example:
+
+```
+integer, parameter              :: X = 10
+integer, parameter              :: Y = 20
+integer(kind=2)                 :: r, g, b
+integer(kind=c_int32_t)         :: pixel
+integer(kind=c_int8_t), pointer :: pixels(:)
+type(sdl_pixel_format), pointer :: pixel_format
+type(sdl_surface),      pointer :: surface
+
+! Load BMP file into SDL_Surface.
+surface => sdl_load_bmp('image.bmp' // c_null_char)
+
+! Get SDL_PixelFormat.
+call c_f_pointer(surface%format, pixel_format)
+
+! Get Fortran array of pixel pointers.
+call c_f_pointer(surface%pixels, pixels, shape=[surface%pitch * surface%h])
+
+! Get single pixel of coordinates X and Y. Convert to Fortran integer.
+pixel = ichar(transfer(pixels(Y * surface%pitch + X), 'a'))
+
+! Get RGB values of pixel.
+call sdl_get_rgb(pixel, pixel_format, r, g, b)
+```
+
 ## Coverage
 ### SDL
 | Name                                  | Bound |
