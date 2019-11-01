@@ -1,6 +1,6 @@
-# f08sdl2: Fortran 2008 Interface to SDL 2
-An ISO C binding interface to [Simple DirectMedia Layer 2](https://www.libsdl.org/)
-(SDL 2), for multimedia and game programming in Fortran. SDL versions tested
+# f08sdl2: Fortran 2008 Interface to SDL 2.0
+An ISO C binding interface to [Simple DirectMedia Layer 2.0](https://www.libsdl.org/)
+(SDL 2.0), for multimedia and game programming in Fortran. SDL versions tested
 against:
 
 Library   | Version
@@ -14,7 +14,7 @@ The interfaces have been built successfully with GNU Fortran 9, but other modern
 compilers should work as well. A Fortran 2003 compiler is sufficient if
 multi-threading with `SDL_Thread` is not desired.
 
-## Building the SDL 2 interfaces
+## Building the SDL 2.0 Interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
 ```
 $ git clone https://github.com/interkosmos/f03sdl2.git
@@ -144,7 +144,7 @@ $ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
 ```
 The `-Wl,-rpath` parameter may be optional.
 
-## Further examples
+## Further Examples
 Some demo applications can be found in `examples/`.
 
 * **alpha** makes one color of an image transparent (software renderer).
@@ -171,8 +171,13 @@ All Fortran interface names are written in snake case. For instance,
 The same is valid for derived types and their components. Enums and constants
 have kept their original names.
 
+### Null-Termination of Strings
+An `c_null_char` must be appended to all strings passed to the SDL 2.0 interface,
+except for `sdl_set_hint()`, which is a wrapper function that terminates the
+arguments for convenience.
+
 ### SDL_Color
-SDL 2 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
+SDL 2.0 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
 types, the intrinsic procedure `transfer()` has to be used to transfer bit
 patterns directly. For example:
 
