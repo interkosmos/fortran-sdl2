@@ -929,8 +929,8 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 ## Utility Functions
 | Name                                  |
 |---------------------------------------|
-| `sdl_get_pixel_format`                |
-| `uint8`                               |
+| sdl_get_pixel_format                  |
+| uint8                                 |
 
 ## Credits
 Thanks go to [angelog0](https://github.com/angelog0).
