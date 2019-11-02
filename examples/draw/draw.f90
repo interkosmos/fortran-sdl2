@@ -1,9 +1,9 @@
 ! draw.f90
 !
-! Drawing on the window, using the hardware renderer.
+! Example that draws on the window using the hardware renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
@@ -59,44 +59,24 @@ program main
         end if
 
         ! Clear screen.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([0, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_clear(renderer)
 
         ! Draw lines.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([  0, 1], 1_c_int8_t), &
-                                       transfer([127, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(255), uint8(0), uint8(127), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_draw_line(renderer, 10, 10, 400, 100)
         rc = sdl_render_draw_line(renderer, 80, 400, 525, 300)
 
         ! Fill a rectangle.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([127, 1], 1_c_int8_t), &
-                                       transfer([  0, 1], 1_c_int8_t), &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(127), uint8(0), uint8(255), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_fill_rect(renderer, rect1)
 
         ! Draw a rectangle.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([127, 1], 1_c_int8_t), &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(255), uint8(127), uint8(255), uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_draw_rect(renderer, rect2)
 
         ! Draw some points.
-        rc = sdl_set_render_draw_color(renderer, &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([255, 1], 1_c_int8_t), &
-                                       transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+        rc = sdl_set_render_draw_color(renderer, uint8(255), uint8(255), uint8(255), uint8(SDL_ALPHA_OPAQUE))
 
         do i = 0, 345, 15
             x  = int(100.0 * cos(i * RAD))

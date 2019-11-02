@@ -1,9 +1,9 @@
 ! sdl2.f90
 !
-! SDL2 interface for Fortran 2003/2008/2018.
+! Fortran 2008 interface to SDL 2.0.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 module sdl2
     use, intrinsic :: iso_c_binding
@@ -822,7 +822,7 @@ module sdl2
         integer(kind=c_int)      :: ncolors
         type(c_ptr)              :: colors
         integer(kind=c_uint32_t) :: version
-        integer(kind=c_int)      :: refcount
+        integer(kind=c_int)      :: ref_count
     end type sdl_palette
 
     ! SDL_PixelFormat
@@ -861,7 +861,7 @@ module sdl2
         type(c_ptr)              :: lock_data
         type(sdl_rect)           :: clip_rect
         type(c_ptr)              :: map
-        integer(kind=c_int)      :: refcount
+        integer(kind=c_int)      :: ref_count
     end type sdl_surface
 
     ! SDL_CommonEvent
@@ -2279,7 +2279,7 @@ contains
     end subroutine c_f_string_ptr
 
     function sdl_alloc_format(pixel_format)
-        !! Call `sdl_alloc_format_()` and converts the returned C pointer to
+        !! Calls `sdl_alloc_format_()` and converts the returned C pointer to
         !! derived type `sdl_pixel_format`.
         integer, intent(in)             :: pixel_format
         type(sdl_pixel_format), pointer :: sdl_alloc_format
@@ -2570,10 +2570,7 @@ contains
         integer,                 intent(in) :: b
         integer                             :: sdl_map_rgb
 
-        sdl_map_rgb = sdl_map_rgb_(format, &
-                                   transfer([r, 1], 1_c_uint8_t), &
-                                   transfer([g, 1], 1_c_uint8_t), &
-                                   transfer([b, 1], 1_c_uint8_t))
+        sdl_map_rgb = sdl_map_rgb_(format, uint8(r), uint8(g), uint8(b))
     end function sdl_map_rgb
 
     ! Uint32 SDL_MapRGBA(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
@@ -2586,11 +2583,7 @@ contains
         integer,                 intent(in) :: a
         integer                             :: sdl_map_rgba
 
-        sdl_map_rgba = sdl_map_rgba_(format, &
-                                     transfer([r, 1], 1_c_uint8_t), &
-                                     transfer([g, 1], 1_c_uint8_t), &
-                                     transfer([b, 1], 1_c_uint8_t), &
-                                     transfer([a, 1], 1_c_uint8_t))
+        sdl_map_rgba = sdl_map_rgba_(format, uint8(r), uint8(g), uint8(b), uint8(a))
     end function sdl_map_rgba
 
     ! int SDL_PollEvent(SDL_Event *event)

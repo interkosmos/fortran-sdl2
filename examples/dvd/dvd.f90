@@ -4,7 +4,7 @@
 ! using the hardware renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int, c_int8_t, c_int32_t, c_null_char, c_ptr
@@ -168,8 +168,9 @@ contains
 
         c = n
 
-        rc = sdl_set_texture_color_mod(texture, transfer([colors(c)%r, 1_2], 1_c_int8_t), &
-                                                transfer([colors(c)%g, 1_2], 1_c_int8_t), &
-                                                transfer([colors(c)%b, 1_2], 1_c_int8_t))
+        rc = sdl_set_texture_color_mod(texture,&
+                                       uint8(colors(c)%r), &
+                                       uint8(colors(c)%g), &
+                                       uint8(colors(c)%b))
     end subroutine color_mod
 end program main

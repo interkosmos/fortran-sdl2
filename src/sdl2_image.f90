@@ -1,9 +1,9 @@
 ! sdl2_image.f90
 !
-! SDL2_image interface for Fortran 2003/2008/2018.
+! Fortran 2008 interface to SDL2_image.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 module sdl2_image
     use, intrinsic :: iso_c_binding

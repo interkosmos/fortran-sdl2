@@ -4,7 +4,7 @@
 ! the hardware renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
@@ -64,12 +64,11 @@ program main
     ! Load font and set font colour.
     font = ttf_open_font(PATH // c_null_char, 12)
 
-    ! Set font colour. We need some `transfer()` magic to cast
-    ! from Fortran integer to C `Uint8`.
-    color%r = transfer([255, 0], 1_c_int8_t)
-    color%g = transfer([  0, 0], 1_c_int8_t)
-    color%b = transfer([  0, 0], 1_c_int8_t)
-    color%a = transfer([255, 0], 1_c_int8_t)
+    ! Set font colour.
+    color%r = uint8(255)
+    color%g = uint8(0)
+    color%b = uint8(0)
+    color%a = uint8(SDL_ALPHA_OPAQUE)
 
     ! Event loop.
     do while (.not. done)

@@ -28,7 +28,7 @@ $ make sdl2 FC=gfortran
 ```
 Or just run your favourite Fortran compiler directly:
 ```
-$ gfortran -c sdl2.f90
+$ gfortran -std=f2008 -ffree-line-length-none -c sdl2.f90
 ```
 On FreeBSD, you may have to modify the `Makefile`: change the `RPATH` variable
 according to your compiler.
@@ -932,10 +932,10 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | TTF_WasInit                           |   –   |
 
 ## Utility Functions
-| Name                                  |
-|---------------------------------------|
-| sdl_get_pixel_format                  |
-| uint8                                 |
+| Name                                  | Description                                     |
+|---------------------------------------|-------------------------------------------------|
+| sdl_get_pixel_format                  | Returns `SDL_PixelFormat` pointer of a surface. |
+| uint8                                 | Converts Fortran signed integer to `Uint8`.     |
 
 ## Credits
 Thanks go to [angelog0](https://github.com/angelog0).

@@ -1,9 +1,9 @@
 ! sdl2_ttf.f90
 !
-! SDL2_ttf interface for Fortran 2003/2008/2018.
+! Fortran 2008 interface to SDL2_ttf.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 module sdl2_ttf
     use, intrinsic :: iso_c_binding

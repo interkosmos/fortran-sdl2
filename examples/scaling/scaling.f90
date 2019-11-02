@@ -5,7 +5,7 @@
 ! http://lazyfoo.net/tutorials/SDL/05_optimized_surface_loading_and_soft_stretching/index.php
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f03sdl2/
+! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
