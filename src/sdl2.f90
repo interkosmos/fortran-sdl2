@@ -1184,6 +1184,7 @@ module sdl2
     public :: sdl_get_window_surface_
     public :: sdl_get_window_title_
     public :: sdl_map_rgb_
+    public :: sdl_map_rgba_
     public :: sdl_poll_event_
     public :: sdl_set_hint_
     public :: sdl_wait_event_
@@ -1225,6 +1226,7 @@ module sdl2
     public :: sdl_get_platform
     public :: sdl_get_render_target
     public :: sdl_get_rgb
+    public :: sdl_get_rgba
     public :: sdl_get_system_ram
     public :: sdl_get_ticks
     public :: sdl_get_version
@@ -1254,6 +1256,7 @@ module sdl2
     public :: sdl_load_bmp_rw
     public :: sdl_lock_texture
     public :: sdl_map_rgb
+    public :: sdl_map_rgba
     public :: sdl_maximize_window
     public :: sdl_minimize_window
     public :: sdl_poll_event
@@ -1675,6 +1678,17 @@ module sdl2
             integer(kind=c_uint32_t)                    :: sdl_map_rgb_
         end function sdl_map_rgb_
 
+        ! Uint32 SDL_MapRGBA(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+        function sdl_map_rgba_(format, r, g, b, a) bind(c, name='SDL_MapRGBA')
+            import :: c_uint8_t, c_uint32_t, sdl_pixel_format
+            type(sdl_pixel_format) , intent(in)        :: format
+            integer(kind=c_uint8_t), intent(in), value :: r
+            integer(kind=c_uint8_t), intent(in), value :: g
+            integer(kind=c_uint8_t), intent(in), value :: b
+            integer(kind=c_uint8_t), intent(in), value :: a
+            integer(kind=c_uint32_t)                    :: sdl_map_rgba_
+        end function sdl_map_rgba_
+
         ! int SDL_PollEvent(SDL_Event *event)
         function sdl_poll_event_(event) bind(c, name='SDL_PollEvent')
             import :: c_int, sdl_event
@@ -2026,6 +2040,17 @@ module sdl2
             integer(kind=c_uint16_t), intent(inout)     :: g
             integer(kind=c_uint16_t), intent(inout)     :: b
         end subroutine sdl_get_rgb
+
+        ! void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)
+        subroutine sdl_get_rgba(pixel, format, r, g, b, a) bind(c, name='SDL_GetRGBA')
+            import :: c_ptr, c_uint16_t, c_uint32_t, sdl_pixel_format
+            integer(kind=c_uint32_t), intent(in), value :: pixel
+            type(sdl_pixel_format),   intent(in)        :: format
+            integer(kind=c_uint16_t), intent(inout)     :: r
+            integer(kind=c_uint16_t), intent(inout)     :: g
+            integer(kind=c_uint16_t), intent(inout)     :: b
+            integer(kind=c_uint16_t), intent(inout)     :: a
+        end subroutine sdl_get_rgba
 
         ! void SDL_GetVersion(SDL_version *ver)
         subroutine sdl_get_version(ver) bind(c, name='SDL_GetVersion')
@@ -2550,6 +2575,23 @@ contains
                                    transfer([g, 1], 1_c_uint8_t), &
                                    transfer([b, 1], 1_c_uint8_t))
     end function sdl_map_rgb
+
+    ! Uint32 SDL_MapRGBA(const SDL_PixelFormat *format, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    function sdl_map_rgba(format, r, g, b, a)
+        !! Calls `sdl_map_rgba_()` with RGBA values casted to `Uint8`.
+        type(sdl_pixel_format) , intent(in) :: format
+        integer,                 intent(in) :: r
+        integer,                 intent(in) :: g
+        integer,                 intent(in) :: b
+        integer,                 intent(in) :: a
+        integer                             :: sdl_map_rgba
+
+        sdl_map_rgba = sdl_map_rgba_(format, &
+                                     transfer([r, 1], 1_c_uint8_t), &
+                                     transfer([g, 1], 1_c_uint8_t), &
+                                     transfer([b, 1], 1_c_uint8_t), &
+                                     transfer([a, 1], 1_c_uint8_t))
+    end function sdl_map_rgba
 
     ! int SDL_PollEvent(SDL_Event *event)
     function sdl_poll_event(event)

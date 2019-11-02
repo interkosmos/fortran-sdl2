@@ -202,8 +202,12 @@ type(sdl_surface),      pointer :: surface
 call c_f_pointer(surface%format, pixel_format)
 ```
 
-An utility function `sdl_get_pixel_format()` has been added to the interface to
-simplify the conversion from C pointer to Fortran pointer.
+A utility function `sdl_get_pixel_format()` has been added to the interface to
+simplify the conversion from C pointer to Fortran pointer:
+
+```fortran
+pixel_format => sdl_get_pixel_format(surface%format)
+```
 
 `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
 to convert `Uint8` to Fortran signed integer. For example:
@@ -415,7 +419,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GetPrefPath                       |   –   |
 | SDL_GetQueuedAudioSize                |   –   |
 | SDL_GetRGB                            |   ✓   |
-| SDL_GetRGBA                           |   –   |
+| SDL_GetRGBA                           |   ✓   |
 | SDL_GetRelativeMouseMode              |   –   |
 | SDL_GetRelativeMouseState             |   –   |
 | SDL_GetRenderDrawBlendMode            |   –   |
@@ -566,7 +570,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_LowerBlitScaled                   |   –   |
 | SDL_MUSTLOCK                          |   –   |
 | SDL_MapRGB                            |   ✓   |
-| SDL_MapRGBA                           |   –   |
+| SDL_MapRGBA                           |   ✓   |
 | SDL_MasksToPixelFormatEnum            |   –   |
 | SDL_MaximizeWindow                    |   ✓   |
 | SDL_MinimizeWindow                    |   ✓   |
