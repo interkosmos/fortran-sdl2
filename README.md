@@ -206,7 +206,7 @@ A utility function `sdl_get_pixel_format()` has been added to the interface to
 simplify the conversion from C pointer to Fortran pointer:
 
 ```fortran
-pixel_format => sdl_get_pixel_format(surface%format)
+pixel_format => sdl_get_pixel_format(surface)
 ```
 
 `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
