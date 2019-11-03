@@ -28,7 +28,7 @@ $ make sdl2 FC=gfortran
 ```
 Or just run your favourite Fortran compiler directly:
 ```
-$ gfortran -std=f2008 -ffree-line-length-none -c sdl2.f90
+$ gfortran -c sdl2.f90
 ```
 On FreeBSD, you may have to modify the `Makefile`: change the `RPATH` variable
 according to your compiler.

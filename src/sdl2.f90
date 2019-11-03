@@ -364,171 +364,172 @@ module sdl2
     integer(kind=c_int), parameter :: SDL_NUM_SCANCODES               = 512
 
     ! SDL_keycode
-    integer(kind=c_int), parameter :: SDLK_SCANCODE_MASK      = ishft(1, 30)
-    integer(kind=c_int), parameter :: SDLK_UNKNOWN            = 0
+    integer(kind=c_int), parameter :: SDLK_SCANCODE_MASK = ishft(1, 30)
+    integer(kind=c_int), parameter :: SDLK_UNKNOWN       = 0
 
-    integer(kind=c_int), parameter :: SDLK_RETURN             = 13
-    integer(kind=c_int), parameter :: SDLK_ESCAPE             = 27
-    integer(kind=c_int), parameter :: SDLK_BACKSPACE          = 8
-    integer(kind=c_int), parameter :: SDLK_TAB                = 9
-    integer(kind=c_int), parameter :: SDLK_SPACE              = ichar(' ')
-    integer(kind=c_int), parameter :: SDLK_EXCLAIM            = ichar('!')
-    integer(kind=c_int), parameter :: SDLK_QUOTEDBL           = ichar('"')
-    integer(kind=c_int), parameter :: SDLK_HASH               = ichar('#')
-    integer(kind=c_int), parameter :: SDLK_PERCENT            = ichar('%')
-    integer(kind=c_int), parameter :: SDLK_DOLLAR             = ichar('$')
-    integer(kind=c_int), parameter :: SDLK_AMPERSAND          = ichar('&')
-    integer(kind=c_int), parameter :: SDLK_QUOTE              = ichar("'")
-    integer(kind=c_int), parameter :: SDLK_LEFTPAREN          = ichar('(')
-    integer(kind=c_int), parameter :: SDLK_RIGHTPAREN         = ichar(')')
-    integer(kind=c_int), parameter :: SDLK_ASTERISK           = ichar('*')
-    integer(kind=c_int), parameter :: SDLK_PLUS               = ichar('+')
-    integer(kind=c_int), parameter :: SDLK_COMMA              = ichar(',')
-    integer(kind=c_int), parameter :: SDLK_MINUS              = ichar('-')
-    integer(kind=c_int), parameter :: SDLK_PERIOD             = ichar('.')
-    integer(kind=c_int), parameter :: SDLK_SLASH              = ichar('/')
-    integer(kind=c_int), parameter :: SDLK_0                  = ichar('0')
-    integer(kind=c_int), parameter :: SDLK_1                  = ichar('1')
-    integer(kind=c_int), parameter :: SDLK_2                  = ichar('2')
-    integer(kind=c_int), parameter :: SDLK_3                  = ichar('3')
-    integer(kind=c_int), parameter :: SDLK_4                  = ichar('4')
-    integer(kind=c_int), parameter :: SDLK_5                  = ichar('5')
-    integer(kind=c_int), parameter :: SDLK_6                  = ichar('6')
-    integer(kind=c_int), parameter :: SDLK_7                  = ichar('7')
-    integer(kind=c_int), parameter :: SDLK_8                  = ichar('8')
-    integer(kind=c_int), parameter :: SDLK_9                  = ichar('9')
-    integer(kind=c_int), parameter :: SDLK_COLON              = ichar(':')
-    integer(kind=c_int), parameter :: SDLK_SEMICOLON          = ichar(';')
-    integer(kind=c_int), parameter :: SDLK_LESS               = ichar('<')
-    integer(kind=c_int), parameter :: SDLK_EQUALS             = ichar('=')
-    integer(kind=c_int), parameter :: SDLK_GREATER            = ichar('>')
-    integer(kind=c_int), parameter :: SDLK_QUESTION           = ichar('?')
-    integer(kind=c_int), parameter :: SDLK_AT                 = ichar('@')
+    integer(kind=c_int), parameter :: SDLK_RETURN     = 13
+    integer(kind=c_int), parameter :: SDLK_ESCAPE     = 27
+    integer(kind=c_int), parameter :: SDLK_BACKSPACE  = 8
+    integer(kind=c_int), parameter :: SDLK_TAB        = 9
+    integer(kind=c_int), parameter :: SDLK_SPACE      = ichar(' ')
+    integer(kind=c_int), parameter :: SDLK_EXCLAIM    = ichar('!')
+    integer(kind=c_int), parameter :: SDLK_QUOTEDBL   = ichar('"')
+    integer(kind=c_int), parameter :: SDLK_HASH       = ichar('#')
+    integer(kind=c_int), parameter :: SDLK_PERCENT    = ichar('%')
+    integer(kind=c_int), parameter :: SDLK_DOLLAR     = ichar('$')
+    integer(kind=c_int), parameter :: SDLK_AMPERSAND  = ichar('&')
+    integer(kind=c_int), parameter :: SDLK_QUOTE      = ichar("'")
+    integer(kind=c_int), parameter :: SDLK_LEFTPAREN  = ichar('(')
+    integer(kind=c_int), parameter :: SDLK_RIGHTPAREN = ichar(')')
+    integer(kind=c_int), parameter :: SDLK_ASTERISK   = ichar('*')
+    integer(kind=c_int), parameter :: SDLK_PLUS       = ichar('+')
+    integer(kind=c_int), parameter :: SDLK_COMMA      = ichar(',')
+    integer(kind=c_int), parameter :: SDLK_MINUS      = ichar('-')
+    integer(kind=c_int), parameter :: SDLK_PERIOD     = ichar('.')
+    integer(kind=c_int), parameter :: SDLK_SLASH      = ichar('/')
+    integer(kind=c_int), parameter :: SDLK_0          = ichar('0')
+    integer(kind=c_int), parameter :: SDLK_1          = ichar('1')
+    integer(kind=c_int), parameter :: SDLK_2          = ichar('2')
+    integer(kind=c_int), parameter :: SDLK_3          = ichar('3')
+    integer(kind=c_int), parameter :: SDLK_4          = ichar('4')
+    integer(kind=c_int), parameter :: SDLK_5          = ichar('5')
+    integer(kind=c_int), parameter :: SDLK_6          = ichar('6')
+    integer(kind=c_int), parameter :: SDLK_7          = ichar('7')
+    integer(kind=c_int), parameter :: SDLK_8          = ichar('8')
+    integer(kind=c_int), parameter :: SDLK_9          = ichar('9')
+    integer(kind=c_int), parameter :: SDLK_COLON      = ichar(':')
+    integer(kind=c_int), parameter :: SDLK_SEMICOLON  = ichar(';')
+    integer(kind=c_int), parameter :: SDLK_LESS       = ichar('<')
+    integer(kind=c_int), parameter :: SDLK_EQUALS     = ichar('=')
+    integer(kind=c_int), parameter :: SDLK_GREATER    = ichar('>')
+    integer(kind=c_int), parameter :: SDLK_QUESTION   = ichar('?')
+    integer(kind=c_int), parameter :: SDLK_AT         = ichar('@')
 
-    integer(kind=c_int), parameter :: SDLK_LEFTBRACKET        = ichar('[')
-    integer(kind=c_int), parameter :: SDLK_BACKSLASH          = ichar('\')
-    integer(kind=c_int), parameter :: SDLK_RIGHTBRACKET       = ichar(']')
-    integer(kind=c_int), parameter :: SDLK_CARET              = ichar('^')
-    integer(kind=c_int), parameter :: SDLK_UNDERSCORE         = ichar('_')
-    integer(kind=c_int), parameter :: SDLK_BACKQUOTE          = ichar('`')
-    integer(kind=c_int), parameter :: SDLK_a                  = ichar('a')
-    integer(kind=c_int), parameter :: SDLK_b                  = ichar('b')
-    integer(kind=c_int), parameter :: SDLK_c                  = ichar('c')
-    integer(kind=c_int), parameter :: SDLK_d                  = ichar('d')
-    integer(kind=c_int), parameter :: SDLK_e                  = ichar('e')
-    integer(kind=c_int), parameter :: SDLK_f                  = ichar('f')
-    integer(kind=c_int), parameter :: SDLK_g                  = ichar('g')
-    integer(kind=c_int), parameter :: SDLK_h                  = ichar('h')
-    integer(kind=c_int), parameter :: SDLK_i                  = ichar('i')
-    integer(kind=c_int), parameter :: SDLK_j                  = ichar('j')
-    integer(kind=c_int), parameter :: SDLK_k                  = ichar('k')
-    integer(kind=c_int), parameter :: SDLK_l                  = ichar('l')
-    integer(kind=c_int), parameter :: SDLK_m                  = ichar('m')
-    integer(kind=c_int), parameter :: SDLK_n                  = ichar('n')
-    integer(kind=c_int), parameter :: SDLK_o                  = ichar('o')
-    integer(kind=c_int), parameter :: SDLK_p                  = ichar('p')
-    integer(kind=c_int), parameter :: SDLK_q                  = ichar('q')
-    integer(kind=c_int), parameter :: SDLK_r                  = ichar('r')
-    integer(kind=c_int), parameter :: SDLK_s                  = ichar('s')
-    integer(kind=c_int), parameter :: SDLK_t                  = ichar('t')
-    integer(kind=c_int), parameter :: SDLK_u                  = ichar('u')
-    integer(kind=c_int), parameter :: SDLK_v                  = ichar('v')
-    integer(kind=c_int), parameter :: SDLK_w                  = ichar('w')
-    integer(kind=c_int), parameter :: SDLK_x                  = ichar('x')
-    integer(kind=c_int), parameter :: SDLK_y                  = ichar('y')
-    integer(kind=c_int), parameter :: SDLK_z                  = ichar('z')
+    integer(kind=c_int), parameter :: SDLK_LEFTBRACKET  = ichar('[')
+    integer(kind=c_int), parameter :: SDLK_BACKSLASH    = ichar('\')
+    integer(kind=c_int), parameter :: SDLK_RIGHTBRACKET = ichar(']')
+    integer(kind=c_int), parameter :: SDLK_CARET        = ichar('^')
+    integer(kind=c_int), parameter :: SDLK_UNDERSCORE   = ichar('_')
+    integer(kind=c_int), parameter :: SDLK_BACKQUOTE    = ichar('`')
 
-    integer(kind=c_int), parameter :: SDLK_CAPSLOCK           = ior(SDL_SCANCODE_CAPSLOCK, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_a = ichar('a')
+    integer(kind=c_int), parameter :: SDLK_b = ichar('b')
+    integer(kind=c_int), parameter :: SDLK_c = ichar('c')
+    integer(kind=c_int), parameter :: SDLK_d = ichar('d')
+    integer(kind=c_int), parameter :: SDLK_e = ichar('e')
+    integer(kind=c_int), parameter :: SDLK_f = ichar('f')
+    integer(kind=c_int), parameter :: SDLK_g = ichar('g')
+    integer(kind=c_int), parameter :: SDLK_h = ichar('h')
+    integer(kind=c_int), parameter :: SDLK_i = ichar('i')
+    integer(kind=c_int), parameter :: SDLK_j = ichar('j')
+    integer(kind=c_int), parameter :: SDLK_k = ichar('k')
+    integer(kind=c_int), parameter :: SDLK_l = ichar('l')
+    integer(kind=c_int), parameter :: SDLK_m = ichar('m')
+    integer(kind=c_int), parameter :: SDLK_n = ichar('n')
+    integer(kind=c_int), parameter :: SDLK_o = ichar('o')
+    integer(kind=c_int), parameter :: SDLK_p = ichar('p')
+    integer(kind=c_int), parameter :: SDLK_q = ichar('q')
+    integer(kind=c_int), parameter :: SDLK_r = ichar('r')
+    integer(kind=c_int), parameter :: SDLK_s = ichar('s')
+    integer(kind=c_int), parameter :: SDLK_t = ichar('t')
+    integer(kind=c_int), parameter :: SDLK_u = ichar('u')
+    integer(kind=c_int), parameter :: SDLK_v = ichar('v')
+    integer(kind=c_int), parameter :: SDLK_w = ichar('w')
+    integer(kind=c_int), parameter :: SDLK_x = ichar('x')
+    integer(kind=c_int), parameter :: SDLK_y = ichar('y')
+    integer(kind=c_int), parameter :: SDLK_z = ichar('z')
 
-    integer(kind=c_int), parameter :: SDLK_F1                 = ior(SDL_SCANCODE_F1, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F2                 = ior(SDL_SCANCODE_F2, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F3                 = ior(SDL_SCANCODE_F3, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F4                 = ior(SDL_SCANCODE_F4, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F5                 = ior(SDL_SCANCODE_F5, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F6                 = ior(SDL_SCANCODE_F6, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F7                 = ior(SDL_SCANCODE_F7, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F8                 = ior(SDL_SCANCODE_F8, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F9                 = ior(SDL_SCANCODE_F9, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F10                = ior(SDL_SCANCODE_F10, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F11                = ior(SDL_SCANCODE_F11, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F12                = ior(SDL_SCANCODE_F12, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CAPSLOCK = ior(SDL_SCANCODE_CAPSLOCK, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_PRINTSCREEN        = ior(SDL_SCANCODE_PRINTSCREEN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_SCROLLLOCK         = ior(SDL_SCANCODE_SCROLLLOCK, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_PAUSE              = ior(SDL_SCANCODE_PAUSE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_INSERT             = ior(SDL_SCANCODE_INSERT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_HOME               = ior(SDL_SCANCODE_HOME, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_PAGEUP             = ior(SDL_SCANCODE_PAGEUP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_DELETE             = 127
-    integer(kind=c_int), parameter :: SDLK_END                = ior(SDL_SCANCODE_END, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_PAGEDOWN           = ior(SDL_SCANCODE_PAGEDOWN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RIGHT              = ior(SDL_SCANCODE_RIGHT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_LEFT               = ior(SDL_SCANCODE_LEFT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_DOWN               = ior(SDL_SCANCODE_DOWN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_UP                 = ior(SDL_SCANCODE_UP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F1  = ior(SDL_SCANCODE_F1, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F2  = ior(SDL_SCANCODE_F2, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F3  = ior(SDL_SCANCODE_F3, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F4  = ior(SDL_SCANCODE_F4, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F5  = ior(SDL_SCANCODE_F5, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F6  = ior(SDL_SCANCODE_F6, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F7  = ior(SDL_SCANCODE_F7, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F8  = ior(SDL_SCANCODE_F8, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F9  = ior(SDL_SCANCODE_F9, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F10 = ior(SDL_SCANCODE_F10, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F11 = ior(SDL_SCANCODE_F11, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F12 = ior(SDL_SCANCODE_F12, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_NUMLOCKCLEAR       = ior(SDL_SCANCODE_NUMLOCKCLEAR, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_DIVIDE          = ior(SDL_SCANCODE_KP_DIVIDE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_MULTIPLY        = ior(SDL_SCANCODE_KP_MULTIPLY, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_MINUS           = ior(SDL_SCANCODE_KP_MINUS, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_PLUS            = ior(SDL_SCANCODE_KP_PLUS, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_ENTER           = ior(SDL_SCANCODE_KP_ENTER, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_1               = ior(SDL_SCANCODE_KP_1, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_2               = ior(SDL_SCANCODE_KP_2, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_3               = ior(SDL_SCANCODE_KP_3, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_4               = ior(SDL_SCANCODE_KP_4, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_5               = ior(SDL_SCANCODE_KP_5, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_6               = ior(SDL_SCANCODE_KP_6, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_7               = ior(SDL_SCANCODE_KP_7, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_8               = ior(SDL_SCANCODE_KP_8, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_9               = ior(SDL_SCANCODE_KP_9, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_0               = ior(SDL_SCANCODE_KP_0, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_PERIOD          = ior(SDL_SCANCODE_KP_PERIOD, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PRINTSCREEN = ior(SDL_SCANCODE_PRINTSCREEN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_SCROLLLOCK  = ior(SDL_SCANCODE_SCROLLLOCK, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PAUSE       = ior(SDL_SCANCODE_PAUSE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_INSERT      = ior(SDL_SCANCODE_INSERT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_HOME        = ior(SDL_SCANCODE_HOME, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PAGEUP      = ior(SDL_SCANCODE_PAGEUP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_DELETE      = 127
+    integer(kind=c_int), parameter :: SDLK_END         = ior(SDL_SCANCODE_END, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PAGEDOWN    = ior(SDL_SCANCODE_PAGEDOWN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RIGHT       = ior(SDL_SCANCODE_RIGHT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_LEFT        = ior(SDL_SCANCODE_LEFT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_DOWN        = ior(SDL_SCANCODE_DOWN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_UP          = ior(SDL_SCANCODE_UP, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_APPLICATION        = ior(SDL_SCANCODE_APPLICATION, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_POWER              = ior(SDL_SCANCODE_POWER, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_EQUALS          = ior(SDL_SCANCODE_KP_EQUALS, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F13                = ior(SDL_SCANCODE_F13, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F14                = ior(SDL_SCANCODE_F14, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F15                = ior(SDL_SCANCODE_F15, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F16                = ior(SDL_SCANCODE_F16, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F17                = ior(SDL_SCANCODE_F17, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F18                = ior(SDL_SCANCODE_F18, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F19                = ior(SDL_SCANCODE_F19, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F20                = ior(SDL_SCANCODE_F20, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F21                = ior(SDL_SCANCODE_F21, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F22                = ior(SDL_SCANCODE_F22, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F23                = ior(SDL_SCANCODE_F23, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_F24                = ior(SDL_SCANCODE_F24, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_EXECUTE            = ior(SDL_SCANCODE_EXECUTE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_HELP               = ior(SDL_SCANCODE_HELP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_MENU               = ior(SDL_SCANCODE_MENU, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_SELECT             = ior(SDL_SCANCODE_SELECT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_STOP               = ior(SDL_SCANCODE_STOP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AGAIN              = ior(SDL_SCANCODE_AGAIN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_UNDO               = ior(SDL_SCANCODE_UNDO, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CUT                = ior(SDL_SCANCODE_CUT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_COPY               = ior(SDL_SCANCODE_COPY, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_PASTE              = ior(SDL_SCANCODE_PASTE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_FIND               = ior(SDL_SCANCODE_FIND, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_MUTE               = ior(SDL_SCANCODE_MUTE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_VOLUMEUP           = ior(SDL_SCANCODE_VOLUMEUP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_VOLUMEDOWN         = ior(SDL_SCANCODE_VOLUMEDOWN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_COMMA           = ior(SDL_SCANCODE_KP_COMMA, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KP_EQUALSAS400     = ior(SDL_SCANCODE_KP_EQUALSAS400, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_NUMLOCKCLEAR = ior(SDL_SCANCODE_NUMLOCKCLEAR, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_DIVIDE    = ior(SDL_SCANCODE_KP_DIVIDE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_MULTIPLY  = ior(SDL_SCANCODE_KP_MULTIPLY, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_MINUS     = ior(SDL_SCANCODE_KP_MINUS, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_PLUS      = ior(SDL_SCANCODE_KP_PLUS, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_ENTER     = ior(SDL_SCANCODE_KP_ENTER, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_1         = ior(SDL_SCANCODE_KP_1, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_2         = ior(SDL_SCANCODE_KP_2, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_3         = ior(SDL_SCANCODE_KP_3, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_4         = ior(SDL_SCANCODE_KP_4, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_5         = ior(SDL_SCANCODE_KP_5, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_6         = ior(SDL_SCANCODE_KP_6, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_7         = ior(SDL_SCANCODE_KP_7, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_8         = ior(SDL_SCANCODE_KP_8, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_9         = ior(SDL_SCANCODE_KP_9, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_0         = ior(SDL_SCANCODE_KP_0, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_PERIOD    = ior(SDL_SCANCODE_KP_PERIOD, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_ALTERASE           = ior(SDL_SCANCODE_ALTERASE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_SYSREQ             = ior(SDL_SCANCODE_SYSREQ, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CANCEL             = ior(SDL_SCANCODE_CANCEL, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CLEAR              = ior(SDL_SCANCODE_CLEAR, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_PRIOR              = ior(SDL_SCANCODE_PRIOR, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RETURN2            = ior(SDL_SCANCODE_RETURN2, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_SEPARATOR          = ior(SDL_SCANCODE_SEPARATOR, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_OUT                = ior(SDL_SCANCODE_OUT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_OPER               = ior(SDL_SCANCODE_OPER, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CLEARAGAIN         = ior(SDL_SCANCODE_CLEARAGAIN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CRSEL              = ior(SDL_SCANCODE_CRSEL, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_EXSEL              = ior(SDL_SCANCODE_EXSEL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_APPLICATION    = ior(SDL_SCANCODE_APPLICATION, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_POWER          = ior(SDL_SCANCODE_POWER, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_EQUALS      = ior(SDL_SCANCODE_KP_EQUALS, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F13            = ior(SDL_SCANCODE_F13, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F14            = ior(SDL_SCANCODE_F14, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F15            = ior(SDL_SCANCODE_F15, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F16            = ior(SDL_SCANCODE_F16, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F17            = ior(SDL_SCANCODE_F17, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F18            = ior(SDL_SCANCODE_F18, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F19            = ior(SDL_SCANCODE_F19, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F20            = ior(SDL_SCANCODE_F20, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F21            = ior(SDL_SCANCODE_F21, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F22            = ior(SDL_SCANCODE_F22, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F23            = ior(SDL_SCANCODE_F23, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_F24            = ior(SDL_SCANCODE_F24, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_EXECUTE        = ior(SDL_SCANCODE_EXECUTE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_HELP           = ior(SDL_SCANCODE_HELP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_MENU           = ior(SDL_SCANCODE_MENU, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_SELECT         = ior(SDL_SCANCODE_SELECT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_STOP           = ior(SDL_SCANCODE_STOP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AGAIN          = ior(SDL_SCANCODE_AGAIN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_UNDO           = ior(SDL_SCANCODE_UNDO, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CUT            = ior(SDL_SCANCODE_CUT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_COPY           = ior(SDL_SCANCODE_COPY, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PASTE          = ior(SDL_SCANCODE_PASTE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_FIND           = ior(SDL_SCANCODE_FIND, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_MUTE           = ior(SDL_SCANCODE_MUTE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_VOLUMEUP       = ior(SDL_SCANCODE_VOLUMEUP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_VOLUMEDOWN     = ior(SDL_SCANCODE_VOLUMEDOWN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_COMMA       = ior(SDL_SCANCODE_KP_COMMA, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KP_EQUALSAS400 = ior(SDL_SCANCODE_KP_EQUALSAS400, SDLK_SCANCODE_MASK)
+
+    integer(kind=c_int), parameter :: SDLK_ALTERASE   = ior(SDL_SCANCODE_ALTERASE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_SYSREQ     = ior(SDL_SCANCODE_SYSREQ, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CANCEL     = ior(SDL_SCANCODE_CANCEL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CLEAR      = ior(SDL_SCANCODE_CLEAR, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_PRIOR      = ior(SDL_SCANCODE_PRIOR, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RETURN2    = ior(SDL_SCANCODE_RETURN2, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_SEPARATOR  = ior(SDL_SCANCODE_SEPARATOR, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_OUT        = ior(SDL_SCANCODE_OUT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_OPER       = ior(SDL_SCANCODE_OPER, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CLEARAGAIN = ior(SDL_SCANCODE_CLEARAGAIN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CRSEL      = ior(SDL_SCANCODE_CRSEL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_EXSEL      = ior(SDL_SCANCODE_EXSEL, SDLK_SCANCODE_MASK)
 
     integer(kind=c_int), parameter :: SDLK_KP_00              = ior(SDL_SCANCODE_KP_00, SDLK_SCANCODE_MASK)
     integer(kind=c_int), parameter :: SDLK_KP_000             = ior(SDL_SCANCODE_KP_000, SDLK_SCANCODE_MASK)
@@ -577,48 +578,48 @@ module sdl2
     integer(kind=c_int), parameter :: SDLK_KP_DECIMAL         = ior(SDL_SCANCODE_KP_DECIMAL, SDLK_SCANCODE_MASK)
     integer(kind=c_int), parameter :: SDLK_KP_HEXADECIMAL     = ior(SDL_SCANCODE_KP_HEXADECIMAL, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_LCTRL              = ior(SDL_SCANCODE_LCTRL, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_LSHIFT             = ior(SDL_SCANCODE_LSHIFT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_LALT               = ior(SDL_SCANCODE_LALT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_LGUI               = ior(SDL_SCANCODE_LGUI, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RCTRL              = ior(SDL_SCANCODE_RCTRL, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RSHIFT             = ior(SDL_SCANCODE_RSHIFT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RALT               = ior(SDL_SCANCODE_RALT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_RGUI               = ior(SDL_SCANCODE_RGUI, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_LCTRL  = ior(SDL_SCANCODE_LCTRL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_LSHIFT = ior(SDL_SCANCODE_LSHIFT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_LALT   = ior(SDL_SCANCODE_LALT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_LGUI   = ior(SDL_SCANCODE_LGUI, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RCTRL  = ior(SDL_SCANCODE_RCTRL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RSHIFT = ior(SDL_SCANCODE_RSHIFT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RALT   = ior(SDL_SCANCODE_RALT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_RGUI   = ior(SDL_SCANCODE_RGUI, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_MODE               = ior(SDL_SCANCODE_MODE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_MODE = ior(SDL_SCANCODE_MODE, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_AUDIONEXT          = ior(SDL_SCANCODE_AUDIONEXT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOPREV          = ior(SDL_SCANCODE_AUDIOPREV, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOSTOP          = ior(SDL_SCANCODE_AUDIOSTOP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOPLAY          = ior(SDL_SCANCODE_AUDIOPLAY, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOMUTE          = ior(SDL_SCANCODE_AUDIOMUTE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_MEDIASELECT        = ior(SDL_SCANCODE_MEDIASELECT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_WWW                = ior(SDL_SCANCODE_WWW, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_MAIL               = ior(SDL_SCANCODE_MAIL, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_CALCULATOR         = ior(SDL_SCANCODE_CALCULATOR, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_COMPUTER           = ior(SDL_SCANCODE_COMPUTER, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_SEARCH          = ior(SDL_SCANCODE_AC_SEARCH, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_HOME            = ior(SDL_SCANCODE_AC_HOME, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_BACK            = ior(SDL_SCANCODE_AC_BACK, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_FORWARD         = ior(SDL_SCANCODE_AC_FORWARD, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_STOP            = ior(SDL_SCANCODE_AC_STOP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_REFRESH         = ior(SDL_SCANCODE_AC_REFRESH, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AC_BOOKMARKS       = ior(SDL_SCANCODE_AC_BOOKMARKS, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIONEXT    = ior(SDL_SCANCODE_AUDIONEXT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOPREV    = ior(SDL_SCANCODE_AUDIOPREV, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOSTOP    = ior(SDL_SCANCODE_AUDIOSTOP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOPLAY    = ior(SDL_SCANCODE_AUDIOPLAY, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOMUTE    = ior(SDL_SCANCODE_AUDIOMUTE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_MEDIASELECT  = ior(SDL_SCANCODE_MEDIASELECT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_WWW          = ior(SDL_SCANCODE_WWW, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_MAIL         = ior(SDL_SCANCODE_MAIL, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_CALCULATOR   = ior(SDL_SCANCODE_CALCULATOR, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_COMPUTER     = ior(SDL_SCANCODE_COMPUTER, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_SEARCH    = ior(SDL_SCANCODE_AC_SEARCH, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_HOME      = ior(SDL_SCANCODE_AC_HOME, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_BACK      = ior(SDL_SCANCODE_AC_BACK, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_FORWARD   = ior(SDL_SCANCODE_AC_FORWARD, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_STOP      = ior(SDL_SCANCODE_AC_STOP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_REFRESH   = ior(SDL_SCANCODE_AC_REFRESH, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AC_BOOKMARKS = ior(SDL_SCANCODE_AC_BOOKMARKS, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_BRIGHTNESSDOWN     = ior(SDL_SCANCODE_BRIGHTNESSDOWN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_BRIGHTNESSUP       = ior(SDL_SCANCODE_BRIGHTNESSUP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_DISPLAYSWITCH      = ior(SDL_SCANCODE_DISPLAYSWITCH, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KBDILLUMTOGGLE     = ior(SDL_SCANCODE_KBDILLUMTOGGLE, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KBDILLUMDOWN       = ior(SDL_SCANCODE_KBDILLUMDOWN, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_KBDILLUMUP         = ior(SDL_SCANCODE_KBDILLUMUP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_EJECT              = ior(SDL_SCANCODE_EJECT, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_SLEEP              = ior(SDL_SCANCODE_SLEEP, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_APP1               = ior(SDL_SCANCODE_APP1, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_APP2               = ior(SDL_SCANCODE_APP2, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_BRIGHTNESSDOWN = ior(SDL_SCANCODE_BRIGHTNESSDOWN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_BRIGHTNESSUP   = ior(SDL_SCANCODE_BRIGHTNESSUP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_DISPLAYSWITCH  = ior(SDL_SCANCODE_DISPLAYSWITCH, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KBDILLUMTOGGLE = ior(SDL_SCANCODE_KBDILLUMTOGGLE, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KBDILLUMDOWN   = ior(SDL_SCANCODE_KBDILLUMDOWN, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_KBDILLUMUP     = ior(SDL_SCANCODE_KBDILLUMUP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_EJECT          = ior(SDL_SCANCODE_EJECT, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_SLEEP          = ior(SDL_SCANCODE_SLEEP, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_APP1           = ior(SDL_SCANCODE_APP1, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_APP2           = ior(SDL_SCANCODE_APP2, SDLK_SCANCODE_MASK)
 
-    integer(kind=c_int), parameter :: SDLK_AUDIOREWIND        = ior(SDL_SCANCODE_AUDIOREWIND, SDLK_SCANCODE_MASK)
-    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD   = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOREWIND      = ior(SDL_SCANCODE_AUDIOREWIND, SDLK_SCANCODE_MASK)
+    integer(kind=c_int), parameter :: SDLK_AUDIOFASTFORWARD = ior(SDL_SCANCODE_AUDIOFASTFORWARD, SDLK_SCANCODE_MASK)
 
     ! SDL_mouse
     integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
@@ -649,68 +650,77 @@ module sdl2
     integer(kind=c_int), parameter :: SDL_ALPHA_TRANSPARENT = 0
 
     ! SDL_Hints
-    character(kind=c_char, len=*), parameter :: SDL_HINT_FRAMEBUFFER_ACCELERATION                 = 'SDL_FRAMEBUFFER_ACCELERATION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DRIVER                            = 'SDL_RENDER_DRIVER'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_OPENGL_SHADERS                    = 'SDL_RENDER_OPENGL_SHADERS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DIRECT3D_THREADSAFE               = 'SDL_RENDER_DIRECT3D_THREADSAFE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DIRECT3D11_DEBUG                  = 'SDL_RENDER_DIRECT3D11_DEBUG'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_LOGICAL_SIZE_MODE                 = 'SDL_RENDER_LOGICAL_SIZE_MODE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_SCALE_QUALITY                     = 'SDL_RENDER_SCALE_QUALITY'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_VSYNC                             = 'SDL_RENDER_VSYNC'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_ALLOW_SCREENSAVER                  = 'SDL_VIDEO_ALLOW_SCREENSAVER'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XVIDMODE                       = 'SDL_VIDEO_X11_XVIDMODE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XINERAMA                       = 'SDL_VIDEO_X11_XINERAMA'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XRANDR                         = 'SDL_VIDEO_X11_XRANDR'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_NET_WM_PING                    = 'SDL_VIDEO_X11_NET_WM_PING'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN  = 'SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON                 = 'SDL_WINDOWS_INTRESOURCE_ICON'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = 'SDL_WINDOWS_INTRESOURCE_ICON_SMALL'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP               = 'SDL_WINDOWS_ENABLE_MESSAGELOOP'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_GRAB_KEYBOARD                            = 'SDL_GRAB_KEYBOARD'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_NORMAL_SPEED_SCALE                 = 'SDL_MOUSE_NORMAL_SPEED_SCALE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE               = 'SDL_MOUSE_RELATIVE_SPEED_SCALE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_MODE_WARP                 = 'SDL_MOUSE_RELATIVE_MODE_WARP'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH                 = 'SDL_MOUSE_FOCUS_CLICKTHROUGH'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_TOUCH_MOUSE_EVENTS                       = 'SDL_TOUCH_MOUSE_EVENTS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS             = 'SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_IDLE_TIMER_DISABLED                      = 'SDL_IOS_IDLE_TIMER_DISABLED'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ORIENTATIONS                             = 'SDL_IOS_ORIENTATIONS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS            = 'SDL_APPLE_TV_CONTROLLER_UI_EVENTS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION           = 'SDL_APPLE_TV_REMOTE_ALLOW_ROTATION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ACCELEROMETER_AS_JOYSTICK                = 'SDL_ACCELEROMETER_AS_JOYSTICK'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_XINPUT_ENABLED                           = 'SDL_XINPUT_ENABLED'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING          = 'SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLERCONFIG                     = 'SDL_GAMECONTROLLERCONFIG'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES            = 'SDL_GAMECONTROLLER_IGNORE_DEVICES'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT     = 'SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS         = 'SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ALLOW_TOPMOST                            = 'SDL_ALLOW_TOPMOST'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_TIMER_RESOLUTION                         = 'SDL_TIMER_RESOLUTION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION            = 'SDL_QTWAYLAND_CONTENT_ORIENTATION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_QTWAYLAND_WINDOW_FLAGS                   = 'SDL_QTWAYLAND_WINDOW_FLAGS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_THREAD_STACK_SIZE                        = 'SDL_THREAD_STACK_SIZE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_HIGHDPI_DISABLED                   = 'SDL_VIDEO_HIGHDPI_DISABLED'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK       = 'SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_WIN_D3DCOMPILER                    = 'SDL_VIDEO_WIN_D3DCOMPILER'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT          = 'SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_URL                 = 'SDL_WINRT_PRIVACY_POLICY_URL'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_LABEL               = 'SDL_WINRT_PRIVACY_POLICY_LABEL'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_HANDLE_BACK_BUTTON                 = 'SDL_WINRT_HANDLE_BACK_BUTTON'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES              = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_MAC_BACKGROUND_APP                       = 'SDL_MAC_BACKGROUND_APP'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = 'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = 'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_IME_INTERNAL_EDITING                     = 'SDL_IME_INTERNAL_EDITING'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH         = 'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT              = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_NO_SIGNAL_HANDLERS                       = 'SDL_NO_SIGNAL_HANDLERS'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4               = 'SDL_WINDOWS_NO_CLOSE_ON_ALT_F4'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_BMP_SAVE_LEGACY_FORMAT                   = 'SDL_BMP_SAVE_LEGACY_FORMAT'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING            = 'SDL_WINDOWS_DISABLE_THREAD_NAMING'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_RPI_VIDEO_LAYER                          = 'SDL_RPI_VIDEO_LAYER'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_OPENGL_ES_DRIVER                         = 'SDL_OPENGL_ES_DRIVER'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_AUDIO_RESAMPLING_MODE                    = 'SDL_AUDIO_RESAMPLING_MODE'
-    character(kind=c_char, len=*), parameter :: SDL_HINT_AUDIO_CATEGORY                           = 'SDL_AUDIO_CATEGORY'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_FRAMEBUFFER_ACCELERATION       = 'SDL_FRAMEBUFFER_ACCELERATION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DRIVER                  = 'SDL_RENDER_DRIVER'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_OPENGL_SHADERS          = 'SDL_RENDER_OPENGL_SHADERS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DIRECT3D_THREADSAFE     = 'SDL_RENDER_DIRECT3D_THREADSAFE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DIRECT3D11_DEBUG        = 'SDL_RENDER_DIRECT3D11_DEBUG'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_LOGICAL_SIZE_MODE       = 'SDL_RENDER_LOGICAL_SIZE_MODE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_SCALE_QUALITY           = 'SDL_RENDER_SCALE_QUALITY'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_VSYNC                   = 'SDL_RENDER_VSYNC'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_ALLOW_SCREENSAVER        = 'SDL_VIDEO_ALLOW_SCREENSAVER'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XVIDMODE             = 'SDL_VIDEO_X11_XVIDMODE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XINERAMA             = 'SDL_VIDEO_X11_XINERAMA'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_XRANDR               = 'SDL_VIDEO_X11_XRANDR'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_X11_NET_WM_PING          = 'SDL_VIDEO_X11_NET_WM_PING'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = &
+        'SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON       = 'SDL_WINDOWS_INTRESOURCE_ICON'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL = 'SDL_WINDOWS_INTRESOURCE_ICON_SMALL'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP     = 'SDL_WINDOWS_ENABLE_MESSAGELOOP'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_GRAB_KEYBOARD                  = 'SDL_GRAB_KEYBOARD'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_NORMAL_SPEED_SCALE       = 'SDL_MOUSE_NORMAL_SPEED_SCALE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE     = 'SDL_MOUSE_RELATIVE_SPEED_SCALE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_RELATIVE_MODE_WARP       = 'SDL_MOUSE_RELATIVE_MODE_WARP'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH       = 'SDL_MOUSE_FOCUS_CLICKTHROUGH'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_TOUCH_MOUSE_EVENTS             = 'SDL_TOUCH_MOUSE_EVENTS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS   = 'SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_IDLE_TIMER_DISABLED            = 'SDL_IOS_IDLE_TIMER_DISABLED'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ORIENTATIONS                   = 'SDL_IOS_ORIENTATIONS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS  = 'SDL_APPLE_TV_CONTROLLER_UI_EVENTS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION = 'SDL_APPLE_TV_REMOTE_ALLOW_ROTATION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ACCELEROMETER_AS_JOYSTICK      = 'SDL_ACCELEROMETER_AS_JOYSTICK'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_XINPUT_ENABLED                 = 'SDL_XINPUT_ENABLED'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING = &
+        'SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLERCONFIG           = 'SDL_GAMECONTROLLERCONFIG'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES  = 'SDL_GAMECONTROLLER_IGNORE_DEVICES'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = &
+        'SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = &
+        'SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ALLOW_TOPMOST                  = 'SDL_ALLOW_TOPMOST'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_TIMER_RESOLUTION               = 'SDL_TIMER_RESOLUTION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION  = 'SDL_QTWAYLAND_CONTENT_ORIENTATION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_QTWAYLAND_WINDOW_FLAGS         = 'SDL_QTWAYLAND_WINDOW_FLAGS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_THREAD_STACK_SIZE              = 'SDL_THREAD_STACK_SIZE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_HIGHDPI_DISABLED         = 'SDL_VIDEO_HIGHDPI_DISABLED'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = &
+        'SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_WIN_D3DCOMPILER          = 'SDL_VIDEO_WIN_D3DCOMPILER'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = &
+        'SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_URL       = 'SDL_WINRT_PRIVACY_POLICY_URL'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_PRIVACY_POLICY_LABEL     = 'SDL_WINRT_PRIVACY_POLICY_LABEL'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINRT_HANDLE_BACK_BUTTON       = 'SDL_WINRT_HANDLE_BACK_BUTTON'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES    = 'SDL_VIDEO_MAC_FULLSCREEN_SPACES'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_MAC_BACKGROUND_APP             = 'SDL_MAC_BACKGROUND_APP'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = &
+        'SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = &
+        'SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_IME_INTERNAL_EDITING           = 'SDL_IME_INTERNAL_EDITING'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH = &
+        'SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT    = 'SDL_EMSCRIPTEN_KEYBOARD_ELEMENT'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_NO_SIGNAL_HANDLERS             = 'SDL_NO_SIGNAL_HANDLERS'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4     = 'SDL_WINDOWS_NO_CLOSE_ON_ALT_F4'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_BMP_SAVE_LEGACY_FORMAT         = 'SDL_BMP_SAVE_LEGACY_FORMAT'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING  = 'SDL_WINDOWS_DISABLE_THREAD_NAMING'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_RPI_VIDEO_LAYER                = 'SDL_RPI_VIDEO_LAYER'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_OPENGL_ES_DRIVER               = 'SDL_OPENGL_ES_DRIVER'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_AUDIO_RESAMPLING_MODE          = 'SDL_AUDIO_RESAMPLING_MODE'
+    character(kind=c_char, len=*), parameter :: SDL_HINT_AUDIO_CATEGORY                 = 'SDL_AUDIO_CATEGORY'
 
     ! SDL_WindowEventID
     enum, bind(c)

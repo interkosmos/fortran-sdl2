@@ -2,7 +2,7 @@ FC          = gfortran9
 RPATH       = -Wl,-rpath=/usr/local/lib/gcc9/
 SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDLIBS  = `sdl2-config --libs`
-FFLAGS      = -g -Wall $(RPATH) -std=f2008 -ffree-line-length-none $(SDL_CFLAGS)
+FFLAGS      = -g -Wall $(RPATH) -std=f2008 $(SDL_CFLAGS)
 LDLIBS      = $(SDL_LDLIBS)
 EXAMPLES    = examples
 
