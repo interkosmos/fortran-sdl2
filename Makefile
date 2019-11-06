@@ -2,17 +2,41 @@ FC          = gfortran9
 RPATH       = -Wl,-rpath=/usr/local/lib/gcc9/
 SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDLIBS  = `sdl2-config --libs`
-FFLAGS      = -g -Wall $(RPATH) -std=f2008 $(SDL_CFLAGS)
+FFLAGS      = -g -Wall $(RPATH) -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS      = $(SDL_LDLIBS)
 EXAMPLES    = examples
 
-SDL_SRC = sdl2.f90
+SDL_SRC = src/c_util.f90 \
+          src/sdl2/sdl2_stdinc.f90 \
+          src/sdl2/sdl2_audio.f90 \
+          src/sdl2/sdl2_blendmode.f90 \
+          src/sdl2/sdl2_cpuinfo.f90 \
+          src/sdl2/sdl2_error.f90 \
+          src/sdl2/sdl2_events.f90 \
+          src/sdl2/sdl2_filesystem.f90 \
+          src/sdl2/sdl2_hints.f90 \
+          src/sdl2/sdl2_keyboard.f90 \
+          src/sdl2/sdl2_messagebox.f90 \
+          src/sdl2/sdl2_rect.f90 \
+          src/sdl2/sdl2_pixels.f90 \
+          src/sdl2/sdl2_platform.f90 \
+          src/sdl2/sdl2_scancode.f90 \
+          src/sdl2/sdl2_surface.f90 \
+          src/sdl2/sdl2_render.f90 \
+          src/sdl2/sdl2_keycode.f90 \
+          src/sdl2/sdl2_mouse.f90 \
+          src/sdl2/sdl2_rwops.f90 \
+          src/sdl2/sdl2_thread.f90 \
+          src/sdl2/sdl2_timer.f90 \
+          src/sdl2/sdl2_version.f90 \
+          src/sdl2/sdl2_video.f90 \
+          src/sdl2.f90
 SDL_OBJ = sdl2.o
-IMG_SRC = sdl2_image.f90
+IMG_SRC = src/sdl2_image.f90
 IMG_OBJ = sdl2_image.o
-MIX_SRC = sdl2_mixer.f90
+MIX_SRC = src/c_util.f90 src/sdl2_mixer.f90
 MIX_OBJ = sdl2_mixer.o
-TTF_SRC = sdl2_ttf.f90
+TTF_SRC = src/sdl2_ttf.f90
 TTF_OBJ = sdl2_ttf.o
 
 ALPHA   = alpha
@@ -43,16 +67,16 @@ sdl2_mixer: $(MIX_OBJ)
 sdl2_ttf: $(TTF_OBJ)
 
 $(SDL_OBJ):
-	$(FC) $(FFLAGS) -c src/$(SDL_SRC)
+	$(FC) $(FFLAGS) -c $(SDL_SRC)
 
 $(IMG_OBJ):
-	$(FC) $(FFLAGS) -c src/$(IMG_SRC)
+	$(FC) $(FFLAGS) -c $(IMG_SRC)
 
 $(MIX_OBJ):
-	$(FC) $(FFLAGS) -c src/$(MIX_SRC)
+	$(FC) $(FFLAGS) -c $(MIX_SRC)
 
 $(TTF_OBJ):
-	$(FC) $(FFLAGS) -c src/$(TTF_SRC)
+	$(FC) $(FFLAGS) -c $(TTF_SRC)
 
 $(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
@@ -89,6 +113,7 @@ $(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
 
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
+	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
 	if [ -e $(SDL_OBJ) ]; then rm $(SDL_OBJ); fi
 	if [ -e $(IMG_OBJ) ]; then rm $(IMG_OBJ); fi
 	if [ -e $(MIX_OBJ) ]; then rm $(MIX_OBJ); fi

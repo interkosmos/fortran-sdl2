@@ -16,46 +16,53 @@ multi-threading with `SDL_Thread` is not desired.
 
 ## Building the SDL 2.0 Interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
+
 ```
-$ git clone https://github.com/interkosmos/f03sdl2.git
-$ cd f03sdl2/
+$ git clone https://github.com/interkosmos/f08sdl2.git
+$ cd f08sdl2/
 $ make sdl2
 ```
+
 You can override the default compiler (`gfortran9`) by passing the `FC`
 argument, for example:
+
 ```
 $ make sdl2 FC=gfortran
 ```
-Or just run your favourite Fortran compiler directly:
-```
-$ gfortran -c sdl2.f90
-```
+
 On FreeBSD, you may have to modify the `Makefile`: change the `RPATH` variable
 according to your compiler.
 
 ### SDL2_image
 Build the SDL2_image interface with:
+
 ```
 $ make sdl2_image
 ```
+
 Add `-lSDL2_image` to your `LDLIBS` to link SDL2_image.
 
 ### SDL2_mixer
 Build the SDL2_mixer interface with:
+
 ```
 $ make sdl2_mixer
 ```
+
 Add `-lSDL2_mixer` to your `LDLIBS` to link SDL2_mixer.
 
 ### SDL2_ttf
 Build the SDL2_ttf interface with:
+
 ```
 $ make sdl2_ttf
 ```
+
 Add `-lSDL2_ttf` to your `LDLIBS` to link SDL2_ttf.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
+
 ```fortran
 ! example.f90
 program main
@@ -130,10 +137,12 @@ end program main
 ```
 
 Compile it with:
+
 ```
 $ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
   -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
+
 The `-Wl,-rpath` parameter may be optional.
 
 ## Further Examples
@@ -152,9 +161,11 @@ Some demo applications can be found in `examples/`.
 * **window** opens a window and fills rectangles (software renderer).
 
 Build all examples with:
+
 ```
 $ make examples
 ```
+
 Or use the name of a particular example.
 
 ## Compatibility
