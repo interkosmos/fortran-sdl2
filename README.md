@@ -63,7 +63,7 @@ Add `-lSDL2_ttf` to your `LDLIBS` to link SDL2_ttf.
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
 
-```fortran
+```f08
 ! example.f90
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
@@ -184,7 +184,7 @@ SDL 2.0 stores RGB colour values as `Uint8`. As Fortran does not feature unsigne
 types, the intrinsic procedure `transfer()` has to be used to transfer bit
 patterns directly. For example:
 
-```fortran
+```f08
 type(sdl_color) :: color
 
 color%r = transfer([255, 1], 1_c_int8_t)
@@ -196,7 +196,7 @@ color%a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
 The Fortran interface provides a utility function `uint8()` that simplifies the
 conversion:
 
-```fortran
+```f08
 color%r = uint8(255)
 ```
 
@@ -205,7 +205,7 @@ C pointers in derived types like `SDL_Surface` must be converted to Fortran
 types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
 to assign the `SDL_PixelFormat` pointer in `SDL_Surface`:
 
-```fortran
+```f08
 type(sdl_pixel_format), pointer :: pixel_format
 type(sdl_surface),      pointer :: surface
 
@@ -216,14 +216,14 @@ call c_f_pointer(surface%format, pixel_format)
 A utility function `sdl_get_pixel_format()` has been added to the interface to
 simplify the conversion from C pointer to Fortran pointer:
 
-```fortran
+```f08
 pixel_format => sdl_get_pixel_format(surface)
 ```
 
 `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
 to convert `Uint8` to Fortran signed integer. For example:
 
-```fortran
+```f08
 integer, parameter              :: X = 10
 integer, parameter              :: Y = 20
 integer(kind=2)                 :: r, g, b
