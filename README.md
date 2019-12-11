@@ -101,8 +101,7 @@ program main
     end if
 
     ! Set position and size of the rectangle.
-    rect%x =  50; rect%y =  50
-    rect%w = 250; rect%h = 250
+    rect = sdl_rect(50, 50, 250, 250)
 
     ! Create the renderer.
     renderer = sdl_create_renderer(window, -1, 0)
@@ -112,7 +111,8 @@ program main
         ! Catch events.
         do while (sdl_poll_event(event) > 0)
             select case (event%type)
-                is_running = .false.
+                case (SDL_QUITEVENT)
+                    is_running = .false.
             end select
         end do
 
