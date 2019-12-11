@@ -30,8 +30,8 @@ argument, for example:
 $ make sdl2 FC=gfortran
 ```
 
-On FreeBSD, you may have to modify the `Makefile`: change the `RPATH` variable
-according to your compiler.
+On FreeBSD, you may have to add the GNU Fortran runtime library search path to
+`CFLAGS` (e.g., `-Wl,-rpath=/usr/local/lib/gcc9/`).
 
 ### SDL2_image
 Build the SDL2_image interface with:
