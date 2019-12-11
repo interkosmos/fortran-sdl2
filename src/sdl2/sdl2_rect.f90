@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/f08sdl2/
 ! Licence: ISC
 module sdl2_rect
-    use, intrinsic :: iso_c_binding
+    use, intrinsic :: iso_c_binding, only: c_int
     implicit none
 
     ! SDL_Point

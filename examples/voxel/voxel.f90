@@ -105,8 +105,7 @@ program main
                                         SCREEN_HEIGHT)
 
     ! Set frame buffer rectangle.
-    buffer%rect%x = 0;            buffer%rect%y = 0
-    buffer%rect%w = SCREEN_WIDTH; buffer%rect%h = SCREEN_HEIGHT
+    buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Set frame buffer pixel format.
     buffer%format = sdl_get_window_pixel_format(window)
@@ -139,25 +138,25 @@ program main
                     if (is_key(keys, SDL_SCANCODE_ESCAPE)) &
                         is_running = .false.
 
-                    ! Move left.
+                    ! Rotate left.
                     if (is_key(keys, SDL_SCANCODE_LEFT)) then
                         call rotate_camera(.01)
                         has_moved = .true.
                     end if
 
-                    ! Move right.
+                    ! Rotate right.
                     if (is_key(keys, SDL_SCANCODE_RIGHT)) then
                         call rotate_camera(-.01)
                         has_moved = .true.
                     end if
 
-                    ! Move down.
+                    ! Move backward.
                     if (is_key(keys, SDL_SCANCODE_DOWN)) then
                         call move_camera(0., 1.)
                         has_moved = .true.
                     end if
 
-                    ! Move up.
+                    ! Move forward.
                     if (is_key(keys, SDL_SCANCODE_UP)) then
                         call move_camera(0., -1.)
                         has_moved = .true.

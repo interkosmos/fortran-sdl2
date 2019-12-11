@@ -1,8 +1,7 @@
 FC          = gfortran9
-RPATH       = -Wl,-rpath=/usr/local/lib/gcc9/
 SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDLIBS  = `sdl2-config --libs`
-FFLAGS      = -g -Wall $(RPATH) -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
+FFLAGS      = -g -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS      = $(SDL_LDLIBS)
 EXAMPLES    = examples
 
@@ -114,10 +113,6 @@ $(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
 	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
-	if [ -e $(SDL_OBJ) ]; then rm $(SDL_OBJ); fi
-	if [ -e $(IMG_OBJ) ]; then rm $(IMG_OBJ); fi
-	if [ -e $(MIX_OBJ) ]; then rm $(MIX_OBJ); fi
-	if [ -e $(TTF_OBJ) ]; then rm $(TTF_OBJ); fi
 	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
 	if [ -e $(DVD) ]; then rm $(DVD); fi

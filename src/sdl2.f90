@@ -110,18 +110,18 @@ contains
         !! Copies a C string, passed as a C pointer, to a Fortran string.
         type(c_ptr),      intent(in)           :: c_string
         character(len=*), intent(out)          :: f_string
-        character(kind=c_char, len=1), pointer :: p_chars(:)
+        character(kind=c_char, len=1), pointer :: char_ptrs(:)
         integer                                :: i
 
         if (.not. c_associated(c_string)) then
             f_string = ' '
         else
-            call c_f_pointer(c_string, p_chars, [huge(0)])
+            call c_f_pointer(c_string, char_ptrs, [huge(0)])
 
             i = 1
 
-            do while (p_chars(i) /= c_null_char .and. i <= len(f_string))
-                f_string(i:i) = p_chars(i)
+            do while (char_ptrs(i) /= c_null_char .and. i <= len(f_string))
+                f_string(i:i) = char_ptrs(i)
                 i = i + 1
             end do
 

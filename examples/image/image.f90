@@ -14,8 +14,8 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIN_WIDTH  = 640
-    integer, parameter :: WIN_HEIGHT = 480
+    integer, parameter :: SCREEN_WIDTH  = 640
+    integer, parameter :: SCREEN_HEIGHT = 480
 
     type(c_ptr)                :: window
     type(sdl_surface), pointer :: screen
@@ -24,9 +24,7 @@ program main
     integer                    :: rc
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -35,8 +33,8 @@ program main
     window = sdl_create_window('SDL2 Fortran' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIN_WIDTH, &
-                               WIN_HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then

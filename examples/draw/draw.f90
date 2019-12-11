@@ -41,11 +41,8 @@ program main
     end if
 
     ! Rectangles.
-    rect1%x =  50; rect1%y =  50
-    rect1%w = 250; rect1%h = 250
-
-    rect2%x =  75; rect2%y =  75
-    rect2%w = 250; rect2%h = 250
+    rect1 = sdl_rect(50, 50, 250, 250)
+    rect2 = sdl_rect(75, 75, 250, 250)
 
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, 0)
