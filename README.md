@@ -155,7 +155,7 @@ Some demo applications can be found in `examples/`.
 * **image** loads and displays an image (software renderer).
 * **msgbox** shows a simple message box (software renderer).
 * **opera** plays an OGG file with SDL_mixer (software renderer).
-* **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware * renderer).
+* **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
 * **voxel** renders a voxel space with direct pixel manipulation (hardware renderer).
