@@ -45,6 +45,7 @@ EVENTS  = events
 IMAGE   = image
 MSGBOX  = msgbox
 OPERA   = opera
+PIXEL   = pixel
 SCALING = scaling
 TEXT    = text
 VOXEL   = voxel
@@ -95,6 +96,9 @@ $(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
 $(OPERA): $(EXAMPLES)/$(OPERA)/$(OPERA).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
+$(PIXEL): $(EXAMPLES)/$(PIXEL)/$(PIXEL).f90 $(SDL_OBJ)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
 $(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
@@ -120,6 +124,7 @@ clean:
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
+	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi
 	if [ -e $(VOXEL) ]; then rm $(VOXEL); fi

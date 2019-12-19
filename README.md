@@ -11,8 +11,8 @@ SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9, but other modern
-compilers should work as well. A Fortran 2003 compiler is sufficient if
-multi-threading with `SDL_Thread` is not desired.
+compilers should work as well. In most cases, a Fortran 2003 compiler should be
+sufficient.
 
 ## Building the SDL 2.0 Interfaces
 Clone the repository and then run `make` to build the SDL2 interface:
@@ -31,7 +31,7 @@ $ make sdl2 FC=gfortran
 ```
 
 On FreeBSD, you may have to add the GNU Fortran runtime library search path to
-`CFLAGS` (e.g., `-Wl,-rpath=/usr/local/lib/gcc9/`).
+`FFLAGS` (e.g., `-Wl,-rpath=/usr/local/lib/gcc9/`).
 
 ### SDL2_image
 Build the SDL2_image interface with:
@@ -63,7 +63,7 @@ Add `-lSDL2_ttf` to your `LDLIBS` to link SDL2_ttf.
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
 
-```f08
+```fortran
 ! example.f90
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
@@ -136,14 +136,14 @@ program main
 end program main
 ```
 
-Compile it with:
+Compile it with GNU Fortran:
 
 ```
 $ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
   -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
 
-The `-Wl,-rpath` parameter may be optional.
+The `-Wl,-rpath` argument may be optional.
 
 ## Further Examples
 Some demo applications can be found in `examples/`.
@@ -155,6 +155,7 @@ Some demo applications can be found in `examples/`.
 * **image** loads and displays an image (software renderer).
 * **msgbox** shows a simple message box (software renderer).
 * **opera** plays an OGG file with SDL_mixer (software renderer).
+* **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware * renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
 * **voxel** renders a voxel space with direct pixel manipulation (hardware renderer).
@@ -184,20 +185,23 @@ SDL 2.0 stores RGB colour values as `Uint8`. As Fortran does not feature unsigne
 types, the intrinsic procedure `transfer()` has to be used to transfer bit
 patterns directly. For example:
 
-```f08
+```fortran
 type(sdl_color) :: color
 
-color%r = transfer([255, 1], 1_c_int8_t)
-color%g = transfer([127, 1], 1_c_int8_t)
-color%b = transfer([  0, 1], 1_c_int8_t)
-color%a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
+color = sdl_color(r = transfer([255, 1], 1_c_int8_t)
+                  g = transfer([127, 1], 1_c_int8_t)
+                  b = transfer([  0, 1], 1_c_int8_t)
+                  a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
 ```
 
 The Fortran interface provides a utility function `uint8()` that simplifies the
 conversion:
 
-```f08
-color%r = uint8(255)
+```fortran
+color = sdl_color(r = uint8(255), &
+                  g = uint8(127), &
+                  b = uint8(0), &
+                  a = uint8(SDL_ALPHA_OPAQUE))
 ```
 
 ### SDL_Surface
@@ -205,7 +209,7 @@ C pointers in derived types like `SDL_Surface` must be converted to Fortran
 types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
 to assign the `SDL_PixelFormat` pointer in `SDL_Surface`:
 
-```f08
+```fortran
 type(sdl_pixel_format), pointer :: pixel_format
 type(sdl_surface),      pointer :: surface
 
@@ -216,14 +220,14 @@ call c_f_pointer(surface%format, pixel_format)
 A utility function `sdl_get_pixel_format()` has been added to the interface to
 simplify the conversion from C pointer to Fortran pointer:
 
-```f08
+```fortran
 pixel_format => sdl_get_pixel_format(surface)
 ```
 
 `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
 to convert `Uint8` to Fortran signed integer. For example:
 
-```f08
+```fortran
 integer, parameter              :: X = 10
 integer, parameter              :: Y = 20
 integer(kind=2)                 :: r, g, b

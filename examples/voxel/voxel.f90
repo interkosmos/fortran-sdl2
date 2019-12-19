@@ -356,7 +356,7 @@ contains
     end subroutine render
 
     subroutine rotate_camera(a)
-        !! Rotates camera by given angle a [rad].
+        !! Rotates camera by given angle `a` [rad].
         real, intent(in) :: a
 
         camera%angle = camera%angle + a
