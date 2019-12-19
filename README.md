@@ -11,7 +11,7 @@ SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9, but other modern
-compilers should work as well. In most cases, a Fortran 2003 compiler should be
+compilers should work as well. In most cases, a Fortran 2003 compiler is
 sufficient.
 
 ## Building the SDL 2.0 Interfaces
