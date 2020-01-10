@@ -33,8 +33,6 @@ program main
 
     ! RGB type.
     type :: pixel_type
-        integer :: x
-        integer :: y
         integer :: r      = 0
         integer :: g      = 0
         integer :: b      = 0
@@ -246,9 +244,6 @@ contains
 
         do y = 1, height
             do x = 1, width
-                pixels(y, x)%x = x
-                pixels(y, x)%y = y
-
                 ! Get RGB colour values. Use some transfer magic to handle unsigned pixel values.
                 pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
