@@ -32,11 +32,14 @@ program main
     end type buffer_type
 
     ! RGB type.
-    type :: rgb_type
-        integer(kind=2) :: r = 0
-        integer(kind=2) :: g = 0
-        integer(kind=2) :: b = 0
-    end type rgb_type
+    type :: pixel_type
+        integer :: x
+        integer :: y
+        integer :: r      = 0
+        integer :: g      = 0
+        integer :: b      = 0
+        integer :: height = 0
+    end type pixel_type
 
     ! 2D point type.
     type :: point_type
@@ -70,8 +73,7 @@ program main
     type(c_ptr)              :: renderer
     type(c_ptr)              :: window
     type(camera_type)        :: camera
-    type(map_type)           :: color_map
-    type(map_type)           :: height_map
+    type(pixel_type)         :: pixels(MAP_HEIGHT, MAP_WIDTH)
     type(sdl_event)          :: event
 
     ! Initialise SDL.
@@ -103,23 +105,12 @@ program main
                                         SDL_TEXTUREACCESS_STREAMING, &
                                         SCREEN_WIDTH, &
                                         SCREEN_HEIGHT)
-
-    ! Set frame buffer rectangle.
     buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-
-    ! Set frame buffer pixel format.
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
 
-    ! Load colour map.
-    color_map%image  => sdl_load_bmp(COLOR_MAP_FILE // c_null_char)
-    call c_f_pointer(color_map%image%format, color_map%pixel_format)
-    call c_f_pointer(color_map%image%pixels, color_map%pixels, shape=[color_map%image%pitch * color_map%image%h])
-
-    ! Load height map.
-    height_map%image => sdl_load_bmp(HEIGHT_MAP_FILE // c_null_char)
-    call c_f_pointer(height_map%image%format, height_map%pixel_format)
-    call c_f_pointer(height_map%image%pixels, height_map%pixels, shape=[height_map%image%pitch * height_map%image%h])
+    ! Load maps.
+    call read_pixels(COLOR_MAP_FILE, HEIGHT_MAP_FILE, MAP_WIDTH, MAP_HEIGHT, pixels)
 
     ! Main loop.
     do while (is_running)
@@ -166,7 +157,7 @@ program main
 
         if (has_moved) then
             ! Only re-render if camera has moved.
-            call render(buffer, camera, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+            call render(buffer, camera, pixels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
             has_moved = .false.
         end if
 
@@ -184,11 +175,6 @@ program main
     buffer%pixels => null()
     call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
-
-    color_map%pixels  => null()
-    height_map%pixels => null()
-    call sdl_free_surface(color_map%image)
-    call sdl_free_surface(height_map%image)
 
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
@@ -228,43 +214,6 @@ contains
         end if
     end function
 
-    type(rgb_type) function get_color(x, y)
-        !! Returns colour of given coordinates in color map.
-        real, intent(in) :: x
-        real, intent(in) :: y
-        integer          :: norm_x
-        integer          :: norm_y
-        integer          :: pixel
-
-        ! Normalise coordinates.
-        norm_x = 1 + modulo(int(x), MAP_WIDTH - 1)
-        norm_y = 1 + modulo(int(y), MAP_HEIGHT - 1)
-
-        ! Return colour as RGB. Use some transfer magic to handle unsigned pixel values.
-        pixel = ichar(transfer(color_map%pixels(norm_y * color_map%image%pitch + norm_x), 'a'))
-        call sdl_get_rgb(pixel, color_map%pixel_format, get_color%r, get_color%g, get_color%b)
-    end function get_color
-
-    integer function get_height(x, y)
-        !! Returns height of given coordinates in height map.
-        real, intent(in) :: x
-        real, intent(in) :: y
-        integer          :: norm_x
-        integer          :: norm_y
-        integer(kind=2)  :: r, g, b
-        integer          :: pixel
-
-        ! Normalise coordinates.
-        norm_x = 1 + modulo(int(x), MAP_WIDTH - 1)
-        norm_y = 1 + modulo(int(y), MAP_HEIGHT - 1)
-
-        ! Return height. Use some transfer magic to handle unsigned pixel values.
-        pixel = ichar(transfer(height_map%pixels(norm_y * height_map%image%pitch + norm_x), 'a'))
-        call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
-
-        get_height = r
-    end function get_height
-
     subroutine move_camera(x, y)
         !! Moves camera in X and Y direction.
         real, intent(in) :: x
@@ -274,25 +223,77 @@ contains
         camera%y = modulo(camera%y + y, real(MAP_WIDTH))
     end subroutine move_camera
 
-    subroutine render(buffer, camera, scale_height, screen_width, screen_height)
+    subroutine read_pixels(color_map_path, height_map_path, width, height, pixels)
+        character(len=*), intent(in)    :: color_map_path
+        character(len=*), intent(in)    :: height_map_path
+        integer,          intent(in)    :: width
+        integer,          intent(in)    :: height
+        type(pixel_type), intent(inout) :: pixels(height, width)
+        type(map_type)                  :: color_map, height_map
+        integer                         :: pixel
+        integer                         :: x, y
+        integer(kind=2)                 :: r, g, b
+
+        ! Load colour map.
+        color_map%image => sdl_load_bmp(color_map_path // c_null_char)
+        call c_f_pointer(color_map%image%format, color_map%pixel_format)
+        call c_f_pointer(color_map%image%pixels, color_map%pixels, shape=[color_map%image%pitch * color_map%image%h])
+
+        ! Load height map.
+        height_map%image => sdl_load_bmp(height_map_path // c_null_char)
+        call c_f_pointer(height_map%image%format, height_map%pixel_format)
+        call c_f_pointer(height_map%image%pixels, height_map%pixels, shape=[height_map%image%pitch * height_map%image%h])
+
+        do y = 1, height
+            do x = 1, width
+                pixels(y, x)%x = x
+                pixels(y, x)%y = y
+
+                ! Get RGB colour values. Use some transfer magic to handle unsigned pixel values.
+                pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
+                call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
+
+                pixels(y, x)%r = r
+                pixels(y, x)%g = g
+                pixels(y, x)%b = b
+
+                ! Get height value.
+                pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
+                call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
+
+                pixels(y, x)%height = r
+            end do
+        end do
+
+        call sdl_free_surface(color_map%image)
+        call sdl_free_surface(height_map%image)
+
+        color_map%pixels  => null()
+        height_map%pixels => null()
+
+        call sdl_free_format(color_map%pixel_format)
+        call sdl_free_format(height_map%pixel_format)
+    end subroutine read_pixels
+
+    subroutine render(buffer, camera, pixels, scale_height, screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
         type(buffer_type), intent(inout) :: buffer
         type(camera_type), intent(inout) :: camera
+        type(pixel_type),  intent(inout) :: pixels(MAP_HEIGHT, MAP_WIDTH)
         integer,           intent(in)    :: scale_height
         integer,           intent(in)    :: screen_width
         integer,           intent(in)    :: screen_height
         integer                          :: line_y
         integer                          :: offset
         integer                          :: rc
-        integer                          :: x
+        integer                          :: norm_x, norm_y, x
         real                             :: cos_phi, sin_phi
         real                             :: dx, dy, dz
         real                             :: height_on_screen
         real                             :: y_buffer(screen_width)
         real                             :: z
         type(point_type)                 :: left, right
-        type(rgb_type)                   :: color
 
         sin_phi = sin(camera%angle)
         cos_phi = cos(camera%angle)
@@ -324,20 +325,21 @@ contains
 
             ! Raster line and draw a vertical line for each segment.
             do x = 0, screen_width
-                height_on_screen = (camera%height - get_height(left%x, left%y)) / &
+                norm_x = 1 + modulo(int(left%x), MAP_WIDTH - 1)
+                norm_y = 1 + modulo(int(left%y), MAP_HEIGHT - 1)
+
+                height_on_screen = (camera%height - pixels(norm_y, norm_x)%height) / &
                                    z * scale_height + camera%horizon
 
                 ! Only draw if visible.
                 if (height_on_screen < y_buffer(x)) then
-                    color = get_color(left%x, left%y)
-
                     ! Draw vertical line by setting the pixels of the frame buffer texture.
                     do line_y = int(height_on_screen), int(y_buffer(x))
                         offset = (line_y * SCREEN_WIDTH) + x
                         buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
-                                                            int(color%r, kind=4), &
-                                                            int(color%g, kind=4), &
-                                                            int(color%b, kind=4))
+                                                            pixels(norm_y, norm_x)%r, &
+                                                            pixels(norm_y, norm_x)%g, &
+                                                            pixels(norm_y, norm_x)%b)
                     end do
 
                     y_buffer(x) = height_on_screen
