@@ -152,6 +152,8 @@ The `-Wl,-rpath` argument may be optional.
 ## Further Examples
 Some demo applications can be found in `examples/`.
 
+![screen shot](screenshot.png)
+
 * **alpha** makes one color of an image transparent (software renderer).
 * **draw** draws some shapes (hardware renderer).
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
