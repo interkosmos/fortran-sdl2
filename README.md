@@ -159,6 +159,7 @@ Some demo applications can be found in `examples/`.
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * **image** loads and displays an image (software renderer).
+* **info** prints debug information to `stdout` (software renderer).
 * **msgbox** shows a simple message box (software renderer).
 * **opera** plays an OGG file with SDL_mixer (software renderer).
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).

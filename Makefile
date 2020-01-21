@@ -43,6 +43,7 @@ DRAW    = draw
 DVD     = dvd
 EVENTS  = events
 IMAGE   = image
+INFO    = info
 MSGBOX  = msgbox
 OPERA   = opera
 PIXEL   = pixel
@@ -55,8 +56,8 @@ WINDOW  = window
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
-examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(IMAGE) $(MSGBOX) $(OPERA) \
-          $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(INFO) $(IMAGE) $(MSGBOX) \
+          $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
 sdl2: $(SDL_OBJ)
 
@@ -93,6 +94,9 @@ $(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
 $(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(INFO): $(EXAMPLES)/$(INFO)/$(INFO).f90 $(SDL_OBJ)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
 $(OPERA): $(EXAMPLES)/$(OPERA)/$(OPERA).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
@@ -122,6 +126,7 @@ clean:
 	if [ -e $(DVD) ]; then rm $(DVD); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
+	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
