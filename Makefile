@@ -56,7 +56,7 @@ WINDOW  = window
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
 examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(IMAGE) $(MSGBOX) $(OPERA) \
-          $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+          $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
 sdl2: $(SDL_OBJ)
 
