@@ -1,7 +1,7 @@
 # f08sdl2: Fortran 2008 Interface to SDL 2.0
-An ISO C binding interface to [Simple DirectMedia Layer 2.0](https://www.libsdl.org/)
-(SDL 2.0), for multimedia and game programming in Fortran. SDL versions tested
-against:
+A collection of ISO C binding interfacec to
+[Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
+multimedia and game programming in Fortran. SDL versions tested against:
 
 Library   | Version
 ----------|--------
@@ -15,7 +15,7 @@ compilers should work as well. In most cases, a Fortran 2003 compiler is
 sufficient.
 
 ## Building the SDL 2.0 Interfaces
-Clone the repository and then run `make` to build the SDL2 interface:
+Clone the repository and then run `make` to build the SDL2 interfaces:
 
 ```
 $ git clone https://github.com/interkosmos/f08sdl2.git
@@ -31,10 +31,14 @@ $ make sdl2 FC=gfortran
 ```
 
 On FreeBSD, you may have to add the GNU Fortran runtime library search path to
-`FFLAGS` (e.g., `-Wl,-rpath=/usr/local/lib/gcc9/`).
+`FFLAGS`:
+
+```
+$ make sdl2 FFLAGS=-Wl,-rpath=/usr/local/lib/gcc9/
+```
 
 ### SDL2_image
-Build the SDL2_image interface with:
+Build the SDL2_image interfaces with:
 
 ```
 $ make sdl2_image
@@ -43,7 +47,7 @@ $ make sdl2_image
 Add `-lSDL2_image` to your `LDLIBS` to link SDL2_image.
 
 ### SDL2_mixer
-Build the SDL2_mixer interface with:
+Build the SDL2_mixer interfaces with:
 
 ```
 $ make sdl2_mixer
@@ -52,7 +56,7 @@ $ make sdl2_mixer
 Add `-lSDL2_mixer` to your `LDLIBS` to link SDL2_mixer.
 
 ### SDL2_ttf
-Build the SDL2_ttf interface with:
+Build the SDL2_ttf interfaces with:
 
 ```
 $ make sdl2_ttf
@@ -136,7 +140,7 @@ program main
 end program main
 ```
 
-Compile it with GNU Fortran:
+Compile the source code with GNU Fortran:
 
 ```
 $ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
@@ -161,7 +165,7 @@ Some demo applications can be found in `examples/`.
 * **voxel** renders a voxel space with direct pixel manipulation (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
-Build all examples with:
+Compile all examples with:
 
 ```
 $ make examples
@@ -194,7 +198,7 @@ color = sdl_color(r = transfer([255, 1], 1_c_int8_t)
                   a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
 ```
 
-The Fortran interface provides a utility function `uint8()` that simplifies the
+The Fortran binding provides a utility function `uint8()` that simplifies the
 conversion:
 
 ```fortran
@@ -205,9 +209,9 @@ color = sdl_color(r = uint8(255), &
 ```
 
 ### SDL_Surface
-C pointers in derived types like `SDL_Surface` must be converted to Fortran
+C pointers in derived types like `sdl_surface` must be converted to Fortran
 types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
-to assign the `SDL_PixelFormat` pointer in `SDL_Surface`:
+to assign the `sdl_pixel_format` pointer in `sdl_surface`:
 
 ```fortran
 type(sdl_pixel_format), pointer :: pixel_format
@@ -217,15 +221,15 @@ type(sdl_surface),      pointer :: surface
 call c_f_pointer(surface%format, pixel_format)
 ```
 
-A utility function `sdl_get_pixel_format()` has been added to the interface to
+The utility function `sdl_get_pixel_format()` has been added to the binding to
 simplify the conversion from C pointer to Fortran pointer:
 
 ```fortran
 pixel_format => sdl_get_pixel_format(surface)
 ```
 
-`SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()` and `ichar()`
-to convert `Uint8` to Fortran signed integer. For example:
+The C struct `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()`
+and `ichar()` to convert `Uint8` to Fortran signed integer. For example:
 
 ```fortran
 integer, parameter              :: X = 10
@@ -246,7 +250,7 @@ call c_f_pointer(surface%format, pixel_format)
 call c_f_pointer(surface%pixels, pixels, shape=[surface%pitch * surface%h])
 
 ! Get single pixel of coordinates X and Y. Convert to Fortran integer.
-pixel = ichar(transfer(pixels(Y * surface%pitch + X), 'a'))
+pixel = ichar(transfer(pixels(Y * surface%pitch + X), 'a'), kind=c_int32_t)
 
 ! Get RGB values of pixel.
 call sdl_get_rgb(pixel, pixel_format, r, g, b)
