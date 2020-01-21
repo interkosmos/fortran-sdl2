@@ -91,7 +91,7 @@ program main
     rect = sdl_rect(0, 0, image%width, image%height)
 
     ! Lock buffer texture for direct pixel access.
-    if (sdl_lock_texture(buffer%texture, rect, buffer%pixels_ptr, buffer%pitch) /= 0) then
+    if (sdl_lock_texture(buffer%texture, rect, buffer%pixels_ptr, buffer%pitch) < 0) then
         write (stderr, '(2a)') 'SDL Error: ', sdl_get_error()
         stop
     end if

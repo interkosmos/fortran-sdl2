@@ -31,7 +31,7 @@ program main
         type(sdl_rect)                   :: rect
     end type buffer_type
 
-    ! RGB type.
+    ! Pixel type.
     type :: pixel_type
         integer :: r      = 0
         integer :: g      = 0
@@ -63,7 +63,7 @@ program main
     integer,          parameter :: SCREEN_HEIGHT   = 400
 
     character(len=30)        :: window_title
-    integer                  :: fps,t1, rc
+    integer                  :: fps, t1, rc
     integer(kind=1), pointer :: keys(:)            => null()
     logical                  :: has_moved          = .true.
     logical                  :: is_running         = .true.
@@ -98,16 +98,9 @@ program main
                                                    SDL_RENDERER_PRESENTVSYNC))
 
     ! Create frame buffer texture.
-    buffer%texture = sdl_create_texture(renderer, &
-                                        SDL_PIXELFORMAT_ARGB8888, &
-                                        SDL_TEXTUREACCESS_STREAMING, &
-                                        SCREEN_WIDTH, &
-                                        SCREEN_HEIGHT)
-    buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    buffer%format = sdl_get_window_pixel_format(window)
-    buffer%pixel_format => sdl_alloc_format(buffer%format)
+    call create_buffer(renderer, window, buffer)
 
-    ! Load maps.
+    ! Load colour and height map.
     call read_pixels(COLOR_MAP_FILE, HEIGHT_MAP_FILE, MAP_WIDTH, MAP_HEIGHT, pixels)
 
     ! Main loop.
@@ -212,6 +205,28 @@ contains
         end if
     end function
 
+    subroutine create_buffer(renderer, window, buffer)
+        !! Creates buffer texture and fills pixel pointer array `buffer%pixels`.
+        type(c_ptr),       intent(in)    :: renderer
+        type(c_ptr),       intent(in)    :: window
+        type(buffer_type), intent(inout) :: buffer
+
+        ! Create buffer texture.
+        buffer%texture = sdl_create_texture(renderer, &
+                                            SDL_PIXELFORMAT_ARGB8888, &
+                                            SDL_TEXTUREACCESS_STREAMING, &
+                                            SCREEN_WIDTH, &
+                                            SCREEN_HEIGHT)
+        buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        buffer%format = sdl_get_window_pixel_format(window)
+        buffer%pixel_format => sdl_alloc_format(buffer%format)
+
+        ! Get pixel pointers of buffer texture.
+        rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
+        call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[SCREEN_WIDTH * SCREEN_HEIGHT])
+        call sdl_unlock_texture(buffer%texture)
+    end subroutine create_buffer
+
     subroutine move_camera(x, y)
         !! Moves camera in X and Y direction.
         real, intent(in) :: x
@@ -300,9 +315,6 @@ contains
 
         ! Lock frame buffer texture.
         rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
-
-        ! Convert C pointer to Fortran pointer.
-        call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[screen_width * screen_height])
 
         ! Fill frame buffer in light blue.
         buffer%pixels(:) = sdl_map_rgb(buffer%pixel_format, 0, 150, 200)
