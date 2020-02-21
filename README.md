@@ -1,5 +1,5 @@
-# f08sdl2: Fortran 2008 Interface to SDL 2.0
-A collection of ISO C binding interfacec to
+# fortran-sdl2: Fortran 2008 Interfaces to SDL 2.0
+A collection of ISO C binding interfaces to
 [Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
 multimedia and game programming in Fortran. SDL versions tested against:
 
@@ -14,20 +14,27 @@ The interfaces have been built successfully with GNU Fortran 9, but other modern
 compilers should work as well. In most cases, a Fortran 2003 compiler is
 sufficient.
 
+Install SDL 2.0, SDL_image, SDL_mixer, and SDL2_ttf with development headers. On
+FreeBSD, run:
+
+```
+# pkg install devel/sdl20 graphics/sdl2_image audio/sdl2_mixer graphics/sdl2_ttf
+```
+
 ## Building the SDL 2.0 Interfaces
 Clone the repository and then run `make` to build the SDL2 interfaces:
 
 ```
-$ git clone https://github.com/interkosmos/f08sdl2.git
-$ cd f08sdl2/
+$ git clone https://github.com/interkosmos/fortran-sdl2
+$ cd fortran-sdl2/
 $ make sdl2
 ```
 
-You can override the default compiler (`gfortran9`) by passing the `FC`
+You can override the default compiler (`gfortran`) by passing the `FC`
 argument, for example:
 
 ```
-$ make sdl2 FC=gfortran
+$ make sdl2 FC=gfortran9
 ```
 
 On FreeBSD, you may have to add the GNU Fortran runtime library search path to
@@ -143,11 +150,10 @@ end program main
 Compile the source code with GNU Fortran:
 
 ```
-$ gfortran9 -Wall -Wl,-rpath=/usr/local/lib/gcc9/ `sdl2-config --cflags` \
-  -o example example.f90 sdl2.o `sdl2-config --libs`
+$ gfortran -Wall `sdl2-config --cflags` -o example example.f90 sdl2.o `sdl2-config --libs`
 ```
 
-The `-Wl,-rpath` argument may be optional.
+The `-Wl,-rpath` argument may be required optionally.
 
 ## Further Examples
 Some demo applications can be found in `examples/`.

@@ -4,7 +4,7 @@
 ! using the hardware renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f08sdl2/
+! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int, c_int8_t, c_int32_t, c_null_char, c_ptr

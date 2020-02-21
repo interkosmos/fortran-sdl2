@@ -3,7 +3,7 @@
 ! Fortran 2008 interface to SDL_stdinc.h.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f08sdl2/
+! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_stdinc
     use, intrinsic :: iso_c_binding, only: c_bool, c_int, c_ptr

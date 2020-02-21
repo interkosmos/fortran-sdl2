@@ -3,7 +3,7 @@
 ! Fortran 2008 interface to SDL_rwops.h.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f08sdl2/
+! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_rwops
     use, intrinsic :: iso_c_binding, only: c_char, c_ptr

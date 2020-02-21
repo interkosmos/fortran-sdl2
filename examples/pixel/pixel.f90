@@ -4,7 +4,7 @@
 ! the screen, by accessing pixels of SDL_Surface and SDL_Texture directly.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f08sdl2/
+! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding

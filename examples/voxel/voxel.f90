@@ -4,7 +4,7 @@
 ! arrow keys for camera movement.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/f08sdl2/
+! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_int8_t, c_int32_t, c_null_char, c_ptr
@@ -31,13 +31,13 @@ program main
         type(sdl_rect)                   :: rect
     end type buffer_type
 
-    ! Pixel type.
-    type :: pixel_type
+    ! Voxel type.
+    type :: voxel_type
         integer :: r      = 0
         integer :: g      = 0
         integer :: b      = 0
         integer :: height = 0
-    end type pixel_type
+    end type voxel_type
 
     ! 2D point type.
     type :: point_type
@@ -71,7 +71,7 @@ program main
     type(c_ptr)              :: renderer
     type(c_ptr)              :: window
     type(camera_type)        :: camera
-    type(pixel_type)         :: pixels(MAP_HEIGHT, MAP_WIDTH)
+    type(voxel_type)         :: voxels(MAP_HEIGHT, MAP_WIDTH)
     type(sdl_event)          :: event
 
     ! Initialise SDL.
@@ -101,7 +101,7 @@ program main
     call create_buffer(renderer, window, buffer)
 
     ! Load colour and height map.
-    call read_pixels(COLOR_MAP_FILE, HEIGHT_MAP_FILE, MAP_WIDTH, MAP_HEIGHT, pixels)
+    call read_voxels(COLOR_MAP_FILE, HEIGHT_MAP_FILE, MAP_WIDTH, MAP_HEIGHT, voxels)
 
     ! Main loop.
     do while (is_running)
@@ -148,7 +148,7 @@ program main
 
         if (has_moved) then
             ! Only re-render if camera has moved.
-            call render(buffer, camera, pixels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+            call render(buffer, camera, voxels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
             has_moved = .false.
         end if
 
@@ -236,12 +236,12 @@ contains
         camera%y = modulo(camera%y + y, real(MAP_WIDTH))
     end subroutine move_camera
 
-    subroutine read_pixels(color_map_path, height_map_path, width, height, pixels)
+    subroutine read_voxels(color_map_path, height_map_path, width, height, voxels)
         character(len=*), intent(in)    :: color_map_path
         character(len=*), intent(in)    :: height_map_path
         integer,          intent(in)    :: width
         integer,          intent(in)    :: height
-        type(pixel_type), intent(inout) :: pixels(height, width)
+        type(voxel_type), intent(inout) :: voxels(height, width)
         type(map_type)                  :: color_map, height_map
         integer                         :: pixel
         integer                         :: x, y
@@ -263,15 +263,15 @@ contains
                 pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
 
-                pixels(y, x)%r = r
-                pixels(y, x)%g = g
-                pixels(y, x)%b = b
+                voxels(y, x)%r = r
+                voxels(y, x)%g = g
+                voxels(y, x)%b = b
 
                 ! Get height value.
                 pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
 
-                pixels(y, x)%height = r
+                voxels(y, x)%height = r
             end do
         end do
 
@@ -283,14 +283,14 @@ contains
 
         call sdl_free_format(color_map%pixel_format)
         call sdl_free_format(height_map%pixel_format)
-    end subroutine read_pixels
+    end subroutine read_voxels
 
-    subroutine render(buffer, camera, pixels, scale_height, screen_width, screen_height)
+    subroutine render(buffer, camera, voxels, scale_height, screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
         type(buffer_type), intent(inout) :: buffer
         type(camera_type), intent(inout) :: camera
-        type(pixel_type),  intent(inout) :: pixels(MAP_HEIGHT, MAP_WIDTH)
+        type(voxel_type),  intent(inout) :: voxels(MAP_HEIGHT, MAP_WIDTH)
         integer,           intent(in)    :: scale_height
         integer,           intent(in)    :: screen_width
         integer,           intent(in)    :: screen_height
@@ -335,7 +335,7 @@ contains
                 norm_x = 1 + modulo(int(left%x), MAP_WIDTH - 1)
                 norm_y = 1 + modulo(int(left%y), MAP_HEIGHT - 1)
 
-                height_on_screen = (camera%height - pixels(norm_y, norm_x)%height) / &
+                height_on_screen = (camera%height - voxels(norm_y, norm_x)%height) / &
                                    z * scale_height + camera%horizon
 
                 ! Only draw if visible.
@@ -344,9 +344,9 @@ contains
                     do line_y = int(height_on_screen), int(y_buffer(x))
                         offset = (line_y * SCREEN_WIDTH) + x
                         buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
-                                                            pixels(norm_y, norm_x)%r, &
-                                                            pixels(norm_y, norm_x)%g, &
-                                                            pixels(norm_y, norm_x)%b)
+                                                            voxels(norm_y, norm_x)%r, &
+                                                            voxels(norm_y, norm_x)%g, &
+                                                            voxels(norm_y, norm_x)%b)
                     end do
 
                     y_buffer(x) = height_on_screen

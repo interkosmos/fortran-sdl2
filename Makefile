@@ -1,4 +1,7 @@
-FC          = gfortran9
+.POSIX:
+.SUFFIXES:
+
+FC          = gfortran
 SDL_CFLAGS  = `sdl2-config --cflags`
 SDL_LDLIBS  = `sdl2-config --libs`
 FFLAGS      = -g -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
@@ -43,6 +46,7 @@ DRAW    = draw
 DVD     = dvd
 EVENTS  = events
 IMAGE   = image
+
 INFO    = info
 MSGBOX  = msgbox
 OPERA   = opera
