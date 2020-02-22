@@ -16,9 +16,9 @@ program main
 
     integer,          parameter :: WIN_WIDTH  = 320
     integer,          parameter :: WIN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME  = 'examples/opera/italy.bmp'
-    character(len=*), parameter :: OGG_PATH   = 'examples/opera/opera.ogg'
-    character(len=*), parameter :: TTF_PATH   = 'examples/opera/font.ttf'
+    character(len=*), parameter :: FILE_NAME  = 'italy.bmp'
+    character(len=*), parameter :: OGG_PATH   = 'opera.ogg'
+    character(len=*), parameter :: TTF_PATH   = 'font.ttf'
     character(len=*), parameter :: MESSAGE    = 'Playing ' // OGG_PATH // ' ...'
 
     integer     :: rc
@@ -90,7 +90,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIN_WIDTH, &

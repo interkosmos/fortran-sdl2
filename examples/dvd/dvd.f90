@@ -19,7 +19,7 @@ program main
         integer(kind=2) :: b
     end type color
 
-    character(len=*), parameter :: FILE_NAME = 'examples/dvd/logo.png'
+    character(len=*), parameter :: FILE_NAME = 'logo.png'
 
     type(c_ptr)              :: window
     type(c_ptr)              :: renderer
@@ -58,12 +58,12 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                0, 0, &
                                800, 600, &
                                ior(SDL_WINDOW_BORDERLESS, &
                                    ior(SDL_WINDOW_FULLSCREEN_DESKTOP, &
-                                       ior(SDL_WINDOW_OPENGL, SDL_WINDOW_SHOWN))))
+                                   ior(SDL_WINDOW_OPENGL, SDL_WINDOW_SHOWN))))
 
     if (.not. c_associated(window)) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
@@ -94,6 +94,9 @@ program main
 
     ! Colourise texture.
     call color_mod(texture, colors)
+
+    ! Hide mouse cursor.
+    rc = sdl_show_cursor(SDL_FALSE)
 
     loop: do
         ! Poll events.
@@ -143,6 +146,9 @@ program main
         call sdl_render_present(renderer)
         call sdl_delay(10)
     end do loop
+
+    ! Show mouse cursor.
+    rc = sdl_show_cursor(SDL_TRUE)
 
     ! Quit gracefully.
     call sdl_destroy_texture(texture)

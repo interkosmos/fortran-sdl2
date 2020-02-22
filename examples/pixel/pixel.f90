@@ -12,7 +12,7 @@ program main
     use :: sdl2
     implicit none
 
-    character(len=*), parameter :: IMAGE_FILE    = 'examples/pixel/lena.bmp'
+    character(len=*), parameter :: IMAGE_FILE    = 'lena.bmp'
     integer,          parameter :: SCREEN_WIDTH  = 320
     integer,          parameter :: SCREEN_HEIGHT = 200
 
@@ -48,7 +48,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SCREEN_WIDTH, &

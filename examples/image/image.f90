@@ -30,7 +30,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SCREEN_WIDTH, &
@@ -43,7 +43,7 @@ program main
     end if
 
     screen => sdl_get_window_surface(window)
-    image  => sdl_load_bmp('examples/image/chess.bmp' // c_null_char)
+    image  => sdl_load_bmp('chess.bmp' // c_null_char)
 
     rect%w = image%w
     rect%h = image%h

@@ -55,8 +55,8 @@ program main
         real :: distance = 500. !! Draw distance.
     end type camera_type
 
-    character(len=*), parameter :: COLOR_MAP_FILE  = 'examples/voxel/top.bmp'
-    character(len=*), parameter :: HEIGHT_MAP_FILE = 'examples/voxel/dem.bmp'
+    character(len=*), parameter :: COLOR_MAP_FILE  = 'top.bmp'
+    character(len=*), parameter :: HEIGHT_MAP_FILE = 'dem.bmp'
     integer,          parameter :: MAP_WIDTH       = 1024
     integer,          parameter :: MAP_HEIGHT      = 1024
     integer,          parameter :: SCREEN_WIDTH    = 640
@@ -81,7 +81,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SCREEN_WIDTH, &
@@ -158,7 +158,7 @@ program main
 
         ! Display frames per second.
         fps = calculate_fps(t1)
-        write (window_title, '(a, i2, 2a)') 'SDL2 Fortran (', fps, ' FPS)', c_null_char
+        write (window_title, '(a, i2, 2a)') 'Fortran SDL 2.0 (', fps, ' FPS)', c_null_char
         call sdl_set_window_title(window, window_title)
     end do
 

@@ -13,7 +13,7 @@ program main
 
     integer,          parameter :: WIDTH     = 640
     integer,          parameter :: HEIGHT    = 240
-    character(len=*), parameter :: FILE_NAME = 'examples/alpha/fortran.bmp'
+    character(len=*), parameter :: FILE_NAME = 'fortran.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface
@@ -36,7 +36,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                WIDTH, &
