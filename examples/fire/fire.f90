@@ -6,10 +6,99 @@
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
+module doom
+    implicit  none
+
+    type :: rgb_type
+        integer :: r = 0
+        integer :: g = 0
+        integer :: b = 0
+    end type rgb_type
+
+    type(rgb_type), parameter :: palette(37) = [ &
+        rgb_type(  7,   7,   7), &
+        rgb_type( 31,   7,   7), &
+        rgb_type( 47,  15,   7), &
+        rgb_type( 71,  15,   7), &
+        rgb_type( 87,  23,   7), &
+        rgb_type(103,  31,   7), &
+        rgb_type(119,  31,   7), &
+        rgb_type(143,  39,   7), &
+        rgb_type(159,  47,   7), &
+        rgb_type(175,  63,   7), &
+        rgb_type(191,  71,   7), &
+        rgb_type(199,  71,   7), &
+        rgb_type(223,  79,   7), &
+        rgb_type(223,  87,   7), &
+        rgb_type(223,  87,   7), &
+        rgb_type(215,  95,   7), &
+        rgb_type(215,  95,   7), &
+        rgb_type(215, 103,  15), &
+        rgb_type(207, 111,  15), &
+        rgb_type(207, 119,  15), &
+        rgb_type(207, 127,  15), &
+        rgb_type(207, 135,  23), &
+        rgb_type(199, 135,  23), &
+        rgb_type(199, 143,  23), &
+        rgb_type(199, 151,  31), &
+        rgb_type(191, 159,  31), &
+        rgb_type(191, 159,  31), &
+        rgb_type(191, 167,  39), &
+        rgb_type(191, 167,  39), &
+        rgb_type(191, 175,  47), &
+        rgb_type(183, 175,  47), &
+        rgb_type(183, 183,  47), &
+        rgb_type(183, 183,  55), &
+        rgb_type(207, 207, 111), &
+        rgb_type(223, 223, 159), &
+        rgb_type(239, 239, 199), &
+        rgb_type(255, 255, 255) ]
+contains
+    subroutine fire_burn(fire, width, height)
+        integer, intent(inout) :: fire(*)
+        integer, intent(in)    :: width
+        integer, intent(in)    :: height
+        integer                :: d, i, p, rnd
+        integer                :: x, y
+        real                   :: r
+
+        do y = 2, height
+            do x = 1, width
+                i = (y - 1) * width + x
+                p = fire(i)
+
+                if (p == 0) then
+                    d       = i - width
+                    fire(d) = 0
+                else
+                    call random_number(r)
+                    rnd     = iand(int(r * 3.0), 3)
+                    d       = (i - rnd + 1) - width
+                    fire(d) = p - iand(rnd, 1)
+                end if
+            end do
+        end do
+    end subroutine fire_burn
+
+    subroutine fire_init(fire, width, height)
+        integer, intent(inout) :: fire(*)
+        integer, intent(in)    :: width
+        integer, intent(in)    :: height
+        integer                :: x
+
+        fire(1:width * height) = 1
+
+        do x = 1, width
+            fire((height - 1) * width + x) = 36
+        end do
+    end subroutine fire_init
+end module doom
+
 program main
     use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
     use :: sdl2
+    use :: doom
     implicit none
 
     integer, parameter :: SCREEN_WIDTH  = 640
@@ -27,58 +116,12 @@ program main
         type(sdl_rect)                   :: rect         ! Utitlity rectangle.
     end type buffer_type
 
-    type :: rgb_type
-        integer :: r = 0
-        integer :: g = 0
-        integer :: b = 0
-    end type rgb_type
-
     type(buffer_type) :: buffer
-    type(rgb_type)    :: palette(37)
     type(c_ptr)       :: renderer
     type(c_ptr)       :: window
     type(sdl_event)   :: event
-    integer           :: rc
     integer           :: fire(SCREEN_WIDTH * SCREEN_HEIGHT)
-
-    ! Set colour palette.
-    palette = [ rgb_type(  7,   7,   7), &
-                rgb_type( 31,   7,   7), &
-                rgb_type( 47,  15,   7), &
-                rgb_type( 71,  15,   7), &
-                rgb_type( 87,  23,   7), &
-                rgb_type(103,  31,   7), &
-                rgb_type(119,  31,   7), &
-                rgb_type(143,  39,   7), &
-                rgb_type(159,  47,   7), &
-                rgb_type(175,  63,   7), &
-                rgb_type(191,  71,   7), &
-                rgb_type(199,  71,   7), &
-                rgb_type(223,  79,   7), &
-                rgb_type(223,  87,   7), &
-                rgb_type(223,  87,   7), &
-                rgb_type(215,  95,   7), &
-                rgb_type(215,  95,   7), &
-                rgb_type(215, 103,  15), &
-                rgb_type(207, 111,  15), &
-                rgb_type(207, 119,  15), &
-                rgb_type(207, 127,  15), &
-                rgb_type(207, 135,  23), &
-                rgb_type(199, 135,  23), &
-                rgb_type(199, 143,  23), &
-                rgb_type(199, 151,  31), &
-                rgb_type(191, 159,  31), &
-                rgb_type(191, 159,  31), &
-                rgb_type(191, 167,  39), &
-                rgb_type(191, 167,  39), &
-                rgb_type(191, 175,  47), &
-                rgb_type(183, 175,  47), &
-                rgb_type(183, 183,  47), &
-                rgb_type(183, 183,  55), &
-                rgb_type(207, 207, 111), &
-                rgb_type(223, 223, 159), &
-                rgb_type(239, 239, 199), &
-                rgb_type(255, 255, 255) ]
+    integer           :: rc
 
     ! Initialise PRNG.
     call random_seed()
@@ -126,7 +169,7 @@ program main
     call sdl_unlock_texture(buffer%texture)
 
     ! Initialise fire.
-    call init(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
+    call fire_init(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Main loop.
     loop: do
@@ -138,7 +181,7 @@ program main
             end select
         end do
 
-        call do_fire(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
+        call fire_burn(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
         call render(buffer, fire, SCREEN_WIDTH, SCREEN_HEIGHT)
 
         ! Copy buffer texture to screen.
@@ -155,45 +198,6 @@ program main
 
     call sdl_quit()
 contains
-    subroutine do_fire(fire, width, height)
-        integer, intent(inout) :: fire(*)
-        integer, intent(in)    :: width
-        integer, intent(in)    :: height
-        integer                :: d, i, p, rnd
-        integer                :: x, y
-        real                   :: r
-
-        do y = 2, height
-            do x = 1, width
-                i = (y - 1) * width + x
-                p = fire(i)
-
-                if (p == 0) then
-                    d       = i - width
-                    fire(d) = 0
-                else
-                    call random_number(r)
-                    rnd     = iand(int(r * 3.0), 3)
-                    d       = (i - rnd + 1) - width
-                    fire(d) = p - iand(rnd, 1)
-                end if
-            end do
-        end do
-    end subroutine do_fire
-
-    subroutine init(fire, width, height)
-        integer, intent(inout) :: fire(*)
-        integer, intent(in)    :: width
-        integer, intent(in)    :: height
-        integer                :: x
-
-        fire(1:width * height) = 1
-
-        do x = 1, width
-            fire((height - 1) * width + x) = 36
-        end do
-    end subroutine init
-
     subroutine render(buffer, fire, width, height)
         type(buffer_type), intent(inout) :: buffer
         integer,           intent(inout) :: fire(*)
