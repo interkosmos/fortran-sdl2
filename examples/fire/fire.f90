@@ -192,8 +192,6 @@ contains
         do x = 1, width
             fire((height - 1) * width + x) = 36
         end do
-
-        call sdl_unlock_texture(buffer%texture)
     end subroutine init
 
     subroutine render(buffer, fire, width, height)
