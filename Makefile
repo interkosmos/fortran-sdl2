@@ -1,12 +1,12 @@
 .POSIX:
 .SUFFIXES:
 
-FC          = gfortran
-SDL_CFLAGS  = `sdl2-config --cflags`
-SDL_LDLIBS  = `sdl2-config --libs`
-FFLAGS      = -g -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
-LDLIBS      = $(SDL_LDLIBS)
-EXAMPLES    = examples
+FC         = gfortran
+SDL_CFLAGS = `sdl2-config --cflags`
+SDL_LDLIBS = `sdl2-config --libs`
+FFLAGS     = -g -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
+LDLIBS     = $(SDL_LDLIBS)
+EXAMPLES   = examples
 
 SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_stdinc.f90 \
@@ -41,36 +41,52 @@ MIX_OBJ = sdl2_mixer.o
 TTF_SRC = src/sdl2_ttf.f90
 TTF_OBJ = sdl2_ttf.o
 
-ALPHA   = alpha
-DRAW    = draw
-DVD     = dvd
-EVENTS  = events
-IMAGE   = image
+ALPHA   = examples/alpha/alpha
+DRAW    = examples/draw/draw
+DVD     = examples/dvd/dvd
+EVENTS  = examples/events/events
+FIRE    = examples/fire/fire
+IMAGE   = examples/image/image
+INFO    = examples/info/info
+MSGBOX  = examples/msgbox/msgbox
+OPERA   = examples/opera/opera
+PIXEL   = examples/pixel/pixel
+SCALING = examples/scaling/scaling
+TEXT    = examples/text/text
+VOXEL   = examples/voxel/voxel
+WINDOW  = examples/window/window
 
-INFO    = info
-MSGBOX  = msgbox
-OPERA   = opera
-PIXEL   = pixel
-SCALING = scaling
-TEXT    = text
-VOXEL   = voxel
-WINDOW  = window
-
-.PHONY: all clean examples
+.PHONY: all clean examples sdl2 sdl2_image sdl2_mixer sdl2_ttf \
+        alpha draw dvd events fire image info msgbox opera pixel scaling text voxel window
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
-examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(INFO) $(IMAGE) $(MSGBOX) \
+examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(INFO) $(IMAGE) $(MSGBOX) \
           $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
+# Build targets for examples.
+alpha: $(ALPHA)
+draw: $(DRAW)
+dvd: $(DVD)
+events: $(EVENTS)
+fire: $(FIRE)
+image: $(IMAGE)
+info: $(INFO)
+msgbox: $(MSGBOX)
+opera: $(OPERA)
+pixel: $(PIXEL)
+scaling: $(SCALING)
+text: $(TEXT)
+voxel: $(VOXEL)
+window: $(WINDOW)
+
+# Build targets SDL 2.0 interfaces.
 sdl2: $(SDL_OBJ)
-
 sdl2_image: $(IMG_OBJ)
-
 sdl2_mixer: $(MIX_OBJ)
-
 sdl2_ttf: $(TTF_OBJ)
 
+# SDL 2.0 Interfaces.
 $(SDL_OBJ):
 	$(FC) $(FFLAGS) -c $(SDL_SRC)
 
@@ -83,43 +99,47 @@ $(MIX_OBJ):
 $(TTF_OBJ):
 	$(FC) $(FFLAGS) -c $(TTF_SRC)
 
-$(ALPHA): $(EXAMPLES)/$(ALPHA)/$(ALPHA).f90 $(SDL_OBJ)
+# Examples.
+$(ALPHA): $(ALPHA).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DRAW): $(EXAMPLES)/$(DRAW)/$(DRAW).f90 $(SDL_OBJ)
+$(DRAW): $(DRAW).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DVD): $(EXAMPLES)/$(DVD)/$(DVD).f90 $(SDL_OBJ) $(IMG_OBJ)
+$(DVD): $(DVD).f90 $(SDL_OBJ) $(IMG_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
 
-$(EVENTS): $(EXAMPLES)/$(EVENTS)/$(EVENTS).f90 $(SDL_OBJ)
+$(EVENTS): $(EVENTS).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(IMAGE): $(EXAMPLES)/$(IMAGE)/$(IMAGE).f90 $(SDL_OBJ)
+$(FIRE): $(FIRE).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(INFO): $(EXAMPLES)/$(INFO)/$(INFO).f90 $(SDL_OBJ)
+$(IMAGE): $(IMAGE).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(OPERA): $(EXAMPLES)/$(OPERA)/$(OPERA).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+$(INFO): $(INFO).f90 $(SDL_OBJ)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
+$(OPERA): $(OPERA).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
-$(PIXEL): $(EXAMPLES)/$(PIXEL)/$(PIXEL).f90 $(SDL_OBJ)
+$(PIXEL): $(PIXEL).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(MSGBOX): $(EXAMPLES)/$(MSGBOX)/$(MSGBOX).f90 $(SDL_OBJ)
+$(MSGBOX): $(MSGBOX).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(SCALING): $(EXAMPLES)/$(SCALING)/$(SCALING).f90 $(SDL_OBJ)
+$(SCALING): $(SCALING).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(TEXT): $(EXAMPLES)/$(TEXT)/$(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
+$(TEXT): $(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_ttf
 
-$(VOXEL): $(EXAMPLES)/$(VOXEL)/$(VOXEL).f90 $(SDL_OBJ)
+$(VOXEL): $(VOXEL).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(WINDOW): $(EXAMPLES)/$(WINDOW)/$(WINDOW).f90 $(SDL_OBJ)
+$(WINDOW): $(WINDOW).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 clean:
@@ -129,6 +149,7 @@ clean:
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
 	if [ -e $(DVD) ]; then rm $(DVD); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
+	if [ -e $(FIRE) ]; then rm $(FIRE); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi

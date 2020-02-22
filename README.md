@@ -14,8 +14,10 @@ The interfaces have been built successfully with GNU Fortran 9, but other modern
 compilers should work as well. In most cases, a Fortran 2003 compiler is
 sufficient.
 
-Install SDL 2.0, SDL_image, SDL_mixer, and SDL2_ttf with development headers. On
-FreeBSD, run:
+Install SDL 2.0, [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
+[SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and
+[SDL2_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/) with development
+headers. On FreeBSD, run:
 
 ```
 # pkg install devel/sdl20 graphics/sdl2_image audio/sdl2_mixer graphics/sdl2_ttf
@@ -164,6 +166,7 @@ Some demo applications can be found in `examples/`.
 * **draw** draws some shapes (hardware renderer).
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
+* **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to `stdout` (software renderer).
 * **msgbox** shows a simple message box (software renderer).
@@ -171,7 +174,7 @@ Some demo applications can be found in `examples/`.
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
-* **voxel** renders a voxel space with direct pixel manipulation (hardware renderer).
+* **voxel** renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Compile all examples with:
