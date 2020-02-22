@@ -159,24 +159,22 @@ contains
         integer, intent(inout) :: fire(*)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer                :: d, i, n, p, rnd
+        integer                :: d, i, p, rnd
         integer                :: x, y
         real                   :: r
 
-        n = width * height
-
         do y = 2, height
             do x = 1, width
-                i = modulo(y * width + x, n)
+                i = (y - 1) * width + x
                 p = fire(i)
 
                 if (p == 0) then
-                    d       = modulo(i - width, n)
+                    d       = i - width
                     fire(d) = 0
                 else
                     call random_number(r)
                     rnd     = iand(int(r * 3.0), 3)
-                    d       = modulo((i - rnd + 1) - width, n)
+                    d       = (i - rnd + 1) - width
                     fire(d) = p - iand(rnd, 1)
                 end if
             end do
@@ -187,14 +185,12 @@ contains
         integer, intent(inout) :: fire(*)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer                :: x, y
+        integer                :: x
 
         fire(1:width * height) = 1
 
-        do y = 1, height / 2
-            do x = 1, width
-                fire((height - y) * width + x) = 36
-            end do
+        do x = 1, width
+            fire((height - 1) * width + x) = 36
         end do
 
         call sdl_unlock_texture(buffer%texture)
@@ -213,7 +209,7 @@ contains
 
         do y = 1, height
             do x = 1, width
-                i = fire(modulo((y * width) + x, width * height))
+                i = fire(((y - 1) * width) + x)
                 p = palette(i)
 
                 buffer%pixels(y * width + x) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
