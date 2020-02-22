@@ -158,9 +158,9 @@ $ gfortran -Wall `sdl2-config --cflags` -o example example.f90 sdl2.o `sdl2-conf
 The `-Wl,-rpath` argument may be required optionally.
 
 ## Further Examples
-Some demo applications can be found in `examples/`.
-
 ![screen shot](screenshot.png)
+
+Some demo applications can be found in `examples/`:
 
 * **alpha** makes one color of an image transparent (software renderer).
 * **draw** draws some shapes (hardware renderer).
@@ -168,7 +168,7 @@ Some demo applications can be found in `examples/`.
 * **events** polls SDL events (software renderer).
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
 * **image** loads and displays an image (software renderer).
-* **info** prints debug information to `stdout` (software renderer).
+* **info** prints debug information to console (software renderer).
 * **msgbox** shows a simple message box (software renderer).
 * **opera** plays an OGG file with SDL_mixer (software renderer).
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).

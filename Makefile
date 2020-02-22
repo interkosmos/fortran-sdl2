@@ -6,7 +6,6 @@ SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
 FFLAGS     = -g -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS     = $(SDL_LDLIBS)
-EXAMPLES   = examples
 
 SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_stdinc.f90 \
@@ -56,7 +55,8 @@ TEXT    = examples/text/text
 VOXEL   = examples/voxel/voxel
 WINDOW  = examples/window/window
 
-.PHONY: all clean examples sdl2 sdl2_image sdl2_mixer sdl2_ttf \
+.PHONY: all clean examples \
+        sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         alpha draw dvd events fire image info msgbox opera pixel scaling text voxel window
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
@@ -142,6 +142,7 @@ $(VOXEL): $(VOXEL).f90 $(SDL_OBJ)
 $(WINDOW): $(WINDOW).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+# Delete *.mod, *.o, and all compiled examples.
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
 	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
