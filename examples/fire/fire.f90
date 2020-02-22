@@ -41,6 +41,7 @@ program main
     integer           :: rc
     integer           :: fire(SCREEN_WIDTH * SCREEN_HEIGHT)
 
+    ! Set colour palette.
     palette = [ rgb_type(  7,   7,   7), &
                 rgb_type( 31,   7,   7), &
                 rgb_type( 47,  15,   7), &
@@ -79,6 +80,7 @@ program main
                 rgb_type(239, 239, 199), &
                 rgb_type(255, 255, 255) ]
 
+    ! Initialise PRNG.
     call random_seed()
 
     ! Initialise SDL.
@@ -112,9 +114,11 @@ program main
                                         SDL_TEXTUREACCESS_STREAMING, &
                                         buffer%width, &
                                         buffer%height)
+
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
-    buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+    buffer%rect = sdl_rect(0, 0, buffer%width, buffer%height)
 
     ! Get texture's pixel pointers.
     rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
@@ -122,7 +126,7 @@ program main
     call sdl_unlock_texture(buffer%texture)
 
     ! Initialise fire.
-    call setup(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
+    call init(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Main loop.
     loop: do
@@ -179,6 +183,23 @@ contains
         end do
     end subroutine do_fire
 
+    subroutine init(fire, width, height)
+        integer, intent(inout) :: fire(*)
+        integer, intent(in)    :: width
+        integer, intent(in)    :: height
+        integer                :: x, y
+
+        fire(1:width * height) = 1
+
+        do y = 1, height / 2
+            do x = 1, width
+                fire((height - y) * width + x) = 36
+            end do
+        end do
+
+        call sdl_unlock_texture(buffer%texture)
+    end subroutine init
+
     subroutine render(buffer, fire, width, height)
         type(buffer_type), intent(inout) :: buffer
         integer,           intent(inout) :: fire(*)
@@ -201,21 +222,4 @@ contains
 
         call sdl_unlock_texture(buffer%texture)
     end subroutine render
-
-    subroutine setup(fire, width, height)
-        integer, intent(inout) :: fire(*)
-        integer, intent(in)    :: width
-        integer, intent(in)    :: height
-        integer                :: x, y
-
-        fire(1:width * height) = 1
-
-        do y = 1, height / 2
-            do x = 1, width
-                fire((height - y) * width + x) = 36
-            end do
-        end do
-
-        call sdl_unlock_texture(buffer%texture)
-    end subroutine setup
 end program main
