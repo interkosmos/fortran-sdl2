@@ -55,7 +55,7 @@ program main
         stop
     end if
 
-    if (img_init(IMG_INIT_PNG)) then
+    if (img_init(IMG_INIT_PNG) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -158,11 +158,11 @@ program main
     call sdl_quit()
 contains
     subroutine color_mod(texture, colors)
-        type(c_ptr), intent(inout) :: texture
-        type(color), intent(inout) :: colors(:)
-        integer, save              :: c = 0
-        integer                    :: n
-        real                       :: r
+        type(c_ptr),      intent(inout) :: texture
+        type(color_type), intent(inout) :: colors(:)
+        integer, save                   :: c = 0
+        integer                         :: n
+        real                            :: r
 
         n = c
 
