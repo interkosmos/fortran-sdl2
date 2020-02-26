@@ -16,7 +16,7 @@ sufficient.
 
 Install SDL 2.0, [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and
-[SDL2_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/) with development
+[SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/) with development
 headers. On FreeBSD, run:
 
 ```
@@ -24,7 +24,7 @@ headers. On FreeBSD, run:
 ```
 
 ## Building the SDL 2.0 Interfaces
-Clone the repository and then run `make` to build the SDL2 interfaces:
+Clone the repository and then run `make` to build the interfaces:
 
 ```
 $ git clone https://github.com/interkosmos/fortran-sdl2
@@ -167,6 +167,7 @@ Some demo applications can be found in `examples/`:
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
+* **forest** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
 * **msgbox** shows a simple message box (software renderer).
@@ -630,7 +631,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_RWFromConstMem                    |   –   |
 | SDL_RWFromFP                          |   –   |
 | SDL_RWFromFile                        |   ✓   |
-| SDL_RWFromMem                         |   –   |
+| SDL_RWFromMem                         |   ✓   |
 | SDL_RWclose                           |   –   |
 | SDL_RWread                            |   –   |
 | SDL_RWseek                            |   –   |
