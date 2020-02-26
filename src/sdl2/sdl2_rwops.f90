@@ -27,6 +27,6 @@ module sdl2_rwops
             type(c_ptr),         intent(in), value :: mem
             integer(kind=c_int), intent(in), value :: size
             type(c_ptr)                            :: sdl_rw_from_mem
-        end function sdl_rw_from_const_mem
+        end function sdl_rw_from_mem
     end interface
 end module sdl2_rwops

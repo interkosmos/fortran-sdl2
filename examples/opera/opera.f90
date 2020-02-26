@@ -14,18 +14,12 @@ program main
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: WIN_WIDTH  = 320
-    integer,          parameter :: WIN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME  = 'italy.bmp'
-    character(len=*), parameter :: OGG_PATH   = 'opera.ogg'
-    character(len=*), parameter :: TTF_PATH   = 'font.ttf'
-    character(len=*), parameter :: MESSAGE    = 'Playing ' // OGG_PATH // ' ...'
-
-    integer     :: rc
-    logical     :: done = .false.
-    type(c_ptr) :: font
-    type(c_ptr) :: music
-    type(c_ptr) :: window
+    integer,          parameter :: SCREEN_WIDTH  = 320
+    integer,          parameter :: SCREEN_HEIGHT = 240
+    character(len=*), parameter :: FILE_NAME     = 'italy.bmp'
+    character(len=*), parameter :: OGG_PATH      = 'opera.ogg'
+    character(len=*), parameter :: TTF_PATH      = 'font.ttf'
+    character(len=*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
 
     type(sdl_color)                 :: color
     type(sdl_event)                 :: event
@@ -36,55 +30,41 @@ program main
     type(sdl_surface),      pointer :: image_opt
     type(sdl_surface),      pointer :: text
     type(sdl_surface),      pointer :: window_surface
+    type(c_ptr)                     :: font
+    type(c_ptr)                     :: music
+    type(c_ptr)                     :: window
+    integer                         :: rc
+    logical                         :: done = .false.
 
     ! Initialise SDL.
-    rc = sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))
-
-    if (rc < 0) then
+    if (sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO)) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Initialise SDL_ttf.
-    rc = ttf_init()
-
-    if (rc < 0) then
+    if (ttf_init() < 0) then
         write (stderr, *) 'TTF Error: ', sdl_get_error()
         stop
     end if
 
-    ! Set font colour. We need some `transfer()` magic to cast
-    ! from Fortran integer to C `Uint8`.
-    color%r = transfer([255, 0], 1_c_int8_t)
-    color%g = transfer([165, 0], 1_c_int8_t)
-    color%b = transfer([  0, 0], 1_c_int8_t)
-    color%a = transfer([255, 0], 1_c_int8_t)
+    ! Set font colour.
+    color = sdl_color(uint8(255), uint8(165), uint8(0), uint8(SDL_ALPHA_OPAQUE))
 
     ! Open font and draw to surface.
     font = ttf_open_font(TTF_PATH // c_null_char, 12)
     text => ttf_render_text_solid(font, MESSAGE // c_null_char, color)
 
-    rect_text%x = 0
-    rect_text%y = 0
-    rect_text%w = text%w
-    rect_text%h = text%h
-
     ! Initialise SDL_mixer.
-    rc = mix_open_audio(MIX_DEFAULT_FREQUENCY, &
-                        AUDIO_S16LSB, &
-                        MIX_DEFAULT_CHANNELS, &
-                        4096)
-
-    if (rc < 0) then
+    if (mix_open_audio(MIX_DEFAULT_FREQUENCY, AUDIO_S16LSB, MIX_DEFAULT_CHANNELS, 4096) < 0) then
         write (stderr, *) 'MIX Error: ', sdl_get_error()
         stop
     end if
 
     ! Play music.
     music = mix_load_mus(OGG_PATH // c_null_char)
-    rc    = mix_play_music(music, -1)
 
-    if (rc < 0) then
+    if (mix_play_music(music, -1) < 0) then
         write (stderr, *) 'MIX Error: ', sdl_get_error()
         stop
     end if
@@ -93,8 +73,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIN_WIDTH, &
-                               WIN_HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -107,18 +87,14 @@ program main
     pixel_format   => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
     image_opt      => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
 
-    rect_image%x = 0
-    rect_image%y = 0
-    rect_image%w = WIN_WIDTH
-    rect_image%h = WIN_HEIGHT
+    rect_text  = sdl_rect(0, 0, text%w, text%h)
+    rect_image = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     rc = sdl_update_window_surface(window)
 
     ! Event loop.
     do while (.not. done)
-        rc = sdl_poll_event(event)
-
-        if (rc > 0) then
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     done = .true.

@@ -13,9 +13,9 @@ program main
     use :: sdl2
     implicit none
 
-    integer,          parameter :: WIDTH     = 640
-    integer,          parameter :: HEIGHT    = 480
-    character(len=*), parameter :: FILE_NAME = 'wall.bmp'
+    integer,          parameter :: SCREEN_WIDTH  = 640
+    integer,          parameter :: SCREEN_HEIGHT = 480
+    character(len=*), parameter :: FILE_NAME     = 'wall.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface
@@ -29,9 +29,7 @@ program main
     logical                         :: done = .false.
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -40,8 +38,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -54,20 +52,11 @@ program main
     pixel_format    => sdl_get_pixel_format(window_surface)
     image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)
 
-    image_rect%w    = image_optimised%w
-    image_rect%h    = image_optimised%h
-    image_rect%x    = 0
-    image_rect%y    = 0
-
-    window_rect%w   = 256
-    window_rect%h   = 256
-    window_rect%x   = 0
-    window_rect%y   = 0
+    image_rect  = sdl_rect(0, 0, image_optimised%w, image_optimised%h)
+    window_rect = sdl_rect(0, 0, 256, 256)
 
     do while (.not. done)
-        rc = sdl_poll_event(event)
-
-        if (rc > 0) then
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     done = .true.
@@ -81,6 +70,7 @@ program main
     ! Quit gracefully.
     call sdl_free_surface(image_optimised)
     call sdl_free_surface(image_loaded)
+
     call sdl_destroy_window(window)
     call sdl_quit()
 end program main

@@ -45,10 +45,7 @@ program main
     screen => sdl_get_window_surface(window)
     image  => sdl_load_bmp('chess.bmp' // c_null_char)
 
-    rect%w = image%w
-    rect%h = image%h
-    rect%x = 0
-    rect%y = 0
+    rect = sdl_rect(0, 0, image%w, image%h)
 
     ! Output to the window.
     rc = sdl_blit_surface(image, rect, screen, rect)

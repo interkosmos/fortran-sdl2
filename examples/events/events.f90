@@ -13,8 +13,8 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 480
+    integer, parameter :: SCREEN_WIDTH  = 640
+    integer, parameter :: SCREEN_HEIGHT = 480
 
     type(c_ptr)                :: window
     type(sdl_surface), pointer :: surface
@@ -23,9 +23,7 @@ program main
     logical                    :: done = .false.
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -34,8 +32,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -48,9 +46,7 @@ program main
     rc = sdl_update_window_surface(window)
 
     do while (.not. done)
-        rc = sdl_poll_event(event)
-
-        if (rc > 0) then
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     done = .true.

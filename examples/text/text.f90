@@ -16,9 +16,8 @@ program main
     integer,          parameter :: SCREEN_WIDTH  = 320
     integer,          parameter :: SCREEN_HEIGHT = 240
     character(len=*), parameter :: STRING        = 'Hello, World!'
-    character(len=*), parameter :: PATH          = 'font.ttf'
+    character(len=*), parameter :: FONT_PATH     = 'font.ttf'
 
-    logical                    :: done = .false.
     type(c_ptr)                :: window
     type(c_ptr)                :: renderer
     type(c_ptr)                :: texture
@@ -28,19 +27,16 @@ program main
     type(sdl_event)            :: event
     type(sdl_color)            :: color
     integer                    :: rc
+    logical                    :: done = .false.
 
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
 
     ! Initialise SDL_ttf.
-    rc = ttf_init()
-
-    if (rc < 0) then
+    if (ttf_init() < 0) then
         write (stderr, *) 'TTF Error: ', sdl_get_error()
         stop
     end if
@@ -62,13 +58,10 @@ program main
     renderer = sdl_create_renderer(window, -1, SDL_RENDERER_ACCELERATED)
 
     ! Load font and set font colour.
-    font = ttf_open_font(PATH // c_null_char, 12)
+    font = ttf_open_font(FONT_PATH // c_null_char, 12)
 
     ! Set font colour.
-    color%r = uint8(255)
-    color%g = uint8(0)
-    color%b = uint8(0)
-    color%a = uint8(SDL_ALPHA_OPAQUE)
+    color = sdl_color(uint8(255),  uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
 
     ! Event loop.
     do while (.not. done)
@@ -82,19 +75,17 @@ program main
         ! Prepare texture.
         surface => ttf_render_text_solid(font, STRING // c_null_char, color)
         texture = sdl_create_texture_from_surface(renderer, surface)
-
-        rect%x = 0
-        rect%y = 0
-        rect%w = surface%w
-        rect%h = surface%h
+        rect    = sdl_rect(0, 0, surface%w, surface%h)
 
         ! Render text.
         rc = sdl_render_clear(renderer)
         rc = sdl_render_copy(renderer, texture, rect, rect)
 
         call sdl_render_present(renderer)
+
         call sdl_destroy_texture(texture)
         call sdl_free_surface(surface)
+
         call sdl_delay(50)
     end do
 

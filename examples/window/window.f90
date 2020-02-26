@@ -12,8 +12,8 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 480
+    integer, parameter :: SCREEN_WIDTH  = 640
+    integer, parameter :: SCREEN_HEIGHT = 480
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: surface
@@ -22,20 +22,8 @@ program main
     integer                         :: rc
     integer                         :: color
 
-    rects(1)%x = 100
-    rects(1)%y = 100
-    rects(1)%w = 200
-    rects(1)%h = 100
-
-    rects(2)%x = 150
-    rects(2)%y = 150
-    rects(2)%w = 200
-    rects(2)%h = 100
-
     ! Initialise SDL.
-    rc = sdl_init(SDL_INIT_VIDEO)
-
-    if (rc < 0) then
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -44,8 +32,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
@@ -61,6 +49,9 @@ program main
     color = sdl_map_rgb(pixel_format, 255, 0, 0)
 
     ! Draw and update.
+    rects(1) = sdl_rect(100, 100, 200, 100)
+    rects(2) = sdl_rect(150, 150, 200, 100)
+
     rc = sdl_fill_rects(surface, rects, 2, color)
     rc = sdl_update_window_surface(window)
 

@@ -13,18 +13,18 @@ program main
     use :: sdl2_image
     implicit none
 
-    type :: color
+    type :: color_type
         integer(kind=2) :: r
         integer(kind=2) :: g
         integer(kind=2) :: b
-    end type color
+    end type color_type
 
     character(len=*), parameter :: FILE_NAME = 'logo.png'
 
     type(c_ptr)              :: window
     type(c_ptr)              :: renderer
     type(c_ptr)              :: texture
-    type(color)              :: colors(5)
+    type(color_type)         :: colors(5)
     type(sdl_rect)           :: src_rect
     type(sdl_rect)           :: dst_rect
     type(sdl_event)          :: event
@@ -39,20 +39,23 @@ program main
     integer                  :: screen_height
     integer                  :: screen_width
 
+    ! Initialise PRNG.
     call random_seed()
 
     ! Fill colour table.
-    colors(1)%r = 255; colors(1)%g = 0;   colors(1)%b = 0
-    colors(2)%r = 255; colors(2)%g = 0;   colors(2)%b = 255
-    colors(3)%r = 255; colors(3)%g = 255; colors(3)%b = 0
-    colors(4)%r = 0;   colors(4)%g = 0;   colors(4)%b = 255
-    colors(5)%r = 0;   colors(5)%g = 255; colors(5)%b = 255
+    colors(1) = color_type(255,   0,   0)
+    colors(2) = color_type(255,   0, 255)
+    colors(3) = color_type(255, 255,   0)
+    colors(4) = color_type(  0,   0, 255)
+    colors(5) = color_type(  0, 255, 255)
 
     ! Initialise SDL and SDL2_image.
-    rc = sdl_init(SDL_INIT_VIDEO)
-    rc = img_init(IMG_INIT_PNG)
+    if (sdl_init(SDL_INIT_VIDEO) < 0) then
+        write (stderr, *) 'SDL Error: ', sdl_get_error()
+        stop
+    end if
 
-    if (rc < 0) then
+    if (img_init(IMG_INIT_PNG)) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -85,11 +88,7 @@ program main
                            texture_height)
 
     ! Set source and destination rects.
-    src_rect%w = texture_width
-    src_rect%h = texture_height
-    src_rect%x = 0
-    src_rect%y = 0
-
+    src_rect = sdl_rect(0, 0, texture_width, texture_height)
     dst_rect = src_rect
 
     ! Colourise texture.

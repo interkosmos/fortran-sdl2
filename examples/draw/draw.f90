@@ -11,15 +11,16 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 480
-    real,    parameter :: RAD    = acos(-1.0) / 180
+    integer, parameter :: SCREEN_WIDTH  = 640
+    integer, parameter :: SCREEN_HEIGHT = 480
+    real,    parameter :: RAD           = acos(-1.0) / 180
 
     type(c_ptr)     :: window
     type(c_ptr)     :: renderer
     type(sdl_event) :: event
     type(sdl_rect)  :: rect1, rect2
-    integer         :: i, rc, x, y
+    integer         :: i, rc
+    integer         :: x, y
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -31,8 +32,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
