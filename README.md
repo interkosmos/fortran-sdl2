@@ -628,7 +628,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_QuitRequested                     |   –   |
 | SDL_QuitSubSystem                     |   –   |
 | SDL_REVISION                          |   –   |
-| SDL_RWFromConstMem                    |   –   |
+| SDL_RWFromConstMem                    |   ✓   |
 | SDL_RWFromFP                          |   –   |
 | SDL_RWFromFile                        |   ✓   |
 | SDL_RWFromMem                         |   ✓   |
