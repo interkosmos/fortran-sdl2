@@ -103,6 +103,8 @@ program main
 
     integer, parameter :: SCREEN_WIDTH  = 640
     integer, parameter :: SCREEN_HEIGHT = 400
+    integer, parameter :: FIRE_HEIGHT   = SCREEN_HEIGHT / 2
+    integer, parameter :: FIRE_WIDTH    = SCREEN_WIDTH / 2
 
     type :: buffer_type
         integer                          :: format       ! Texture format.
@@ -120,7 +122,8 @@ program main
     type(c_ptr)       :: renderer
     type(c_ptr)       :: window
     type(sdl_event)   :: event
-    integer           :: fire(SCREEN_WIDTH * SCREEN_HEIGHT)
+    type(sdl_rect)    :: screen_rect
+    integer           :: fire(FIRE_WIDTH * FIRE_HEIGHT)
     integer           :: rc
 
     ! Initialise PRNG.
@@ -145,12 +148,12 @@ program main
         stop
     end if
 
-    ! Create renderer.
+    ! Create renderer with VSync enabled.
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
                                                    SDL_RENDERER_PRESENTVSYNC))
     ! Create frame buffer texture.
-    buffer%width  = SCREEN_WIDTH
-    buffer%height = SCREEN_HEIGHT
+    buffer%width  = FIRE_WIDTH
+    buffer%height = FIRE_HEIGHT
 
     buffer%texture = sdl_create_texture(renderer, &
                                         SDL_PIXELFORMAT_ARGB8888, &
@@ -161,7 +164,8 @@ program main
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
 
-    buffer%rect = sdl_rect(0, 0, buffer%width, buffer%height)
+    buffer%rect = sdl_rect(0, 0, FIRE_WIDTH, FIRE_HEIGHT)
+    screen_rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Get texture's pixel pointers.
     rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
@@ -169,7 +173,7 @@ program main
     call sdl_unlock_texture(buffer%texture)
 
     ! Initialise fire.
-    call fire_init(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
+    call fire_init(fire, FIRE_WIDTH, FIRE_HEIGHT)
 
     ! Main loop.
     loop: do
@@ -181,11 +185,11 @@ program main
             end select
         end do
 
-        call fire_burn(fire, SCREEN_WIDTH, SCREEN_HEIGHT)
-        call render(buffer, fire, SCREEN_WIDTH, SCREEN_HEIGHT)
+        call fire_burn(fire, FIRE_WIDTH, FIRE_HEIGHT)
+        call render(buffer, fire, FIRE_WIDTH, FIRE_HEIGHT)
 
         ! Copy buffer texture to screen.
-        rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
+        rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, screen_rect)
         call sdl_render_present(renderer)
     end do loop
 
