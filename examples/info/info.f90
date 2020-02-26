@@ -12,16 +12,14 @@ program main
     use :: sdl2
     implicit none
 
-    integer, parameter :: WIDTH  = 640
-    integer, parameter :: HEIGHT = 240
+    integer, parameter :: SCREEN_WIDTH  = 640
+    integer, parameter :: SCREEN_HEIGHT = 240
 
     type(c_ptr) :: window
     integer     :: rc
 
     ! Initialise SDL.
-    rc = sdl_init(ior(SDL_INIT_TIMER, ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO)))
-
-    if (rc < 0) then
+    if (sdl_init(ior(SDL_INIT_TIMER, ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))) < 0) then
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -30,8 +28,8 @@ program main
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
-                               WIDTH, &
-                               HEIGHT, &
+                               SCREEN_WIDTH, &
+                               SCREEN_HEIGHT, &
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
