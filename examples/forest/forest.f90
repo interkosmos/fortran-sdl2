@@ -23,7 +23,7 @@ contains
         integer,                      intent(in)    :: height
         real,                         intent(in)    :: p
         integer                                     :: x, y
-        real                                        :: r
+        real                                        :: r(width, height)
 
         allocate (world(width, height))
         allocate (buffer(width, height))
@@ -32,11 +32,11 @@ contains
         buffer = TILE_NONE
 
         call random_seed()
+        call random_number(r)
 
-        do y = 1, height
-            do x = 1, width
-                call random_number(r)
-                if (r <= p) &
+        do concurrent (y = 1:height)
+            do concurrent (x = 1:width)
+                if (r(x, y) <= p) &
                     world(x, y) = TILE_TREE
             end do
         end do
