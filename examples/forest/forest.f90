@@ -16,22 +16,25 @@ module forest
     public :: forest_init
     public :: forest_next
 contains
-    subroutine forest_init(world, p)
+    subroutine forest_init(world, buffer, width, height, p)
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
+        integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
+        integer,                      intent(in)    :: width
+        integer,                      intent(in)    :: height
         real,                         intent(in)    :: p
-        integer                                     :: w, h
         integer                                     :: x, y
         real                                        :: r
 
+        allocate (world(width, height))
+        allocate (buffer(width, height))
+
+        world  = TILE_NONE
+        buffer = TILE_NONE
+
         call random_seed()
 
-        w = size(world(:, 1))
-        h = size(world(1, :))
-
-        world = TILE_NONE
-
-        do y = 1, h
-            do x = 1, w
+        do y = 1, height
+            do x = 1, width
                 call random_number(r)
                 if (r <= p) &
                     world(x, y) = TILE_TREE
@@ -39,23 +42,24 @@ contains
         end do
     end subroutine forest_init
 
-    subroutine forest_next(world, buffer, w, h, p, f)
+    subroutine forest_next(world, buffer, width, height, p, f)
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
         integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
-        integer,                      intent(in)    :: w
-        integer,                      intent(in)    :: h
+        integer,                      intent(in)    :: width
+        integer,                      intent(in)    :: height
         real,                         intent(in)    :: p
         real,                         intent(in)    :: f
         integer                                     :: i, j, nx, ny, x, y
         logical                                     :: has_fire
-        real                                        :: r(w, h)
+        real                                        :: r(width, height)
 
         call random_seed()
         call random_number(r)
+
         buffer = TILE_NONE
 
-        do concurrent (y = 1:h)
-            do concurrent (x = 1:w)
+        do concurrent (y = 1:height)
+            do concurrent (x = 1:width)
                 buffer(x, y) = world(x, y)
                 has_fire = .false.
 
@@ -69,8 +73,8 @@ contains
                             do i = -1, 1
                                 if (i == 0 .and. j == 0) cycle
 
-                                nx = mod(x + i, w)
-                                ny = mod(y + j, h)
+                                nx = mod(x + i, width)
+                                ny = mod(y + j, height)
 
                                 if (world(nx, ny) == TILE_FIRE) then
                                     has_fire = .true.
@@ -144,6 +148,8 @@ program main
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
                                                    SDL_RENDERER_PRESENTVSYNC))
+
+    ! Create frame buffer texture.
     call create_frame_buffer(renderer, window, frame_buffer)
 
     ! Set-up the colour palette.
@@ -151,11 +157,8 @@ program main
     palette(TILE_TREE) = sdl_map_rgb(frame_buffer%pixel_format,  46, 139,  87)
     palette(TILE_FIRE) = sdl_map_rgb(frame_buffer%pixel_format, 255,   0,   0)
 
-    ! Initialise world.
-    allocate (world(SCREEN_WIDTH, SCREEN_HEIGHT))
-    allocate (buffer(SCREEN_WIDTH, SCREEN_HEIGHT))
-
-    call forest_init(world, 0.05)
+    ! Initialise world and buffer.
+    call forest_init(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.05)
 
     ! Clear screen.
     rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
@@ -227,7 +230,6 @@ contains
         w = size(world(:, 1))
         h = size(world(1, :))
 
-        ! Lock frame buffer texture.
         rc = sdl_lock_texture(frame_buffer%texture, &
                               frame_buffer%rect, &
                               frame_buffer%pixels_ptr, &
