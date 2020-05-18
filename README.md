@@ -211,7 +211,7 @@ color = sdl_color(r = transfer([255, 1], 1_c_int8_t)
                   a = transfer([SDL_ALPHA_OPAQUE, 1], 1_c_int8_t))
 ```
 
-The Fortran bindings provides a utility function `uint8()` that simplifies the
+The Fortran bindings provide a utility function `uint8()` that simplifies the
 conversion:
 
 ```fortran
