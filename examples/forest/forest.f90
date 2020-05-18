@@ -75,8 +75,8 @@ contains
                             do i = -1, 1
                                 if (i == 0 .and. j == 0) cycle
 
-                                nx = 1 + modulo(x + i, width - 1)
-                                ny = 1 + modulo(y + j, height - 1)
+                                nx = modulo(x + i, width)
+                                ny = modulo(y + j, height)
 
                                 if (world(nx, ny) == TILE_FIRE) then
                                     has_fire = .true.
@@ -123,6 +123,7 @@ program main
     type(c_ptr)                  :: window
     type(c_ptr)                  :: renderer
     type(sdl_event)              :: event
+    integer(kind=1), pointer     :: keys(:) => null()
     integer(kind=1), allocatable :: world(:, :)
     integer(kind=1), allocatable :: buffer(:, :)
     integer(kind=c_int32_t)      :: palette(3)
@@ -172,6 +173,10 @@ program main
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit loop
+
+                case (SDL_KEYDOWN)
+                    keys(0:) => sdl_get_keyboard_state()
+                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
             end select
         end do
 
