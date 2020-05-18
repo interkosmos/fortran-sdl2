@@ -17,6 +17,7 @@ module forest
     public :: forest_next
 contains
     subroutine forest_init(world, buffer, width, height, p)
+        !! Initialises world and buffer arrays.
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
         integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
         integer,                      intent(in)    :: width
@@ -43,6 +44,7 @@ contains
     end subroutine forest_init
 
     subroutine forest_next(world, buffer, width, height, p, f)
+        !! Next iteration of the cellular automaton.
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
         integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
         integer,                      intent(in)    :: width
@@ -73,8 +75,8 @@ contains
                             do i = -1, 1
                                 if (i == 0 .and. j == 0) cycle
 
-                                nx = mod(x + i, width)
-                                ny = mod(y + j, height)
+                                nx = 1 + modulo(x + i, width - 1)
+                                ny = 1 + modulo(y + j, height - 1)
 
                                 if (world(nx, ny) == TILE_FIRE) then
                                     has_fire = .true.
@@ -103,8 +105,8 @@ program main
     use :: forest
     implicit none
 
-    integer, parameter :: SCREEN_WIDTH  = 600
-    integer, parameter :: SCREEN_HEIGHT = 600
+    integer, parameter :: SCREEN_WIDTH  = 800
+    integer, parameter :: SCREEN_HEIGHT = 800
 
     type :: frame_buffer_type
         integer                          :: access
@@ -150,7 +152,7 @@ program main
                                                    SDL_RENDERER_PRESENTVSYNC))
 
     ! Create frame buffer texture.
-    call create_frame_buffer(renderer, window, frame_buffer)
+    call create_frame_buffer(renderer, window, frame_buffer, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Set-up the colour palette.
     palette(TILE_NONE) = sdl_map_rgb(frame_buffer%pixel_format,   0,   0,   0)
@@ -191,20 +193,22 @@ program main
     call sdl_destroy_window(window)
     call sdl_quit()
 contains
-    subroutine create_frame_buffer(renderer, window, frame_buffer)
+    subroutine create_frame_buffer(renderer, window, frame_buffer, width, height)
         !! Creates frame buffer texture and fills pixel pointer array
         !! `frame_buffer%pixels`.
         type(c_ptr),             intent(in)  :: renderer
         type(c_ptr),             intent(in)  :: window
         type(frame_buffer_type), intent(out) :: frame_buffer
+        integer,                 intent(in)  :: width
+        integer,                 intent(in)  :: height
 
-        ! Create buffer texture.
+        ! Create frame buffer texture.
         frame_buffer%texture = sdl_create_texture(renderer, &
                                                   SDL_PIXELFORMAT_ARGB8888, &
                                                   SDL_TEXTUREACCESS_STREAMING, &
-                                                  SCREEN_WIDTH, &
-                                                  SCREEN_HEIGHT)
-        frame_buffer%rect = sdl_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+                                                  width, &
+                                                  height)
+        frame_buffer%rect = sdl_rect(0, 0, width, height)
         frame_buffer%format = sdl_get_window_pixel_format(window)
         frame_buffer%pixel_format => sdl_alloc_format(frame_buffer%format)
 
@@ -215,29 +219,30 @@ contains
                               frame_buffer%pitch)
         call c_f_pointer(frame_buffer%pixels_ptr, &
                          frame_buffer%pixels, &
-                         shape=[SCREEN_WIDTH * SCREEN_HEIGHT])
+                         shape=[width * height])
         call sdl_unlock_texture(frame_buffer%texture)
     end subroutine create_frame_buffer
 
     subroutine render(frame_buffer, world, palette)
+        !! Renders world to frame buffer texture.
         type(frame_buffer_type),      intent(inout) :: frame_buffer
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
         integer(kind=c_int32_t),      intent(inout) :: palette(*)
         integer                                     :: offset, rc
-        integer                                     :: w, h
+        integer                                     :: width, height
         integer                                     :: x, y
 
-        w = size(world(:, 1))
-        h = size(world(1, :))
+        width = size(world(:, 1))
+        height = size(world(1, :))
 
         rc = sdl_lock_texture(frame_buffer%texture, &
                               frame_buffer%rect, &
                               frame_buffer%pixels_ptr, &
                               frame_buffer%pitch)
 
-        do concurrent (y = 1:h)
-            do concurrent (x = 1:w)
-                offset = (y * w) + x
+        do concurrent (y = 1:height)
+            do concurrent (x = 1:width)
+                offset = (y * width) + x
                 frame_buffer%pixels(offset) = palette(world(x, y))
             end do
         end do
