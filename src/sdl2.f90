@@ -51,6 +51,7 @@ module sdl2
     public :: sdl_get_hint
     public :: sdl_get_keyboard_state
     public :: sdl_get_platform
+    public :: sdl_get_render_driver_info
     public :: sdl_get_ticks
     public :: sdl_get_video_driver
     public :: sdl_get_window_surface
@@ -208,10 +209,7 @@ contains
         integer(kind=8)                 :: size
 
         ptr = sdl_get_audio_driver_(index)
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_audio_driver)
         call c_f_string_ptr(ptr, sdl_get_audio_driver)
@@ -226,10 +224,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_base_path_()
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_base_path)
         call c_f_string_ptr(ptr, sdl_get_base_path)
@@ -245,10 +240,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_current_audio_driver_()
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_current_audio_driver)
         call c_f_string_ptr(ptr, sdl_get_current_audio_driver)
@@ -263,10 +255,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_current_video_driver_()
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_current_video_driver)
         call c_f_string_ptr(ptr, sdl_get_current_video_driver)
@@ -281,10 +270,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_error_()
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_error)
         call c_f_string_ptr(ptr, sdl_get_error)
@@ -298,10 +284,7 @@ contains
         type(c_ptr)                      :: ptr
 
         ptr = sdl_get_keyboard_state_(c_null_ptr)
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
     end function sdl_get_keyboard_state
 
@@ -315,10 +298,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_hint_(name // c_null_char)
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_hint)
         call c_f_string_ptr(ptr, sdl_get_hint)
@@ -342,10 +322,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_platform_()
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_platform)
         call c_f_string_ptr(ptr, sdl_get_platform)
@@ -361,10 +338,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_video_driver_(index)
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_video_driver)
         call c_f_string_ptr(ptr, sdl_get_video_driver)
@@ -379,6 +353,7 @@ contains
         type(c_ptr)                   :: ptr
 
         ptr = sdl_get_window_surface_(window)
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_get_window_surface)
     end function sdl_get_window_surface
 
@@ -392,10 +367,7 @@ contains
         integer(kind=8)               :: size
 
         ptr = sdl_get_window_title_(window)
-
-        if (.not. c_associated(ptr)) &
-            return
-
+        if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_window_title)
         call c_f_string_ptr(ptr, sdl_get_window_title)

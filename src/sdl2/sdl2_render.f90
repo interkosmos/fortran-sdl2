@@ -30,11 +30,23 @@ module sdl2_render
         enumerator :: SDL_TEXTUREACCESS_TARGET
     end enum
 
+    ! SDL_RendererInfo
+    type, bind(c), public :: sdl_renderer_info
+        type(c_ptr)             :: name
+        integer(kind=c_int32_t) :: flags
+        integer(kind=c_int32_t) :: num_texture_formats
+        integer(kind=c_int32_t) :: texture_formats(16)
+        integer(kind=c_int)     :: max_texture_width
+        integer(kind=c_int)     :: max_texture_height
+    end type sdl_renderer_info
+
     public :: sdl_create_renderer
     public :: sdl_create_texture
     public :: sdl_create_texture_from_surface
     public :: sdl_destroy_renderer
     public :: sdl_destroy_texture
+    public :: sdl_get_num_render_drivers
+    public :: sdl_get_render_driver_info
     public :: sdl_get_render_target
     public :: sdl_lock_texture
     public :: sdl_query_texture
@@ -88,6 +100,20 @@ module sdl2_render
             type(sdl_surface), intent(in)        :: surface
             type(c_ptr)                          :: sdl_create_texture_from_surface
         end function sdl_create_texture_from_surface
+
+        ! int SDL_GetNumRenderDrivers(void)
+        function sdl_get_num_render_drivers() bind(c, name='SDL_GetNumRenderDrivers')
+            import :: c_int
+            integer(kind=c_int) :: sdl_get_num_render_drivers
+        end function sdl_get_num_render_drivers
+
+        ! int SDL_GetRenderDriverInfo(int index, SDL_RendererInfo *info)
+        function sdl_get_render_driver_info(index, info) bind(c, name='SDL_GetRenderDriverInfo')
+            import :: c_int, c_ptr
+            integer(kind=c_int), intent(in), value :: index
+            type(c_ptr),         intent(in), value :: info
+            integer(kind=c_int)                    :: sdl_get_render_driver_info
+        end function sdl_get_render_driver_info
 
         ! SDL_Texture *SDL_GetRenderTarget(SDL_Renderer *renderer)
         function sdl_get_render_target(renderer) bind(c, name='SDL_GetRenderTarget')

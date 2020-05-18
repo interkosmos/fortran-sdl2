@@ -16,7 +16,6 @@ program main
     integer, parameter :: SCREEN_HEIGHT = 240
 
     type(c_ptr) :: window
-    integer     :: rc
 
     ! Initialise SDL.
     if (sdl_init(ior(SDL_INIT_TIMER, ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO))) < 0) then
@@ -59,15 +58,27 @@ contains
 
     subroutine print_debug(window)
         !! Prints debug messages to stdout.
-        type(c_ptr), intent(in) :: window
-        integer                 :: dt(8)
-        integer                 :: w, h, x, y
-        type(sdl_version)       :: sdl_v
+        type(c_ptr), intent(in)         :: window
+        integer                         :: dt(8)
+        integer                         :: w, h, x, y
+        integer(kind=8)                 :: size
+        type(sdl_version)               :: sdl_v
+        type(sdl_renderer_info), target :: info
+        character(len=:), allocatable   :: str
 
         call date_and_time(values=dt)
         call sdl_get_version(sdl_v)
         call sdl_get_window_size(window, w, h)
         call sdl_get_window_position(window, x, y)
+
+        if (sdl_get_render_driver_info(0, c_loc(info)) == 0) then
+            size = c_strlen(info%name)
+            allocate (character(len=size) :: str)
+            call c_f_string_ptr(info%name, str)
+        else
+            allocate (character(len=3) :: str)
+            str = 'N/A'
+        end if
 
         print '(2a)',       'App path........: ', sdl_get_base_path()
         print '(a, i4, 5(a, i2.2))', &
@@ -84,6 +95,8 @@ contains
                                                   sdl_v%patch
         print '(2a)',       'Audio driver....: ', sdl_get_current_audio_driver()
         print '(2a)',       'Video driver....: ', sdl_get_current_video_driver()
+        print '(2a)',       'Renderer........: ', str
+        print '(2a)',       'VSync...........: ', has(ieor(info%flags, SDL_RENDERER_PRESENTVSYNC))
         print '(a, i0, a)', 'RAM.............: ', sdl_get_system_ram(), ' MiB'
         print '(a, i0)',    'CPU cores.......: ', sdl_get_cpu_count()
         print '(a, i0, a)', 'CPU L1 cache....: ', sdl_get_cpu_cache_line_size(), ' KiB'

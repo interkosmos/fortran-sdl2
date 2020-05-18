@@ -438,7 +438,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GetNumAudioDevices                |   ✓   |
 | SDL_GetNumAudioDrivers                |   –   |
 | SDL_GetNumDisplayModes                |   –   |
-| SDL_GetNumRenderDrivers               |   –   |
+| SDL_GetNumRenderDrivers               |   ✓   |
 | SDL_GetNumTouchDevices                |   –   |
 | SDL_GetNumTouchFingers                |   –   |
 | SDL_GetNumVideoDisplays               |   –   |
@@ -456,7 +456,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GetRelativeMouseState             |   –   |
 | SDL_GetRenderDrawBlendMode            |   –   |
 | SDL_GetRenderDrawColor                |   –   |
-| SDL_GetRenderDriverInfo               |   –   |
+| SDL_GetRenderDriverInfo               |   ✓   |
 | SDL_GetRenderTarget                   |   ✓   |
 | SDL_GetRenderer                       |   –   |
 | SDL_GetRendererInfo                   |   –   |
