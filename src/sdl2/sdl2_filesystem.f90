@@ -1,6 +1,6 @@
 ! sdl2_filesystem.f90
 !
-! Fortran 2008 interface to SDL_filesystem.h.
+! Fortran 2008 interfaces to SDL_filesystem.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

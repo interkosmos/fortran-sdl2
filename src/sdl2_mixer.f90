@@ -1,6 +1,6 @@
 ! sdl2_mixer.f90
 !
-! Fortran 2008 interface to SDL2_mixer.
+! Fortran 2008 interfaces to SDL2_mixer.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

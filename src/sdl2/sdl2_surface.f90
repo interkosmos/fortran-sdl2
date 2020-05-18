@@ -1,6 +1,6 @@
 ! sdl2_surface.f90
 !
-! Fortran 2008 interface to SDL_surface.h.
+! Fortran 2008 interfaces to SDL_surface.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

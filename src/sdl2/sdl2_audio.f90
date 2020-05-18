@@ -1,6 +1,6 @@
 ! sdl2_audio.f90
 !
-! Fortran 2008 interface to SDL_audio.h.
+! Fortran 2008 interfaces to SDL_audio.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

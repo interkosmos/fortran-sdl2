@@ -1,6 +1,6 @@
 ! sdl2_stdinc.f90
 !
-! Fortran 2008 interface to SDL_stdinc.h.
+! Fortran 2008 interfaces to SDL_stdinc.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

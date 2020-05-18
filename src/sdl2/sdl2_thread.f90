@@ -1,6 +1,6 @@
 ! sdl2_thread.f90
 !
-! Fortran 2008 interface to SDL_thread.h.
+! Fortran 2008 interfaces to SDL_thread.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

@@ -71,7 +71,7 @@ program main
     type(c_ptr)              :: renderer
     type(c_ptr)              :: window
     type(camera_type)        :: camera
-    type(voxel_type)         :: voxels(MAP_HEIGHT, MAP_WIDTH)
+    type(voxel_type)         :: voxels(MAP_WIDTH, MAP_HEIGHT)
     type(sdl_event)          :: event
 
     ! Initialise SDL.
@@ -241,7 +241,7 @@ contains
         character(len=*), intent(in)    :: height_map_path
         integer,          intent(in)    :: width
         integer,          intent(in)    :: height
-        type(voxel_type), intent(inout) :: voxels(height, width)
+        type(voxel_type), intent(inout) :: voxels(width, height)
         type(map_type)                  :: color_map, height_map
         integer                         :: pixel
         integer                         :: x, y
@@ -263,15 +263,15 @@ contains
                 pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
 
-                voxels(y, x)%r = r
-                voxels(y, x)%g = g
-                voxels(y, x)%b = b
+                voxels(x, y)%r = r
+                voxels(x, y)%g = g
+                voxels(x, y)%b = b
 
                 ! Get height value.
                 pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
 
-                voxels(y, x)%height = r
+                voxels(x, y)%height = r
             end do
         end do
 
@@ -290,7 +290,7 @@ contains
         !!     https://github.com/s-macke/VoxelSpace
         type(buffer_type), intent(inout) :: buffer
         type(camera_type), intent(inout) :: camera
-        type(voxel_type),  intent(inout) :: voxels(MAP_HEIGHT, MAP_WIDTH)
+        type(voxel_type),  intent(inout) :: voxels(MAP_WIDTH, MAP_HEIGHT)
         integer,           intent(in)    :: scale_height
         integer,           intent(in)    :: screen_width
         integer,           intent(in)    :: screen_height
@@ -335,7 +335,7 @@ contains
                 norm_x = 1 + modulo(int(left%x), MAP_WIDTH - 1)
                 norm_y = 1 + modulo(int(left%y), MAP_HEIGHT - 1)
 
-                height_on_screen = (camera%height - voxels(norm_y, norm_x)%height) / &
+                height_on_screen = (camera%height - voxels(norm_x, norm_y)%height) / &
                                    z * scale_height + camera%horizon
 
                 ! Only draw if visible.
@@ -344,9 +344,9 @@ contains
                     do line_y = int(height_on_screen), int(y_buffer(x))
                         offset = (line_y * SCREEN_WIDTH) + x
                         buffer%pixels(offset) = sdl_map_rgb(buffer%pixel_format, &
-                                                            voxels(norm_y, norm_x)%r, &
-                                                            voxels(norm_y, norm_x)%g, &
-                                                            voxels(norm_y, norm_x)%b)
+                                                            voxels(norm_x, norm_y)%r, &
+                                                            voxels(norm_x, norm_y)%g, &
+                                                            voxels(norm_x, norm_y)%b)
                     end do
 
                     y_buffer(x) = height_on_screen

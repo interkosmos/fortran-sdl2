@@ -1,6 +1,6 @@
 ! sdl2_cpuinfo.f90
 !
-! Fortran 2008 interface to SDL_cpuinfo.h.
+! Fortran 2008 interfaces to SDL_cpuinfo.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

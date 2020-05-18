@@ -1,6 +1,6 @@
 ! sdl2_messagebox.f90
 !
-! Fortran 2008 interface to SDL_messagebox.h.
+! Fortran 2008 interfaces to SDL_messagebox.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

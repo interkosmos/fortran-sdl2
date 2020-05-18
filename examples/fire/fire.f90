@@ -15,7 +15,7 @@ module doom
         integer :: b = 0
     end type rgb_type
 
-    type(rgb_type), parameter :: palette(37) = [ &
+    type(rgb_type), target :: palette(37) = [ &
         rgb_type(  7,   7,   7), &
         rgb_type( 31,   7,   7), &
         rgb_type( 47,  15,   7), &
@@ -109,8 +109,6 @@ program main
     type :: buffer_type
         integer                          :: format       ! Texture format.
         integer                          :: pitch        ! Texture pitch.
-        integer                          :: width        ! Texture width.
-        integer                          :: height       ! Texture height.
         integer(kind=c_int32_t), pointer :: pixels(:)    ! SDL_Texture pixels pointer.
         type(c_ptr)                      :: pixels_ptr   ! C pointer to texture pixels.
         type(c_ptr)                      :: texture      ! C pointer to SDL_Texture.
@@ -152,14 +150,11 @@ program main
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
                                                    SDL_RENDERER_PRESENTVSYNC))
     ! Create frame buffer texture.
-    buffer%width  = FIRE_WIDTH
-    buffer%height = FIRE_HEIGHT
-
     buffer%texture = sdl_create_texture(renderer, &
                                         SDL_PIXELFORMAT_ARGB8888, &
                                         SDL_TEXTUREACCESS_STREAMING, &
-                                        buffer%width, &
-                                        buffer%height)
+                                        FIRE_WIDTH, &
+                                        FIRE_HEIGHT)
 
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
@@ -169,7 +164,7 @@ program main
 
     ! Get texture's pixel pointers.
     rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
-    call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[buffer%width * buffer%height])
+    call c_f_pointer(buffer%pixels_ptr, buffer%pixels, shape=[FIRE_WIDTH * FIRE_HEIGHT])
     call sdl_unlock_texture(buffer%texture)
 
     ! Initialise fire.
@@ -209,14 +204,14 @@ contains
         integer,           intent(in)    :: height
         integer                          :: i, rc
         integer                          :: x, y
-        type(rgb_type)                   :: p
+        type(rgb_type), pointer          :: p
 
         rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
 
         do y = 1, height
             do x = 1, width
                 i = fire(((y - 1) * width) + x)
-                p = palette(i)
+                p => palette(i)
 
                 buffer%pixels(y * width + x) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
             end do

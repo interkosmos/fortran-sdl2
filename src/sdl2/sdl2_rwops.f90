@@ -1,6 +1,6 @@
 ! sdl2_rwops.f90
 !
-! Fortran 2008 interface to SDL_rwops.h.
+! Fortran 2008 interfaces to SDL_rwops.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

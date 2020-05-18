@@ -1,6 +1,6 @@
 ! sdl2.f90
 !
-! Fortran 2008 interface to SDL 2.0.
+! Fortran 2008 interfaces to SDL 2.0.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

@@ -1,6 +1,6 @@
 ! sdl2_pixels.f90
 !
-! Fortran 2008 interface to SDL_pixels.h.
+! Fortran 2008 interfaces to SDL_pixels.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

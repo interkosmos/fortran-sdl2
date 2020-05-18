@@ -1,6 +1,6 @@
 ! sdl2_rect.f90
 !
-! Fortran 2008 interface to SDL_rect.h.
+! Fortran 2008 interfaces to SDL_rect.h.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/

@@ -45,6 +45,7 @@ DRAW    = examples/draw/draw
 DVD     = examples/dvd/dvd
 EVENTS  = examples/events/events
 FIRE    = examples/fire/fire
+FOREST  = examples/forest/forest
 IMAGE   = examples/image/image
 INFO    = examples/info/info
 MSGBOX  = examples/msgbox/msgbox
@@ -57,12 +58,13 @@ WINDOW  = examples/window/window
 
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
-        alpha draw dvd events fire image info msgbox opera pixel scaling text voxel window
+        alpha draw dvd events fire forest image info msgbox opera pixel \
+        scaling text voxel window
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
-examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(INFO) $(IMAGE) $(MSGBOX) \
-          $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+examples: $(ALPHA) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(INFO) $(IMAGE) \
+          $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
 # Build targets for examples.
 alpha: $(ALPHA)
@@ -70,6 +72,7 @@ draw: $(DRAW)
 dvd: $(DVD)
 events: $(EVENTS)
 fire: $(FIRE)
+forest: $(FOREST)
 image: $(IMAGE)
 info: $(INFO)
 msgbox: $(MSGBOX)
@@ -86,7 +89,7 @@ sdl2_image: $(IMG_OBJ)
 sdl2_mixer: $(MIX_OBJ)
 sdl2_ttf: $(TTF_OBJ)
 
-# SDL 2.0 Interfaces.
+# SDL 2.0 interfaces.
 $(SDL_OBJ):
 	$(FC) $(FFLAGS) -c $(SDL_SRC)
 
@@ -113,6 +116,9 @@ $(EVENTS): $(EVENTS).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(FIRE): $(FIRE).f90 $(SDL_OBJ)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
+$(FOREST): $(FOREST).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(IMAGE): $(IMAGE).f90 $(SDL_OBJ)
@@ -151,6 +157,7 @@ clean:
 	if [ -e $(DVD) ]; then rm $(DVD); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
 	if [ -e $(FIRE) ]; then rm $(FIRE); fi
+	if [ -e $(FOREST) ]; then rm $(FOREST); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
