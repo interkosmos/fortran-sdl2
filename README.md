@@ -327,7 +327,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_CreateRenderer                    |   ✓   |
 | SDL_CreateSemaphore                   |   –   |
 | SDL_CreateSoftwareRenderer            |   –   |
-| SDL_CreateSystemCursor                |   –   |
+| SDL_CreateSystemCursor                |   ✓   |
 | SDL_CreateTexture                     |   ✓   |
 | SDL_CreateTextureFromSurface          |   ✓   |
 | SDL_CreateThread                      |   ✓   |
@@ -355,7 +355,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_FilterEvents                      |   –   |
 | SDL_FlushEvent                        |   –   |
 | SDL_FlushEvents                       |   –   |
-| SDL_FreeCursor                        |   –   |
+| SDL_FreeCursor                        |   ✓   |
 | SDL_FreeFormat                        |   ✓   |
 | SDL_FreePalette                       |   –   |
 | SDL_FreeRW                            |   –   |
@@ -418,7 +418,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GetCurrentVideoDriver             |   ✓   |
 | SDL_GetCursor                         |   –   |
 | SDL_GetDefaultAssertionHandler        |   –   |
-| SDL_GetDefaultCursor                  |   –   |
+| SDL_GetDefaultCursor                  |   ✓   |
 | SDL_GetDesktopDisplayMode             |   –   |
 | SDL_GetDisplayBounds                  |   –   |
 | SDL_GetDisplayMode                    |   –   |
@@ -587,15 +587,15 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_LogCritical                       |   –   |
 | SDL_LogDebug                          |   –   |
 | SDL_LogError                          |   –   |
-| SDL_LogGetOutputFunction              |   –   |
-| SDL_LogGetPriority                    |   –   |
+| SDL_LogGetOutputFunction              |   ✓   |
+| SDL_LogGetPriority                    |   ✓   |
 | SDL_LogInfo                           |   –   |
 | SDL_LogMessage                        |   –   |
 | SDL_LogMessageV                       |   –   |
-| SDL_LogResetPriorities                |   –   |
-| SDL_LogSetAllPriority                 |   –   |
-| SDL_LogSetOutputFunction              |   –   |
-| SDL_LogSetPriority                    |   –   |
+| SDL_LogResetPriorities                |   ✓   |
+| SDL_LogSetAllPriority                 |   ✓   |
+| SDL_LogSetOutputFunction              |   ✓   |
+| SDL_LogSetPriority                    |   ✓   |
 | SDL_LogVerbose                        |   –   |
 | SDL_LogWarn                           |   –   |
 | SDL_LowerBlit                         |   –   |
@@ -690,7 +690,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_SetClipRect                       |   –   |
 | SDL_SetClipboardText                  |   –   |
 | SDL_SetColorKey                       |   ✓   |
-| SDL_SetCursor                         |   –   |
+| SDL_SetCursor                         |   ✓   |
 | SDL_SetError                          |   –   |
 | SDL_SetEventFilter                    |   –   |
 | SDL_SetHint                           |   ✓   |

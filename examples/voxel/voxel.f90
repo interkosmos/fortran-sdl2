@@ -63,7 +63,6 @@ program main
     character(len=30)        :: window_title
     integer                  :: fps, t1, rc
     integer(kind=1), pointer :: keys(:)            => null()
-    logical                  :: has_moved          = .true.
     logical                  :: is_running         = .true.
     type(buffer_type)        :: buffer
     type(c_ptr)              :: renderer
@@ -126,36 +125,23 @@ program main
             is_running = .false.
 
         ! Rotate left.
-        if (is_key(keys, SDL_SCANCODE_LEFT)) then
+        if (is_key(keys, SDL_SCANCODE_LEFT)) &
             call rotate_camera(camera, .01)
-            has_moved = .true.
-        end if
 
         ! Rotate right.
-        if (is_key(keys, SDL_SCANCODE_RIGHT)) then
+        if (is_key(keys, SDL_SCANCODE_RIGHT)) &
             call rotate_camera(camera, -.01)
-            has_moved = .true.
-        end if
 
         ! Move backward.
-        if (is_key(keys, SDL_SCANCODE_DOWN)) then
+        if (is_key(keys, SDL_SCANCODE_DOWN)) &
             call move_camera(camera, 0., 1.0, MAP_WIDTH, MAP_HEIGHT)
-            has_moved = .true.
-        end if
 
         ! Move forward.
-        if (is_key(keys, SDL_SCANCODE_UP)) then
+        if (is_key(keys, SDL_SCANCODE_UP)) &
             call move_camera(camera, 0., -1.0, MAP_WIDTH, MAP_HEIGHT)
-            has_moved = .true.
-        end if
 
-        if (has_moved) then
-            ! Only re-render if camera has moved.
-            call render(buffer, camera, voxels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
-            has_moved = .false.
-        end if
-
-        ! Flush to screen.
+        ! Render and flush to screen.
+        call render(buffer, camera, voxels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
         rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
         call sdl_render_present(renderer)
 

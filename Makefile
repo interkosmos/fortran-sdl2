@@ -17,6 +17,7 @@ SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_filesystem.f90 \
           src/sdl2/sdl2_hints.f90 \
           src/sdl2/sdl2_keyboard.f90 \
+          src/sdl2/sdl2_log.f90 \
           src/sdl2/sdl2_messagebox.f90 \
           src/sdl2/sdl2_rect.f90 \
           src/sdl2/sdl2_pixels.f90 \

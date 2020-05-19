@@ -119,6 +119,7 @@ program main
         type(sdl_rect)                   :: rect
     end type frame_buffer_type
 
+    type(c_ptr)                  :: cursor
     type(c_ptr)                  :: window
     type(c_ptr)                  :: renderer
     type(frame_buffer_type)      :: frame_buffer
@@ -147,6 +148,10 @@ program main
         write (stderr, *) 'SDL Error: ', sdl_get_error()
         stop
     end if
+
+    ! Set mouse cursor.
+    cursor = sdl_create_system_cursor(SDL_SYSTEM_CURSOR_WAIT)
+    call sdl_set_cursor(cursor)
 
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
@@ -204,6 +209,7 @@ program main
 
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
+    call sdl_free_cursor(cursor)
     call sdl_quit()
 contains
     subroutine create_frame_buffer(renderer, window, frame_buffer, width, height)

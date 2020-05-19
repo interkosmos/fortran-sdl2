@@ -17,6 +17,7 @@ module sdl2
     use :: sdl2_hints
     use :: sdl2_keyboard
     use :: sdl2_keycode
+    use :: sdl2_log
     use :: sdl2_messagebox
     use :: sdl2_mouse
     use :: sdl2_pixels
