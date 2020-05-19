@@ -75,8 +75,8 @@ contains
                             do i = -1, 1
                                 if (i == 0 .and. j == 0) cycle
 
-                                nx = modulo(x + i, width)
-                                ny = modulo(y + j, height)
+                                nx = 1 + modulo(x + i - 1, width)
+                                ny = 1 + modulo(y + j - 1, height)
 
                                 if (world(nx, ny) == TILE_FIRE) then
                                     has_fire = .true.
@@ -99,7 +99,7 @@ contains
 end module forest
 
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_null_ptr, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: forest
@@ -119,15 +119,15 @@ program main
         type(sdl_rect)                   :: rect
     end type frame_buffer_type
 
-    type(frame_buffer_type)      :: frame_buffer
     type(c_ptr)                  :: window
     type(c_ptr)                  :: renderer
+    type(frame_buffer_type)      :: frame_buffer
     type(sdl_event)              :: event
     integer(kind=1), pointer     :: keys(:) => null()
     integer(kind=1), allocatable :: world(:, :)
     integer(kind=1), allocatable :: buffer(:, :)
     integer(kind=c_int32_t)      :: palette(3)
-    integer                      :: rc
+    integer                      :: dt, rc, t1
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -169,6 +169,8 @@ program main
 
     ! Main loop.
     loop: do
+        t1 = sdl_get_ticks()
+
         do while (sdl_poll_event(event) > 0)
             select case (event%type)
                 case (SDL_QUITEVENT)
@@ -180,14 +182,16 @@ program main
             end select
         end do
 
-        call forest_next(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.05, 0.00001)
-        call render(frame_buffer, world, palette)
+        call forest_next(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.001, 0.0000001)
+        call render(frame_buffer, world, SCREEN_WIDTH, SCREEN_HEIGHT, palette)
         rc = sdl_render_copy(renderer, &
                              frame_buffer%texture, &
                              frame_buffer%rect, &
                              frame_buffer%rect)
         call sdl_render_present(renderer)
-        call sdl_delay(20)
+
+        dt = sdl_get_ticks() - t1
+        if (dt < 50) call sdl_delay(50 - dt)
     end do loop
 
     ! Quit gracefully.
@@ -232,17 +236,15 @@ contains
         call sdl_unlock_texture(frame_buffer%texture)
     end subroutine create_frame_buffer
 
-    subroutine render(frame_buffer, world, palette)
+    subroutine render(frame_buffer, world, width, height, palette)
         !! Renders world to frame buffer texture.
         type(frame_buffer_type),      intent(inout) :: frame_buffer
         integer(kind=1), allocatable, intent(inout) :: world(:, :)
+        integer,                      intent(in)    :: width
+        integer,                      intent(in)    :: height
         integer(kind=c_int32_t),      intent(inout) :: palette(*)
         integer                                     :: offset, rc
-        integer                                     :: width, height
         integer                                     :: x, y
-
-        width = size(world(:, 1))
-        height = size(world(1, :))
 
         rc = sdl_lock_texture(frame_buffer%texture, &
                               frame_buffer%rect, &

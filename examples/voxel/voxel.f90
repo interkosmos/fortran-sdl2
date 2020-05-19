@@ -112,43 +112,42 @@ program main
         t1 = sdl_get_ticks()
 
         ! Event handling.
-        do while (sdl_poll_event(event) > 0)
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     is_running = .false.
-
-                case (SDL_KEYDOWN)
-                    keys(0:) => sdl_get_keyboard_state()
-
-                    ! Quit on Escape.
-                    if (is_key(keys, SDL_SCANCODE_ESCAPE)) &
-                        is_running = .false.
-
-                    ! Rotate left.
-                    if (is_key(keys, SDL_SCANCODE_LEFT)) then
-                        call rotate_camera(camera, .02)
-                        has_moved = .true.
-                    end if
-
-                    ! Rotate right.
-                    if (is_key(keys, SDL_SCANCODE_RIGHT)) then
-                        call rotate_camera(camera, -.02)
-                        has_moved = .true.
-                    end if
-
-                    ! Move backward.
-                    if (is_key(keys, SDL_SCANCODE_DOWN)) then
-                        call move_camera(camera, 0., 1.25, MAP_WIDTH, MAP_HEIGHT)
-                        has_moved = .true.
-                    end if
-
-                    ! Move forward.
-                    if (is_key(keys, SDL_SCANCODE_UP)) then
-                        call move_camera(camera, 0., -1.25, MAP_WIDTH, MAP_HEIGHT)
-                        has_moved = .true.
-                    end if
             end select
-        end do
+        end if
+
+        keys(0:) => sdl_get_keyboard_state()
+
+        ! Quit on Escape.
+        if (is_key(keys, SDL_SCANCODE_ESCAPE)) &
+            is_running = .false.
+
+        ! Rotate left.
+        if (is_key(keys, SDL_SCANCODE_LEFT)) then
+            call rotate_camera(camera, .01)
+            has_moved = .true.
+        end if
+
+        ! Rotate right.
+        if (is_key(keys, SDL_SCANCODE_RIGHT)) then
+            call rotate_camera(camera, -.01)
+            has_moved = .true.
+        end if
+
+        ! Move backward.
+        if (is_key(keys, SDL_SCANCODE_DOWN)) then
+            call move_camera(camera, 0., 1.0, MAP_WIDTH, MAP_HEIGHT)
+            has_moved = .true.
+        end if
+
+        ! Move forward.
+        if (is_key(keys, SDL_SCANCODE_UP)) then
+            call move_camera(camera, 0., -1.0, MAP_WIDTH, MAP_HEIGHT)
+            has_moved = .true.
+        end if
 
         if (has_moved) then
             ! Only re-render if camera has moved.
@@ -359,8 +358,8 @@ contains
 
             ! Raster line and draw a vertical line for each segment.
             do concurrent (x = 0:width)
-                norm_x = 1 + modulo(int(left%x), MAP_WIDTH - 1)
-                norm_y = 1 + modulo(int(left%y), MAP_HEIGHT - 1)
+                norm_x = 1 + modulo(int(left%x) - 1, MAP_WIDTH)
+                norm_y = 1 + modulo(int(left%y) - 1, MAP_HEIGHT)
 
                 height_on_screen = (camera%height - voxels(norm_x, norm_y)%height) / &
                                    z * scale_height + camera%horizon
