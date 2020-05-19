@@ -191,6 +191,10 @@ program main
     end do loop
 
     ! Quit gracefully.
+    frame_buffer%pixels => null()
+    call sdl_free_format(frame_buffer%pixel_format)
+    call sdl_destroy_texture(frame_buffer%texture)
+
     deallocate (buffer)
     deallocate (world)
 

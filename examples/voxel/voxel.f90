@@ -267,11 +267,11 @@ contains
             end do
         end do
 
-        call sdl_free_surface(color_map%image)
-        call sdl_free_surface(height_map%image)
-
         color_map%pixels  => null()
         height_map%pixels => null()
+
+        call sdl_free_surface(color_map%image)
+        call sdl_free_surface(height_map%image)
 
         call sdl_free_format(color_map%pixel_format)
         call sdl_free_format(height_map%pixel_format)
@@ -369,7 +369,7 @@ contains
                 if (height_on_screen < y_buffer(x)) then
                     ! Draw vertical line by setting the pixels of the frame buffer texture.
                     do concurrent (line_y = int(height_on_screen):int(y_buffer(x)))
-                        offset = (line_y * SCREEN_WIDTH) + x
+                        offset = (line_y * width) + x
                         buffer%pixels(offset) = voxels(norm_x, norm_y)%color
                     end do
 
