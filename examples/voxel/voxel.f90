@@ -1,7 +1,7 @@
 ! voxel.f90
 !
 ! Voxel space engine that modifies the pixels of a frame buffer texture. Use
-! arrow keys for camera movement.
+! arrow keys and Q, A for camera movement.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
@@ -33,7 +33,7 @@ program main
 
     ! Voxel type.
     type :: voxel_type
-        integer                 :: height
+        integer                 :: elevation
         integer(kind=c_int32_t) :: color
     end type voxel_type
 
@@ -47,7 +47,7 @@ program main
     type :: camera_type
         real :: x        =  10. !! X position.
         real :: y        =  40. !! Y position.
-        real :: height   = 300. !! Z position.
+        real :: z        = 300. !! Z position.
         real :: angle    =   0. !! Viewing direction.
         real :: horizon  = 100. !! Vertical position of horizon.
         real :: distance = 900. !! Draw distance.
@@ -134,11 +134,19 @@ program main
 
         ! Move backward.
         if (is_key(keys, SDL_SCANCODE_DOWN)) &
-            call move_camera(camera, 0., 1.0, MAP_WIDTH, MAP_HEIGHT)
+            call move_camera(camera, 1., MAP_WIDTH, MAP_HEIGHT)
 
         ! Move forward.
         if (is_key(keys, SDL_SCANCODE_UP)) &
-            call move_camera(camera, 0., -1.0, MAP_WIDTH, MAP_HEIGHT)
+            call move_camera(camera, -1., MAP_WIDTH, MAP_HEIGHT)
+
+        ! Move up.
+        if (is_key(keys, SDL_SCANCODE_Q)) &
+            call lift_camera(camera, 1., 250., 700.)
+
+        ! Move down.
+        if (is_key(keys, SDL_SCANCODE_A)) &
+            call lift_camera(camera, -1., 250., 700.)
 
         ! Render and flush to screen.
         call render(buffer, camera, voxels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -248,7 +256,7 @@ contains
                 ! Get height value.
                 pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
-                voxels(x, y)%height = r
+                voxels(x, y)%elevation = r
             end do
         end do
 
@@ -286,16 +294,29 @@ contains
         call sdl_unlock_texture(buffer%texture)
     end subroutine create_buffer
 
-    subroutine move_camera(camera, x, y, width, height)
+    subroutine lift_camera(camera, z, min_z, max_z)
+        !! Moves camera in Z direction.
+        type(camera_type), intent(inout) :: camera
+        real,              intent(in)    :: z
+        real,              intent(in)    :: min_z
+        real,              intent(in)    :: max_z
+
+        camera%z = max(min(camera%z + z, max_z), min_z)
+    end subroutine lift_camera
+
+    subroutine move_camera(camera, speed, width, height)
         !! Moves camera in X and Y direction.
         type(camera_type), intent(inout) :: camera
-        real,              intent(in)    :: x
-        real,              intent(in)    :: y
+        real,              intent(in)    :: speed
         integer,           intent(in)    :: width
         integer,           intent(in)    :: height
+        real                             :: x, y
 
-        camera%x = modulo(camera%x + x, real(width))
-        camera%y = modulo(camera%y + y, real(height))
+        x = camera%x + sin(camera%angle) * speed
+        y = camera%y + cos(camera%angle) * speed
+
+        camera%x = 1 + modulo(x - 1, real(width))
+        camera%y = 1 + modulo(y - 1, real(height))
     end subroutine move_camera
 
     subroutine render(buffer, camera, voxels, scale_height, width, height)
@@ -347,7 +368,7 @@ contains
                 norm_x = 1 + modulo(int(left%x) - 1, MAP_WIDTH)
                 norm_y = 1 + modulo(int(left%y) - 1, MAP_HEIGHT)
 
-                height_on_screen = (camera%height - voxels(norm_x, norm_y)%height) / &
+                height_on_screen = (camera%z - voxels(norm_x, norm_y)%elevation) / &
                                    z * scale_height + camera%horizon
 
                 ! Only draw if visible.
