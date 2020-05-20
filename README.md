@@ -175,7 +175,7 @@ Some demo applications can be found in `examples/`:
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * **scaling** displays a scaled image (software renderer).
 * **text** outputs text with SDL_ttf (hardware renderer).
-* **voxel** renders a [voxel space](https://github.com/s-macke/VoxelSpace) with * direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
+* **voxel** renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Compile all examples with:
