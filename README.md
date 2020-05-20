@@ -163,6 +163,7 @@ The `-Wl,-rpath` argument may be required optionally.
 Some demo applications can be found in `examples/`:
 
 * **alpha** makes one color of an image transparent (software renderer).
+* **cyclic** implements a 2D [cyclic cellular automaton](https://en.wikipedia.org/wiki/Cyclic_cellular_automaton) (hardware renderer).
 * **draw** draws some shapes (hardware renderer).
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).

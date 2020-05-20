@@ -1,110 +1,92 @@
-! forest.f90
+! cyclic.f90
 !
-! Basic cellular automaton, based on the forest-fire model. For more
-! information, see: https://rosettacode.org/wiki/Forest_fire
+! Cyclic cellular automaton, creates trippy colour effects.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
-module forest
+module cyclic
     implicit none
-
-    integer(kind=1), parameter, public :: TILE_NONE = 1
-    integer(kind=1), parameter, public :: TILE_TREE = 2
-    integer(kind=1), parameter, public :: TILE_FIRE = 3
-
-    public :: forest_init
-    public :: forest_next
+    public :: cyclic_init
+    public :: cyclic_next
 contains
-    subroutine forest_init(world, buffer, width, height, p)
-        !! Initialises world and buffer arrays.
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        real,                         intent(in)    :: p
-        integer                                     :: x, y
-        real                                        :: r(width, height)
+    subroutine cyclic_init(world, buffer, width, height, nstates)
+        !! Initialises world array.
+        integer, allocatable, intent(inout) :: world(:, :)
+        integer, allocatable, intent(inout) :: buffer(:, :)
+        integer,              intent(in)    :: width
+        integer,              intent(in)    :: height
+        integer,              intent(in)    :: nstates
+        integer                             :: x, y
+        real                                :: r(width, height)
 
-        allocate (world(width, height))
+        allocate ( world(width, height))
         allocate (buffer(width, height))
 
-        world  = TILE_NONE
-        buffer = TILE_NONE
+        buffer = 0
 
         call random_seed()
         call random_number(r)
 
         do concurrent (y = 1:height)
             do concurrent (x = 1:width)
-                if (r(x, y) <= p) &
-                    world(x, y) = TILE_TREE
+                world(x, y) = nint((nstates - 1) * r(x, y))
             end do
         end do
-    end subroutine forest_init
+    end subroutine cyclic_init
 
-    subroutine forest_next(world, buffer, width, height, p, f)
+    subroutine cyclic_next(world, buffer, width, height, nstates, threshold, range)
         !! Next iteration of the cellular automaton.
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        real,                         intent(in)    :: p
-        real,                         intent(in)    :: f
-        integer                                     :: i, j, nx, ny, x, y
-        logical                                     :: has_fire
-        real                                        :: r(width, height)
-
-        call random_number(r)
-        buffer = TILE_NONE
+        integer, allocatable, intent(inout) :: world(:, :)
+        integer, allocatable, intent(inout) :: buffer(:, :)
+        integer,              intent(in)    :: width
+        integer,              intent(in)    :: height
+        integer,              intent(in)    :: nstates
+        integer,              intent(in)    :: threshold
+        integer,              intent(in)    :: range
+        integer                             :: cell, n
+        integer                             :: i, j, nx, ny, x, y
 
         do concurrent (y = 1:height)
             do concurrent (x = 1:width)
-                buffer(x, y) = world(x, y)
-                has_fire = .false.
+                cell = world(x, y)
+                n    = 0
 
-                select case (world(x, y))
-                    case (TILE_NONE)
-                        if (r(x, y) <= p) &
-                            buffer(x, y) = TILE_TREE
+                do concurrent (j = -range:range)
+                    do concurrent (i = -range:range)
+                        if (i == 0 .and. j == 0) cycle
 
-                    case (TILE_TREE)
-                        loop: do j = -1, 1
-                            do i = -1, 1
-                                if (i == 0 .and. j == 0) cycle
+                        nx = 1 + modulo(x + i - 1, width)
+                        ny = 1 + modulo(y + j - 1, height)
 
-                                nx = 1 + modulo(x + i - 1, width)
-                                ny = 1 + modulo(y + j - 1, height)
+                        if (cell == modulo(world(nx, ny) - 1, nstates)) n = n + 1
+                    end do
+                end do
 
-                                if (world(nx, ny) == TILE_FIRE) then
-                                    has_fire = .true.
-                                    exit loop
-                                end if
-                            end do
-                        end do loop
-
-                        if (r(x, y) <= f .or. has_fire) &
-                            buffer(x, y) = TILE_FIRE
-
-                    case (TILE_FIRE)
-                        buffer(x, y) = TILE_NONE
-                end select
+                if (n >= threshold) then
+                    buffer(x, y) = modulo(cell + 1, nstates)
+                else
+                    buffer(x, y) = cell
+                end if
             end do
         end do
 
         world = buffer
-    end subroutine forest_next
-end module forest
+    end subroutine cyclic_next
+end module cyclic
 
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_null_ptr, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
-    use :: forest
+    use :: cyclic
     implicit none
 
-    integer, parameter :: SCREEN_WIDTH  = 800
-    integer, parameter :: SCREEN_HEIGHT = 800
+    integer, parameter :: SCREEN_WIDTH  = 500
+    integer, parameter :: SCREEN_HEIGHT = 500
+    integer, parameter :: NSTATES       = 16
+    integer, parameter :: THRESHOLD     = 1
+    integer, parameter :: RANGE         = 1
 
     type :: frame_buffer_type
         integer                          :: access
@@ -117,16 +99,16 @@ program main
         type(sdl_rect)                   :: rect
     end type frame_buffer_type
 
-    type(c_ptr)                  :: cursor
-    type(c_ptr)                  :: window
-    type(c_ptr)                  :: renderer
-    type(frame_buffer_type)      :: frame_buffer
-    type(sdl_event)              :: event
-    integer(kind=1), pointer     :: keys(:) => null()
-    integer(kind=1), allocatable :: world(:, :)
-    integer(kind=1), allocatable :: buffer(:, :)
-    integer(kind=c_int32_t)      :: palette(3)
-    integer                      :: dt, rc, t1
+    type(c_ptr)              :: cursor
+    type(c_ptr)              :: window
+    type(c_ptr)              :: renderer
+    type(frame_buffer_type)  :: frame_buffer
+    type(sdl_event)          :: event
+    integer(kind=1), pointer :: keys(:) => null()
+    integer, allocatable     :: world(:, :)
+    integer, allocatable     :: buffer(:, :)
+    integer(kind=c_int32_t)  :: palette(0:15)
+    integer                  :: rc
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -158,13 +140,26 @@ program main
     ! Create frame buffer texture.
     call create_frame_buffer(renderer, window, frame_buffer, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    ! Set-up the colour palette.
-    palette(TILE_NONE) = sdl_map_rgb(frame_buffer%pixel_format,   0,   0,   0)
-    palette(TILE_TREE) = sdl_map_rgb(frame_buffer%pixel_format,  46, 139,  87)
-    palette(TILE_FIRE) = sdl_map_rgb(frame_buffer%pixel_format, 255,   0,   0)
+    ! Set-up the colour palette (Jet palette).
+    palette( 0) = sdl_map_rgb(frame_buffer%pixel_format,   0,   0, 191)
+    palette( 1) = sdl_map_rgb(frame_buffer%pixel_format,   0,   0, 255)
+    palette( 2) = sdl_map_rgb(frame_buffer%pixel_format,   0,  63, 255)
+    palette( 3) = sdl_map_rgb(frame_buffer%pixel_format,   0, 127, 255)
+    palette( 4) = sdl_map_rgb(frame_buffer%pixel_format,   0, 191, 255)
+    palette( 5) = sdl_map_rgb(frame_buffer%pixel_format,   0, 255, 255)
+    palette( 6) = sdl_map_rgb(frame_buffer%pixel_format,  63, 255, 191)
+    palette( 7) = sdl_map_rgb(frame_buffer%pixel_format, 127, 255, 127)
+    palette( 8) = sdl_map_rgb(frame_buffer%pixel_format, 191, 255,  63)
+    palette( 9) = sdl_map_rgb(frame_buffer%pixel_format, 255, 255,   0)
+    palette(10) = sdl_map_rgb(frame_buffer%pixel_format, 255, 191,   0)
+    palette(11) = sdl_map_rgb(frame_buffer%pixel_format, 255, 127,   0)
+    palette(12) = sdl_map_rgb(frame_buffer%pixel_format, 255,  63,   0)
+    palette(13) = sdl_map_rgb(frame_buffer%pixel_format, 255,   0,   0)
+    palette(14) = sdl_map_rgb(frame_buffer%pixel_format, 191,   0,   0)
+    palette(15) = sdl_map_rgb(frame_buffer%pixel_format, 127,   0,   0)
 
     ! Initialise world and buffer.
-    call forest_init(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.05)
+    call cyclic_init(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, NSTATES)
 
     ! Clear screen.
     rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
@@ -172,8 +167,6 @@ program main
 
     ! Main loop.
     loop: do
-        t1 = sdl_get_ticks()
-
         do while (sdl_poll_event(event) > 0)
             select case (event%type)
                 case (SDL_QUITEVENT)
@@ -185,13 +178,13 @@ program main
             end select
         end do
 
-        call forest_next(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.001, 0.0000001)
-        call render(frame_buffer, world, SCREEN_WIDTH, SCREEN_HEIGHT, palette)
+        ! Run next iteration of cellular automaton.
+        call cyclic_next(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, NSTATES, THRESHOLD, RANGE)
+        ! Render to frame buffer texture.
+        call render(frame_buffer, world, SCREEN_WIDTH, SCREEN_HEIGHT, NSTATES, palette)
+        ! Copy frame buffer texture to screen.
         rc = sdl_render_copy(renderer, frame_buffer%texture, frame_buffer%rect, frame_buffer%rect)
         call sdl_render_present(renderer)
-
-        dt = sdl_get_ticks() - t1
-        if (dt < 50) call sdl_delay(50 - dt)
     end do loop
 
     ! Quit gracefully.
@@ -237,15 +230,16 @@ contains
         call sdl_unlock_texture(frame_buffer%texture)
     end subroutine create_frame_buffer
 
-    subroutine render(frame_buffer, world, width, height, palette)
+    subroutine render(frame_buffer, world, width, height, ncolors, palette)
         !! Renders world to frame buffer texture.
-        type(frame_buffer_type),      intent(inout) :: frame_buffer
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        integer(kind=c_int32_t),      intent(inout) :: palette(*)
-        integer                                     :: offset, rc
-        integer                                     :: x, y
+        type(frame_buffer_type), intent(inout) :: frame_buffer
+        integer, allocatable,    intent(inout) :: world(:, :)
+        integer,                 intent(in)    :: width
+        integer,                 intent(in)    :: height
+        integer,                 intent(in)    :: ncolors
+        integer(kind=c_int32_t), intent(inout) :: palette(0:ncolors - 1)
+        integer                                :: offset, rc
+        integer                                :: x, y
 
         rc = sdl_lock_texture(frame_buffer%texture, &
                               frame_buffer%rect, &

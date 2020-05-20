@@ -353,6 +353,7 @@ contains
         type(sdl_surface), pointer    :: sdl_get_window_surface
         type(c_ptr)                   :: ptr
 
+        sdl_get_window_surface => null()
         ptr = sdl_get_window_surface_(window)
         if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_get_window_surface)
