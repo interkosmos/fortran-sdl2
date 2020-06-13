@@ -61,9 +61,11 @@ module sdl2_render
     public :: sdl_render_draw_rects
     public :: sdl_render_fill_rect
     public :: sdl_render_fill_rects
+    public :: sdl_render_get_scale
     public :: sdl_render_get_viewport
     public :: sdl_render_present
     public :: sdl_render_read_pixels
+    public :: sdl_render_set_scale
     public :: sdl_render_set_viewport
     public :: sdl_set_render_draw_blend_mode
     public :: sdl_set_render_draw_color
@@ -256,6 +258,15 @@ module sdl2_render
             integer(kind=c_int)                         :: sdl_render_read_pixels
         end function sdl_render_read_pixels
 
+        ! int SDL_RenderSetScale(SDL_Renderer *renderer, float scaleX, float scaleY)
+        function sdl_render_set_scale(renderer, scale_x, scale_y) bind(c, name='SDL_RenderSetScale')
+            import :: c_float, c_int, c_ptr
+            type(c_ptr),        intent(in), value :: renderer
+            real(kind=c_float), intent(in), value :: scale_x
+            real(kind=c_float), intent(in), value :: scale_y
+            integer(kind=c_int)                   :: sdl_render_set_scale
+        end function sdl_render_set_scale
+
         ! int SDL_RenderSetViewport(SDL_Renderer *renderer, const SDL_Rect *rect)
         function sdl_render_set_viewport(renderer, rect) bind(c, name='SDL_RenderSetViewport')
             import :: c_int, c_ptr, sdl_rect
@@ -322,6 +333,14 @@ module sdl2_render
             import :: c_ptr
             type(c_ptr), intent(in), value :: texture
         end subroutine sdl_destroy_texture
+
+        ! void SDL_RenderGetScale(SDL_Renderer *renderer, float *scaleX, float *scaleY)
+        subroutine sdl_render_get_scale(renderer, scale_x, scale_y) bind(c, name='SDL_RenderGetScale')
+            import :: c_float, c_ptr
+            type(c_ptr),        intent(in), value :: renderer
+            real(kind=c_float), intent(in)        :: scale_x
+            real(kind=c_float), intent(in)        :: scale_y
+        end subroutine sdl_render_get_scale
 
         ! void SDL_RenderGetViewport(SDL_Renderer *renderer, SDL_Rect *rect)
         subroutine sdl_render_get_viewport(renderer, rect) bind(c, name='SDL_RenderGetViewport')

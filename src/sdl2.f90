@@ -90,47 +90,45 @@ module sdl2
         end subroutine sdl_quit
     end interface
 contains
-    subroutine c_f_string_chars(c_string, f_string)
+    subroutine c_f_str_chars(c_str, f_str)
         !! Copies a C string, passed as a char-array reference, to a Fortran
         !! string.
-        character(len=1, kind=c_char), intent(in)  :: c_string(*)
-        character(len=*),              intent(out) :: f_string
+        character(len=1, kind=c_char), intent(in)  :: c_str(*)
+        character(len=*),              intent(out) :: f_str
         integer                                    :: i
 
         i = 1
 
-        do while (c_string(i) /= c_null_char .and. i <= len(f_string))
-            f_string(i:i) = c_string(i)
+        do while (c_str(i) /= c_null_char .and. i <= len(f_str))
+            f_str(i:i) = c_str(i)
             i = i + 1
         end do
 
-        if (i < len(f_string)) &
-            f_string(i:) = ' '
-    end subroutine c_f_string_chars
+        if (i < len(f_str)) f_str(i:) = ' '
+    end subroutine c_f_str_chars
 
-    subroutine c_f_string_ptr(c_string, f_string)
+    subroutine c_f_str_ptr(c_str, f_str)
         !! Copies a C string, passed as a C pointer, to a Fortran string.
-        type(c_ptr),      intent(in)           :: c_string
-        character(len=*), intent(out)          :: f_string
+        type(c_ptr),      intent(in)           :: c_str
+        character(len=*), intent(out)          :: f_str
         character(kind=c_char, len=1), pointer :: char_ptrs(:)
         integer                                :: i
 
-        if (.not. c_associated(c_string)) then
-            f_string = ' '
-        else
-            call c_f_pointer(c_string, char_ptrs, [huge(0)])
+        if (c_associated(c_str)) then
+            call c_f_pointer(c_str, char_ptrs, [huge(0)])
 
             i = 1
 
-            do while (char_ptrs(i) /= c_null_char .and. i <= len(f_string))
-                f_string(i:i) = char_ptrs(i)
+            do while (char_ptrs(i) /= c_null_char .and. i <= len(f_str))
+                f_str(i:i) = char_ptrs(i)
                 i = i + 1
             end do
 
-            if (i < len(f_string)) &
-                f_string(i:) = ' '
+            if (i < len(f_str)) f_str(i:) = ' '
+        else
+            f_str = ' '
         end if
-    end subroutine c_f_string_ptr
+    end subroutine c_f_str_ptr
 
     function sdl_alloc_format(pixel_format)
         !! Calls `sdl_alloc_format_()` and converts the returned C pointer to
@@ -213,7 +211,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_audio_driver)
-        call c_f_string_ptr(ptr, sdl_get_audio_driver)
+        call c_f_str_ptr(ptr, sdl_get_audio_driver)
     end function sdl_get_audio_driver
 
     ! char *SDL_GetBasePath(void)
@@ -228,7 +226,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_base_path)
-        call c_f_string_ptr(ptr, sdl_get_base_path)
+        call c_f_str_ptr(ptr, sdl_get_base_path)
         call sdl_free(ptr)
     end function sdl_get_base_path
 
@@ -244,7 +242,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_current_audio_driver)
-        call c_f_string_ptr(ptr, sdl_get_current_audio_driver)
+        call c_f_str_ptr(ptr, sdl_get_current_audio_driver)
     end function sdl_get_current_audio_driver
 
     ! const char *SDL_GetCurrentVideoDriver(void)
@@ -259,7 +257,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_current_video_driver)
-        call c_f_string_ptr(ptr, sdl_get_current_video_driver)
+        call c_f_str_ptr(ptr, sdl_get_current_video_driver)
     end function sdl_get_current_video_driver
 
     ! const char *SDL_GetError(void)
@@ -274,7 +272,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_error)
-        call c_f_string_ptr(ptr, sdl_get_error)
+        call c_f_str_ptr(ptr, sdl_get_error)
     end function sdl_get_error
 
     ! const Uint8 *SDL_GetKeyboardState(int *numkeys)
@@ -302,7 +300,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_hint)
-        call c_f_string_ptr(ptr, sdl_get_hint)
+        call c_f_str_ptr(ptr, sdl_get_hint)
     end function sdl_get_hint
 
     function sdl_get_pixel_format(surface)
@@ -326,7 +324,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_platform)
-        call c_f_string_ptr(ptr, sdl_get_platform)
+        call c_f_str_ptr(ptr, sdl_get_platform)
     end function sdl_get_platform
 
     ! const char *SDL_GetVideoDriver(int index)
@@ -342,7 +340,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_video_driver)
-        call c_f_string_ptr(ptr, sdl_get_video_driver)
+        call c_f_str_ptr(ptr, sdl_get_video_driver)
     end function sdl_get_video_driver
 
     ! SDL_Surface *SDL_GetWindowSurface(SDL_Window *window)
@@ -372,7 +370,7 @@ contains
         if (.not. c_associated(ptr)) return
         size = c_strlen(ptr)
         allocate (character(len=size) :: sdl_get_window_title)
-        call c_f_string_ptr(ptr, sdl_get_window_title)
+        call c_f_str_ptr(ptr, sdl_get_window_title)
     end function sdl_get_window_title
 
     ! SDL_Surface *SDL_LoadBMP(const char *file)

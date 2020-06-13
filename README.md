@@ -1,4 +1,4 @@
-# fortran-sdl2: Fortran 2008 Interfaces to SDL 2.0
+# fortran-sdl2
 A collection of ISO C binding interfaces to
 [Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
 multimedia and game programming in Fortran. SDL versions tested against:
@@ -23,7 +23,7 @@ headers. On FreeBSD, run:
 # pkg install devel/sdl20 graphics/sdl2_image audio/sdl2_mixer graphics/sdl2_ttf
 ```
 
-## Building the SDL 2.0 Interfaces
+## Building the Interface Bindings
 Clone the repository and then run `make` to build the interfaces:
 
 ```
@@ -101,7 +101,7 @@ program main
     end if
 
     ! Create the SDL window.
-    window = sdl_create_window('SDL2 Fortran' // c_null_char, &
+    window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SDL_WINDOWPOS_UNDEFINED, &
                                SCREEN_WIDTH, &
@@ -666,14 +666,14 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_RenderGetClipRect                 |   –   |
 | SDL_RenderGetD3D9Device               |   –   |
 | SDL_RenderGetLogicalSize              |   –   |
-| SDL_RenderGetScale                    |   –   |
+| SDL_RenderGetScale                    |   ✓   |
 | SDL_RenderGetViewport                 |   ✓   |
 | SDL_RenderIsClipEnabled               |   –   |
 | SDL_RenderPresent                     |   ✓   |
 | SDL_RenderReadPixels                  |   ✓   |
 | SDL_RenderSetClipRect                 |   –   |
 | SDL_RenderSetLogicalSize              |   –   |
-| SDL_RenderSetScale                    |   –   |
+| SDL_RenderSetScale                    |   ✓   |
 | SDL_RenderSetViewport                 |   ✓   |
 | SDL_RenderTargetSupported             |   –   |
 | SDL_ResetAssertionReport              |   –   |
