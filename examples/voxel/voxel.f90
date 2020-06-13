@@ -148,8 +148,15 @@ program main
         if (is_key(keys, SDL_SCANCODE_A)) &
             call lift_camera(camera, -1., 250., 700.)
 
-        ! Render and flush to screen.
-        call render(buffer, camera, voxels, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
+        ! Render to texture and flush to screen.
+        call render(buffer        = buffer, &
+                    camera        = camera, &
+                    voxels        = voxels, &
+                    map_width     = MAP_WIDTH, &
+                    map_height    = MAP_HEIGHT, &
+                    scale_height  = 120, &
+                    screen_width  = SCREEN_WIDTH, &
+                    screen_height = SCREEN_HEIGHT)
         rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
         call sdl_render_present(renderer)
 
@@ -220,17 +227,15 @@ contains
         integer                               :: x, y
         type(map_type)                        :: color_map, height_map
 
-        read_voxels = 0
+        read_voxels = 1
 
         if (.not. file_exists(color_map_path)) then
             write (stderr, '(3a)') 'Error: file "', color_map_path, '" not found'
-            read_voxels = 1
             return
         end if
 
         if (.not. file_exists(height_map_path)) then
             write (stderr, '(3a)') 'Error: file "', height_map_path, '" not found'
-            read_voxels = 1
             return
         end if
 
@@ -249,10 +254,8 @@ contains
                 ! Get RGB colour values. Use some transfer magic to handle unsigned pixel values.
                 pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
-                voxels(x, y)%color = sdl_map_rgb(pixel_format, &
-                                                 int(r, kind=4), &
-                                                 int(g, kind=4), &
-                                                 int(b, kind=4))
+                voxels(x, y)%color = sdl_map_rgb(pixel_format, int(r, kind=4), int(g, kind=4), int(b, kind=4))
+
                 ! Get height value.
                 pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
@@ -268,6 +271,8 @@ contains
 
         call sdl_free_format(color_map%pixel_format)
         call sdl_free_format(height_map%pixel_format)
+
+        read_voxels = 0
     end function read_voxels
 
     subroutine create_buffer(renderer, window, width, height, buffer)
@@ -319,30 +324,32 @@ contains
         camera%y = 1 + modulo(y - 1, real(height))
     end subroutine move_camera
 
-    subroutine render(buffer, camera, voxels, scale_height, width, height)
+    subroutine render(buffer, camera, voxels, map_width, map_height, scale_height, screen_width, screen_height)
         !! Renders voxel space to screen. Algorithm is taken from:
         !!     https://github.com/s-macke/VoxelSpace
         type(buffer_type), intent(inout) :: buffer
         type(camera_type), intent(inout) :: camera
-        type(voxel_type),  intent(inout) :: voxels(MAP_WIDTH, MAP_HEIGHT)
+        integer,           intent(in)    :: map_width
+        integer,           intent(in)    :: map_height
+        type(voxel_type),  intent(inout) :: voxels(map_width, map_height)
         integer,           intent(in)    :: scale_height
-        integer,           intent(in)    :: width
-        integer,           intent(in)    :: height
+        integer,           intent(in)    :: screen_width
+        integer,           intent(in)    :: screen_height
         integer                          :: line_y
         integer                          :: offset
         integer                          :: rc
-        integer                          :: norm_x, norm_y, x
+        integer                          :: nx, ny, x
         real                             :: cos_phi, sin_phi
         real                             :: dx, dy, dz
         real                             :: height_on_screen
-        real                             :: y_buffer(width)
+        real                             :: y_buffer(screen_width)
         real                             :: z
         type(point_type)                 :: left, right
 
         sin_phi = sin(camera%angle)
         cos_phi = cos(camera%angle)
 
-        y_buffer(0:) = height
+        y_buffer(0:) = screen_height
 
         dz = 1.
         z  = 30.
@@ -360,23 +367,22 @@ contains
             right%y = (-sin_phi * z - cos_phi * z) + camera%y
 
             ! Segment the line.
-            dx = (right%x - left%x) / width
-            dy = (right%y - left%y) / width
+            dx = (right%x - left%x) / screen_width
+            dy = (right%y - left%y) / screen_width
 
             ! Raster line and draw a vertical line for each segment.
-            do concurrent (x = 0:width)
-                norm_x = 1 + modulo(int(left%x) - 1, MAP_WIDTH)
-                norm_y = 1 + modulo(int(left%y) - 1, MAP_HEIGHT)
+            do concurrent (x = 0:screen_width)
+                nx = 1 + modulo(int(left%x) - 1, map_width)
+                ny = 1 + modulo(int(left%y) - 1, map_height)
 
-                height_on_screen = (camera%z - voxels(norm_x, norm_y)%elevation) / &
-                                   z * scale_height + camera%horizon
+                height_on_screen = (camera%z - voxels(nx, ny)%elevation) / z * scale_height + camera%horizon
 
                 ! Only draw if visible.
                 if (height_on_screen < y_buffer(x)) then
                     ! Draw vertical line by setting the pixels of the frame buffer texture.
                     do concurrent (line_y = int(height_on_screen):int(y_buffer(x)))
-                        offset = (line_y * width) + x
-                        buffer%pixels(offset) = voxels(norm_x, norm_y)%color
+                        offset = (line_y * screen_width) + x
+                        buffer%pixels(offset) = voxels(nx, ny)%color
                     end do
 
                     y_buffer(x) = height_on_screen
