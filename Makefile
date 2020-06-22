@@ -42,7 +42,7 @@ TTF_SRC = src/sdl2_ttf.f90
 TTF_OBJ = sdl2_ttf.o
 
 ALPHA   = examples/alpha/alpha
-CIRCLE  = examples/cyclic/cyclic
+CYCLIC  = examples/cyclic/cyclic
 DRAW    = examples/draw/draw
 DVD     = examples/dvd/dvd
 EVENTS  = examples/events/events
@@ -60,17 +60,18 @@ WINDOW  = examples/window/window
 
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
-        alpha cyclic draw dvd events fire forest image info msgbox opera pixel \
-        scaling text voxel window
+        alpha cyclic trex draw dvd events fire forest image info msgbox \
+        opera pixel scaling text voxel window
 
 all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
 
-examples: $(ALPHA) $(CIRCLE) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(INFO) $(IMAGE) \
-          $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+examples: $(ALPHA) $(CIRCLE) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) \
+          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
+          $(WINDOW)
 
 # Build targets of examples.
 alpha: $(ALPHA)
-cyclic: $(CIRCLE)
+cyclic: $(CYCLIC)
 draw: $(DRAW)
 dvd: $(DVD)
 events: $(EVENTS)
@@ -109,7 +110,7 @@ $(TTF_OBJ):
 $(ALPHA): $(ALPHA).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(CIRCLE): $(CIRCLE).f90 $(SDL_OBJ)
+$(CYCLIC): $(CYCLIC).f90 $(SDL_OBJ)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(DRAW): $(DRAW).f90 $(SDL_OBJ)
@@ -159,7 +160,7 @@ clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
 	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
 	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
-	if [ -e $(CIRCLE) ]; then rm $(CIRCLE); fi
+	if [ -e $(CYCLIC) ]; then rm $(CYCLIC); fi
 	if [ -e $(DRAW) ]; then rm $(DRAW); fi
 	if [ -e $(DVD) ]; then rm $(DVD); fi
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
