@@ -55,16 +55,16 @@ module doom
         rgb_type(255, 255, 255) ]
 contains
     subroutine fire_burn(fire, width, height)
-        integer, intent(inout) :: fire(*)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
+        integer, intent(inout) :: fire(0:(width * height) - 1)
         integer                :: d, i, p, rnd
         integer                :: x, y
         real                   :: r
 
-        do y = 2, height
-            do x = 1, width
-                i = (y - 1) * width + x
+        do y = 1, height - 1
+            do x = 0, width - 1
+                i = (y * width) + x
                 p = fire(i)
 
                 if (p == 0) then
@@ -121,7 +121,7 @@ program main
     type(c_ptr)       :: window
     type(sdl_event)   :: event
     type(sdl_rect)    :: screen_rect
-    integer           :: fire(FIRE_WIDTH * FIRE_HEIGHT)
+    integer           :: fire(0:(FIRE_WIDTH * FIRE_HEIGHT) - 1)
     integer           :: rc
 
     ! Initialise PRNG.
@@ -211,9 +211,9 @@ contains
         do y = 1, height
             do x = 1, width
                 i = fire(((y - 1) * width) + x)
-                p => palette(i)
+                p => palette(i + 1)
 
-                buffer%pixels(y * width + x) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
+                buffer%pixels((y - 1) * width + x) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
             end do
         end do
 

@@ -104,14 +104,14 @@ program main
     do y = 1, image%height
         do x = 1, image%width
             ! Get pixel value from SDL_Surface.
-            pixel = ichar(transfer(image%surface_pixels(y * image%surface%pitch + x), 'a'))
+            pixel = ichar(transfer(image%surface_pixels((y - 1) * image%surface%pitch + x), 'a'))
             ! Convert pixel value to RGB.
             call sdl_get_rgb(pixel, image%pixel_format, r, g, b)
             ! Set pixel in SDL_Texture.
-            buffer%texture_pixels((y * image%width) + x) = sdl_map_rgb(buffer%pixel_format, &
-                                                                       int(r, kind=4), &
-                                                                       int(g, kind=4), &
-                                                                       int(b, kind=4))
+            buffer%texture_pixels(((y - 1) * image%width) + x) = sdl_map_rgb(buffer%pixel_format, &
+                                                                             int(r, kind=4), &
+                                                                             int(g, kind=4), &
+                                                                             int(b, kind=4))
         end do
     end do
 

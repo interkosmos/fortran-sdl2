@@ -36,22 +36,10 @@ You can override the default compiler (`gfortran`) by passing the `FC`
 argument, for example:
 
 ```
-$ make sdl2 FC=gfortran9
+$ make all FC=gfortran9
 ```
 
-On FreeBSD, you may have to add the GNU Fortran runtime library search path to
-`FFLAGS`:
-
-```
-$ make sdl2 FFLAGS=-Wl,-rpath=/usr/local/lib/gcc9/
-```
-
-You can link the static library `fortran-sdl2.a` containing all interface
-bindings with:
-
-```
-$ make all
-```
+Link your Fortran project with `sdl2.a` or `fortran-sdl2.a`.
 
 ### SDL2_image
 Build the SDL2_image interfaces with:
@@ -60,7 +48,7 @@ Build the SDL2_image interfaces with:
 $ make sdl2_image
 ```
 
-Add `-lSDL2_image` to your `LDLIBS` to link SDL2_image.
+Link `sdl2_image.a` and add `-lSDL2_image` to your `LDLIBS`.
 
 ### SDL2_mixer
 Build the SDL2_mixer interfaces with:
@@ -69,7 +57,7 @@ Build the SDL2_mixer interfaces with:
 $ make sdl2_mixer
 ```
 
-Add `-lSDL2_mixer` to your `LDLIBS` to link SDL2_mixer.
+Link `sdl2_mixer.a` and add `-lSDL2_mixer` to your `LDLIBS`.
 
 ### SDL2_ttf
 Build the SDL2_ttf interfaces with:
@@ -78,7 +66,7 @@ Build the SDL2_ttf interfaces with:
 $ make sdl2_ttf
 ```
 
-Add `-lSDL2_ttf` to your `LDLIBS` to link SDL2_ttf.
+Link `sdl2_ttf.a` and add `-lSDL2_ttf` to your `LDLIBS`.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
@@ -137,11 +125,19 @@ program main
         end do
 
         ! Fill screen black.
-        rc = sdl_set_render_draw_color(renderer, uint8(0), uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       uint8(0), &
+                                       uint8(0), &
+                                       uint8(0), &
+                                       uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_clear(renderer)
 
         ! Fill the rectangle.
-        rc = sdl_set_render_draw_color(renderer, uint8(127), uint8(255), uint8(0), uint8(SDL_ALPHA_OPAQUE))
+        rc = sdl_set_render_draw_color(renderer, &
+                                       uint8(127), &
+                                       uint8(255), &
+                                       uint8(0), &
+                                       uint8(SDL_ALPHA_OPAQUE))
         rc = sdl_render_fill_rect(renderer, rect)
 
         ! Render to screen and wait 20 ms.
@@ -159,10 +155,8 @@ end program main
 Compile the source code with GNU Fortran:
 
 ```
-$ gfortran -Wall `sdl2-config --cflags` -o example example.f90 sdl2.a `sdl2-config --libs`
+$ gfortran `sdl2-config --cflags` -o example example.f90 sdl2.a `sdl2-config --libs`
 ```
-
-The `-Wl,-rpath` argument may be required optionally.
 
 ## Further Examples
 ![screen shot](screenshot.png)
@@ -271,7 +265,7 @@ call c_f_pointer(surface%format, pixel_format)
 call c_f_pointer(surface%pixels, pixels, shape=[surface%pitch * surface%h])
 
 ! Get single pixel of coordinates X and Y. Convert to Fortran integer.
-pixel = ichar(transfer(pixels(Y * surface%pitch + X), 'a'), kind=c_int32_t)
+pixel = ichar(transfer(pixels((Y - 1) * surface%pitch + X), 'a'), kind=c_int32_t)
 
 ! Get RGB values of pixel.
 call sdl_get_rgb(pixel, pixel_format, r, g, b)

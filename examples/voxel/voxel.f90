@@ -167,7 +167,6 @@ program main
     end do
 
     ! Quit gracefully.
-    ! buffer%pixels => null()
     call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
 
@@ -252,12 +251,12 @@ contains
         do y = 1, height
             do x = 1, width
                 ! Get RGB colour values. Use some transfer magic to handle unsigned pixel values.
-                pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + (x - 1)), 'a'))
+                pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + x), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
                 voxels(x, y)%color = sdl_map_rgb(pixel_format, int(r, kind=4), int(g, kind=4), int(b, kind=4))
 
                 ! Get height value.
-                pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + (x - 1)), 'a'))
+                pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + x), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
                 voxels(x, y)%elevation = r
             end do
@@ -342,7 +341,7 @@ contains
         real                             :: cos_phi, sin_phi
         real                             :: dx, dy, dz
         real                             :: height_on_screen
-        real                             :: y_buffer(screen_width)
+        real                             :: y_buffer(0:screen_width - 1)
         real                             :: z
         type(point_type)                 :: left, right
 
@@ -371,7 +370,7 @@ contains
             dy = (right%y - left%y) / screen_width
 
             ! Raster line and draw a vertical line for each segment.
-            do concurrent (x = 0:screen_width)
+            do concurrent (x = 0:screen_width - 1)
                 nx = 1 + modulo(int(left%x) - 1, map_width)
                 ny = 1 + modulo(int(left%y) - 1, map_height)
 
@@ -381,7 +380,7 @@ contains
                 if (height_on_screen < y_buffer(x)) then
                     ! Draw vertical line by setting the pixels of the frame buffer texture.
                     do concurrent (line_y = int(height_on_screen):int(y_buffer(x)))
-                        offset = (line_y * screen_width) + x
+                        offset = ((line_y - 1) * screen_width) + x
                         buffer%pixels(offset) = voxels(nx, ny)%color
                     end do
 
