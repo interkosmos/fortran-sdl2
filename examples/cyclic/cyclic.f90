@@ -188,13 +188,12 @@ program main
     end do loop
 
     ! Quit gracefully.
-    frame_buffer%pixels => null()
-    call sdl_free_format(frame_buffer%pixel_format)
-    call sdl_destroy_texture(frame_buffer%texture)
-
     deallocate (buffer)
     deallocate (world)
 
+    frame_buffer%pixels => null()
+
+    call sdl_destroy_texture(frame_buffer%texture)
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
     call sdl_free_cursor(cursor)

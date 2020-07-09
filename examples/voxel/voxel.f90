@@ -167,9 +167,7 @@ program main
     end do
 
     ! Quit gracefully.
-    call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
-
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
     call sdl_quit()
@@ -267,9 +265,6 @@ contains
 
         call sdl_free_surface(color_map%image)
         call sdl_free_surface(height_map%image)
-
-        call sdl_free_format(color_map%pixel_format)
-        call sdl_free_format(height_map%pixel_format)
 
         read_voxels = 0
     end function read_voxels

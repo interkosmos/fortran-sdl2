@@ -189,12 +189,9 @@ program main
     end do loop
 
     ! Quit gracefully.
-    call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
-
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
-
     call sdl_quit()
 contains
     subroutine render(buffer, fire, width, height)
