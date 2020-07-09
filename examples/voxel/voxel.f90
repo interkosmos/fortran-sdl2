@@ -167,7 +167,7 @@ program main
     end do
 
     ! Quit gracefully.
-    buffer%pixels => null()
+    ! buffer%pixels => null()
     call sdl_free_format(buffer%pixel_format)
     call sdl_destroy_texture(buffer%texture)
 

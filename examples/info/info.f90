@@ -74,7 +74,7 @@ contains
         if (sdl_get_render_driver_info(0, c_loc(info)) == 0) then
             size = c_strlen(info%name)
             allocate (character(len=size) :: str)
-            call c_f_string_ptr(info%name, str)
+            call c_f_str_ptr(info%name, str)
         else
             allocate (character(len=3) :: str)
             str = 'N/A'

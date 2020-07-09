@@ -24,7 +24,7 @@ headers. On FreeBSD, run:
 ```
 
 ## Building the Interface Bindings
-Clone the repository and then run `make` to build the interfaces:
+Clone the repository and then run `make` to build the static library `sdl2.a`:
 
 ```
 $ git clone https://github.com/interkosmos/fortran-sdl2
@@ -44,6 +44,13 @@ On FreeBSD, you may have to add the GNU Fortran runtime library search path to
 
 ```
 $ make sdl2 FFLAGS=-Wl,-rpath=/usr/local/lib/gcc9/
+```
+
+You can link the static library `fortran-sdl2.a` containing all interface
+bindings with:
+
+```
+$ make all
 ```
 
 ### SDL2_image
@@ -152,7 +159,7 @@ end program main
 Compile the source code with GNU Fortran:
 
 ```
-$ gfortran -Wall `sdl2-config --cflags` -o example example.f90 sdl2.o `sdl2-config --libs`
+$ gfortran -Wall `sdl2-config --cflags` -o example example.f90 sdl2.a `sdl2-config --libs`
 ```
 
 The `-Wl,-rpath` argument may be required optionally.

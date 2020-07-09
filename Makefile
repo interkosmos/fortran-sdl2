@@ -4,7 +4,7 @@
 FC         = gfortran
 SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
-FFLAGS     = -O2 -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
+FFLAGS     = -Wall -O2 -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS     = $(SDL_LDLIBS)
 
 SDL_SRC = src/c_util.f90 \
@@ -33,13 +33,16 @@ SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_version.f90 \
           src/sdl2/sdl2_video.f90 \
           src/sdl2.f90
-SDL_OBJ = sdl2.o
 IMG_SRC = src/sdl2_image.f90
-IMG_OBJ = sdl2_image.o
-MIX_SRC = src/c_util.f90 src/sdl2_mixer.f90
-MIX_OBJ = sdl2_mixer.o
+MIX_SRC = src/c_util.f90 \
+          src/sdl2_mixer.f90
 TTF_SRC = src/sdl2_ttf.f90
-TTF_OBJ = sdl2_ttf.o
+
+SDL_LIB = sdl2.a
+IMG_LIB = sdl2_image.a
+MIX_LIB = sdl2_mixer.a
+TTF_LIB = sdl2_ttf.a
+LIBRARY = fortran-sdl2.a
 
 ALPHA   = examples/alpha/alpha
 CYCLIC  = examples/cyclic/cyclic
@@ -60,12 +63,12 @@ WINDOW  = examples/window/window
 
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
-        alpha cyclic trex draw dvd events fire forest image info msgbox \
+        alpha cyclic draw dvd events fire forest image info msgbox \
         opera pixel scaling text voxel window
 
-all: $(SDL_OBJ) $(IMG_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+all: $(LIBRARY)
 
-examples: $(ALPHA) $(CIRCLE) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) \
+examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) \
           $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
           $(WINDOW)
 
@@ -88,76 +91,84 @@ voxel: $(VOXEL)
 window: $(WINDOW)
 
 # Build targets of SDL 2.0 interfaces.
-sdl2: $(SDL_OBJ)
-sdl2_image: $(IMG_OBJ)
-sdl2_mixer: $(MIX_OBJ)
-sdl2_ttf: $(TTF_OBJ)
+sdl2: $(SDL_LIB)
+sdl2_image: $(IMG_LIB)
+sdl2_mixer: $(MIX_LIB)
+sdl2_ttf: $(TTF_LIB)
 
 # SDL 2.0 interfaces.
-$(SDL_OBJ):
-	$(FC) $(FFLAGS) -c $(SDL_SRC)
+$(SDL_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(SDL_SRC)
+	ar rcs $(SDL_LIB) sdl2.o
 
-$(IMG_OBJ):
-	$(FC) $(FFLAGS) -c $(IMG_SRC)
+$(IMG_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(IMG_SRC)
+	ar rcs $(IMG_LIB) sdl2_image.o
 
-$(MIX_OBJ):
-	$(FC) $(FFLAGS) -c $(MIX_SRC)
+$(MIX_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(MIX_SRC)
+	ar rcs $(MIX_LIB) sdl2_mixer.o
 
-$(TTF_OBJ):
-	$(FC) $(FFLAGS) -c $(TTF_SRC)
+$(TTF_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(TTF_SRC)
+	ar rcs $(TTF_LIB) sdl2_ttf.o
+
+$(LIBRARY): $(SDL_LIB) $(IMG_LIB) $(MIX_LIB) $(TTF_LIB)
+	ar rcs $(LIBRARY) sdl2.o sdl2_image.o sdl2_mixer.o sdl2_ttf.o
 
 # Examples.
-$(ALPHA): $(ALPHA).f90 $(SDL_OBJ)
+$(ALPHA): $(ALPHA).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(CYCLIC): $(CYCLIC).f90 $(SDL_OBJ)
+$(CYCLIC): $(CYCLIC).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DRAW): $(DRAW).f90 $(SDL_OBJ)
+$(DRAW): $(DRAW).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DVD): $(DVD).f90 $(SDL_OBJ) $(IMG_OBJ)
+$(DVD): $(DVD).f90 $(SDL_LIB) $(IMG_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
 
-$(EVENTS): $(EVENTS).f90 $(SDL_OBJ)
+$(EVENTS): $(EVENTS).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(FIRE): $(FIRE).f90 $(SDL_OBJ)
+$(FIRE): $(FIRE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(FOREST): $(FOREST).f90 $(SDL_OBJ)
+$(FOREST): $(FOREST).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(IMAGE): $(IMAGE).f90 $(SDL_OBJ)
+$(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(INFO): $(INFO).f90 $(SDL_OBJ)
+$(INFO): $(INFO).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(OPERA): $(OPERA).f90 $(SDL_OBJ) $(MIX_OBJ) $(TTF_OBJ)
+$(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
-$(PIXEL): $(PIXEL).f90 $(SDL_OBJ)
+$(PIXEL): $(PIXEL).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(MSGBOX): $(MSGBOX).f90 $(SDL_OBJ)
+$(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(SCALING): $(SCALING).f90 $(SDL_OBJ)
+$(SCALING): $(SCALING).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(TEXT): $(TEXT).f90 $(SDL_OBJ) $(TTF_OBJ)
+$(TEXT): $(TEXT).f90 $(SDL_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_ttf
 
-$(VOXEL): $(VOXEL).f90 $(SDL_OBJ)
+$(VOXEL): $(VOXEL).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(WINDOW): $(WINDOW).f90 $(SDL_OBJ)
+$(WINDOW): $(WINDOW).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-# Delete *.mod, *.o, and all compiled examples.
+# Delete *.mod, *.a, *.o, and all compiled examples.
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
+	if [ `ls -1 *.a 2>/dev/null | wc -l` -gt 0 ]; then rm *.a; fi
 	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
 	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
 	if [ -e $(CYCLIC) ]; then rm $(CYCLIC); fi
