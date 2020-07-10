@@ -120,12 +120,12 @@ program main
     ! Main loop.
     loop: do
         ! Event handling.
-        do while (sdl_poll_event(event) > 0)
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit loop
             end select
-        end do
+        end if
 
         ! Copy buffer texture to screen.
         rc = sdl_render_copy(renderer, buffer%texture, rect, rect)

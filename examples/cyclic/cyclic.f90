@@ -247,7 +247,7 @@ contains
 
         do concurrent (y = 1:height)
             do concurrent (x = 1:width)
-                offset = (y * width) + x
+                offset = ((y - 1) * width) + x
                 frame_buffer%pixels(offset) = palette(world(x, y))
             end do
         end do

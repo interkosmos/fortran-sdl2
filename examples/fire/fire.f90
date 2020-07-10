@@ -63,7 +63,7 @@ contains
         real                   :: r
 
         do y = 1, height - 1
-            do x = 0, width - 1
+            do x = 1, width - 1
                 i = (y * width) + x
                 p = fire(i)
 

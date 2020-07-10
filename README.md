@@ -186,7 +186,7 @@ Compile all examples with:
 $ make examples
 ```
 
-Or use the name of a particular example.
+Or, use the name of a particular example.
 
 ## Compatibility
 All Fortran interface names are written in snake case. For instance,
