@@ -3421,5 +3421,4 @@ module sdl2_opengl
         subroutine glpopname() bind(c, name='glPopName')
         end subroutine glpopname
      end interface
-
 end module sdl2_opengl

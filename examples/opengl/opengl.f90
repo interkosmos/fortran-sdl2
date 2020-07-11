@@ -1,6 +1,6 @@
 ! opengl.f90
 !
-! Example that shows how to call OpenGL 1.1.
+! Example that shows how to draw a triangle with OpenGL 1.1.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
@@ -14,9 +14,9 @@ program main
     integer, parameter :: SCREEN_WIDTH  = 640
     integer, parameter :: SCREEN_HEIGHT = 400
 
-    type(c_ptr)       :: context
-    type(c_ptr)       :: window
-    type(sdl_event)   :: event
+    type(c_ptr)     :: context
+    type(c_ptr)     :: window
+    type(sdl_event) :: event
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -53,11 +53,16 @@ program main
         call glclearcolor(0.0, 0.0, 0.0, 1.0)
         call glclear(GL_COLOR_BUFFER_BIT)
 
-        call glBegin(GL_TRIANGLES);
-            call glVertex2f(-0.7, -0.5)
-            call glVertex2f( 0.7, -0.5)
-            call glVertex2f( 0.0,  0.7)
-        call glEnd()
+        call glbegin(gl_triangles)
+            call glcolor3f(1.0, 0.0, 0.0) ! red
+            call glvertex2f(-0.8, -0.8)
+
+            call glcolor3f(0.0, 1.0, 0.0) ! green
+            call glvertex2f(0.8, -0.8)
+
+            call glcolor3f(0.0, 0.0, 1.0) ! blue
+            call glvertex2f(0.0, 0.9)
+        call glend()
 
         call sdl_gl_swap_window(window)
     end do loop

@@ -365,8 +365,8 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_FreeSurface                       |   ✓   |
 | SDL_FreeWAV                           |   –   |
 | SDL_GL_BindTexture                    |   –   |
-| SDL_GL_CreateContext                  |   –   |
-| SDL_GL_DeleteContext                  |   –   |
+| SDL_GL_CreateContext                  |   ✓   |
+| SDL_GL_DeleteContext                  |   ✓   |
 | SDL_GL_ExtensionSupported             |   –   |
 | SDL_GL_GetAttribute                   |   –   |
 | SDL_GL_GetCurrentContext              |   –   |
@@ -379,7 +379,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GL_ResetAttributes                |   –   |
 | SDL_GL_SetAttribute                   |   ✓   |
 | SDL_GL_SetSwapInterval                |   –   |
-| SDL_GL_SwapWindow                     |   –   |
+| SDL_GL_SwapWindow                     |   ✓   |
 | SDL_GL_UnbindTexture                  |   –   |
 | SDL_GL_UnloadLibrary                  |   –   |
 | SDL_GameControllerAddMapping          |   –   |
