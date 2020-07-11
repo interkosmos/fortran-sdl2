@@ -20,6 +20,7 @@ module sdl2
     use :: sdl2_log
     use :: sdl2_messagebox
     use :: sdl2_mouse
+    use :: sdl2_opengl
     use :: sdl2_pixels
     use :: sdl2_platform
     use :: sdl2_rect

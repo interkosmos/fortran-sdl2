@@ -173,6 +173,7 @@ Some demo applications can be found in `examples/`:
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
 * **msgbox** shows a simple message box (software renderer).
+* **opengl** draws a triangle with OpenGL 1.1.
 * **opera** plays an OGG file with SDL_mixer (software renderer).
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * **scaling** displays a scaled image (software renderer).
@@ -376,7 +377,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GL_LoadLibrary                    |   –   |
 | SDL_GL_MakeCurrent                    |   –   |
 | SDL_GL_ResetAttributes                |   –   |
-| SDL_GL_SetAttribute                   |   –   |
+| SDL_GL_SetAttribute                   |   ✓   |
 | SDL_GL_SetSwapInterval                |   –   |
 | SDL_GL_SwapWindow                     |   –   |
 | SDL_GL_UnbindTexture                  |   –   |

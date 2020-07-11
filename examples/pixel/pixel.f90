@@ -133,9 +133,9 @@ program main
     end do loop
 
     ! Quit gracefully.
-    call sdl_free_surface(image%surface)
     call sdl_destroy_texture(buffer%texture)
     call sdl_destroy_texture(image%texture)
+    call sdl_free_surface(image%surface)
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)
     call sdl_quit()

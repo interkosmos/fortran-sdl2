@@ -75,6 +75,37 @@ module sdl2_video
         enumerator :: SDL_WINDOWEVENT_HIT_TEST
     end enum
 
+    ! SDL_GLattr
+    enum, bind(c)
+        enumerator :: SDL_GL_RED_SIZE
+        enumerator :: SDL_GL_GREEN_SIZE
+        enumerator :: SDL_GL_BLUE_SIZE
+        enumerator :: SDL_GL_ALPHA_SIZE
+        enumerator :: SDL_GL_BUFFER_SIZE
+        enumerator :: SDL_GL_DOUBLEBUFFER
+        enumerator :: SDL_GL_DEPTH_SIZE
+        enumerator :: SDL_GL_STENCIL_SIZE
+        enumerator :: SDL_GL_ACCUM_RED_SIZE
+        enumerator :: SDL_GL_ACCUM_GREEN_SIZE
+        enumerator :: SDL_GL_ACCUM_BLUE_SIZE
+        enumerator :: SDL_GL_ACCUM_ALPHA_SIZE
+        enumerator :: SDL_GL_STEREO
+        enumerator :: SDL_GL_MULTISAMPLEBUFFERS
+        enumerator :: SDL_GL_MULTISAMPLESAMPLES
+        enumerator :: SDL_GL_ACCELERATED_VISUAL
+        enumerator :: SDL_GL_RETAINED_BACKING
+        enumerator :: SDL_GL_CONTEXT_MAJOR_VERSION
+        enumerator :: SDL_GL_CONTEXT_MINOR_VERSION
+        enumerator :: SDL_GL_CONTEXT_EGL
+        enumerator :: SDL_GL_CONTEXT_FLAGS
+        enumerator :: SDL_GL_CONTEXT_PROFILE_MASK
+        enumerator :: SDL_GL_SHARE_WITH_CURRENT_CONTEXT
+        enumerator :: SDL_GL_FRAMEBUFFER_SRGB_CAPABLE
+        enumerator :: SDL_GL_CONTEXT_RELEASE_BEHAVIOR
+        enumerator :: SDL_GL_CONTEXT_RESET_NOTIFICATION
+        enumerator :: SDL_GL_CONTEXT_NO_ERROR
+    end enum
+
     public :: sdl_create_window
     public :: sdl_destroy_window
     public :: sdl_get_current_video_driver_
@@ -87,6 +118,10 @@ module sdl2_video
     public :: sdl_get_window_size
     public :: sdl_get_window_surface_
     public :: sdl_get_window_title_
+    public :: sdl_gl_create_context
+    public :: sdl_gl_delete_context
+    public :: sdl_gl_set_attribute
+    public :: sdl_gl_swap_window
     public :: sdl_hide_window
     public :: sdl_maximize_window
     public :: sdl_minimize_window
@@ -122,6 +157,21 @@ module sdl2_video
             import :: c_ptr
             type(c_ptr) :: sdl_get_current_video_driver_
         end function sdl_get_current_video_driver_
+
+        ! SDL_GLContext SDL_GL_CreateContext(SDL_Window* window)
+        function sdl_gl_create_context(window) bind(c, name='SDL_GL_CreateContext')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: window
+            type(c_ptr)                    :: sdl_gl_create_context
+        end function sdl_gl_create_context
+
+        ! int SDL_GL_SetAttribute(SDL_GLattr attr, int value)
+        function sdl_gl_set_attribute(attr, value) bind(c, name='SDL_GL_SetAttribute')
+            import :: c_int
+            integer(kind=c_int), intent(in), value :: attr
+            integer(kind=c_int), intent(in), value :: value
+            integer(kind=c_int)                    :: sdl_gl_set_attribute
+        end function sdl_gl_set_attribute
 
         ! const char *SDL_GetVideoDriver(int index)
         function sdl_get_video_driver_(index) bind(c, name='SDL_GetVideoDriver')
@@ -210,6 +260,18 @@ module sdl2_video
             integer(kind=c_int), intent(inout)     :: w
             integer(kind=c_int), intent(inout)     :: h
         end subroutine sdl_get_window_size
+
+        ! void SDL_GL_DeleteContext(SDL_GLContext context)
+        subroutine sdl_gl_delete_context(context) bind(c, name='SDL_GL_DeleteContext')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: context
+        end subroutine sdl_gl_delete_context
+
+        ! void SDL_GL_SwapWindow(SDL_Window *window)
+        subroutine sdl_gl_swap_window(window) bind(c, name='SDL_GL_SwapWindow')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: window
+        end subroutine sdl_gl_swap_window
 
         ! void SDL_HideWindow(SDL_Window *window)
         subroutine sdl_hide_window(window) bind(c, name='SDL_HideWindow')

@@ -4,7 +4,7 @@
 FC         = gfortran
 SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
-FFLAGS     = -Wall -O2 -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
+FFLAGS     = -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS     = $(SDL_LDLIBS)
 
 SDL_SRC = src/c_util.f90 \
@@ -32,6 +32,7 @@ SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_timer.f90 \
           src/sdl2/sdl2_version.f90 \
           src/sdl2/sdl2_video.f90 \
+          src/sdl2/sdl2_opengl.f90 \
           src/sdl2.f90
 IMG_SRC = src/sdl2_image.f90
 MIX_SRC = src/c_util.f90 \
@@ -54,6 +55,7 @@ FOREST  = examples/forest/forest
 IMAGE   = examples/image/image
 INFO    = examples/info/info
 MSGBOX  = examples/msgbox/msgbox
+OPENGL  = examples/opengl/opengl
 OPERA   = examples/opera/opera
 PIXEL   = examples/pixel/pixel
 SCALING = examples/scaling/scaling
@@ -64,12 +66,12 @@ WINDOW  = examples/window/window
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         alpha cyclic draw dvd events fire forest image info msgbox \
-        opera pixel scaling text voxel window
+        opengl opera pixel scaling text voxel window
 
 all: $(LIBRARY)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) \
-          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
+          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(OPENGL) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
           $(WINDOW)
 
 # Build targets of examples.
@@ -83,6 +85,7 @@ forest: $(FOREST)
 image: $(IMAGE)
 info: $(INFO)
 msgbox: $(MSGBOX)
+opengl: $(OPENGL)
 opera: $(OPERA)
 pixel: $(PIXEL)
 scaling: $(SCALING)
@@ -144,6 +147,9 @@ $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 $(INFO): $(INFO).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(OPENGL): $(OPENGL).f90 $(SDL_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+
 $(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
@@ -180,6 +186,7 @@ clean:
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
+	if [ -e $(OPENGL) ]; then rm $(OPENGL); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi

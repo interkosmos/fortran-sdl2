@@ -174,7 +174,6 @@ program main
 contains
     integer function calculate_fps(t1)
         !! Calculates current frames per seconds.
-        use :: sdl2
         integer, intent(in) :: t1   !! First time value.
         integer             :: dt   !! Time delta.
         integer, save       :: fc   !! Frame counter.

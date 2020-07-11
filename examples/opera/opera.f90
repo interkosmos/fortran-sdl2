@@ -61,14 +61,6 @@ program main
         stop
     end if
 
-    ! Play music.
-    music = mix_load_mus(OGG_PATH // c_null_char)
-
-    if (mix_play_music(music, -1) < 0) then
-        write (stderr, *) 'MIX Error: ', sdl_get_error()
-        stop
-    end if
-
     ! Create the SDL window.
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                SDL_WINDOWPOS_UNDEFINED, &
@@ -92,6 +84,13 @@ program main
 
     rc = sdl_update_window_surface(window)
 
+    ! Play music.
+    music = mix_load_mus(OGG_PATH // c_null_char)
+
+    if (mix_play_music(music, -1) < 0) then
+        write (stderr, *) 'MIX Error: ', sdl_get_error()
+    end if
+
     ! Event loop.
     do while (.not. done)
         if (sdl_poll_event(event) > 0) then
@@ -99,19 +98,16 @@ program main
                 case (SDL_QUITEVENT)
                     done = .true.
             end select
-
-            rc = sdl_blit_surface(image_opt, rect_image, window_surface, rect_image)
-            rc = sdl_blit_surface(text, rect_text, window_surface, rect_text)
-            rc = sdl_update_window_surface(window)
-        else
-            call sdl_delay(50)
         end if
+
+        rc = sdl_blit_surface(image_opt, rect_image, window_surface, rect_image)
+        rc = sdl_blit_surface(text, rect_text, window_surface, rect_text)
+        rc = sdl_update_window_surface(window)
+        call sdl_delay(50)
     end do
 
     ! Quit gracefully.
     call mix_free_music(music)
-    call mix_close_audio()
-
     call ttf_close_font(font)
     call ttf_quit()
 
@@ -120,5 +116,7 @@ program main
     call sdl_free_surface(image_loaded)
 
     call sdl_destroy_window(window)
+    call mix_close_audio()
+    call mix_quit()
     call sdl_quit()
 end program main
