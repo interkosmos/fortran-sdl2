@@ -169,11 +169,12 @@ Some demo applications can be found in `examples/`:
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
+* **gl** renders primitives with OpenGL 1.3.
+* **gl3d** rotates a cube with OpenGL 1.3.
 * **forest** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
 * **msgbox** shows a simple message box (software renderer).
-* **opengl** renders primitives with OpenGL 1.3.
 * **opera** plays an OGG file with SDL_mixer (software renderer).
 * **pixel** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * **scaling** displays a scaled image (software renderer).
@@ -966,6 +967,13 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | TTF_SizeUTF8                          |   –   |
 | TTF_WasInit                           |   –   |
 
+## GLU
+| Name                                  | Bound |
+|---------------------------------------|-------|
+| gluLookAt                             |   ✓   |
+| gluPerspective                        |   ✓   |
+| gluProject                            |   ✓   |
+
 ## Utility Functions
 | Name                                  | Description                                     |
 |---------------------------------------|-------------------------------------------------|
@@ -976,4 +984,5 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 Thanks go to [angelog0](https://github.com/angelog0).
 
 ## Licence
+
 ISC
