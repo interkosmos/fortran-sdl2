@@ -1,7 +1,7 @@
 # fortran-sdl2
 A collection of ISO C binding interfaces to
 [Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
-multimedia and game programming in Fortran. SDL versions tested against:
+2D and 3D game programming in Fortran. SDL versions tested against:
 
 Library   | Version
 ----------|--------
@@ -108,11 +108,11 @@ program main
         stop
     end if
 
-    ! Set position and size of the rectangle.
-    rect = sdl_rect(50, 50, 250, 250)
-
     ! Create the renderer.
     renderer = sdl_create_renderer(window, -1, 0)
+
+    ! Set position and size of the rectangle.
+    rect = sdl_rect(50, 50, 250, 250)
 
     ! Event loop.
     do while (is_running)

@@ -1,6 +1,6 @@
-! opengl.f90
+! gl.f90
 !
-! Example that shows how to draw a triangle with OpenGL 1.1.
+! Example that shows how to render primitives with OpenGL 1.3.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
@@ -70,7 +70,7 @@ contains
         real(kind=8)        :: aspect
 
         call glmatrixmode(GL_PROJECTION)
-        ! Set aspect ratio.
+        ! Set aspect ratio of projection.
         aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
         call glortho(-aspect, aspect, -1.0_8, 1.0_8, -1.0_8, 1.0_8)
 

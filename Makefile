@@ -38,11 +38,13 @@ IMG_SRC = src/sdl2_image.f90
 MIX_SRC = src/c_util.f90 \
           src/sdl2_mixer.f90
 TTF_SRC = src/sdl2_ttf.f90
+GLU_SRC = src/glu.f90
 
 SDL_LIB = sdl2.a
 IMG_LIB = sdl2_image.a
 MIX_LIB = sdl2_mixer.a
 TTF_LIB = sdl2_ttf.a
+GLU_LIB = glu.a
 LIBRARY = fortran-sdl2.a
 
 ALPHA   = examples/alpha/alpha
@@ -55,7 +57,8 @@ FOREST  = examples/forest/forest
 IMAGE   = examples/image/image
 INFO    = examples/info/info
 MSGBOX  = examples/msgbox/msgbox
-OPENGL  = examples/opengl/opengl
+GL      = examples/gl/gl
+GL3D    = examples/gl3d/gl3d
 OPERA   = examples/opera/opera
 PIXEL   = examples/pixel/pixel
 SCALING = examples/scaling/scaling
@@ -65,13 +68,14 @@ WINDOW  = examples/window/window
 
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
-        alpha cyclic draw dvd events fire forest image info msgbox \
-        opengl opera pixel scaling text voxel window
+        glu \
+        alpha cyclic draw dvd events fire forest gl gl3d image info msgbox \
+        opera pixel scaling text voxel window
 
-all: $(LIBRARY)
+all: $(LIBRARY) $(GLU_LIB)
 
-examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) \
-          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(OPENGL) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
+examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
+          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
           $(WINDOW)
 
 # Build targets of examples.
@@ -82,10 +86,11 @@ dvd: $(DVD)
 events: $(EVENTS)
 fire: $(FIRE)
 forest: $(FOREST)
+gl: $(GL)
+gl3d: $(GL3D)
 image: $(IMAGE)
 info: $(INFO)
 msgbox: $(MSGBOX)
-opengl: $(OPENGL)
 opera: $(OPERA)
 pixel: $(PIXEL)
 scaling: $(SCALING)
@@ -98,6 +103,9 @@ sdl2: $(SDL_LIB)
 sdl2_image: $(IMG_LIB)
 sdl2_mixer: $(MIX_LIB)
 sdl2_ttf: $(TTF_LIB)
+
+# Build targets for additional OpenGL interfaces.
+glu: $(GLU_LIB)
 
 # SDL 2.0 interfaces.
 $(SDL_LIB):
@@ -118,6 +126,11 @@ $(TTF_LIB):
 
 $(LIBRARY): $(SDL_LIB) $(IMG_LIB) $(MIX_LIB) $(TTF_LIB)
 	ar rcs $(LIBRARY) sdl2.o sdl2_image.o sdl2_mixer.o sdl2_ttf.o
+
+# OpenGL.
+$(GLU_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(GLU_SRC)
+	ar rcs $(GLU_LIB) glu.o
 
 # Examples.
 $(ALPHA): $(ALPHA).f90 $(SDL_LIB)
@@ -141,14 +154,17 @@ $(FIRE): $(FIRE).f90 $(SDL_LIB)
 $(FOREST): $(FOREST).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(GL): $(GL).f90 $(SDL_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+
+$(GL3D): $(GL3D).f90 $(SDL_LIB) $(GLU_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+
 $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(INFO): $(INFO).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
-
-$(OPENGL): $(OPENGL).f90 $(SDL_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
 
 $(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
@@ -183,10 +199,11 @@ clean:
 	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
 	if [ -e $(FIRE) ]; then rm $(FIRE); fi
 	if [ -e $(FOREST) ]; then rm $(FOREST); fi
+	if [ -e $(GL) ]; then rm $(GL); fi
+	if [ -e $(GL3D) ]; then rm $(GL3D); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
-	if [ -e $(OPENGL) ]; then rm $(OPENGL); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
