@@ -1069,35 +1069,78 @@ module sdl2_opengl
     public :: glpushname
     public :: glpopname
 
+    ! OpenGL 1.3 (incomplete).
+    public :: glactivetexture
+    public :: glclientactivetexture
+    public :: glcompressedteximage1d
+    public :: glcompressedteximage2d
+    public :: glcompressedteximage3d
+    public :: glcompressedtexsubimage1d
+    public :: glcompressedtexsubimage2d
+    public :: glcompressedtexsubimage3d
+    public :: glgetcompressedteximage
+    public :: glmultitexcoord1d
+    public :: glmultitexcoord1dv
+    public :: glmultitexcoord1f
+    public :: glmultitexcoord1fv
+    public :: glmultitexcoord1i
+    public :: glmultitexcoord1iv
+    public :: glmultitexcoord1s
+    public :: glmultitexcoord1sv
+    public :: glmultitexcoord2d
+    public :: glmultitexcoord2dv
+    public :: glmultitexcoord2f
+    public :: glmultitexcoord2fv
+    public :: glmultitexcoord2i
+    public :: glmultitexcoord2iv
+    public :: glmultitexcoord2s
+    public :: glmultitexcoord2sv
+    public :: glmultitexcoord3d
+    public :: glmultitexcoord3dv
+    public :: glmultitexcoord3f
+    public :: glmultitexcoord3fv
+    public :: glmultitexcoord3i
+    public :: glmultitexcoord3iv
+    public :: glmultitexcoord3s
+    public :: glmultitexcoord3sv
+    public :: glmultitexcoord4d
+    public :: glmultitexcoord4dv
+    public :: glmultitexcoord4f
+    public :: glmultitexcoord4fv
+    public :: glmultitexcoord4i
+    public :: glmultitexcoord4iv
+    public :: glmultitexcoord4s
+    public :: glmultitexcoord4sv
+
     interface
         ! GLboolean glIsEnabled(GLenum cap)
         function glisenabled(cap) bind(c, name='glIsEnabled')
             import :: GLboolean, GLenum
             integer(kind=GLenum), intent(in), value :: cap
-            integer(kind=GLboolean) :: glisenabled
+            integer(kind=GLboolean)                 :: glisenabled
         end function glisenabled
 
         ! GLboolean glIsList(GLuint list)
         function glislist(list) bind(c, name='glIsList')
             import :: GLboolean, GLuint
             integer(kind=GLuint), intent(in), value :: list
-            integer(kind=GLboolean) :: glislist
+            integer(kind=GLboolean)                 :: glislist
         end function glislist
 
         ! GLboolean glAreTexturesResident(GLsizei n, const GLuint *textures, GLboolean *residences)
         function glaretexturesresident(n, textures, residences) bind(c, name='glAreTexturesResident')
             import :: GLboolean, GLsizei, GLuint
-            integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint), intent(in) :: textures
-            integer(kind=GLboolean), intent(in) :: residences
-            integer(kind=GLboolean) :: glaretexturesresident
+            integer(kind=GLsizei),   intent(in), value :: n
+            integer(kind=GLuint),    intent(in)        :: textures
+            integer(kind=GLboolean), intent(in)        :: residences
+            integer(kind=GLboolean)                    :: glaretexturesresident
         end function glaretexturesresident
 
         ! GLboolean glIsTexture(GLuint texture)
         function glistexture(texture) bind(c, name='glIsTexture')
             import :: GLboolean, GLuint
             integer(kind=GLuint), intent(in), value :: texture
-            integer(kind=GLboolean) :: glistexture
+            integer(kind=GLboolean)                 :: glistexture
         end function glistexture
 
         ! GLenum glGetError(void)
@@ -1110,21 +1153,21 @@ module sdl2_opengl
         function glrendermode(mode) bind(c, name='glRenderMode')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: mode
-            integer(kind=GLint) :: glrendermode
+            integer(kind=GLint)                     :: glrendermode
         end function glrendermode
 
         ! const GLubyte *glGetString(GLenum name)
         function glgetstring(name) bind(c, name='glGetString')
             import :: GLenum, GLubyte, c_ptr
             integer(kind=GLenum), intent(in), value :: name
-            type(c_ptr) :: glgetstring
+            type(c_ptr)                             :: glgetstring
         end function glgetstring
 
         ! GLuint glGenLists(GLsizei range)
         function glgenlists(range) bind(c, name='glGenLists')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: range
-            integer(kind=GLuint) :: glgenlists
+            integer(kind=GLuint)                     :: glgenlists
         end function glgenlists
 
         ! void glClearIndex(GLfloat c)
@@ -1167,7 +1210,7 @@ module sdl2_opengl
         subroutine glalphafunc(func, ref) bind(c, name='glAlphaFunc')
             import :: GLclampf, GLenum
             integer(kind=GLenum), intent(in), value :: func
-            real(kind=GLclampf), intent(in), value :: ref
+            real(kind=GLclampf),  intent(in), value :: ref
         end subroutine glalphafunc
 
         ! void glBlendFunc(GLenum sfactor, GLenum dfactor)
@@ -1210,7 +1253,7 @@ module sdl2_opengl
         ! void glLineStipple(GLint factor, GLushort pattern)
         subroutine gllinestipple(factor, pattern) bind(c, name='glLineStipple')
             import :: GLint, GLushort
-            integer(kind=GLint), intent(in), value :: factor
+            integer(kind=GLint),    intent(in), value :: factor
             integer(kind=GLushort), intent(in), value :: pattern
         end subroutine gllinestipple
 
@@ -1255,8 +1298,8 @@ module sdl2_opengl
         ! void glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
         subroutine glscissor(x, y, width, height) bind(c, name='glScissor')
             import :: GLint, GLsizei
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
         end subroutine glscissor
@@ -1314,29 +1357,29 @@ module sdl2_opengl
         ! void glGetBooleanv(GLenum pname, GLboolean *params)
         subroutine glgetbooleanv(pname, params) bind(c, name='glGetBooleanv')
             import :: GLboolean, GLenum
-            integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLboolean), intent(in) :: params
+            integer(kind=GLenum),    intent(in), value :: pname
+            integer(kind=GLboolean), intent(in)        :: params
         end subroutine glgetbooleanv
 
         ! void glGetDoublev(GLenum pname, GLdouble *params)
         subroutine glgetdoublev(pname, params) bind(c, name='glGetDoublev')
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble), intent(in) :: params
+            real(kind=GLdouble),  intent(in)        :: params
         end subroutine glgetdoublev
 
         ! void glGetFloatv(GLenum pname, GLfloat *params)
         subroutine glgetfloatv(pname, params) bind(c, name='glGetFloatv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgetfloatv
 
         ! void glGetIntegerv(GLenum pname, GLint *params)
         subroutine glgetintegerv(pname, params) bind(c, name='glGetIntegerv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgetintegerv
 
         ! void glPushAttrib(GLbitfield mask)
@@ -1412,7 +1455,7 @@ module sdl2_opengl
         subroutine glaccum(op, value) bind(c, name='glAccum')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: op
-            real(kind=GLfloat), intent(in), value :: value
+            real(kind=GLfloat),   intent(in), value :: value
         end subroutine glaccum
 
         ! void glMatrixMode(GLenum mode)
@@ -1446,8 +1489,8 @@ module sdl2_opengl
         ! void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
         subroutine glviewport(x, y, width, height) bind(c, name='glViewport')
             import :: GLint, GLsizei
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
         end subroutine glviewport
@@ -1541,7 +1584,7 @@ module sdl2_opengl
         ! void glDeleteLists(GLuint list, GLsizei range)
         subroutine gldeletelists(list, range) bind(c, name='glDeleteLists')
             import :: GLsizei, GLuint
-            integer(kind=GLuint), intent(in), value :: list
+            integer(kind=GLuint),  intent(in), value :: list
             integer(kind=GLsizei), intent(in), value :: range
         end subroutine gldeletelists
 
@@ -1566,8 +1609,8 @@ module sdl2_opengl
         subroutine glcalllists(n, type, lists) bind(c, name='glCallLists')
             import :: GLenum, GLsizei, c_ptr
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: lists
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: lists
         end subroutine glcalllists
 
         ! void glListBase(GLuint base)
@@ -2567,58 +2610,58 @@ module sdl2_opengl
         ! void glVertexPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *ptr)
         subroutine glvertexpointer(size, type, stride, ptr) bind(c, name='glVertexPointer')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLint), intent(in), value :: size
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLint),   intent(in), value :: size
+            integer(kind=GLenum),  intent(in), value :: type
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine glvertexpointer
 
         ! void glNormalPointer(GLenum type, GLsizei stride, const GLvoid *ptr)
         subroutine glnormalpointer(type, stride, ptr) bind(c, name='glNormalPointer')
             import :: GLenum, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLenum),  intent(in), value :: type
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine glnormalpointer
 
         ! void glColorPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *ptr)
         subroutine glcolorpointer(size, type, stride, ptr) bind(c, name='glColorPointer')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLint), intent(in), value :: size
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLint),   intent(in), value :: size
+            integer(kind=GLenum),  intent(in), value :: type
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine glcolorpointer
 
         ! void glIndexPointer(GLenum type, GLsizei stride, const GLvoid *ptr)
         subroutine glindexpointer(type, stride, ptr) bind(c, name='glIndexPointer')
             import :: GLenum, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLenum),  intent(in), value :: type
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine glindexpointer
 
         ! void glTexCoordPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *ptr)
         subroutine gltexcoordpointer(size, type, stride, ptr) bind(c, name='glTexCoordPointer')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLint), intent(in), value :: size
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLint),   intent(in), value :: size
+            integer(kind=GLenum),  intent(in), value :: type
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine gltexcoordpointer
 
         ! void glEdgeFlagPointer(GLsizei stride, const GLvoid *ptr)
         subroutine gledgeflagpointer(stride, ptr) bind(c, name='glEdgeFlagPointer')
             import :: GLsizei, c_ptr
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: ptr
+            type(c_ptr),           intent(in), value :: ptr
         end subroutine gledgeflagpointer
 
         ! void glGetPointerv(GLenum pname, GLvoid **params)
         subroutine glgetpointerv(pname, params) bind(c, name='glGetPointerv')
             import :: GLenum, c_ptr
             integer(kind=GLenum), intent(in), value :: pname
-            type(c_ptr), intent(in) :: params
+            type(c_ptr),          intent(in), value :: params
         end subroutine glgetpointerv
 
         ! void glArrayElement(GLint i)
@@ -2630,26 +2673,26 @@ module sdl2_opengl
         ! void glDrawArrays(GLenum mode, GLint first, GLsizei count)
         subroutine gldrawarrays(mode, first, count) bind(c, name='glDrawArrays')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLenum), intent(in), value :: mode
-            integer(kind=GLint), intent(in), value :: first
+            integer(kind=GLenum),  intent(in), value :: mode
+            integer(kind=GLint),   intent(in), value :: first
             integer(kind=GLsizei), intent(in), value :: count
         end subroutine gldrawarrays
 
         ! void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices)
         subroutine gldrawelements(mode, count, type, indices) bind(c, name='glDrawElements')
             import :: GLenum, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: mode
+            integer(kind=GLenum),  intent(in), value :: mode
             integer(kind=GLsizei), intent(in), value :: count
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: indices
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: indices
         end subroutine gldrawelements
 
         ! void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer)
         subroutine glinterleavedarrays(format, stride, pointer) bind(c, name='glInterleavedArrays')
             import :: GLenum, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: format
             integer(kind=GLsizei), intent(in), value :: stride
-            type(c_ptr), intent(in) :: pointer
+            type(c_ptr),           intent(in), value :: pointer
         end subroutine glinterleavedarrays
 
         ! void glShadeModel(GLenum mode)
@@ -2663,7 +2706,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine gllightf
 
         ! void glLighti(GLenum light, GLenum pname, GLint param)
@@ -2671,7 +2714,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine gllighti
 
         ! void glLightfv(GLenum light, GLenum pname, const GLfloat *params)
@@ -2679,7 +2722,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine gllightfv
 
         ! void glLightiv(GLenum light, GLenum pname, const GLint *params)
@@ -2687,7 +2730,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine gllightiv
 
         ! void glGetLightfv(GLenum light, GLenum pname, GLfloat *params)
@@ -2695,7 +2738,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgetlightfv
 
         ! void glGetLightiv(GLenum light, GLenum pname, GLint *params)
@@ -2703,35 +2746,35 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgetlightiv
 
         ! void glLightModelf(GLenum pname, GLfloat param)
         subroutine gllightmodelf(pname, param) bind(c, name='glLightModelf')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine gllightmodelf
 
         ! void glLightModeli(GLenum pname, GLint param)
         subroutine gllightmodeli(pname, param) bind(c, name='glLightModeli')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine gllightmodeli
 
         ! void glLightModelfv(GLenum pname, const GLfloat *params)
         subroutine gllightmodelfv(pname, params) bind(c, name='glLightModelfv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine gllightmodelfv
 
         ! void glLightModeliv(GLenum pname, const GLint *params)
         subroutine gllightmodeliv(pname, params) bind(c, name='glLightModeliv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine gllightmodeliv
 
         ! void glMaterialf(GLenum face, GLenum pname, GLfloat param)
@@ -2739,7 +2782,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine glmaterialf
 
         ! void glMateriali(GLenum face, GLenum pname, GLint param)
@@ -2747,7 +2790,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine glmateriali
 
         ! void glMaterialfv(GLenum face, GLenum pname, const GLfloat *params)
@@ -2755,7 +2798,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glmaterialfv
 
         ! void glMaterialiv(GLenum face, GLenum pname, const GLint *params)
@@ -2763,7 +2806,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glmaterialiv
 
         ! void glGetMaterialfv(GLenum face, GLenum pname, GLfloat *params)
@@ -2771,7 +2814,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgetmaterialfv
 
         ! void glGetMaterialiv(GLenum face, GLenum pname, GLint *params)
@@ -2779,7 +2822,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgetmaterialiv
 
         ! void glColorMaterial(GLenum face, GLenum mode)
@@ -2800,73 +2843,73 @@ module sdl2_opengl
         subroutine glpixelstoref(pname, param) bind(c, name='glPixelStoref')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine glpixelstoref
 
         ! void glPixelStorei(GLenum pname, GLint param)
         subroutine glpixelstorei(pname, param) bind(c, name='glPixelStorei')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine glpixelstorei
 
         ! void glPixelTransferf(GLenum pname, GLfloat param)
         subroutine glpixeltransferf(pname, param) bind(c, name='glPixelTransferf')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine glpixeltransferf
 
         ! void glPixelTransferi(GLenum pname, GLint param)
         subroutine glpixeltransferi(pname, param) bind(c, name='glPixelTransferi')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine glpixeltransferi
 
         ! void glPixelMapfv(GLenum map, GLsizei mapsize, const GLfloat *values)
         subroutine glpixelmapfv(map, mapsize, values) bind(c, name='glPixelMapfv')
             import :: GLenum, GLfloat, GLsizei
-            integer(kind=GLenum), intent(in), value :: map
+            integer(kind=GLenum),  intent(in), value :: map
             integer(kind=GLsizei), intent(in), value :: mapsize
-            real(kind=GLfloat), intent(in) :: values
+            real(kind=GLfloat),    intent(in)        :: values
         end subroutine glpixelmapfv
 
         ! void glPixelMapuiv(GLenum map, GLsizei mapsize, const GLuint *values)
         subroutine glpixelmapuiv(map, mapsize, values) bind(c, name='glPixelMapuiv')
             import :: GLenum, GLsizei, GLuint
-            integer(kind=GLenum), intent(in), value :: map
+            integer(kind=GLenum),  intent(in), value :: map
             integer(kind=GLsizei), intent(in), value :: mapsize
-            integer(kind=GLuint), intent(in) :: values
+            integer(kind=GLuint),  intent(in)        :: values
         end subroutine glpixelmapuiv
 
         ! void glPixelMapusv(GLenum map, GLsizei mapsize, const GLushort *values)
         subroutine glpixelmapusv(map, mapsize, values) bind(c, name='glPixelMapusv')
             import :: GLenum, GLsizei, GLushort
-            integer(kind=GLenum), intent(in), value :: map
-            integer(kind=GLsizei), intent(in), value :: mapsize
-            integer(kind=GLushort), intent(in) :: values
+            integer(kind=GLenum),   intent(in), value :: map
+            integer(kind=GLsizei),  intent(in), value :: mapsize
+            integer(kind=GLushort), intent(in)        :: values
         end subroutine glpixelmapusv
 
         ! void glGetPixelMapfv(GLenum map, GLfloat *values)
         subroutine glgetpixelmapfv(map, values) bind(c, name='glGetPixelMapfv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: map
-            real(kind=GLfloat), intent(in) :: values
+            real(kind=GLfloat),   intent(in)        :: values
         end subroutine glgetpixelmapfv
 
         ! void glGetPixelMapuiv(GLenum map, GLuint *values)
         subroutine glgetpixelmapuiv(map, values) bind(c, name='glGetPixelMapuiv')
             import :: GLenum, GLuint
             integer(kind=GLenum), intent(in), value :: map
-            integer(kind=GLuint), intent(in) :: values
+            integer(kind=GLuint), intent(in)        :: values
         end subroutine glgetpixelmapuiv
 
         ! void glGetPixelMapusv(GLenum map, GLushort *values)
         subroutine glgetpixelmapusv(map, values) bind(c, name='glGetPixelMapusv')
             import :: GLenum, GLushort
-            integer(kind=GLenum), intent(in), value :: map
-            integer(kind=GLushort), intent(in) :: values
+            integer(kind=GLenum),   intent(in), value :: map
+            integer(kind=GLushort), intent(in)        :: values
         end subroutine glgetpixelmapusv
 
         ! void glBitmap(GLsizei width, GLsizei height, GLfloat xorig, GLfloat yorig, GLfloat xmove, GLfloat ymove, const GLubyte *bitmap)
@@ -2874,23 +2917,23 @@ module sdl2_opengl
             import :: GLfloat, GLsizei, GLubyte
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            real(kind=GLfloat), intent(in), value :: xorig
-            real(kind=GLfloat), intent(in), value :: yorig
-            real(kind=GLfloat), intent(in), value :: xmove
-            real(kind=GLfloat), intent(in), value :: ymove
-            integer(kind=GLubyte), intent(in) :: bitmap
+            real(kind=GLfloat),    intent(in), value :: xorig
+            real(kind=GLfloat),    intent(in), value :: yorig
+            real(kind=GLfloat),    intent(in), value :: xmove
+            real(kind=GLfloat),    intent(in), value :: ymove
+            integer(kind=GLubyte), intent(in)        :: bitmap
         end subroutine glbitmap
 
         ! void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels)
         subroutine glreadpixels(x, y, width, height, format, type, pixels) bind(c, name='glReadPixels')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum),  intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine glreadpixels
 
         ! void glDrawPixels(GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels)
@@ -2898,26 +2941,26 @@ module sdl2_opengl
             import :: GLenum, GLsizei, c_ptr
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum),  intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine gldrawpixels
 
         ! void glCopyPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum type)
         subroutine glcopypixels(x, y, width, height, type) bind(c, name='glCopyPixels')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLenum), intent(in), value :: type
+            integer(kind=GLenum),  intent(in), value :: type
         end subroutine glcopypixels
 
         ! void glStencilFunc(GLenum func, GLint ref, GLuint mask)
         subroutine glstencilfunc(func, ref, mask) bind(c, name='glStencilFunc')
             import :: GLenum, GLint, GLuint
             integer(kind=GLenum), intent(in), value :: func
-            integer(kind=GLint), intent(in), value :: ref
+            integer(kind=GLint),  intent(in), value :: ref
             integer(kind=GLuint), intent(in), value :: mask
         end subroutine glstencilfunc
 
@@ -2946,7 +2989,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble), intent(in), value :: param
+            real(kind=GLdouble),  intent(in), value :: param
         end subroutine gltexgend
 
         ! void glTexGenf(GLenum coord, GLenum pname, GLfloat param)
@@ -2954,7 +2997,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine gltexgenf
 
         ! void glTexGeni(GLenum coord, GLenum pname, GLint param)
@@ -2962,7 +3005,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine gltexgeni
 
         ! void glTexGendv(GLenum coord, GLenum pname, const GLdouble *params)
@@ -2970,7 +3013,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble), intent(in) :: params
+            real(kind=GLdouble),  intent(in)        :: params
         end subroutine gltexgendv
 
         ! void glTexGenfv(GLenum coord, GLenum pname, const GLfloat *params)
@@ -2978,7 +3021,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine gltexgenfv
 
         ! void glTexGeniv(GLenum coord, GLenum pname, const GLint *params)
@@ -2986,7 +3029,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine gltexgeniv
 
         ! void glGetTexGendv(GLenum coord, GLenum pname, GLdouble *params)
@@ -2994,7 +3037,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble), intent(in) :: params
+            real(kind=GLdouble),  intent(in)        :: params
         end subroutine glgettexgendv
 
         ! void glGetTexGenfv(GLenum coord, GLenum pname, GLfloat *params)
@@ -3002,7 +3045,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgettexgenfv
 
         ! void glGetTexGeniv(GLenum coord, GLenum pname, GLint *params)
@@ -3010,7 +3053,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgettexgeniv
 
         ! void glTexEnvf(GLenum target, GLenum pname, GLfloat param)
@@ -3018,7 +3061,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine gltexenvf
 
         ! void glTexEnvi(GLenum target, GLenum pname, GLint param)
@@ -3026,7 +3069,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine gltexenvi
 
         ! void glTexEnvfv(GLenum target, GLenum pname, const GLfloat *params)
@@ -3034,7 +3077,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine gltexenvfv
 
         ! void glTexEnviv(GLenum target, GLenum pname, const GLint *params)
@@ -3042,7 +3085,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine gltexenviv
 
         ! void glGetTexEnvfv(GLenum target, GLenum pname, GLfloat *params)
@@ -3050,7 +3093,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgettexenvfv
 
         ! void glGetTexEnviv(GLenum target, GLenum pname, GLint *params)
@@ -3058,7 +3101,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgettexenviv
 
         ! void glTexParameterf(GLenum target, GLenum pname, GLfloat param)
@@ -3066,7 +3109,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in), value :: param
+            real(kind=GLfloat),   intent(in), value :: param
         end subroutine gltexparameterf
 
         ! void glTexParameteri(GLenum target, GLenum pname, GLint param)
@@ -3074,7 +3117,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine gltexparameteri
 
         ! void glTexParameterfv(GLenum target, GLenum pname, const GLfloat *params)
@@ -3082,7 +3125,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine gltexparameterfv
 
         ! void glTexParameteriv(GLenum target, GLenum pname, const GLint *params)
@@ -3090,7 +3133,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine gltexparameteriv
 
         ! void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat *params)
@@ -3098,7 +3141,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgettexparameterfv
 
         ! void glGetTexParameteriv(GLenum target, GLenum pname, GLint *params)
@@ -3106,77 +3149,77 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgettexparameteriv
 
         ! void glGetTexLevelParameterfv(GLenum target, GLint level, GLenum pname, GLfloat *params)
         subroutine glgettexlevelparameterfv(target, level, pname, params) bind(c, name='glGetTexLevelParameterfv')
             import :: GLenum, GLfloat, GLint
             integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint),  intent(in), value :: level
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glgettexlevelparameterfv
 
         ! void glGetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint *params)
         subroutine glgettexlevelparameteriv(target, level, pname, params) bind(c, name='glGetTexLevelParameteriv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint),  intent(in), value :: level
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glgettexlevelparameteriv
 
-        ! void glTexImage1D(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
-        subroutine glteximage1d(target, level, internalFormat, width, border, format, type, pixels) bind(c, name='glTexImage1D')
+        ! void glTexImage1D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
+        subroutine glteximage1d(target, level, internalformat, width, border, format, type, pixels) bind(c, name='glTexImage1D')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: internalFormat
-            integer(kind=GLsizei), intent(in), value :: width
-            integer(kind=GLint), intent(in), value :: border
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLint),   intent(in), value :: internalformat
+            integer(kind=glsizei), intent(in), value :: width
+            integer(kind=GLint),   intent(in), value :: border
+            integer(kind=GLenum),  intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine glteximage1d
 
-        ! void glTexImage2D(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
-        subroutine glteximage2d(target, level, internalFormat, width, height, border, format, type, pixels) &
+        ! void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
+        subroutine glteximage2d(target, level, internalformat, width, height, border, format, type, pixels) &
                 bind(c, name='glTexImage2D')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: internalFormat
-            integer(kind=GLsizei), intent(in), value :: width
-            integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLint), intent(in), value :: border
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=glint),   intent(in), value :: level
+            integer(kind=glint),   intent(in), value :: internalformat
+            integer(kind=glsizei), intent(in), value :: width
+            integer(kind=glsizei), intent(in), value :: height
+            integer(kind=glint),   intent(in), value :: border
+            integer(kind=glenum),  intent(in), value :: format
+            integer(kind=glenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine glteximage2d
 
         ! void glGetTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels)
         subroutine glgetteximage(target, level, format, type, pixels) bind(c, name='glGetTexImage')
             import :: GLenum, GLint, c_ptr
             integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint),  intent(in), value :: level
             integer(kind=GLenum), intent(in), value :: format
             integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            type(c_ptr),          intent(in), value :: pixels
         end subroutine glgetteximage
 
         ! void glGenTextures(GLsizei n, GLuint *textures)
         subroutine glgentextures(n, textures) bind(c, name='glGenTextures')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint), intent(in) :: textures
+            integer(kind=GLuint),  intent(in)        :: textures
         end subroutine glgentextures
 
         ! void glDeleteTextures(GLsizei n, const GLuint *textures)
         subroutine gldeletetextures(n, textures) bind(c, name='glDeleteTextures')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint), intent(in) :: textures
+            integer(kind=GLuint),  intent(in)        :: textures
         end subroutine gldeletetextures
 
         ! void glBindTexture(GLenum target, GLuint texture)
@@ -3190,82 +3233,82 @@ module sdl2_opengl
         subroutine glprioritizetextures(n, textures, priorities) bind(c, name='glPrioritizeTextures')
             import :: GLclampf, GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint), intent(in) :: textures
-            real(kind=GLclampf), intent(in) :: priorities
+            integer(kind=GLuint),  intent(in)        :: textures
+            real(kind=GLclampf),   intent(in)        :: priorities
         end subroutine glprioritizetextures
 
         ! void glTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels)
         subroutine gltexsubimage1d(target, level, xoffset, width, format, type, pixels) bind(c, name='glTexSubImage1D')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: xoffset
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLint),   intent(in), value :: xoffset
             integer(kind=GLsizei), intent(in), value :: width
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum) , intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine gltexsubimage1d
 
         ! void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels)
         subroutine gltexsubimage2d(target, level, xoffset, yoffset, width, height, format, type, pixels) &
                 bind(c, name='glTexSubImage2D')
             import :: GLenum, GLint, GLsizei, c_ptr
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: xoffset
-            integer(kind=GLint), intent(in), value :: yoffset
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLint),   intent(in), value :: xoffset
+            integer(kind=GLint),   intent(in), value :: yoffset
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLenum), intent(in), value :: format
-            integer(kind=GLenum), intent(in), value :: type
-            type(c_ptr), intent(in) :: pixels
+            integer(kind=GLenum),  intent(in), value :: format
+            integer(kind=GLenum),  intent(in), value :: type
+            type(c_ptr),           intent(in), value :: pixels
         end subroutine gltexsubimage2d
 
         ! void glCopyTexImage1D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border)
         subroutine glcopyteximage1d(target, level, internalformat, x, y, width, border) bind(c, name='glCopyTexImage1D')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLenum), intent(in), value :: internalformat
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLenum),  intent(in), value :: internalformat
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
-            integer(kind=GLint), intent(in), value :: border
+            integer(kind=GLint),   intent(in), value :: border
         end subroutine glcopyteximage1d
 
         ! void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border)
         subroutine glcopyteximage2d(target, level, internalformat, x, y, width, height, border) bind(c, name='glCopyTexImage2D')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLenum), intent(in), value :: internalformat
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLenum),  intent(in), value :: internalformat
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
-            integer(kind=GLint), intent(in), value :: border
+            integer(kind=GLint),   intent(in), value :: border
         end subroutine glcopyteximage2d
 
         ! void glCopyTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width)
         subroutine glcopytexsubimage1d(target, level, xoffset, x, y, width) bind(c, name='glCopyTexSubImage1D')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: xoffset
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLint),   intent(in), value :: xoffset
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
         end subroutine glcopytexsubimage1d
 
         ! void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
         subroutine glcopytexsubimage2d(target, level, xoffset, yoffset, x, y, width, height) bind(c, name='glCopyTexSubImage2D')
             import :: GLenum, GLint, GLsizei
-            integer(kind=GLenum), intent(in), value :: target
-            integer(kind=GLint), intent(in), value :: level
-            integer(kind=GLint), intent(in), value :: xoffset
-            integer(kind=GLint), intent(in), value :: yoffset
-            integer(kind=GLint), intent(in), value :: x
-            integer(kind=GLint), intent(in), value :: y
+            integer(kind=GLenum),  intent(in), value :: target
+            integer(kind=GLint),   intent(in), value :: level
+            integer(kind=GLint),   intent(in), value :: xoffset
+            integer(kind=GLint),   intent(in), value :: yoffset
+            integer(kind=GLint),   intent(in), value :: x
+            integer(kind=GLint),   intent(in), value :: y
             integer(kind=GLsizei), intent(in), value :: width
             integer(kind=GLsizei), intent(in), value :: height
         end subroutine glcopytexsubimage2d
@@ -3274,52 +3317,52 @@ module sdl2_opengl
         subroutine glmap1d(target, u1, u2, stride, order, points) bind(c, name='glMap1d')
             import :: GLdouble, GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
-            real(kind=GLdouble), intent(in), value :: u1
-            real(kind=GLdouble), intent(in), value :: u2
-            integer(kind=GLint), intent(in), value :: stride
-            integer(kind=GLint), intent(in), value :: order
-            real(kind=GLdouble), intent(in) :: points
+            real(kind=GLdouble),  intent(in), value :: u1
+            real(kind=GLdouble),  intent(in), value :: u2
+            integer(kind=GLint),  intent(in), value :: stride
+            integer(kind=GLint),  intent(in), value :: order
+            real(kind=GLdouble),  intent(in)        :: points
         end subroutine glmap1d
 
         ! void glMap1f(GLenum target, GLfloat u1, GLfloat u2, GLint stride, GLint order, const GLfloat *points)
         subroutine glmap1f(target, u1, u2, stride, order, points) bind(c, name='glMap1f')
             import :: GLenum, GLfloat, GLint
             integer(kind=GLenum), intent(in), value :: target
-            real(kind=GLfloat), intent(in), value :: u1
-            real(kind=GLfloat), intent(in), value :: u2
-            integer(kind=GLint), intent(in), value :: stride
-            integer(kind=GLint), intent(in), value :: order
-            real(kind=GLfloat), intent(in) :: points
+            real(kind=GLfloat),   intent(in), value :: u1
+            real(kind=GLfloat),   intent(in), value :: u2
+            integer(kind=GLint),  intent(in), value :: stride
+            integer(kind=GLint),  intent(in), value :: order
+            real(kind=GLfloat),   intent(in)        :: points
         end subroutine glmap1f
 
         ! void glMap2d(GLenum target, GLdouble u1, GLdouble u2, GLint ustride, GLint uorder, GLdouble v1, GLdouble v2, GLint vstride, GLint vorder, const GLdouble *points)
         subroutine glmap2d(target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) bind(c, name='glMap2d')
             import :: GLdouble, GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
-            real(kind=GLdouble), intent(in), value :: u1
-            real(kind=GLdouble), intent(in), value :: u2
-            integer(kind=GLint), intent(in), value :: ustride
-            integer(kind=GLint), intent(in), value :: uorder
-            real(kind=GLdouble), intent(in), value :: v1
-            real(kind=GLdouble), intent(in), value :: v2
-            integer(kind=GLint), intent(in), value :: vstride
-            integer(kind=GLint), intent(in), value :: vorder
-            real(kind=GLdouble), intent(in) :: points
+            real(kind=GLdouble),  intent(in), value :: u1
+            real(kind=GLdouble),  intent(in), value :: u2
+            integer(kind=GLint),  intent(in), value :: ustride
+            integer(kind=GLint),  intent(in), value :: uorder
+            real(kind=GLdouble),  intent(in), value :: v1
+            real(kind=GLdouble),  intent(in), value :: v2
+            integer(kind=GLint),  intent(in), value :: vstride
+            integer(kind=GLint),  intent(in), value :: vorder
+            real(kind=GLdouble),  intent(in)        :: points
         end subroutine glmap2d
 
         ! void glMap2f(GLenum target, GLfloat u1, GLfloat u2, GLint ustride, GLint uorder, GLfloat v1, GLfloat v2, GLint vstride, GLint vorder, const GLfloat *points)
         subroutine glmap2f(target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) bind(c, name='glMap2f')
             import :: GLenum, GLfloat, GLint
             integer(kind=GLenum), intent(in), value :: target
-            real(kind=GLfloat), intent(in), value :: u1
-            real(kind=GLfloat), intent(in), value :: u2
-            integer(kind=GLint), intent(in), value :: ustride
-            integer(kind=GLint), intent(in), value :: uorder
-            real(kind=GLfloat), intent(in), value :: v1
-            real(kind=GLfloat), intent(in), value :: v2
-            integer(kind=GLint), intent(in), value :: vstride
-            integer(kind=GLint), intent(in), value :: vorder
-            real(kind=GLfloat), intent(in) :: points
+            real(kind=GLfloat),   intent(in), value :: u1
+            real(kind=GLfloat),   intent(in), value :: u2
+            integer(kind=GLint),  intent(in), value :: ustride
+            integer(kind=GLint),  intent(in), value :: uorder
+            real(kind=GLfloat),   intent(in), value :: v1
+            real(kind=GLfloat),   intent(in), value :: v2
+            integer(kind=GLint),  intent(in), value :: vstride
+            integer(kind=GLint),  intent(in), value :: vorder
+            real(kind=GLfloat),   intent(in)        :: points
         end subroutine glmap2f
 
         ! void glGetMapdv(GLenum target, GLenum query, GLdouble *v)
@@ -3327,7 +3370,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: query
-            real(kind=GLdouble), intent(in) :: v
+            real(kind=GLdouble),  intent(in)        :: v
         end subroutine glgetmapdv
 
         ! void glGetMapfv(GLenum target, GLenum query, GLfloat *v)
@@ -3335,7 +3378,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: query
-            real(kind=GLfloat), intent(in) :: v
+            real(kind=GLfloat),   intent(in)        :: v
         end subroutine glgetmapfv
 
         ! void glGetMapiv(GLenum target, GLenum query, GLint *v)
@@ -3343,7 +3386,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: query
-            integer(kind=GLint), intent(in) :: v
+            integer(kind=GLint),  intent(in)        :: v
         end subroutine glgetmapiv
 
         ! void glEvalCoord1d(GLdouble u)
@@ -3408,8 +3451,8 @@ module sdl2_opengl
         subroutine glmapgrid1f(un, u1, u2) bind(c, name='glMapGrid1f')
             import :: GLfloat, GLint
             integer(kind=GLint), intent(in), value :: un
-            real(kind=GLfloat), intent(in), value :: u1
-            real(kind=GLfloat), intent(in), value :: u2
+            real(kind=GLfloat),  intent(in), value :: u1
+            real(kind=GLfloat),  intent(in), value :: u2
         end subroutine glmapgrid1f
 
         ! void glMapGrid2d(GLint un, GLdouble u1, GLdouble u2, GLint vn, GLdouble v1, GLdouble v2)
@@ -3427,11 +3470,11 @@ module sdl2_opengl
         subroutine glmapgrid2f(un, u1, u2, vn, v1, v2) bind(c, name='glMapGrid2f')
             import :: GLfloat, GLint
             integer(kind=GLint), intent(in), value :: un
-            real(kind=GLfloat), intent(in), value :: u1
-            real(kind=GLfloat), intent(in), value :: u2
+            real(kind=GLfloat),  intent(in), value :: u1
+            real(kind=GLfloat),  intent(in), value :: u2
             integer(kind=GLint), intent(in), value :: vn
-            real(kind=GLfloat), intent(in), value :: v1
-            real(kind=GLfloat), intent(in), value :: v2
+            real(kind=GLfloat),  intent(in), value :: v1
+            real(kind=GLfloat),  intent(in), value :: v2
         end subroutine glmapgrid2f
 
         ! void glEvalPoint1(GLint i)
@@ -3451,18 +3494,18 @@ module sdl2_opengl
         subroutine glevalmesh1(mode, i1, i2) bind(c, name='glEvalMesh1')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: mode
-            integer(kind=GLint), intent(in), value :: i1
-            integer(kind=GLint), intent(in), value :: i2
+            integer(kind=GLint),  intent(in), value :: i1
+            integer(kind=GLint),  intent(in), value :: i2
         end subroutine glevalmesh1
 
         ! void glEvalMesh2(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2)
         subroutine glevalmesh2(mode, i1, i2, j1, j2) bind(c, name='glEvalMesh2')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: mode
-            integer(kind=GLint), intent(in), value :: i1
-            integer(kind=GLint), intent(in), value :: i2
-            integer(kind=GLint), intent(in), value :: j1
-            integer(kind=GLint), intent(in), value :: j2
+            integer(kind=GLint),  intent(in), value :: i1
+            integer(kind=GLint),  intent(in), value :: i2
+            integer(kind=GLint),  intent(in), value :: j1
+            integer(kind=GLint),  intent(in), value :: j2
         end subroutine glevalmesh2
 
         ! void glFogf(GLenum pname, GLfloat param)
@@ -3476,29 +3519,29 @@ module sdl2_opengl
         subroutine glfogi(pname, param) bind(c, name='glFogi')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in), value :: param
+            integer(kind=GLint),  intent(in), value :: param
         end subroutine glfogi
 
         ! void glFogfv(GLenum pname, const GLfloat *params)
         subroutine glfogfv(pname, params) bind(c, name='glFogfv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat), intent(in) :: params
+            real(kind=GLfloat),   intent(in)        :: params
         end subroutine glfogfv
 
         ! void glFogiv(GLenum pname, const GLint *params)
         subroutine glfogiv(pname, params) bind(c, name='glFogiv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint), intent(in) :: params
+            integer(kind=GLint),  intent(in)        :: params
         end subroutine glfogiv
 
         ! void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer)
         subroutine glfeedbackbuffer(size, type, buffer) bind(c, name='glFeedbackBuffer')
             import :: GLenum, GLfloat, GLsizei
             integer(kind=GLsizei), intent(in), value :: size
-            integer(kind=GLenum), intent(in), value :: type
-            real(kind=GLfloat), intent(in) :: buffer
+            integer(kind=GLenum),  intent(in), value :: type
+            real(kind=GLfloat),    intent(in)        :: buffer
         end subroutine glfeedbackbuffer
 
         ! void glPassThrough(GLfloat token)
@@ -3511,7 +3554,7 @@ module sdl2_opengl
         subroutine glselectbuffer(size, buffer) bind(c, name='glSelectBuffer')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: size
-            integer(kind=GLuint), intent(in) :: buffer
+            integer(kind=GLuint),  intent(in)        :: buffer
         end subroutine glselectbuffer
 
         ! void glInitNames(void)
@@ -3533,5 +3576,365 @@ module sdl2_opengl
         ! void glPopName(void)
         subroutine glpopname() bind(c, name='glPopName')
         end subroutine glpopname
+
+        !***************************************************************
+        !
+        ! OpenGL 1.3
+        !
+        !***************************************************************
+        ! void glActiveTexture(GLenum texture)
+        subroutine glactivetexture(texture) bind(c, name='glActiveTexture')
+            import :: GLenum
+            integer(kind=GLenum), intent(in), value :: texture
+        end subroutine glactivetexture
+
+        ! void glClientActiveTexture(GLenum texture)
+        subroutine glclientactivetexture(texture) bind(c, name='glClientActiveTexture')
+            import :: GLenum
+            integer(kind=GLenum), intent(in), value :: texture
+        end subroutine glclientactivetexture
+
+        ! void glCompressedTexImage1D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedteximage1d(target, level, internalformat, width, border, imagesize, data) &
+                bind(c, name='glCompressedTexImage1D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLenum), intent(in), value :: internalformat
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLint), intent(in), value :: border
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedteximage1d
+
+        ! void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedteximage2d(target, level, internalformat, width, height, border, imagesize, data) &
+                bind(c, name='glCompressedTexImage2D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLenum), intent(in), value :: internalformat
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLsizei), intent(in), value :: height
+            integer(kind=GLint), intent(in), value :: border
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedteximage2d
+
+        ! void glCompressedTexImage3D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedteximage3d(target, level, internalformat, width, height, depth, border, imagesize, data) &
+                bind(c, name='glCompressedTexImage3D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLenum), intent(in), value :: internalformat
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLsizei), intent(in), value :: height
+            integer(kind=GLsizei), intent(in), value :: depth
+            integer(kind=GLint), intent(in), value :: border
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedteximage3d
+
+        ! void glCompressedTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedtexsubimage1d(target, level, xoffset, width, format, imagesize, data) &
+                bind(c, name='glCompressedTexSubImage1D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint), intent(in), value :: xoffset
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLenum), intent(in), value :: format
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedtexsubimage1d
+
+        ! void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedtexsubimage2d(target, level, xoffset, yoffset, width, height, format, imagesize, data) &
+                bind(c, name='glCompressedTexSubImage2D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint), intent(in), value :: xoffset
+            integer(kind=GLint), intent(in), value :: yoffset
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLsizei), intent(in), value :: height
+            integer(kind=GLenum), intent(in), value :: format
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedtexsubimage2d
+
+        ! void glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imagesize, const GLvoid *data)
+        subroutine glcompressedtexsubimage3d(target, level, xoffset, yoffset, zoffset, width, height, depth, format, &
+                imagesize, data) bind(c, name='glCompressedTexSubImage3D')
+            import :: GLenum, GLint, GLsizei, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: level
+            integer(kind=GLint), intent(in), value :: xoffset
+            integer(kind=GLint), intent(in), value :: yoffset
+            integer(kind=GLint), intent(in), value :: zoffset
+            integer(kind=GLsizei), intent(in), value :: width
+            integer(kind=GLsizei), intent(in), value :: height
+            integer(kind=GLsizei), intent(in), value :: depth
+            integer(kind=GLenum), intent(in), value :: format
+            integer(kind=GLsizei), intent(in), value :: imagesize
+            type(c_ptr), intent(in), value :: data
+        end subroutine glcompressedtexsubimage3d
+
+        ! void glGetCompressedTexImage(GLenum target, GLint lod, GLvoid *img)
+        subroutine glgetcompressedteximage(target, lod, img) bind(c, name='glGetCompressedTexImage')
+            import :: GLenum, GLint, c_ptr
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: lod
+            type(c_ptr), intent(in), value :: img
+        end subroutine glgetcompressedteximage
+
+        ! void glMultiTexCoord1d(GLenum target, GLdouble s)
+        subroutine glmultitexcoord1d(target, s) bind(c, name='glMultiTexCoord1d')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in), value :: s
+        end subroutine glmultitexcoord1d
+
+        ! void glMultiTexCoord1dv(GLenum target, const GLdouble *v)
+        subroutine glmultitexcoord1dv(target, v) bind(c, name='glMultiTexCoord1dv')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in) :: v
+        end subroutine glmultitexcoord1dv
+
+        ! void glMultiTexCoord1f(GLenum target, GLfloat s)
+        subroutine glmultitexcoord1f(target, s) bind(c, name='glMultiTexCoord1f')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in), value :: s
+        end subroutine glmultitexcoord1f
+
+        ! void glMultiTexCoord1fv(GLenum target, const GLfloat *v)
+        subroutine glmultitexcoord1fv(target, v) bind(c, name='glMultiTexCoord1fv')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in) :: v
+        end subroutine glmultitexcoord1fv
+
+        ! void glMultiTexCoord1i(GLenum target, GLint s)
+        subroutine glmultitexcoord1i(target, s) bind(c, name='glMultiTexCoord1i')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: s
+        end subroutine glmultitexcoord1i
+
+        ! void glMultiTexCoord1iv(GLenum target, const GLint *v)
+        subroutine glmultitexcoord1iv(target, v) bind(c, name='glMultiTexCoord1iv')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in) :: v
+        end subroutine glmultitexcoord1iv
+
+        ! void glMultiTexCoord1s(GLenum target, GLshort s)
+        subroutine glmultitexcoord1s(target, s) bind(c, name='glMultiTexCoord1s')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in), value :: s
+        end subroutine glmultitexcoord1s
+
+        ! void glMultiTexCoord1sv(GLenum target, const GLshort *v)
+        subroutine glmultitexcoord1sv(target, v) bind(c, name='glMultiTexCoord1sv')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in) :: v
+        end subroutine glmultitexcoord1sv
+
+        ! void glMultiTexCoord2d(GLenum target, GLdouble s, GLdouble t)
+        subroutine glmultitexcoord2d(target, s, t) bind(c, name='glMultiTexCoord2d')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in), value :: s
+            real(kind=GLdouble), intent(in), value :: t
+        end subroutine glmultitexcoord2d
+
+        ! void glMultiTexCoord2dv(GLenum target, const GLdouble *v)
+        subroutine glmultitexcoord2dv(target, v) bind(c, name='glMultiTexCoord2dv')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in) :: v
+        end subroutine glmultitexcoord2dv
+
+        ! void glMultiTexCoord2f(GLenum target, GLfloat s, GLfloat t)
+        subroutine glmultitexcoord2f(target, s, t) bind(c, name='glMultiTexCoord2f')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in), value :: s
+            real(kind=GLfloat), intent(in), value :: t
+        end subroutine glmultitexcoord2f
+
+        ! void glMultiTexCoord2fv(GLenum target, const GLfloat *v)
+        subroutine glmultitexcoord2fv(target, v) bind(c, name='glMultiTexCoord2fv')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in) :: v
+        end subroutine glmultitexcoord2fv
+
+        ! void glMultiTexCoord2i(GLenum target, GLint s, GLint t)
+        subroutine glmultitexcoord2i(target, s, t) bind(c, name='glMultiTexCoord2i')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: s
+            integer(kind=GLint), intent(in), value :: t
+        end subroutine glmultitexcoord2i
+
+        ! void glMultiTexCoord2iv(GLenum target, const GLint *v)
+        subroutine glmultitexcoord2iv(target, v) bind(c, name='glMultiTexCoord2iv')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in) :: v
+        end subroutine glmultitexcoord2iv
+
+        ! void glMultiTexCoord2s(GLenum target, GLshort s, GLshort t)
+        subroutine glmultitexcoord2s(target, s, t) bind(c, name='glMultiTexCoord2s')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in), value :: s
+            integer(kind=GLshort), intent(in), value :: t
+        end subroutine glmultitexcoord2s
+
+        ! void glMultiTexCoord2sv(GLenum target, const GLshort *v)
+        subroutine glmultitexcoord2sv(target, v) bind(c, name='glMultiTexCoord2sv')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in) :: v
+        end subroutine glmultitexcoord2sv
+
+        ! void glMultiTexCoord3d(GLenum target, GLdouble s, GLdouble t, GLdouble r)
+        subroutine glmultitexcoord3d(target, s, t, r) bind(c, name='glMultiTexCoord3d')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in), value :: s
+            real(kind=GLdouble), intent(in), value :: t
+            real(kind=GLdouble), intent(in), value :: r
+        end subroutine glmultitexcoord3d
+
+        ! void glMultiTexCoord3dv(GLenum target, const GLdouble *v)
+        subroutine glmultitexcoord3dv(target, v) bind(c, name='glMultiTexCoord3dv')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in) :: v
+        end subroutine glmultitexcoord3dv
+
+        ! void glMultiTexCoord3f(GLenum target, GLfloat s, GLfloat t, GLfloat r)
+        subroutine glmultitexcoord3f(target, s, t, r) bind(c, name='glMultiTexCoord3f')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in), value :: s
+            real(kind=GLfloat), intent(in), value :: t
+            real(kind=GLfloat), intent(in), value :: r
+        end subroutine glmultitexcoord3f
+
+        ! void glMultiTexCoord3fv(GLenum target, const GLfloat *v)
+        subroutine glmultitexcoord3fv(target, v) bind(c, name='glMultiTexCoord3fv')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in) :: v
+        end subroutine glmultitexcoord3fv
+
+        ! void glMultiTexCoord3i(GLenum target, GLint s, GLint t, GLint r)
+        subroutine glmultitexcoord3i(target, s, t, r) bind(c, name='glMultiTexCoord3i')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: s
+            integer(kind=GLint), intent(in), value :: t
+            integer(kind=GLint), intent(in), value :: r
+        end subroutine glmultitexcoord3i
+
+        ! void glMultiTexCoord3iv(GLenum target, const GLint *v)
+        subroutine glmultitexcoord3iv(target, v) bind(c, name='glMultiTexCoord3iv')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in) :: v
+        end subroutine glmultitexcoord3iv
+
+        ! void glMultiTexCoord3s(GLenum target, GLshort s, GLshort t, GLshort r)
+        subroutine glmultitexcoord3s(target, s, t, r) bind(c, name='glMultiTexCoord3s')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in), value :: s
+            integer(kind=GLshort), intent(in), value :: t
+            integer(kind=GLshort), intent(in), value :: r
+        end subroutine glmultitexcoord3s
+
+        ! void glMultiTexCoord3sv(GLenum target, const GLshort *v)
+        subroutine glmultitexcoord3sv(target, v) bind(c, name='glMultiTexCoord3sv')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in) :: v
+        end subroutine glmultitexcoord3sv
+
+        ! void glMultiTexCoord4d(GLenum target, GLdouble s, GLdouble t, GLdouble r, GLdouble q)
+        subroutine glmultitexcoord4d(target, s, t, r, q) bind(c, name='glMultiTexCoord4d')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in), value :: s
+            real(kind=GLdouble), intent(in), value :: t
+            real(kind=GLdouble), intent(in), value :: r
+            real(kind=GLdouble), intent(in), value :: q
+        end subroutine glmultitexcoord4d
+
+        ! void glMultiTexCoord4dv(GLenum target, const GLdouble *v)
+        subroutine glmultitexcoord4dv(target, v) bind(c, name='glMultiTexCoord4dv')
+            import :: GLdouble, GLenum
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLdouble), intent(in) :: v
+        end subroutine glmultitexcoord4dv
+
+        ! void glMultiTexCoord4f(GLenum target, GLfloat s, GLfloat t, GLfloat r, GLfloat q)
+        subroutine glmultitexcoord4f(target, s, t, r, q) bind(c, name='glMultiTexCoord4f')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in), value :: s
+            real(kind=GLfloat), intent(in), value :: t
+            real(kind=GLfloat), intent(in), value :: r
+            real(kind=GLfloat), intent(in), value :: q
+        end subroutine glmultitexcoord4f
+
+        ! void glMultiTexCoord4fv(GLenum target, const GLfloat *v)
+        subroutine glmultitexcoord4fv(target, v) bind(c, name='glMultiTexCoord4fv')
+            import :: GLenum, GLfloat
+            integer(kind=GLenum), intent(in), value :: target
+            real(kind=GLfloat), intent(in) :: v
+        end subroutine glmultitexcoord4fv
+
+        ! void glMultiTexCoord4i(GLenum target, GLint s, GLint t, GLint r, GLint q)
+        subroutine glmultitexcoord4i(target, s, t, r, q) bind(c, name='glMultiTexCoord4i')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in), value :: s
+            integer(kind=GLint), intent(in), value :: t
+            integer(kind=GLint), intent(in), value :: r
+            integer(kind=GLint), intent(in), value :: q
+        end subroutine glmultitexcoord4i
+
+        ! void glMultiTexCoord4iv(GLenum target, const GLint *v)
+        subroutine glmultitexcoord4iv(target, v) bind(c, name='glMultiTexCoord4iv')
+            import :: GLenum, GLint
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLint), intent(in) :: v
+        end subroutine glmultitexcoord4iv
+
+        ! void glMultiTexCoord4s(GLenum target, GLshort s, GLshort t, GLshort r, GLshort q)
+        subroutine glmultitexcoord4s(target, s, t, r, q) bind(c, name='glMultiTexCoord4s')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in), value :: s
+            integer(kind=GLshort), intent(in), value :: t
+            integer(kind=GLshort), intent(in), value :: r
+            integer(kind=GLshort), intent(in), value :: q
+        end subroutine glmultitexcoord4s
+
+        ! void glMultiTexCoord4sv(GLenum target, const GLshort *v)
+        subroutine glmultitexcoord4sv(target, v) bind(c, name='glMultiTexCoord4sv')
+            import :: GLenum, GLshort
+            integer(kind=GLenum), intent(in), value :: target
+            integer(kind=GLshort), intent(in) :: v
+        end subroutine glmultitexcoord4sv
      end interface
 end module sdl2_opengl

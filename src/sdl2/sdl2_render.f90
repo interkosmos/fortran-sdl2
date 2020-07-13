@@ -48,6 +48,8 @@ module sdl2_render
     public :: sdl_get_num_render_drivers
     public :: sdl_get_render_driver_info
     public :: sdl_get_render_target
+    public :: sdl_gl_bind_texture
+    public :: sdl_gl_unbind_texture
     public :: sdl_lock_texture
     public :: sdl_query_texture
     public :: sdl_render_clear
@@ -123,6 +125,22 @@ module sdl2_render
             type(c_ptr), intent(in), value :: renderer
             type(c_ptr)                    :: sdl_get_render_target
         end function sdl_get_render_target
+
+        ! int SDL_GL_BindTexture(SDL_Texture *texture, float *texw, float *texh)
+        function sdl_gl_bind_texture(texture, texw, texh) bind(c, name='SDL_GL_BindTexture')
+            import :: c_float, c_int, c_ptr
+            type(c_ptr),        intent(in), value :: texture
+            real(kind=c_float), intent(in)        :: texw
+            real(kind=c_float), intent(in)        :: texh
+            integer(kind=c_int)                   :: sdl_gl_bind_texture
+        end function sdl_gl_bind_texture
+
+        ! int SDL_GL_UnbindTexture(SDL_Texture *texture)
+        function sdl_gl_unbind_texture(texture) bind(c, name='SDL_GL_UnbindTexture')
+            import :: c_int, c_ptr
+            type(c_ptr), intent(in), value :: texture
+            integer(kind=c_int)            :: sdl_gl_unbind_texture
+        end function sdl_gl_unbind_texture
 
         ! int SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch)
         function sdl_lock_texture(texture, rect, pixels, pitch) bind(c, name='SDL_LockTexture')
