@@ -158,7 +158,7 @@ $(GL): $(GL).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
 
 $(GL3D): $(GL3D).f90 $(SDL_LIB) $(GLU_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL -lGLU
 
 $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)

@@ -10,9 +10,9 @@ SDL_image | 2.0.5
 SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
-The interfaces have been built successfully with GNU Fortran 9, but other modern
-compilers should work as well. In most cases, a Fortran 2003 compiler is
-sufficient.
+The interfaces have been built successfully with GNU Fortran 9 on FreeBSD 12 and
+IFORT 19.1 on CentOS 8, but other modern compilers should work as well. In most
+cases, a Fortran 2003 compiler is sufficient.
 
 Install SDL 2.0, [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and
@@ -48,7 +48,7 @@ Build the SDL2_image interfaces with:
 $ make sdl2_image
 ```
 
-Link `sdl2_image.a` and add `-lSDL2_image` to your `LDLIBS`.
+Link `sdl2_image.a` or `fortran-sdl2.a` and add `-lSDL2_image` to your `LDLIBS`.
 
 ### SDL2_mixer
 Build the SDL2_mixer interfaces with:
@@ -57,7 +57,7 @@ Build the SDL2_mixer interfaces with:
 $ make sdl2_mixer
 ```
 
-Link `sdl2_mixer.a` and add `-lSDL2_mixer` to your `LDLIBS`.
+Link `sdl2_mixer.a` or `fortran-sdl2.a` and add `-lSDL2_mixer` to your `LDLIBS`.
 
 ### SDL2_ttf
 Build the SDL2_ttf interfaces with:
@@ -66,7 +66,7 @@ Build the SDL2_ttf interfaces with:
 $ make sdl2_ttf
 ```
 
-Link `sdl2_ttf.a` and add `-lSDL2_ttf` to your `LDLIBS`.
+Link `sdl2_ttf.a` or `fortran-sdl2.a` and add `-lSDL2_ttf` to your `LDLIBS`.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
@@ -169,7 +169,7 @@ Some demo applications can be found in `examples/`:
 * **dvd** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
-* **gl** renders primitives with OpenGL 1.3.
+* **gl** renders a triangle with OpenGL 1.3.
 * **gl3d** rotates a cube with OpenGL 1.3.
 * **forest** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * **image** loads and displays an image (software renderer).
@@ -365,7 +365,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_FreeRW                            |   –   |
 | SDL_FreeSurface                       |   ✓   |
 | SDL_FreeWAV                           |   –   |
-| SDL_GL_BindTexture                    |   –   |
+| SDL_GL_BindTexture                    |   ✓   |
 | SDL_GL_CreateContext                  |   ✓   |
 | SDL_GL_DeleteContext                  |   ✓   |
 | SDL_GL_ExtensionSupported             |   –   |
@@ -381,7 +381,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GL_SetAttribute                   |   ✓   |
 | SDL_GL_SetSwapInterval                |   –   |
 | SDL_GL_SwapWindow                     |   ✓   |
-| SDL_GL_UnbindTexture                  |   –   |
+| SDL_GL_UnbindTexture                  |   ✓   |
 | SDL_GL_UnloadLibrary                  |   –   |
 | SDL_GameControllerAddMapping          |   –   |
 | SDL_GameControllerAddMappingsFromFile |   –   |
