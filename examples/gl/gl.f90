@@ -1,6 +1,6 @@
 ! gl.f90
 !
-! Example that shows how to render primitives with OpenGL 1.3.
+! Example that shows how to render a triangle with OpenGL 1.3.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
@@ -70,7 +70,7 @@ contains
         real(kind=8)        :: aspect
 
         call glmatrixmode(GL_PROJECTION)
-        ! Set aspect ratio of projection.
+        ! Set aspect ratio of 2D orthographic projection.
         aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
         call glortho(-aspect, aspect, -1.0_8, 1.0_8, -1.0_8, 1.0_8)
 
@@ -84,17 +84,7 @@ contains
         call glclear(ior(GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)) ! Clear the screen and depth buffer.
         call glloadidentity()                                       ! Reset current model view matrix.
 
-        call glrotatef(15.0, 1.0, 0.0, 0.0) ! Rotate 15 deg in X.
-        call glrotatef(15.0, 0.0, 1.0, 0.0) ! Rotate 15 deg in Y.
-
-        call triangle()
-        call cube(size=0.5)
-
-        call sdl_gl_swap_window(window)
-    end subroutine display
-
-    subroutine triangle()
-        !! Renders a coloured triangle.
+        ! Render a coloured triangle.
         call glbegin(gl_triangles)
             call glcolor3f(1.0, 0.0, 0.0) ! red
             call glvertex2f(-0.8, -0.8)
@@ -105,58 +95,7 @@ contains
             call glcolor3f(0.0, 0.0, 1.0) ! blue
             call glvertex2f(0.0, 0.9)
         call glend()
-    end subroutine triangle
 
-    subroutine square(r, g, b)
-        !! Renders a square in colour r, g, b.
-        real(kind=GLfloat), intent(in) :: r, g, b
-
-        call glcolor3f(r, g, b)
-
-        call glbegin(GL_TRIANGLE_FAN)
-            call glvertex3f(-0.5, -0.5, 0.5)
-            call glvertex3f( 0.5, -0.5, 0.5)
-            call glvertex3f( 0.5,  0.5, 0.5)
-            call glvertex3f(-0.5,  0.5, 0.5)
-        call glend()
-    end subroutine square
-
-    subroutine cube(size)
-        !! Renders a cube out of squares.
-        real(kind=GLfloat), intent(in) :: size
-
-        ! Save a copy of the current matrix.
-        call glpushmatrix()
-
-        call glscalef(size, size, size)
-        call square(1.0, 0.0, 0.0) ! red front face
-
-        call glpushmatrix()
-        call glrotatef(90.0, 0.0, 1.0, 0.0)
-        call square(0.0, 1.0, 0.0) ! green right face
-        call glpopmatrix()
-
-        call glpushmatrix()
-        call glrotatef(-90.0, 1.0, 0.0, 0.0)
-        call square(0.0, 0.0, 1.0) ! blue top face
-        call glpopmatrix()
-
-        call glpushmatrix()
-        call glrotatef(180.0, 0.0, 1.0, 0.0)
-        call square(0.0, 1.0, 1.0) ! cyan back face
-        call glpopmatrix()
-
-        call glpushmatrix()
-        call glrotatef(-90.0, 0.0, 1.0, 0.0)
-        call square(1.0, 0.0, 1.0) ! magenta left face
-        call glpopmatrix()
-
-        call glpushmatrix()
-        call glrotatef(90.0, 1.0, 0.0, 0.0)
-        call square(1.0, 1.0, 0.0) ! yellow bottom face
-        call glpopmatrix()
-
-        ! Restore matrix to its state before subroutine was called.
-        call glpopmatrix()
-    end subroutine cube
+        call sdl_gl_swap_window(window)
+    end subroutine display
 end program main
