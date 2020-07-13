@@ -60,16 +60,16 @@ program main
     integer,          parameter :: SCREEN_WIDTH    = 800
     integer,          parameter :: SCREEN_HEIGHT   = 600
 
-    character(len=30)        :: window_title
-    integer                  :: fps, t1, rc
-    integer(kind=1), pointer :: keys(:)            => null()
-    logical                  :: is_running         = .true.
-    type(buffer_type)        :: buffer
-    type(c_ptr)              :: renderer
-    type(c_ptr)              :: window
-    type(camera_type)        :: camera
-    type(voxel_type)         :: voxels(MAP_WIDTH, MAP_HEIGHT)
-    type(sdl_event)          :: event
+    character(len=30)             :: window_title
+    integer                       :: fps, t1, rc
+    integer(kind=1), pointer      :: keys(:)            => null()
+    logical                       :: is_running         = .true.
+    type(buffer_type)             :: buffer
+    type(c_ptr)                   :: renderer
+    type(c_ptr)                   :: window
+    type(camera_type)             :: camera
+    type(voxel_type), allocatable :: voxels(:, :)
+    type(sdl_event)               :: event
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -98,6 +98,7 @@ program main
     call create_buffer(renderer, window, SCREEN_WIDTH, SCREEN_HEIGHT, buffer)
 
     ! Load colour and height map.
+    allocate (voxels(MAP_WIDTH, MAP_HEIGHT))
     rc = read_voxels(COLOR_MAP_FILE, &
                      HEIGHT_MAP_FILE, &
                      MAP_WIDTH, &
@@ -220,7 +221,7 @@ contains
         type(voxel_type),       intent(inout) :: voxels(width, height)
         integer(kind=2)                       :: r, g, b
         integer                               :: pixel
-        integer                               :: x, y
+        integer                               :: i, x, y
         type(map_type)                        :: color_map, height_map
 
         read_voxels = 1
@@ -248,14 +249,19 @@ contains
         do y = 1, height
             do x = 1, width
                 ! Get RGB colour values. Use some transfer magic to handle unsigned pixel values.
-                pixel = ichar(transfer(color_map%pixels((y - 1) * color_map%image%pitch + x), 'a'))
+                i = (y - 1) * color_map%image%pitch + x
+                pixel = ichar(transfer(color_map%pixels(i), 'a'))
                 call sdl_get_rgb(pixel, color_map%pixel_format, r, g, b)
-                voxels(x, y)%color = sdl_map_rgb(pixel_format, int(r, kind=4), int(g, kind=4), int(b, kind=4))
+                voxels(x, y)%color = sdl_map_rgb(pixel_format, &
+                                                 ichar(transfer(r, 'a')), &
+                                                 ichar(transfer(g, 'a')), &
+                                                 ichar(transfer(b, 'a')))
 
                 ! Get height value.
-                pixel = ichar(transfer(height_map%pixels((y - 1) * height_map%image%pitch + x), 'a'))
+                i = (y - 1) * height_map%image%pitch + x
+                pixel = ichar(transfer(height_map%pixels(i), 'a'))
                 call sdl_get_rgb(pixel, height_map%pixel_format, r, g, b)
-                voxels(x, y)%elevation = r
+                voxels(x, y)%elevation = ichar(transfer(r, 'a'))
             end do
         end do
 

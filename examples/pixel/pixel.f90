@@ -38,7 +38,7 @@ program main
     type(sdl_rect)          :: rect
     integer(kind=c_int32_t) :: pixel
     integer                 :: rc
-    integer                 :: x, y
+    integer                 :: i, x, y
     integer(kind=2)         :: r, g, b
 
     ! Initialise SDL.
@@ -108,10 +108,11 @@ program main
             ! Convert pixel value to RGB.
             call sdl_get_rgb(pixel, image%pixel_format, r, g, b)
             ! Set pixel in SDL_Texture.
-            buffer%texture_pixels(((y - 1) * image%width) + x) = sdl_map_rgb(buffer%pixel_format, &
-                                                                             int(r, kind=4), &
-                                                                             int(g, kind=4), &
-                                                                             int(b, kind=4))
+            i = ((y - 1) * image%width) + x
+            buffer%texture_pixels(i) = sdl_map_rgb(buffer%pixel_format, &
+                                                   ichar(transfer(r, 'a')), &
+                                                   ichar(transfer(g, 'a')), &
+                                                   ichar(transfer(b, 'a')))
         end do
     end do
 
