@@ -7,6 +7,14 @@ SDL_LDLIBS = `sdl2-config --libs`
 FFLAGS     = -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS     = $(SDL_LDLIBS)
 
+ifeq ($(OS), Windows_NT)
+    LIBGL  = -lopengl32
+    LIBGLU = -lglu32
+else
+    LIBGL  = -lGL
+    LIBGLU = -lGLU
+endif
+
 SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_stdinc.f90 \
           src/sdl2/sdl2_audio.f90 \
@@ -155,10 +163,10 @@ $(FOREST): $(FOREST).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(GL): $(GL).f90 $(SDL_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL)
 
 $(GL3D): $(GL3D).f90 $(SDL_LIB) $(GLU_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL -lGLU
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL) $(LIBGLU)
 
 $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
