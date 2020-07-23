@@ -36,6 +36,7 @@ program main
     use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
     use :: sdl2
+    use :: sdl2_image
     use :: glu
     use :: util
     implicit none
@@ -45,7 +46,6 @@ program main
 
     type(c_ptr)              :: context
     type(c_ptr)              :: window
-    type(sdl_rect)           :: rect
     type(sdl_event)          :: event
     type(camera_type)        :: camera
     character(len=32)        :: file_name
@@ -55,6 +55,11 @@ program main
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_EVERYTHING) < 0) then
+        write (stderr, '(2a)') 'SDL Error: ', sdl_get_error()
+        stop
+    end if
+
+    if (img_init(IMG_INIT_PNG) < 0) then
         write (stderr, '(2a)') 'SDL Error: ', sdl_get_error()
         stop
     end if
@@ -84,7 +89,7 @@ program main
     allocate (textures(3))
 
     do i = 1, size(textures)
-        write (file_name, '("t", i1, ".bmp")') i
+        write (file_name, '("t", i1, ".png")') i
         print '(3a)', 'Loading texture file "', trim(file_name), '" ...'
 
         if (.not. load_texture(textures(i), trim(file_name))) &
@@ -104,17 +109,16 @@ program main
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit loop
-
-                case (SDL_KEYDOWN)
-                    keys(0:) => sdl_get_keyboard_state()
-
-                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) &
-                        exit loop
             end select
         end if
 
+        ! Check keyboard input.
+        keys(0:) => sdl_get_keyboard_state()
+        if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
+
         ! Render the scene.
         call display(camera, textures)
+        call sdl_gl_swap_window(window)
     end do loop
 
     ! Quit gracefully.
@@ -124,24 +128,25 @@ program main
 
     call sdl_gl_delete_context(context)
     call sdl_destroy_window(window)
+    call img_quit()
     call sdl_quit()
 contains
-    function load_texture(id, file_path) result(iostat)
+    function load_texture(id, file_path) result(file_exists)
         !! Loads texture from file and sets the argument`id` to the OpenGL
         !! texture id.
         integer,          intent(out) :: id
         character(len=*), intent(in)  :: file_path
-        logical                       :: iostat
+        logical                       :: file_exists
+        type(sdl_rect)                :: rect
         type(sdl_surface), pointer    :: image, buffer
 
         id = -1
-
-        inquire (file=file_path, exist=iostat)
-        if (.not. iostat) return
+        inquire (file=file_path, exist=file_exists)
+        if (.not. file_exists) return
 
         ! Load image file to surface and create buffer surface in OpenGL format.
         ! Then, copy image to buffer in order to convert the pixel format.
-        image  => sdl_load_bmp(file_path // c_null_char)
+        image  => img_load(file_path // c_null_char)
         buffer => sdl_create_rgb_surface(0, image%w, image%h, 32, &
                                          int(z'000000FF', kind=8), &
                                          int(z'0000FF00', kind=8), &
@@ -217,7 +222,6 @@ contains
         call glloadidentity()                                       ! Reset current model view matrix.
         call glulookat(camera%eye%x, 0.0_8, camera%eye%z, 0.0_8, 0.0_8, 0.0_8, 0.0_8, 1.0_8, 0.0_8)
 
-        ! Enable and bind OpenGL texture.
         call glenable(GL_TEXTURE_2D)
 
         ! Render three textured cubes side by side with different textures.
@@ -235,7 +239,6 @@ contains
         angle = modulo(angle + 1.0, 360.0)
 
         call gldisable(GL_TEXTURE_2D)
-        call sdl_gl_swap_window(window)
     end subroutine display
 
     subroutine square()
