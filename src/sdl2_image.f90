@@ -6,13 +6,21 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_image
-    use, intrinsic :: iso_c_binding
+    use, intrinsic :: iso_c_binding, only: c_associated, c_char, c_int, c_ptr
+    use :: sdl2_surface
     implicit none
+    private
 
-    integer(kind=c_int), parameter :: IMG_INIT_JPG  = int(z'00000001')
-    integer(kind=c_int), parameter :: IMG_INIT_PNG  = int(z'00000002')
-    integer(kind=c_int), parameter :: IMG_INIT_TIF  = int(z'00000004')
-    integer(kind=c_int), parameter :: IMG_INIT_WEBP = int(z'00000008')
+    integer(kind=c_int), parameter, public :: IMG_INIT_JPG  = int(z'00000001')
+    integer(kind=c_int), parameter, public :: IMG_INIT_PNG  = int(z'00000002')
+    integer(kind=c_int), parameter, public :: IMG_INIT_TIF  = int(z'00000004')
+    integer(kind=c_int), parameter, public :: IMG_INIT_WEBP = int(z'00000008')
+
+    public :: img_init
+    public :: img_load
+    public :: img_load_png_rw
+    public :: img_load_texture
+    public :: img_quit
 
     interface
         ! int IMG_Init(int flags)
@@ -23,12 +31,18 @@ module sdl2_image
         end function img_init
 
         ! SDL_Surface *IMG_Load(const char *file)
-        function img_load(file_name) bind(c, name='IMG_Load')
-            use :: sdl2, only: sdl_surface
-            import :: c_char
+        function img_load_(file_name) bind(c, name='IMG_Load')
+            import :: c_char, c_ptr
             character(kind=c_char), intent(in) :: file_name
-            type(sdl_surface)                  :: img_load
-        end function img_load
+            type(c_ptr)                        :: img_load_
+        end function img_load_
+
+        ! SDL_Surface *IMG_LoadPNG_RW(SDL_RWops *src)
+        function img_load_png_rw_(src) bind(c, name='IMG_LoadPNG_RW')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: src
+            type(c_ptr)                    :: img_load_png_rw_
+        end function img_load_png_rw_
 
         ! SDL_Texture *IMG_LoadTexture(SDL_Renderer *renderer, const char *file)
         function img_load_texture(renderer, file_name) bind(c, name='IMG_LoadTexture')
@@ -42,4 +56,24 @@ module sdl2_image
         subroutine img_quit() bind(c, name='IMG_Quit')
         end subroutine img_quit
     end interface
+contains
+    function img_load(file_name)
+        character(len=*), intent(in) :: file_name
+        type(sdl_surface), pointer   :: img_load
+        type(c_ptr)                  :: ptr
+
+        ptr = img_load_(file_name)
+        if (.not. c_associated(ptr)) return
+        call c_f_pointer(ptr, img_load)
+    end function img_load
+
+    function img_load_png_rw(src)
+        type(c_ptr), intent(in)    :: src
+        type(sdl_surface), pointer :: img_load_png_rw
+        type(c_ptr)                :: ptr
+
+        ptr = img_load_png_rw_(src)
+        if (.not. c_associated(ptr)) return
+        call c_f_pointer(ptr, img_load_png_rw)
+    end function img_load_png_rw
 end module sdl2_image

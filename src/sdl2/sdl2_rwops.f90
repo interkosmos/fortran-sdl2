@@ -8,6 +8,7 @@
 module sdl2_rwops
     use, intrinsic :: iso_c_binding, only: c_char, c_int, c_ptr
     implicit none
+    private
 
     public :: sdl_rw_from_const_mem
     public :: sdl_rw_from_file
