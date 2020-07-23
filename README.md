@@ -11,8 +11,7 @@ SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9 on FreeBSD 12 and
-IFORT 19.1 on CentOS 8, but other modern compilers should work as well. In most
-cases, a Fortran 2003 compiler is sufficient.
+IFORT 19.1 on CentOS 8, but other modern compilers should work as well.
 
 Install SDL 2.0, [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and
@@ -24,12 +23,19 @@ headers. On FreeBSD, run:
 ```
 
 ## Building the Interface Bindings
-Clone the repository and then run `make` to build the static library `sdl2.a`:
+Clone the repository and then run `make sdl2` to build the static library
+`libsdl2.a`:
 
 ```
 $ git clone https://github.com/interkosmos/fortran-sdl2
 $ cd fortran-sdl2/
 $ make sdl2
+```
+
+On Microsoft Windows, you have to set `LIBGL` and `LIBGLU`:
+
+```
+$ make sdl2 LIBGL=-lopengl32 LIBGLU=-lglu32
 ```
 
 You can override the default compiler (`gfortran`) by passing the `FC`
@@ -39,34 +45,15 @@ argument, for example:
 $ make all FC=gfortran9
 ```
 
-Link your Fortran project with `sdl2.a` or `fortran-sdl2.a`.
+Link your Fortran project with `libsdl2.a` or `libfortran-sdl2.a`.
 
-### SDL2_image
-Build the SDL2_image interfaces with:
-
-```
-$ make sdl2_image
-```
-
-Link `sdl2_image.a` or `fortran-sdl2.a` and add `-lSDL2_image` to your `LDLIBS`.
-
-### SDL2_mixer
-Build the SDL2_mixer interfaces with:
-
-```
-$ make sdl2_mixer
-```
-
-Link `sdl2_mixer.a` or `fortran-sdl2.a` and add `-lSDL2_mixer` to your `LDLIBS`.
-
-### SDL2_ttf
-Build the SDL2_ttf interfaces with:
-
-```
-$ make sdl2_ttf
-```
-
-Link `sdl2_ttf.a` or `fortran-sdl2.a` and add `-lSDL2_ttf` to your `LDLIBS`.
+| Library           | Compilation         | Linking                                                         |
+|-------------------|---------------------|-----------------------------------------------------------------|
+| SDL2              | `make sdl2`         | `libsdl2.a -lSDL2`                                              |
+| SDL2_image        | `make sdl2_image`   | `libsdl2.a libsdl2_image.a -lSDL2 -lSDL2_image`                 |
+| SDL2_mixer        | `make sdl2_mixer`   | `libsdl2.a libsdl2_mixer.a -lSDL2 -lSDL2_mixer`                 |
+| SDL2_ttf          | `make sdl2_ttf`     | `libsdl2.a libsdl2_ttf.a -lSDL2 -lSDL2_ttf`                     |
+| *all*             | `make all`          | `libfortran-sdl2.a -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf` |
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
@@ -155,7 +142,7 @@ end program main
 Compile the source code with GNU Fortran:
 
 ```
-$ gfortran `sdl2-config --cflags` -o example example.f90 sdl2.a `sdl2-config --libs`
+$ gfortran `sdl2-config --cflags` -o example example.f90 libsdl2.a `sdl2-config --libs`
 ```
 
 ## Further Examples
@@ -170,7 +157,7 @@ Some demo applications can be found in `examples/`:
 * **events** polls SDL events (software renderer).
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
 * **gl** renders a triangle with OpenGL 1.3.
-* **gl3d** rotates a cube with OpenGL 1.3.
+* **gl3d** rotates textured cubes with OpenGL 1.3.
 * **forest** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
@@ -809,7 +796,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | IMG_LoadJPG_RW                        |   –   |
 | IMG_LoadLBM_RW                        |   –   |
 | IMG_LoadPCX_RW                        |   –   |
-| IMG_LoadPNG_RW                        |   –   |
+| IMG_LoadPNG_RW                        |   ✓   |
 | IMG_LoadPNM_RW                        |   –   |
 | IMG_LoadTGA_RW                        |   –   |
 | IMG_LoadTIF_RW                        |   –   |

@@ -6,6 +6,8 @@ SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
 FFLAGS     = -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
 LDLIBS     = $(SDL_LDLIBS)
+LIBGL      = -lGL   # -lopengl32
+LIBGLU     = -lGLU  # -lglu32
 
 SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_stdinc.f90 \
@@ -40,12 +42,12 @@ MIX_SRC = src/c_util.f90 \
 TTF_SRC = src/sdl2_ttf.f90
 GLU_SRC = src/glu.f90
 
-SDL_LIB = sdl2.a
-IMG_LIB = sdl2_image.a
-MIX_LIB = sdl2_mixer.a
-TTF_LIB = sdl2_ttf.a
-GLU_LIB = glu.a
-LIBRARY = fortran-sdl2.a
+SDL_LIB = libsdl2.a
+IMG_LIB = libsdl2_image.a
+MIX_LIB = libsdl2_mixer.a
+TTF_LIB = libsdl2_ttf.a
+GLU_LIB = libglu.a
+LIBRARY = libfortran-sdl2.a
 
 ALPHA   = examples/alpha/alpha
 CYCLIC  = examples/cyclic/cyclic
@@ -54,11 +56,11 @@ DVD     = examples/dvd/dvd
 EVENTS  = examples/events/events
 FIRE    = examples/fire/fire
 FOREST  = examples/forest/forest
+GL      = examples/gl/gl
+GL3D    = examples/gl3d/gl3d
 IMAGE   = examples/image/image
 INFO    = examples/info/info
 MSGBOX  = examples/msgbox/msgbox
-GL      = examples/gl/gl
-GL3D    = examples/gl3d/gl3d
 OPERA   = examples/opera/opera
 PIXEL   = examples/pixel/pixel
 SCALING = examples/scaling/scaling
@@ -107,7 +109,12 @@ sdl2_ttf: $(TTF_LIB)
 # Build targets for additional OpenGL interfaces.
 glu: $(GLU_LIB)
 
-# SDL 2.0 interfaces.
+# OpenGL.
+$(GLU_LIB):
+	$(FC) $(FFLAGS) -fPIC -c $(GLU_SRC)
+	ar rcs $(GLU_LIB) glu.o
+
+# SDL 2.0.
 $(SDL_LIB):
 	$(FC) $(FFLAGS) -fPIC -c $(SDL_SRC)
 	ar rcs $(SDL_LIB) sdl2.o
@@ -124,13 +131,8 @@ $(TTF_LIB):
 	$(FC) $(FFLAGS) -fPIC -c $(TTF_SRC)
 	ar rcs $(TTF_LIB) sdl2_ttf.o
 
-$(LIBRARY): $(SDL_LIB) $(IMG_LIB) $(MIX_LIB) $(TTF_LIB)
-	ar rcs $(LIBRARY) sdl2.o sdl2_image.o sdl2_mixer.o sdl2_ttf.o
-
-# OpenGL.
-$(GLU_LIB):
-	$(FC) $(FFLAGS) -fPIC -c $(GLU_SRC)
-	ar rcs $(GLU_LIB) glu.o
+$(LIBRARY): $(SDL_LIB) $(IMG_LIB) $(MIX_LIB) $(TTF_LIB) $(GLU_LIB)
+	ar rcs $(LIBRARY) sdl2.o sdl2_image.o sdl2_mixer.o sdl2_ttf.o glu.o
 
 # Examples.
 $(ALPHA): $(ALPHA).f90 $(SDL_LIB)
@@ -155,10 +157,10 @@ $(FOREST): $(FOREST).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(GL): $(GL).f90 $(SDL_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL)
 
-$(GL3D): $(GL3D).f90 $(SDL_LIB) $(GLU_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lGL -lGLU
+$(GL3D): $(GL3D).f90 $(SDL_LIB) $(IMG_LIB) $(GLU_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image $(LIBGL) $(LIBGLU)
 
 $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
