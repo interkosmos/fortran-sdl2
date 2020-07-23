@@ -55,9 +55,9 @@ module doom
         rgb_type(255, 255, 255) ]
 contains
     subroutine fire_burn(fire, width, height)
+        integer, intent(inout) :: fire(*)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer, intent(inout) :: fire(0:(width * height) - 1)
         integer                :: d, i, p, rnd
         integer                :: x, y
         real                   :: r
@@ -116,16 +116,18 @@ program main
         type(sdl_rect)                   :: rect         ! Utitlity rectangle.
     end type buffer_type
 
-    type(buffer_type) :: buffer
-    type(c_ptr)       :: renderer
-    type(c_ptr)       :: window
-    type(sdl_event)   :: event
-    type(sdl_rect)    :: screen_rect
-    integer           :: fire(0:(FIRE_WIDTH * FIRE_HEIGHT) - 1)
-    integer           :: rc
+    type(buffer_type)    :: buffer
+    type(c_ptr)          :: renderer
+    type(c_ptr)          :: window
+    type(sdl_event)      :: event
+    type(sdl_rect)       :: screen_rect
+    integer, allocatable :: fire(:)
+    integer              :: rc
 
     ! Initialise PRNG.
     call random_seed()
+
+    allocate (fire(0:(FIRE_WIDTH * FIRE_HEIGHT) - 1))
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -189,6 +191,7 @@ program main
     end do loop
 
     ! Quit gracefully.
+    deallocate (fire)
     call sdl_destroy_texture(buffer%texture)
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)

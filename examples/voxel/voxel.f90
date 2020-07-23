@@ -62,8 +62,8 @@ program main
 
     character(len=30)             :: window_title
     integer                       :: fps, t1, rc
-    integer(kind=1), pointer      :: keys(:)            => null()
-    logical                       :: is_running         = .true.
+    integer(kind=1), pointer      :: keys(:)       => null()
+    logical                       :: is_running    = .true.
     type(buffer_type)             :: buffer
     type(c_ptr)                   :: renderer
     type(c_ptr)                   :: window
