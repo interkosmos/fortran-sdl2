@@ -50,8 +50,8 @@ program main
     type(camera_type)        :: camera
     character(len=32)        :: file_name
     integer(kind=1), pointer :: keys(:)
-    integer, allocatable     :: textures(:)
-    integer                  :: i, rc
+    integer                  :: textures(3)
+    integer                  :: i, id, rc
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_EVERYTHING) < 0) then
@@ -85,18 +85,16 @@ program main
     ! Create OpenGL context.
     context = sdl_gl_create_context(window)
 
-    ! Load texture file.
-    allocate (textures(3))
-
+    ! Load texture files.
     do i = 1, size(textures)
         write (file_name, '("t", i1, ".png")') i
         print '(3a)', 'Loading texture file "', trim(file_name), '" ...'
 
-        if (.not. load_texture(textures(i), trim(file_name))) &
-            stop 'Error: texture file not found'
+        if (.not. load_texture(id, trim(file_name))) stop 'Error: texture file not found'
+        textures(i) = id
     end do
 
-    ! initialise OpenGL.
+    ! Initialise OpenGL.
     call gl_init(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Set camera angle to 90 deg.
@@ -137,6 +135,7 @@ contains
         integer,          intent(out) :: id
         character(len=*), intent(in)  :: file_path
         logical                       :: file_exists
+        integer                       :: textures(1)
         type(sdl_rect)                :: rect
         type(sdl_surface), pointer    :: image, buffer
 
@@ -156,7 +155,9 @@ contains
         rc   = sdl_blit_surface(image, rect, buffer, rect)
 
         ! Create new OpenGL texture.
-        call glgentextures(1, id)
+        call glgentextures(1, textures)
+        id = textures(1)
+
         call glbindtexture(GL_TEXTURE_2D, id)
         call gltexparameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         call gltexparameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
@@ -179,7 +180,8 @@ contains
         call glloadidentity()
 
         aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
-        ! Alternatively: call gl_perspective(45.0_8, aspect, 0.1_8, 50.0_8)
+        ! Alternatively:
+        ! call gl_perspective(45.0_8, aspect, 0.1_8, 50.0_8)
         call gluperspective(45.0_8, aspect, 0.1_8, 50.0_8)
 
         ! Set model view matrix.
@@ -211,11 +213,10 @@ contains
 
     subroutine display(camera, textures)
         !! The display routine, called every frame.
-        integer, parameter                  :: texture_id = 1
-        type(camera_type),    intent(inout) :: camera
-        integer, allocatable, intent(inout) :: textures(:)
-        integer                             :: i
-        real, save                          :: angle = 0
+        type(camera_type), intent(inout) :: camera
+        integer,           intent(inout) :: textures(*)
+        integer                          :: i
+        real, save                       :: angle = 0
 
         call glclear(ior(GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)) ! Clear the screen and depth buffer.
         call glmatrixmode(GL_MODELVIEW)                             ! Alter model view matrix.
@@ -236,6 +237,7 @@ contains
             call glpopmatrix()
         end do
 
+        ! Increase rotation angle.
         angle = modulo(angle + 1.0, 360.0)
 
         call gldisable(GL_TEXTURE_2D)

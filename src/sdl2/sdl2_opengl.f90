@@ -1131,7 +1131,7 @@ module sdl2_opengl
         function glaretexturesresident(n, textures, residences) bind(c, name='glAreTexturesResident')
             import :: GLboolean, GLsizei, GLuint
             integer(kind=GLsizei),   intent(in), value :: n
-            integer(kind=GLuint),    intent(in)        :: textures
+            integer(kind=GLuint),    intent(in)        :: textures(*)
             integer(kind=GLboolean), intent(in)        :: residences
             integer(kind=GLboolean)                    :: glaretexturesresident
         end function glaretexturesresident
@@ -3212,14 +3212,14 @@ module sdl2_opengl
         subroutine glgentextures(n, textures) bind(c, name='glGenTextures')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint),  intent(in)        :: textures
+            integer(kind=GLuint),  intent(in)        :: textures(*)
         end subroutine glgentextures
 
         ! void glDeleteTextures(GLsizei n, const GLuint *textures)
         subroutine gldeletetextures(n, textures) bind(c, name='glDeleteTextures')
             import :: GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint),  intent(in)        :: textures
+            integer(kind=GLuint),  intent(in)        :: textures(*)
         end subroutine gldeletetextures
 
         ! void glBindTexture(GLenum target, GLuint texture)
@@ -3233,7 +3233,7 @@ module sdl2_opengl
         subroutine glprioritizetextures(n, textures, priorities) bind(c, name='glPrioritizeTextures')
             import :: GLclampf, GLsizei, GLuint
             integer(kind=GLsizei), intent(in), value :: n
-            integer(kind=GLuint),  intent(in)        :: textures
+            integer(kind=GLuint),  intent(in)        :: textures(*)
             real(kind=GLclampf),   intent(in)        :: priorities
         end subroutine glprioritizetextures
 
