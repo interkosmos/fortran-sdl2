@@ -255,7 +255,7 @@ contains
 
     subroutine cube(size)
         !! Renders a textured cube out of six squares.
-        real(kind=GLfloat), intent(in) :: size
+        real, intent(in) :: size
 
         call glpushmatrix() ! Save a copy of the current matrix.
         call glscalef(size, size, size)
