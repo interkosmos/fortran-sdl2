@@ -23,8 +23,10 @@ headers. On FreeBSD, run:
 ```
 
 ## Building the Interface Bindings
-Clone the repository and then run `make sdl2` to build the static library
-`libsdl2.a`:
+Either use GNU/BSD make or [xmake](https://xmake.io/) to build fortran-sdl2.
+
+### Make
+Run `make sdl2` to build the static library `libsdl2.a`:
 
 ```
 $ git clone https://github.com/interkosmos/fortran-sdl2
@@ -54,6 +56,19 @@ Link your Fortran project with `libsdl2.a` or `libfortran-sdl2.a`.
 | SDL2_mixer        | `make sdl2_mixer`   | `libsdl2.a libsdl2_mixer.a -lSDL2 -lSDL2_mixer`                 |
 | SDL2_ttf          | `make sdl2_ttf`     | `libsdl2.a libsdl2_ttf.a -lSDL2 -lSDL2_ttf`                     |
 | *all*             | `make all`          | `libfortran-sdl2.a -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf` |
+
+### xmake
+Build all static libraries with:
+
+```
+$ xmake
+```
+
+Build a particular library with:
+
+```
+$ xmake build sdl2
+```
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
@@ -175,7 +190,12 @@ Compile all examples with:
 $ make examples
 ```
 
-Or, use the name of a particular example.
+Or, use the name of a particular example. If you use xmake, build an example
+with:
+
+```
+$ xmake build <name>
+```
 
 ## Compatibility
 All Fortran interface names are written in snake case. For instance,
@@ -366,7 +386,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GL_MakeCurrent                    |   –   |
 | SDL_GL_ResetAttributes                |   –   |
 | SDL_GL_SetAttribute                   |   ✓   |
-| SDL_GL_SetSwapInterval                |   –   |
+| SDL_GL_SetSwapInterval                |   ✓   |
 | SDL_GL_SwapWindow                     |   ✓   |
 | SDL_GL_UnbindTexture                  |   ✓   |
 | SDL_GL_UnloadLibrary                  |   –   |
