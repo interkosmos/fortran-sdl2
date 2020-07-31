@@ -121,6 +121,7 @@ module sdl2_video
     public :: sdl_gl_create_context
     public :: sdl_gl_delete_context
     public :: sdl_gl_set_attribute
+    public :: sdl_gl_set_swap_interval
     public :: sdl_gl_swap_window
     public :: sdl_hide_window
     public :: sdl_maximize_window
@@ -172,6 +173,13 @@ module sdl2_video
             integer(kind=c_int), intent(in), value :: value
             integer(kind=c_int)                    :: sdl_gl_set_attribute
         end function sdl_gl_set_attribute
+
+        ! int SDL_GL_SetSwapInterval(int interval)
+        function sdl_gl_set_swap_interval(interval) bind(c, name='SDL_GL_SetSwapInterval')
+            import :: c_int
+            integer(kind=c_int), intent(in), value :: interval
+            integer(kind=c_int)                    :: sdl_gl_set_swap_interval
+        end function sdl_gl_set_swap_interval
 
         ! const char *SDL_GetVideoDriver(int index)
         function sdl_get_video_driver_(index) bind(c, name='SDL_GetVideoDriver')
