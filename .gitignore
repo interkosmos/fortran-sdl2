@@ -1,7 +1,5 @@
-# C extensions
-*.so
-
 # Distribution / packaging
+.xmake/
 env/
 build/
 dist/
@@ -11,3 +9,5 @@ var/
 *.swp
 *.mod
 *.o
+*.a
+*.so
