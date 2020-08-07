@@ -49,36 +49,37 @@ TTF_LIB = libsdl2_ttf.a
 GLU_LIB = libglu.a
 LIBRARY = libfortran-sdl2.a
 
-ALPHA   = examples/alpha/alpha
-CYCLIC  = examples/cyclic/cyclic
-DRAW    = examples/draw/draw
-DVD     = examples/dvd/dvd
-EVENTS  = examples/events/events
-FIRE    = examples/fire/fire
-FOREST  = examples/forest/forest
-GL      = examples/gl/gl
-GL3D    = examples/gl3d/gl3d
-IMAGE   = examples/image/image
-INFO    = examples/info/info
-MSGBOX  = examples/msgbox/msgbox
-OPERA   = examples/opera/opera
-PIXEL   = examples/pixel/pixel
-SCALING = examples/scaling/scaling
-TEXT    = examples/text/text
-VOXEL   = examples/voxel/voxel
-WINDOW  = examples/window/window
+ALPHA    = examples/alpha/alpha
+CYCLIC   = examples/cyclic/cyclic
+DRAW     = examples/draw/draw
+DVD      = examples/dvd/dvd
+EVENTS   = examples/events/events
+FIRE     = examples/fire/fire
+FOREST   = examples/forest/forest
+GL       = examples/gl/gl
+GL3D     = examples/gl3d/gl3d
+GLSPHERE = examples/glsphere/glsphere
+IMAGE    = examples/image/image
+INFO     = examples/info/info
+MSGBOX   = examples/msgbox/msgbox
+OPERA    = examples/opera/opera
+PIXEL    = examples/pixel/pixel
+SCALING  = examples/scaling/scaling
+TEXT     = examples/text/text
+VOXEL    = examples/voxel/voxel
+WINDOW   = examples/window/window
 
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         glu \
-        alpha cyclic draw dvd events fire forest gl gl3d image info msgbox \
+        alpha cyclic draw dvd events fire forest gl gl3d glsphere image info msgbox \
         opera pixel scaling text voxel window
 
 all: $(LIBRARY) $(GLU_LIB)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
-          $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) $(VOXEL) \
-          $(WINDOW)
+          $(GLSPHERE) $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) \
+          $(VOXEL) $(WINDOW)
 
 # Build targets of examples.
 alpha: $(ALPHA)
@@ -90,6 +91,7 @@ fire: $(FIRE)
 forest: $(FOREST)
 gl: $(GL)
 gl3d: $(GL3D)
+glsphere: $(GLSPHERE)
 image: $(IMAGE)
 info: $(INFO)
 msgbox: $(MSGBOX)
@@ -162,19 +164,22 @@ $(GL): $(GL).f90 $(SDL_LIB)
 $(GL3D): $(GL3D).f90 $(SDL_LIB) $(IMG_LIB) $(GLU_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image $(LIBGL) $(LIBGLU)
 
+$(GLSPHERE): $(GLSPHERE).f90 $(SDL_LIB) $(GLU_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL) $(LIBGLU)
+
 $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(INFO): $(INFO).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
 $(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
 $(PIXEL): $(PIXEL).f90 $(SDL_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
-
-$(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 $(SCALING): $(SCALING).f90 $(SDL_LIB)
@@ -203,6 +208,7 @@ clean:
 	if [ -e $(FOREST) ]; then rm $(FOREST); fi
 	if [ -e $(GL) ]; then rm $(GL); fi
 	if [ -e $(GL3D) ]; then rm $(GL3D); fi
+	if [ -e $(GLSPHERE) ]; then rm $(GLSPHERE); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi

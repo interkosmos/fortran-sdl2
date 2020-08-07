@@ -5,25 +5,26 @@ A collection of ISO C binding interfaces to
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.10_1
+SDL       | 2.0.12_1
 SDL_image | 2.0.5
 SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interfaces have been built successfully with GNU Fortran 9 on FreeBSD 12 and
-IFORT 19.1 on CentOS 8, but other modern compilers should work as well.
+IFORT 19.1 on CentOS 8, but other Fortran 2008 should work as well.
 
-Install SDL 2.0, [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
-[SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and
-[SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/) with development
-headers. On FreeBSD, run:
+
+## Building the Interface Bindings
+At first, install SDL 2.0 with development headers (and optionally:
+[SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
+[SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/),
+[SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/)). On FreeBSD, run:
 
 ```
 # pkg install devel/sdl20 graphics/sdl2_image audio/sdl2_mixer graphics/sdl2_ttf
 ```
 
-## Building the Interface Bindings
-Either use GNU/BSD make or [xmake](https://xmake.io/) to build fortran-sdl2.
+Either use GNU/BSD make or [xmake](https://xmake.io/) to build *fortran-sdl2*.
 
 ### Make
 Run `make sdl2` to build the static library `libsdl2.a`:
@@ -37,14 +38,14 @@ $ make sdl2
 On Microsoft Windows, you have to set `LIBGL` and `LIBGLU`:
 
 ```
-$ make sdl2 LIBGL=-lopengl32 LIBGLU=-lglu32
+$ make all LIBGL=-lopengl32 LIBGLU=-lglu32
 ```
 
 You can override the default compiler (`gfortran`) by passing the `FC`
 argument, for example:
 
 ```
-$ make all FC=gfortran9
+$ make all FC=gfortran10
 ```
 
 Link your Fortran project with `libsdl2.a` or `libfortran-sdl2.a`.
@@ -67,8 +68,11 @@ $ xmake
 Build a particular library with:
 
 ```
-$ xmake build sdl2
+$ xmake build <name>
 ```
+
+The default output directory is `build/`. The Fortran module files will be saved
+to `build/.objs/<name>/<platform>/<architecture>/release/.modules/`.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
@@ -190,11 +194,18 @@ Compile all examples with:
 $ make examples
 ```
 
-Or, use the name of a particular example. If you use xmake, build an example
-with:
+Or, use the name of a particular example. If you use xmake, build and run an
+example with:
 
 ```
 $ xmake build <name>
+$ xmake run <name>
+```
+
+To compile all examples, run:
+
+```
+$ xmake build examples
 ```
 
 ## Compatibility
@@ -243,13 +254,6 @@ type(sdl_surface),      pointer :: surface
 
 ! Convert C pointer to Fortran pointer.
 call c_f_pointer(surface%format, pixel_format)
-```
-
-The utility function `sdl_get_pixel_format()` has been added to the binding to
-simplify the conversion from C pointer to Fortran pointer:
-
-```fortran
-pixel_format => sdl_get_pixel_format(surface)
 ```
 
 The C struct `SDL_Surface` stores RGB pixel values as `Uint8`. Use `transfer()`
@@ -409,7 +413,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_GameControllerMappingForGUID      |   –   |
 | SDL_GameControllerName                |   –   |
 | SDL_GameControllerNameForIndex        |   –   |
-| SDL_GameControllerOpen                |   –   |
+| SDL_GameControllerOpen                |   ✓   |
 | SDL_GameControllerUpdate              |   –   |
 | SDL_GetAssertionHandler               |   –   |
 | SDL_GetAssertionReport                |   –   |
@@ -553,10 +557,10 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_HasScreenKeyboardSupport          |   –   |
 | SDL_HideWindow                        |   ✓   |
 | SDL_Init                              |   ✓   |
-| SDL_InitSubSystem                     |   –   |
+| SDL_InitSubSystem                     |   ✓   |
 | SDL_IntersectRect                     |   –   |
 | SDL_IntersectRectAndLine              |   –   |
-| SDL_IsGameController                  |   –   |
+| SDL_IsGameController                  |   ✓   |
 | SDL_IsScreenKeyboardShown             |   –   |
 | SDL_IsScreenSaverEnabled              |   –   |
 | SDL_IsTextInputActive                 |   –   |
@@ -622,7 +626,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | SDL_MostSignificantBitIndex32         |   –   |
 | SDL_MouseIsHaptic                     |   –   |
 | SDL_NumHaptics                        |   –   |
-| SDL_NumJoysticks                      |   –   |
+| SDL_NumJoysticks                      |   ✓   |
 | SDL_OpenAudio                         |   –   |
 | SDL_OpenAudioDevice                   |   –   |
 | SDL_PauseAudio                        |   –   |
@@ -978,18 +982,19 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 | Name                                  | Bound |
 |---------------------------------------|-------|
 | gluLookAt                             |   ✓   |
+| gluNewQuadric                         |   ✓   |
+| gluOrtho2D                            |   ✓   |
 | gluPerspective                        |   ✓   |
 | gluProject                            |   ✓   |
+| gluSphere                             |   ✓   |
 
 ## Utility Functions
 | Name                                  | Description                                     |
 |---------------------------------------|-------------------------------------------------|
-| sdl_get_pixel_format                  | Returns `SDL_PixelFormat` pointer of a surface. |
 | uint8                                 | Converts Fortran signed integer to `Uint8`.     |
 
 ## Credits
 Thanks go to [angelog0](https://github.com/angelog0).
 
 ## Licence
-
 ISC

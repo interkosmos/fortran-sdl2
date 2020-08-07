@@ -1,6 +1,7 @@
 add_rules("mode.debug", "mode.release")
 set_default(false)
 set_languages("fortran")
+set_targetdir("build")
 add_fcflags("-Wall -std=f2008 -fmax-errors=1")
 
 -- libsdl2.a
@@ -16,7 +17,9 @@ target("sdl2")
     add_files("src/sdl2/sdl2_events.f90")
     add_files("src/sdl2/sdl2_filesystem.f90")
     add_files("src/sdl2/sdl2_hints.f90")
+    add_files("src/sdl2/sdl2_gamecontroller.f90")
     add_files("src/sdl2/sdl2_keyboard.f90")
+    add_files("src/sdl2/sdl2_joystick.f90")
     add_files("src/sdl2/sdl2_log.f90")
     add_files("src/sdl2/sdl2_messagebox.f90")
     add_files("src/sdl2/sdl2_rect.f90")
@@ -76,8 +79,10 @@ target("fortran-sdl2")
     add_files("src/sdl2/sdl2_error.f90")
     add_files("src/sdl2/sdl2_events.f90")
     add_files("src/sdl2/sdl2_filesystem.f90")
+    add_files("src/sdl2/sdl2_gamecontroller.f90")
     add_files("src/sdl2/sdl2_hints.f90")
     add_files("src/sdl2/sdl2_keyboard.f90")
+    add_files("src/sdl2/sdl2_joystick.f90")
     add_files("src/sdl2/sdl2_log.f90")
     add_files("src/sdl2/sdl2_messagebox.f90")
     add_files("src/sdl2/sdl2_rect.f90")
@@ -99,10 +104,6 @@ target("fortran-sdl2")
     add_files("src/sdl2_mixer.f90")
     add_files("src/sdl2_ttf.f90")
     add_files("src/glu.f90")
-
---
--- Examples
---
 
 -- examples/alpha/alpha
 target("alpha")
@@ -165,7 +166,12 @@ target("gl")
     set_kind("binary")
     add_deps("sdl2")
     add_files("examples/gl/gl.f90")
-    add_syslinks("SDL2", "GL")
+    add_syslinks("SDL2")
+    if is_os("windows") then
+        add_syslinks("opengl32")
+    else
+        add_syslinks("GL")
+    end
     set_targetdir("examples/gl/")
 
 -- examples/gl3d/gl3d
@@ -173,8 +179,26 @@ target("gl3d")
     set_kind("binary")
     add_deps("sdl2", "sdl2_image", "glu")
     add_files("examples/gl3d/gl3d.f90")
-    add_syslinks("SDL2", "SDL2_image", "GL", "GLUT")
+    add_syslinks("SDL2", "SDL2_image")
+    if is_os("windows") then
+        add_syslinks("opengl32", "glu32")
+    else
+        add_syslinks("GL", "GLU")
+    end
     set_targetdir("examples/gl3d/")
+
+-- examples/glsphere
+target("glsphere")
+    set_kind("binary")
+    add_deps("sdl2", "glu")
+    add_files("examples/glsphere/glsphere.f90")
+    add_syslinks("SDL2")
+    if is_os("windows") then
+        add_syslinks("opengl32", "glu32")
+    else
+        add_syslinks("GL", "GLU")
+    end
+    set_targetdir("examples/glsphere/")
 
 -- examples/image/image
 target("image")
@@ -247,3 +271,26 @@ target("window")
     add_files("examples/window/window.f90")
     add_syslinks("SDL2", "SDL2_ttf")
     set_targetdir("examples/window/")
+
+-- all examples
+target("examples")
+    set_kind("phony")
+    add_deps("alpha")
+    add_deps("cyclic")
+    add_deps("draw")
+    add_deps("dvd")
+    add_deps("events")
+    add_deps("fire")
+    add_deps("gl")
+    add_deps("gl3d")
+    add_deps("glsphere")
+    add_deps("forest")
+    add_deps("image")
+    add_deps("info")
+    add_deps("msgbox")
+    add_deps("opera")
+    add_deps("pixel")
+    add_deps("scaling")
+    add_deps("text")
+    add_deps("voxel")
+    add_deps("window")
