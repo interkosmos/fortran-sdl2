@@ -24,8 +24,8 @@ module sdl2_opengl
     integer, parameter, public :: GLclampd   = c_double
 
     ! Boolean values
-    integer(kind=c_int), parameter :: GL_FALSE = 0
-    integer(kind=c_int), parameter :: GL_TRUE  = 1
+    integer(kind=GLboolean), parameter :: GL_FALSE = 0
+    integer(kind=GLboolean), parameter :: GL_TRUE  = 1
 
     ! Data types
     integer(kind=c_int), parameter :: GL_BYTE           = int(z'1400')
@@ -1358,28 +1358,28 @@ module sdl2_opengl
         subroutine glgetbooleanv(pname, params) bind(c, name='glGetBooleanv')
             import :: GLboolean, GLenum
             integer(kind=GLenum),    intent(in), value :: pname
-            integer(kind=GLboolean), intent(in)        :: params
+            integer(kind=GLboolean), intent(in)        :: params(*)
         end subroutine glgetbooleanv
 
         ! void glGetDoublev(GLenum pname, GLdouble *params)
         subroutine glgetdoublev(pname, params) bind(c, name='glGetDoublev')
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble),  intent(in)        :: params
+            real(kind=GLdouble),  intent(in)        :: params(*)
         end subroutine glgetdoublev
 
         ! void glGetFloatv(GLenum pname, GLfloat *params)
         subroutine glgetfloatv(pname, params) bind(c, name='glGetFloatv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgetfloatv
 
         ! void glGetIntegerv(GLenum pname, GLint *params)
         subroutine glgetintegerv(pname, params) bind(c, name='glGetIntegerv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgetintegerv
 
         ! void glPushAttrib(GLbitfield mask)
@@ -2661,7 +2661,7 @@ module sdl2_opengl
         subroutine glgetpointerv(pname, params) bind(c, name='glGetPointerv')
             import :: GLenum, c_ptr
             integer(kind=GLenum), intent(in), value :: pname
-            type(c_ptr),          intent(in), value :: params
+            type(c_ptr),          intent(in)        :: params
         end subroutine glgetpointerv
 
         ! void glArrayElement(GLint i)
@@ -2722,7 +2722,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine gllightfv
 
         ! void glLightiv(GLenum light, GLenum pname, const GLint *params)
@@ -2730,7 +2730,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine gllightiv
 
         ! void glGetLightfv(GLenum light, GLenum pname, GLfloat *params)
@@ -2738,7 +2738,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgetlightfv
 
         ! void glGetLightiv(GLenum light, GLenum pname, GLint *params)
@@ -2746,7 +2746,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: light
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgetlightiv
 
         ! void glLightModelf(GLenum pname, GLfloat param)
@@ -2767,14 +2767,14 @@ module sdl2_opengl
         subroutine gllightmodelfv(pname, params) bind(c, name='glLightModelfv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine gllightmodelfv
 
         ! void glLightModeliv(GLenum pname, const GLint *params)
         subroutine gllightmodeliv(pname, params) bind(c, name='glLightModeliv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine gllightmodeliv
 
         ! void glMaterialf(GLenum face, GLenum pname, GLfloat param)
@@ -2798,7 +2798,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glmaterialfv
 
         ! void glMaterialiv(GLenum face, GLenum pname, const GLint *params)
@@ -2806,7 +2806,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glmaterialiv
 
         ! void glGetMaterialfv(GLenum face, GLenum pname, GLfloat *params)
@@ -2814,7 +2814,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgetmaterialfv
 
         ! void glGetMaterialiv(GLenum face, GLenum pname, GLint *params)
@@ -2822,7 +2822,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: face
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgetmaterialiv
 
         ! void glColorMaterial(GLenum face, GLenum mode)
@@ -3013,7 +3013,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble),  intent(in)        :: params
+            real(kind=GLdouble),  intent(in)        :: params(*)
         end subroutine gltexgendv
 
         ! void glTexGenfv(GLenum coord, GLenum pname, const GLfloat *params)
@@ -3021,7 +3021,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine gltexgenfv
 
         ! void glTexGeniv(GLenum coord, GLenum pname, const GLint *params)
@@ -3029,7 +3029,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine gltexgeniv
 
         ! void glGetTexGendv(GLenum coord, GLenum pname, GLdouble *params)
@@ -3037,7 +3037,7 @@ module sdl2_opengl
             import :: GLdouble, GLenum
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLdouble),  intent(in)        :: params
+            real(kind=GLdouble),  intent(in)        :: params(*)
         end subroutine glgettexgendv
 
         ! void glGetTexGenfv(GLenum coord, GLenum pname, GLfloat *params)
@@ -3045,7 +3045,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgettexgenfv
 
         ! void glGetTexGeniv(GLenum coord, GLenum pname, GLint *params)
@@ -3053,7 +3053,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: coord
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgettexgeniv
 
         ! void glTexEnvf(GLenum target, GLenum pname, GLfloat param)
@@ -3077,7 +3077,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine gltexenvfv
 
         ! void glTexEnviv(GLenum target, GLenum pname, const GLint *params)
@@ -3085,7 +3085,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine gltexenviv
 
         ! void glGetTexEnvfv(GLenum target, GLenum pname, GLfloat *params)
@@ -3093,7 +3093,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgettexenvfv
 
         ! void glGetTexEnviv(GLenum target, GLenum pname, GLint *params)
@@ -3101,7 +3101,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgettexenviv
 
         ! void glTexParameterf(GLenum target, GLenum pname, GLfloat param)
@@ -3125,7 +3125,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine gltexparameterfv
 
         ! void glTexParameteriv(GLenum target, GLenum pname, const GLint *params)
@@ -3133,7 +3133,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine gltexparameteriv
 
         ! void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat *params)
@@ -3141,7 +3141,7 @@ module sdl2_opengl
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgettexparameterfv
 
         ! void glGetTexParameteriv(GLenum target, GLenum pname, GLint *params)
@@ -3149,7 +3149,7 @@ module sdl2_opengl
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgettexparameteriv
 
         ! void glGetTexLevelParameterfv(GLenum target, GLint level, GLenum pname, GLfloat *params)
@@ -3158,7 +3158,7 @@ module sdl2_opengl
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLint),  intent(in), value :: level
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glgettexlevelparameterfv
 
         ! void glGetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint *params)
@@ -3167,7 +3167,7 @@ module sdl2_opengl
             integer(kind=GLenum), intent(in), value :: target
             integer(kind=GLint),  intent(in), value :: level
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glgettexlevelparameteriv
 
         ! void glTexImage1D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
@@ -3526,14 +3526,14 @@ module sdl2_opengl
         subroutine glfogfv(pname, params) bind(c, name='glFogfv')
             import :: GLenum, GLfloat
             integer(kind=GLenum), intent(in), value :: pname
-            real(kind=GLfloat),   intent(in)        :: params
+            real(kind=GLfloat),   intent(in)        :: params(*)
         end subroutine glfogfv
 
         ! void glFogiv(GLenum pname, const GLint *params)
         subroutine glfogiv(pname, params) bind(c, name='glFogiv')
             import :: GLenum, GLint
             integer(kind=GLenum), intent(in), value :: pname
-            integer(kind=GLint),  intent(in)        :: params
+            integer(kind=GLint),  intent(in)        :: params(*)
         end subroutine glfogiv
 
         ! void glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer)

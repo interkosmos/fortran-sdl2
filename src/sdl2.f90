@@ -14,9 +14,11 @@ module sdl2
     use :: sdl2_error
     use :: sdl2_events
     use :: sdl2_filesystem
+    use :: sdl2_gamecontroller
     use :: sdl2_hints
     use :: sdl2_keyboard
     use :: sdl2_keycode
+    use :: sdl2_joystick
     use :: sdl2_log
     use :: sdl2_messagebox
     use :: sdl2_mouse
@@ -37,6 +39,7 @@ module sdl2
 
     ! Public interfaces to SDL 2.0.
     public :: sdl_init
+    public :: sdl_init_sub_system
     public :: sdl_quit
 
     ! Public wrapper functions.
@@ -85,6 +88,13 @@ module sdl2
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int)                         :: sdl_init
         end function sdl_init
+
+        ! int SDL_InitSubSystem(Uint32 flags)
+        function sdl_init_sub_system(flags) bind(c, name='SDL_InitSubSystem')
+            import :: c_int, c_uint32_t
+            integer(kind=c_uint32_t), intent(in), value :: flags
+            integer(kind=c_int)                         :: sdl_init_sub_system
+        end function sdl_init_sub_system
 
         ! void SDL_Quit(void)
         subroutine sdl_quit() bind(c, name='SDL_Quit')

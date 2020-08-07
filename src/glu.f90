@@ -11,11 +11,21 @@ module glu
     implicit none
     private
 
-    public :: gluproject
+    public :: gludeletequadric
     public :: glulookat
+    public :: glunewquadric
+    public :: gluortho2d
     public :: gluperspective
+    public :: gluproject
+    public :: glusphere
 
     interface
+        ! GLUquadric* gluNewQuadric(void)
+        function glunewquadric() bind(c, name='gluNewQuadric')
+            import :: c_ptr
+            type(c_ptr) :: glunewquadric
+        end function glunewquadric
+
         ! GLint gluProject(GLdouble objX, GLdouble objY, GLdouble objZ, const GLdouble *model, const GLdouble *proj, const GLint *view, GLdouble* winX, GLdouble* winY, GLdouble* winZ)
         function gluproject(objx, objy, objz, model, proj, view, winx, winy, winz) bind(c, name='gluProject')
             import :: GLdouble, GLint
@@ -31,6 +41,12 @@ module glu
             integer(kind=glint)                    :: gluproject
         end function gluproject
 
+        ! void gluDeleteQuadric(GLUquadric* quad)
+        subroutine gludeletequadric(quad) bind(c, name='gluDeleteQuadric')
+            import :: c_ptr
+            type(c_ptr), intent(in), value :: quad
+        end subroutine gludeletequadric
+
         ! void gluLookAt(GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ, GLdouble centerX, GLdouble centerY, GLdouble centerZ, GLdouble upX, GLdouble upY, GLdouble upZ)
         subroutine glulookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz) bind(c, name='gluLookAt')
             import :: GLdouble
@@ -45,6 +61,15 @@ module glu
             real(kind=gldouble), intent(in), value :: upz
         end subroutine glulookat
 
+        ! void gluOrtho2D(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top)
+        subroutine gluortho2d(left, right, bottom, top) bind(c, name='gluOrtho2D')
+            import :: GLdouble
+            real(kind=GLdouble), intent(in), value :: left
+            real(kind=GLdouble), intent(in), value :: right
+            real(kind=GLdouble), intent(in), value :: bottom
+            real(kind=GLdouble), intent(in), value :: top
+        end subroutine gluortho2d
+
         ! void gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
         subroutine gluperspective(fovy, aspect, znear, zfar) bind(c, name='gluPerspective')
             import :: GLdouble
@@ -53,5 +78,14 @@ module glu
             real(kind=gldouble), intent(in), value :: znear
             real(kind=gldouble), intent(in), value :: zfar
         end subroutine gluperspective
+
+        ! void gluSphere(GLUquadric* quad, GLdouble radius, GLint slices, GLint stacks)
+        subroutine glusphere(quad, radius, slices, stacks) bind(c, name='gluSphere')
+            import :: c_ptr, GLdouble, GLint
+            type(c_ptr),         intent(in), value :: quad
+            real(kind=GLdouble), intent(in), value :: radius
+            integer(kind=GLint), intent(in), value :: slices
+            integer(kind=GLint), intent(in), value :: stacks
+        end subroutine glusphere
      end interface
 end module glu
