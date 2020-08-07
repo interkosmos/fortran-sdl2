@@ -14,10 +14,12 @@ SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_audio.f90 \
           src/sdl2/sdl2_blendmode.f90 \
           src/sdl2/sdl2_cpuinfo.f90 \
+          src/sdl2/sdl2_gamecontroller.f90 \
           src/sdl2/sdl2_error.f90 \
           src/sdl2/sdl2_events.f90 \
           src/sdl2/sdl2_filesystem.f90 \
           src/sdl2/sdl2_hints.f90 \
+          src/sdl2/sdl2_joystick.f90 \
           src/sdl2/sdl2_keyboard.f90 \
           src/sdl2/sdl2_log.f90 \
           src/sdl2/sdl2_messagebox.f90 \

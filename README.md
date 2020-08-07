@@ -10,9 +10,10 @@ SDL_image | 2.0.5
 SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
-The interfaces have been built successfully with GNU Fortran 9 on FreeBSD 12 and
-IFORT 19.1 on CentOS 8, but other Fortran 2008 should work as well.
-
+The interface bindings have been built successfully with GNU Fortran 10 on
+FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 should work as
+well. On Microsoft Windows, install GNU Fortran through
+[MSYS2](https://www.msys2.org/).
 
 ## Building the Interface Bindings
 At first, install SDL 2.0 with development headers (and optionally:
@@ -27,7 +28,7 @@ At first, install SDL 2.0 with development headers (and optionally:
 Either use GNU/BSD make or [xmake](https://xmake.io/) to build *fortran-sdl2*.
 
 ### Make
-Run `make sdl2` to build the static library `libsdl2.a`:
+Run `make sdl2` to compile the static library `libsdl2.a`:
 
 ```
 $ git clone https://github.com/interkosmos/fortran-sdl2
@@ -195,7 +196,7 @@ Compile all examples with:
 $ make examples
 ```
 
-Or, use the name of a particular example. If you use xmake, build and run an
+Or, use the name of a particular example. If you prefer xmake, build and run an
 example with:
 
 ```
