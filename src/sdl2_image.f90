@@ -62,6 +62,7 @@ contains
         type(sdl_surface), pointer   :: img_load
         type(c_ptr)                  :: ptr
 
+        img_load => null()
         ptr = img_load_(file_name)
         if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, img_load)
@@ -72,6 +73,7 @@ contains
         type(sdl_surface), pointer :: img_load_png_rw
         type(c_ptr)                :: ptr
 
+        img_load_png_rw => null()
         ptr = img_load_png_rw_(src)
         if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, img_load_png_rw)
