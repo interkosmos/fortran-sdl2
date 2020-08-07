@@ -177,6 +177,7 @@ Some demo applications can be found in `examples/`:
 * **fire** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
 * **gl** renders a triangle with OpenGL 1.3.
 * **gl3d** rotates textured cubes with OpenGL 1.3.
+* **glsphere** rotates the camera around GLU spheres.
 * **forest** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * **image** loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
