@@ -49,7 +49,7 @@ argument, for example:
 $ make all FC=gfortran10
 ```
 
-Link your Fortran project with `libsdl2.a` and (optionally) `libsdl_*.a`, or
+Link your Fortran project with `libsdl2.a` and (optionally) `libsdl2_*.a`, or
 simply with `libfortran-sdl2.a`:
 
 | Library           | Compilation         | Linking                                                         |
@@ -197,7 +197,7 @@ Compile all examples with:
 $ make examples
 ```
 
-Or, use the name of a particular example. Run the example from within their
+Or, use the name of a particular example. Run the examples from within their
 respective directory:
 
 ```

@@ -1,4 +1,6 @@
-! glu.f90
+! glsphere.f90
+!
+! OpenGL example that rotates the camera around GLU spheres.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
