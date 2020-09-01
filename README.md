@@ -11,8 +11,8 @@ SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
 
 The interface bindings have been built successfully with GNU Fortran 10 on
-FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 should work as
-well. On Microsoft Windows, install GNU Fortran through
+FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 compilers should
+work as well. On Microsoft Windows, you can install GNU Fortran through
 [MSYS2](https://www.msys2.org/).
 
 ## Building the Interface Bindings
@@ -49,7 +49,8 @@ argument, for example:
 $ make all FC=gfortran10
 ```
 
-Link your Fortran project with `libsdl2.a` or `libfortran-sdl2.a`.
+Link your Fortran project with `libsdl2.a` and (optionally) `libsdl_*.a`, or
+simply with `libfortran-sdl2.a`:
 
 | Library           | Compilation         | Linking                                                         |
 |-------------------|---------------------|-----------------------------------------------------------------|
@@ -196,15 +197,22 @@ Compile all examples with:
 $ make examples
 ```
 
-Or, use the name of a particular example. If you prefer xmake, build and run an
-example with:
+Or, use the name of a particular example. Run the example from within their
+respective directory:
+
+```
+$ cd examples/<name>/
+$ ./<name>
+```
+
+If you prefer xmake, build and run an example with:
 
 ```
 $ xmake build <name>
 $ xmake run <name>
 ```
 
-To compile all examples, run:
+To compile all examples, simply run:
 
 ```
 $ xmake build examples
@@ -285,6 +293,11 @@ pixel = ichar(transfer(pixels((Y - 1) * surface%pitch + X), 'a'), kind=c_int32_t
 ! Get RGB values of pixel.
 call sdl_get_rgb(pixel, pixel_format, r, g, b)
 ```
+
+### Events
+The SDL event [SDL_QUIT](https://wiki.libsdl.org/SDL_EventType#SDL_QUIT) has
+been renamed to `SDL_QUITEVENT` in Fortran to avoid conflict with the interface
+`sdl_quit()`.
 
 ## Coverage
 ### SDL
