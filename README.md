@@ -167,28 +167,26 @@ $ gfortran `sdl2-config --cflags` -o example example.f90 libsdl2.a `sdl2-config 
 ```
 
 ## Further Examples
-![screen shot](examples/voxel/screenshot.png)
-
 Some demo applications can be found in `examples/`:
 
-* **[alpha](examples/alpha/screenshot.png)** makes one color of an image transparent (software renderer).
-* **[cyclic](examples/cyclic/screenshot.png)** implements a 2D [cyclic cellular automaton](https://en.wikipedia.org/wiki/Cyclic_cellular_automaton) (hardware renderer).
-* **[draw](examples/draw/screenshot.png)** draws some shapes (hardware renderer).
-* **[dvd](examples/dvd/screenshot.png)** loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
+* [**alpha**](examples/alpha/screenshot.png) makes one color of an image transparent (software renderer).
+* [**cyclic**](examples/cyclic/screenshot.png) implements a 2D [cyclic cellular automaton](https://en.wikipedia.org/wiki/Cyclic_cellular_automaton) (hardware renderer).
+* [**draw**](examples/draw/screenshot.png) draws some shapes (hardware renderer).
+* [**dvd**](examples/dvd/screenshot.png) loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
-* **[fire](examples/fire/screenshot.png)** renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
-* **[gl](examples/gl/screenshot.png)** renders a triangle with OpenGL 1.3.
-* **[gl3d](examples/gl3d/screenshot.png)** rotates textured cubes with OpenGL 1.3.
-* **[glsphere](examples/glsphere/screenshot.png)** rotates the camera around GLU spheres.
-* **[forest](examples/forest/screenshot.png)** implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
-* **[image](examples/image/screenshot.png)** loads and displays an image (software renderer).
+* [**fire**](examples/fire/screenshot.png) renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
+* [**gl**](examples/gl/screenshot.png) renders a triangle with OpenGL 1.3.
+* [**gl3d**](examples/gl3d/screenshot.png) rotates textured cubes with OpenGL 1.3.
+* [**glsphere**](examples/glsphere/screenshot.png) rotates the camera around GLU spheres.
+* [**forest**](examples/forest/screenshot.png) implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
+* [**image**](examples/image/screenshot.png) loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
 * **msgbox** shows a simple message box (software renderer).
-* **[opera](examples/opera/screenshot.png)** plays an OGG file with SDL_mixer (software renderer).
-* **[pixel](examples/pixel/screenshot.png)** copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
-* **[scaling](examples/scaling/screenshot.png)** displays a scaled image (software renderer).
-* **[text](examples/text/screenshot.png)** outputs text with SDL_ttf (hardware renderer).
-* **[voxel](examples/voxel/screenshot.png)** renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
+* [**opera**](examples/opera/screenshot.png) plays an OGG file with SDL_mixer (software renderer).
+* [**pixel**](examples/pixel/screenshot.png) copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
+* [**scaling**](examples/scaling/screenshot.png) displays a scaled image (software renderer).
+* [**text**](examples/text/screenshot.png) outputs text with SDL_ttf (hardware renderer).
+* [**voxel**](examples/voxel/screenshot.png) renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Compile all examples with:
