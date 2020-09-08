@@ -73,8 +73,7 @@ Build a particular library with:
 $ xmake build <name>
 ```
 
-The default output directory is `build/`. The Fortran module files will be saved
-to `build/.objs/<name>/<platform>/<architecture>/release/.modules/`.
+The default output directory is `build/`.
 
 ## Example
 An example that shows how to fill a rectangle, using the hardware renderer.
