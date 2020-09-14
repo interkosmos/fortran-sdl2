@@ -120,13 +120,13 @@ contains
 
     subroutine c_f_str_ptr(c_str, f_str)
         !! Copies a C string, passed as a C pointer, to a Fortran string.
-        type(c_ptr),      intent(in)           :: c_str
-        character(len=*), intent(out)          :: f_str
-        character(kind=c_char, len=1), pointer :: char_ptrs(:)
-        integer                                :: i
+        type(c_ptr),      intent(in)    :: c_str
+        character(len=*), intent(out)   :: f_str
+        character(kind=c_char), pointer :: char_ptrs(:)
+        integer                         :: i
 
         if (c_associated(c_str)) then
-            call c_f_pointer(c_str, char_ptrs, [huge(0)])
+            call c_f_pointer(c_str, char_ptrs, [ huge(0) ])
 
             i = 1
 

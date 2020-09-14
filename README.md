@@ -296,6 +296,25 @@ The SDL event [SDL_QUIT](https://wiki.libsdl.org/SDL_EventType#SDL_QUIT) has
 been renamed to `SDL_QUITEVENT` in Fortran to avoid conflict with the interface
 `sdl_quit()`.
 
+## Documentation
+Generate the source code documentation with
+[FORD](https://github.com/cmacmackin/ford). Install FORD with `pip`, for
+example:
+
+```
+$ python3 -m venv virtual-environment/
+$ source virtual-environment/bin/activate
+$ python3 -m pip install ford
+```
+
+Then, run:
+
+```
+$ ford project.md -d ./src
+```
+
+Open `docs/index.html` in a web browser.
+
 ## Coverage
 ### SDL
 | Name                                  | Bound |
