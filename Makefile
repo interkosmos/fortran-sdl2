@@ -63,6 +63,7 @@ GL3D     = examples/gl3d/gl3d
 GLSPHERE = examples/glsphere/glsphere
 IMAGE    = examples/image/image
 INFO     = examples/info/info
+LOG      = examples/log/log
 MSGBOX   = examples/msgbox/msgbox
 OPERA    = examples/opera/opera
 PIXEL    = examples/pixel/pixel
@@ -74,14 +75,14 @@ WINDOW   = examples/window/window
 .PHONY: all clean examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         glu \
-        alpha cyclic draw dvd events fire forest gl gl3d glsphere image info msgbox \
-        opera pixel scaling text voxel window
+        alpha cyclic draw dvd events fire forest gl gl3d glsphere image info log \
+        msgbox opera pixel scaling text voxel window
 
 all: $(LIBRARY) $(GLU_LIB)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
-          $(GLSPHERE) $(INFO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) $(TEXT) \
-          $(VOXEL) $(WINDOW)
+          $(GLSPHERE) $(INFO) $(LOG) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) \
+          $(TEXT) $(VOXEL) $(WINDOW)
 
 # Build targets of examples.
 alpha: $(ALPHA)
@@ -96,6 +97,7 @@ gl3d: $(GL3D)
 glsphere: $(GLSPHERE)
 image: $(IMAGE)
 info: $(INFO)
+log: $(LOG)
 msgbox: $(MSGBOX)
 opera: $(OPERA)
 pixel: $(PIXEL)
@@ -175,6 +177,9 @@ $(IMAGE): $(IMAGE).f90 $(SDL_LIB)
 $(INFO): $(INFO).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(LOG): $(LOG).f90 $(SDL_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
 $(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
@@ -213,6 +218,7 @@ clean:
 	if [ -e $(GLSPHERE) ]; then rm $(GLSPHERE); fi
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
+	if [ -e $(LOG) ]; then rm $(LOG); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi

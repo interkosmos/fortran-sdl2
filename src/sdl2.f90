@@ -62,6 +62,13 @@ module sdl2
     public :: sdl_get_window_surface
     public :: sdl_get_window_title
     public :: sdl_load_bmp
+    public :: sdl_log
+    public :: sdl_log_critical
+    public :: sdl_log_debug
+    public :: sdl_log_error
+    public :: sdl_log_info
+    public :: sdl_log_verbose
+    public :: sdl_log_warn
     public :: sdl_map_rgb
     public :: sdl_map_rgba
     public :: sdl_poll_event
@@ -480,6 +487,68 @@ contains
 
         uint8_i4 = transfer([i, 1_4], 1_c_int8_t)
     end function uint8_i4
+
+    subroutine sdl_log(str)
+        !! Wrapper routine around `sdl_log_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        character(len=*), intent(in) :: str
+
+        call sdl_log_('%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log
+
+    subroutine sdl_log_critical(category, str)
+        !! Wrapper routine around `sdl_log_critical_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_critical_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_critical
+
+    subroutine sdl_log_debug(category, str)
+        !! Wrapper routine around `sdl_log_debug_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_debug_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_debug
+
+    subroutine sdl_log_error(category, str)
+        !! Wrapper routine around `sdl_log_error_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_error_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_error
+
+    subroutine sdl_log_info(category, str)
+        !! Wrapper routine around `sdl_log_info_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_info_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_info
+
+    subroutine sdl_log_verbose(category, str)
+        !! Wrapper routine around `sdl_log_verbose_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_verbose_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_verbose
+
+    subroutine sdl_log_warn(category, str)
+        !! Wrapper routine around `sdl_log_warn_()` for string arguments, as
+        !! ellipsis arguments are not supported in Fortran.
+        integer,          intent(in) :: category
+        character(len=*), intent(in) :: str
+
+        call sdl_log_warn_(category, '%s' // c_null_char, trim(str) // c_null_char)
+    end subroutine sdl_log_warn
 
     subroutine sdl_transfer_event(event)
         !! Transfers a given event union to the respective event type

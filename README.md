@@ -5,7 +5,7 @@ A collection of ISO C binding interfaces to
 
 Library   | Version
 ----------|--------
-SDL       | 2.0.12_1
+SDL       | 2.0.12_3
 SDL_image | 2.0.5
 SDL_mixer | 2.0.4_2
 SDL_ttf   | 2.0.15
@@ -81,7 +81,7 @@ An example that shows how to fill a rectangle, using the hardware renderer.
 ```fortran
 ! example.f90
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -174,12 +174,13 @@ Some demo applications can be found in `examples/`:
 * [**dvd**](examples/dvd/screenshot.png) loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
 * [**fire**](examples/fire/screenshot.png) renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
+* [**forest**](examples/forest/screenshot.png) implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * [**gl**](examples/gl/screenshot.png) renders a triangle with OpenGL 1.3.
 * [**gl3d**](examples/gl3d/screenshot.png) rotates textured cubes with OpenGL 1.3.
 * [**glsphere**](examples/glsphere/screenshot.png) rotates the camera around GLU spheres.
-* [**forest**](examples/forest/screenshot.png) implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
 * [**image**](examples/image/screenshot.png) loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
+* **log** prints log messages with `SDL_Log()` (software renderer).
 * **msgbox** shows a simple message box (software renderer).
 * [**opera**](examples/opera/screenshot.png) plays an OGG file with SDL_mixer (software renderer).
 * [**pixel**](examples/pixel/screenshot.png) copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
@@ -223,8 +224,8 @@ have kept their original names.
 
 ### Null-Termination of Strings
 An `c_null_char` must be appended to all strings passed to the SDL 2.0 interface,
-except for `sdl_set_hint()`, which is a wrapper function that terminates the
-arguments for convenience.
+except for `sdl_set_hint()` and `sdl_log*()` procedures, which are wrappers that
+terminate the arguments for convenience.
 
 ### SDL_Color
 SDL 2.0 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
@@ -291,6 +292,26 @@ pixel = ichar(transfer(pixels((Y - 1) * surface%pitch + X), 'a'), kind=c_int32_t
 call sdl_get_rgb(pixel, pixel_format, r, g, b)
 ```
 
+### SDL_Log
+Only a single string message can be given to `sdl_log()` and `sdl_log_*()`
+routines, as Fortran does not support ellipsis arguments, for example:
+
+```fortran
+call sdl_log_debug(SDL_LOG_CATEGORY_TEST, 'debug message')
+```
+
+You may have to write your log message to a string first:
+
+```fortran
+character(len=32) :: msg
+integer           :: rc
+
+write (msg, '(a, i0)') 'Error: ', rc
+call sdl_log(msg)
+```
+
+The string will be trimmed by the wrapper routines.
+
 ### Events
 The SDL event [SDL_QUIT](https://wiki.libsdl.org/SDL_EventType#SDL_QUIT) has
 been renamed to `SDL_QUITEVENT` in Fortran to avoid conflict with the interface
@@ -313,7 +334,7 @@ Then, run:
 $ ford project.md -d ./src
 ```
 
-Open `docs/index.html` in a web browser.
+Open `doc/index.html` in a web browser.
 
 ## Coverage
 ### SDL
@@ -629,21 +650,21 @@ Open `docs/index.html` in a web browser.
 | SDL_LockMutex                         |   –   |
 | SDL_LockSurface                       |   –   |
 | SDL_LockTexture                       |   ✓   |
-| SDL_Log                               |   –   |
-| SDL_LogCritical                       |   –   |
-| SDL_LogDebug                          |   –   |
-| SDL_LogError                          |   –   |
+| SDL_Log                               |   ✓   |
+| SDL_LogCritical                       |   ✓   |
+| SDL_LogDebug                          |   ✓   |
+| SDL_LogError                          |   ✓   |
 | SDL_LogGetOutputFunction              |   ✓   |
 | SDL_LogGetPriority                    |   ✓   |
-| SDL_LogInfo                           |   –   |
+| SDL_LogInfo                           |   ✓   |
 | SDL_LogMessage                        |   –   |
 | SDL_LogMessageV                       |   –   |
 | SDL_LogResetPriorities                |   ✓   |
 | SDL_LogSetAllPriority                 |   ✓   |
 | SDL_LogSetOutputFunction              |   ✓   |
 | SDL_LogSetPriority                    |   ✓   |
-| SDL_LogVerbose                        |   –   |
-| SDL_LogWarn                           |   –   |
+| SDL_LogVerbose                        |   ✓   |
+| SDL_LogWarn                           |   ✓   |
 | SDL_LowerBlit                         |   –   |
 | SDL_LowerBlitScaled                   |   –   |
 | SDL_MUSTLOCK                          |   –   |
