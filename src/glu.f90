@@ -11,6 +11,9 @@ module glu
     implicit none
     private
 
+    integer(kind=c_int), parameter, public :: GLU_FALSE = 0
+    integer(kind=c_int), parameter, public :: GLU_TRUE  = 1
+
     public :: gludeletequadric
     public :: glulookat
     public :: glunewquadric
