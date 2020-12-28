@@ -64,6 +64,7 @@ GLSPHERE = examples/glsphere/glsphere
 IMAGE    = examples/image/image
 INFO     = examples/info/info
 LOG      = examples/log/log
+LOGO     = examples/logo/logo
 MSGBOX   = examples/msgbox/msgbox
 OPERA    = examples/opera/opera
 PIXEL    = examples/pixel/pixel
@@ -72,7 +73,7 @@ TEXT     = examples/text/text
 VOXEL    = examples/voxel/voxel
 WINDOW   = examples/window/window
 
-.PHONY: all clean examples \
+.PHONY: all clean doc examples \
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         glu \
         alpha cyclic draw dvd events fire forest gl gl3d glsphere image info log \
@@ -81,7 +82,7 @@ WINDOW   = examples/window/window
 all: $(LIBRARY) $(GLU_LIB)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
-          $(GLSPHERE) $(INFO) $(LOG) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) \
+          $(GLSPHERE) $(INFO) $(LOG) $(LOGO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) $(SCALING) \
           $(TEXT) $(VOXEL) $(WINDOW)
 
 # Build targets of examples.
@@ -98,6 +99,7 @@ glsphere: $(GLSPHERE)
 image: $(IMAGE)
 info: $(INFO)
 log: $(LOG)
+logo: $(LOGO)
 msgbox: $(MSGBOX)
 opera: $(OPERA)
 pixel: $(PIXEL)
@@ -180,6 +182,9 @@ $(INFO): $(INFO).f90 $(SDL_LIB)
 $(LOG): $(LOG).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+$(LOGO): $(LOGO).f90 $(SDL_LIB) $(IMG_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
+
 $(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
@@ -201,6 +206,10 @@ $(VOXEL): $(VOXEL).f90 $(SDL_LIB)
 $(WINDOW): $(WINDOW).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
+# Make documentation.
+doc:
+	ford project.md -d ./src
+
 # Delete *.mod, *.a, *.o, and all compiled examples.
 clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
@@ -219,6 +228,7 @@ clean:
 	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
 	if [ -e $(INFO) ]; then rm $(INFO); fi
 	if [ -e $(LOG) ]; then rm $(LOG); fi
+	if [ -e $(LOGO) ]; then rm $(LOGO); fi
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
