@@ -720,10 +720,8 @@
 | gluGetString                          |   –   |
 | gluGetTessProperty                    |   –   |
 | gluLoadSamplingMatrices               |   –   |
-| gluLookAt                             |   –   |
 | gluLookAt                             |   ✓   |
 | gluNewNurbsRenderer                   |   –   |
-| gluNewQuadric                         |   –   |
 | gluNewQuadric                         |   ✓   |
 | gluNewTess                            |   –   |
 | gluNextContour                        |   –   |
@@ -733,13 +731,10 @@
 | gluNurbsCurve                         |   –   |
 | gluNurbsProperty                      |   –   |
 | gluNurbsSurface                       |   –   |
-| gluOrtho2D                            |   –   |
 | gluOrtho2D                            |   ✓   |
 | gluPartialDisk                        |   –   |
-| gluPerspective                        |   –   |
 | gluPerspective                        |   ✓   |
 | gluPickMatrix                         |   –   |
-| gluProject                            |   –   |
 | gluProject                            |   ✓   |
 | gluPwlCurve                           |   –   |
 | gluQuadricCallback                    |   –   |
@@ -748,7 +743,6 @@
 | gluQuadricOrientation                 |   –   |
 | gluQuadricTexture                     |   –   |
 | gluScaleImage                         |   –   |
-| gluSphere                             |   –   |
 | gluSphere                             |   ✓   |
 | gluTessBeginContour                   |   –   |
 | gluTessBeginPolygon                   |   –   |
