@@ -68,7 +68,6 @@ LOGO     = examples/logo/logo
 MSGBOX   = examples/msgbox/msgbox
 OPERA    = examples/opera/opera
 PIXEL    = examples/pixel/pixel
-POWDER   = examples/powder/powder
 SCALING  = examples/scaling/scaling
 TEXT     = examples/text/text
 VOXEL    = examples/voxel/voxel
@@ -84,7 +83,7 @@ all: $(LIBRARY) $(GLU_LIB)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
           $(GLSPHERE) $(INFO) $(LOG) $(LOGO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) \
-          $(POWDER) $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+          $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
 
 # Build targets of examples.
 alpha: $(ALPHA)
@@ -104,7 +103,6 @@ logo: $(LOGO)
 msgbox: $(MSGBOX)
 opera: $(OPERA)
 pixel: $(PIXEL)
-powder: $(POWDER)
 scaling: $(SCALING)
 text: $(TEXT)
 voxel: $(VOXEL)
@@ -196,9 +194,6 @@ $(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 $(PIXEL): $(PIXEL).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(POWDER): $(POWDER).f90 $(SDL_LIB)
-	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
-
 $(SCALING): $(SCALING).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
@@ -237,7 +232,6 @@ clean:
 	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
 	if [ -e $(OPERA) ]; then rm $(OPERA); fi
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
-	if [ -e $(POWDER) ]; then rm $(POWDER); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi
 	if [ -e $(VOXEL) ]; then rm $(VOXEL); fi
