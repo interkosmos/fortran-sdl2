@@ -31,6 +31,7 @@ module sdl2_surface
 
     public :: sdl_convert_surface_
     public :: sdl_create_rgb_surface_
+    public :: sdl_create_rgb_surface_from_
     public :: sdl_fill_rect
     public :: sdl_fill_rects
     public :: sdl_load_bmp_rw
@@ -54,17 +55,33 @@ module sdl2_surface
         ! SDL_Surface *SDL_CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
         function sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask) &
                 bind(c, name='SDL_CreateRGBSurface')
-            import :: c_int, c_int64_t, c_ptr, c_uint32_t
+            import :: c_int, c_ptr, c_uint32_t
             integer(kind=c_uint32_t), intent(in), value :: flags
             integer(kind=c_int),      intent(in), value :: width
             integer(kind=c_int),      intent(in), value :: height
             integer(kind=c_int),      intent(in), value :: depth
-            integer(kind=c_int64_t),  intent(in), value :: r_mask
-            integer(kind=c_int64_t),  intent(in), value :: g_mask
-            integer(kind=c_int64_t),  intent(in), value :: b_mask
-            integer(kind=c_int64_t),  intent(in), value :: a_mask
+            integer(kind=c_uint32_t), intent(in), value :: r_mask
+            integer(kind=c_uint32_t), intent(in), value :: g_mask
+            integer(kind=c_uint32_t), intent(in), value :: b_mask
+            integer(kind=c_uint32_t), intent(in), value :: a_mask
             type(c_ptr)                                 :: sdl_create_rgb_surface_
         end function sdl_create_rgb_surface_
+
+        ! SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+        function sdl_create_rgb_surface_from_(pixels, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask) &
+                bind(c, name='SDL_CreateRGBSurface')
+            import :: c_int, c_ptr, c_uint32_t
+            type(c_ptr),              intent(in), value :: pixels
+            integer(kind=c_int),      intent(in), value :: width
+            integer(kind=c_int),      intent(in), value :: height
+            integer(kind=c_int),      intent(in), value :: depth
+            integer(kind=c_int),      intent(in), value :: pitch
+            integer(kind=c_uint32_t), intent(in), value :: r_mask
+            integer(kind=c_uint32_t), intent(in), value :: g_mask
+            integer(kind=c_uint32_t), intent(in), value :: b_mask
+            integer(kind=c_uint32_t), intent(in), value :: a_mask
+            type(c_ptr)                                 :: sdl_create_rgb_surface_from_
+        end function sdl_create_rgb_surface_from_
 
         ! int SDL_FillRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color)
         function sdl_fill_rect(dst, rect, color) bind(c, name='SDL_FillRect')

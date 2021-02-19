@@ -41,7 +41,9 @@ module sdl2_mouse
     public :: sdl_create_system_cursor
     public :: sdl_free_cursor
     public :: sdl_get_default_cursor
+    public :: sdl_get_global_mouse_state
     public :: sdl_get_mouse_state
+    public :: sdl_get_relative_mouse_state
     public :: sdl_set_cursor
     public :: sdl_set_relative_mouse_mode
     public :: sdl_show_cursor
@@ -62,6 +64,14 @@ module sdl2_mouse
             type(c_ptr) :: sdl_get_default_cursor
         end function sdl_get_default_cursor
 
+        ! Uint32 SDLCALL SDL_GetGlobalMouseState(int *x, int *y)
+        function sdl_get_global_mouse_state(x, y) bind(c, name='SDL_GetGlobalMouseState')
+            import :: c_int, c_uint32_t
+            integer(kind=c_int), intent(in) :: x
+            integer(kind=c_int), intent(in) :: y
+            integer(kind=c_uint32_t)        :: sdl_get_global_mouse_state
+        end function sdl_get_global_mouse_state
+
         ! Uint32 SDL_GetMouseState(int *x, int *y)
         function sdl_get_mouse_state(x, y) bind(c, name='SDL_GetMouseState')
             import :: c_int, c_uint32_t
@@ -69,6 +79,14 @@ module sdl2_mouse
             integer(kind=c_int), intent(in) :: y
             integer(kind=c_uint32_t)        :: sdl_get_mouse_state
         end function sdl_get_mouse_state
+
+        ! Uint32 SDLCALL SDL_GetRelativeMouseState(int *x, int *y)
+        function sdl_get_relative_mouse_state(x, y) bind(c, name='SDL_GetRelativeMouseState')
+            import :: c_int, c_uint32_t
+            integer(kind=c_int), intent(in) :: x
+            integer(kind=c_int), intent(in) :: y
+            integer(kind=c_uint32_t)        :: sdl_get_relative_mouse_state
+        end function sdl_get_relative_mouse_state
 
         ! int SDL_SetRelativeMouseMode(SDL_bool enabled)
         function sdl_set_relative_mouse_mode(enabled) bind(c, name='SDL_SetRelativeMouseMode')

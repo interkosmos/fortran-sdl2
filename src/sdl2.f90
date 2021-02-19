@@ -48,6 +48,7 @@ module sdl2
     public :: sdl_blit_surface
     public :: sdl_convert_surface
     public :: sdl_create_rgb_surface
+    public :: sdl_create_rgb_surface_from
     public :: sdl_get_audio_driver
     public :: sdl_get_base_path
     public :: sdl_get_current_audio_driver
@@ -79,9 +80,14 @@ module sdl2
 
     ! Utility functions and routines.
     public :: sdl_get_pixel_format
+    public :: uint32
     public :: uint8
 
     ! Generic interfaces.
+    interface uint32
+        procedure :: uint32_i8
+    end interface
+
     interface uint8
         procedure :: uint8_i2
         procedure :: uint8_i4
@@ -155,7 +161,9 @@ contains
         type(sdl_pixel_format), pointer :: sdl_alloc_format
         type(c_ptr)                     :: ptr
 
+        sdl_alloc_format => null()
         ptr = sdl_alloc_format_(pixel_format)
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_alloc_format)
     end function sdl_alloc_format
 
@@ -189,11 +197,13 @@ contains
         !! C pointer to derived type `sdl_surface`.
         type(sdl_surface),        intent(in) :: src
         type(sdl_pixel_format),   intent(in) :: fmt
-        integer(kind=c_uint32_t), intent(in) :: flags
+        integer,                  intent(in) :: flags
         type(sdl_surface),        pointer    :: sdl_convert_surface
         type(c_ptr)                          :: ptr
 
+        sdl_convert_surface => null()
         ptr = sdl_convert_surface_(src, fmt, flags)
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_convert_surface)
     end function sdl_convert_surface
 
@@ -201,29 +211,68 @@ contains
     function sdl_create_rgb_surface(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
         !! Calls `sdl_create_rgb_surface_()` and converts the returned
         !! C pointer to derived type `sdl_surface`.
-        integer(kind=c_uint32_t), intent(in) :: flags
-        integer(kind=c_int),      intent(in) :: width
-        integer(kind=c_int),      intent(in) :: height
-        integer(kind=c_int),      intent(in) :: depth
-        integer(kind=c_int64_t),  intent(in) :: r_mask
-        integer(kind=c_int64_t),  intent(in) :: g_mask
-        integer(kind=c_int64_t),  intent(in) :: b_mask
-        integer(kind=c_int64_t),  intent(in) :: a_mask
-        type(sdl_surface), pointer           :: sdl_create_rgb_surface
-        type(c_ptr)                          :: ptr
+        integer,          intent(in) :: flags
+        integer,          intent(in) :: width
+        integer,          intent(in) :: height
+        integer,          intent(in) :: depth
+        integer(kind=8),  intent(in) :: r_mask
+        integer(kind=8),  intent(in) :: g_mask
+        integer(kind=8),  intent(in) :: b_mask
+        integer(kind=8),  intent(in) :: a_mask
+        type(sdl_surface), pointer   :: sdl_create_rgb_surface
+        type(c_ptr)                  :: ptr
 
-        ptr = sdl_create_rgb_surface_(flags, width, height, depth, r_mask, g_mask, b_mask, a_mask)
+        sdl_create_rgb_surface => null()
+        ptr = sdl_create_rgb_surface_(flags, &
+                                      width, &
+                                      height, &
+                                      depth, &
+                                      uint32(r_mask), &
+                                      uint32(g_mask), &
+                                      uint32(b_mask), &
+                                      uint32(a_mask))
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_create_rgb_surface)
     end function sdl_create_rgb_surface
+
+    ! SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
+    function sdl_create_rgb_surface_from(pixels, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask)
+        !! Calls `sdl_create_rgb_surface_from_()` and converts the returned
+        !! C pointer to derived type `sdl_surface`.
+        type(c_ptr),              intent(in) :: pixels
+        integer,                  intent(in) :: width
+        integer,                  intent(in) :: height
+        integer,                  intent(in) :: depth
+        integer,                  intent(in) :: pitch
+        integer(kind=8),          intent(in) :: r_mask
+        integer(kind=8),          intent(in) :: g_mask
+        integer(kind=8),          intent(in) :: b_mask
+        integer(kind=8),          intent(in) :: a_mask
+        type(sdl_surface), pointer           :: sdl_create_rgb_surface_from
+        type(c_ptr)                          :: ptr
+
+        sdl_create_rgb_surface_from => null()
+        ptr = sdl_create_rgb_surface_from_(pixels, &
+                                           width, &
+                                           height, &
+                                           depth, &
+                                           pitch, &
+                                           uint32(r_mask), &
+                                           uint32(g_mask), &
+                                           uint32(b_mask), &
+                                           uint32(a_mask))
+        if (.not. c_associated(ptr)) return
+        call c_f_pointer(ptr, sdl_create_rgb_surface_from)
+    end function sdl_create_rgb_surface_from
 
     ! const char *SDL_GetAudioDriver(int index)
     function sdl_get_audio_driver(index)
         !! Calls `sdl_get_audio_driver_()` and converts the returned
         !! C char pointer to Fortran character.
-        integer(kind=c_int), intent(in) :: index
-        type(c_ptr)                     :: ptr
-        character(len=:), allocatable   :: sdl_get_audio_driver
-        integer(kind=8)                 :: size
+        integer, intent(in)           :: index
+        type(c_ptr)                   :: ptr
+        character(len=:), allocatable :: sdl_get_audio_driver
+        integer(kind=8)               :: size
 
         ptr = sdl_get_audio_driver_(index)
         if (.not. c_associated(ptr)) return
@@ -300,6 +349,7 @@ contains
         integer(kind=c_uint8_t), pointer :: sdl_get_keyboard_state(:)
         type(c_ptr)                      :: ptr
 
+        sdl_get_keyboard_state => null()
         ptr = sdl_get_keyboard_state_(c_null_ptr)
         if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_get_keyboard_state, shape=[244])
@@ -399,7 +449,9 @@ contains
         type(sdl_surface),      pointer    :: sdl_load_bmp
         type(c_ptr)                        :: ptr
 
+        sdl_load_bmp => null()
         ptr = sdl_load_bmp_rw(sdl_rw_from_file(file, 'rb' // c_null_char), 1)
+        if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, sdl_load_bmp)
     end function sdl_load_bmp
 
@@ -469,6 +521,15 @@ contains
         sdl_wait_event = sdl_wait_event_(event)
         call sdl_transfer_event(event)
     end function sdl_wait_event
+
+    pure function uint32_8(i)
+        !! Utility function that converts Fortran signed integer
+        !! (8 bytes) to Uint32.
+        integer(kind=8), intent(in) :: i
+        integer(kind=c_int32_t)     :: uint32_8
+
+        uint32_8 = transfer([i, 1_8], 1_c_int32_t)
+    end function uint32_8
 
     pure function uint8_i2(i)
         !! Utility function that converts Fortran signed integer

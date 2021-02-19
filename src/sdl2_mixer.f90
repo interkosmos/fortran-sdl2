@@ -34,6 +34,13 @@ module sdl2_mixer
                                                                              ior(SDL_AUDIO_ALLOW_FORMAT_CHANGE, &
                                                                                  SDL_AUDIO_ALLOW_CHANNELS_CHANGE))
 
+    integer(kind=c_int), parameter :: MIX_INIT_FLAC = int(z'00000001')
+    integer(kind=c_int), parameter :: MIX_INIT_MOD  = int(z'00000002')
+    integer(kind=c_int), parameter :: MIX_INIT_MP3  = int(z'00000008')
+    integer(kind=c_int), parameter :: MIX_INIT_OGG  = int(z'00000010')
+    integer(kind=c_int), parameter :: MIX_INIT_MID  = int(z'00000020')
+    integer(kind=c_int), parameter :: MIX_INIT_OPUS = int(z'00000040')
+
     integer(kind=c_int), parameter :: MIX_CHANNELS          = 8
     integer(kind=c_int), parameter :: MIX_DEFAULT_FREQUENCY = 22050
     integer(kind=c_int), parameter :: MIX_DEFAULT_CHANNELS  = 2
@@ -53,6 +60,13 @@ module sdl2_mixer
             integer(kind=c_int), intent(in), value :: num_chans
             integer(kind=c_int)                    :: mix_allocate_channels
         end function mix_allocate_channels
+
+        ! int Mix_Init(int flags)
+        function mix_init(flags) bind(c, name='Mix_Init')
+            import :: c_int
+            integer(kind=c_int), intent(in), value :: flags
+            integer(kind=c_int)                    :: mix_init
+        end function mix_init
 
         ! Mix_Chunk *Mix_LoadWAV_RW(SDL_RWops *src, int freesrc)
         function mix_load_wav_rw(src, free_src) bind(c, name='Mix_LoadWAV_RW')
