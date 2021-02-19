@@ -2,8 +2,10 @@ name = "fortran-sdl2"
 version = "0.5.0"
 license = "ISC"
 author = "Philipp Engel"
-maintainer = "https://github.com/interkosmos/"
-copyright = "2021 Philipp Engel"
+maintainer = "@interkosmos"
+copyright = "Copyright (c) 2021, Philipp Engel"
+description = "Fortran 2008 ISO C binding interfaces to SDL 2.0"
+keywords = ["sdl", "sdl2", "opengl", "glu"]
 
 [library]
 source-dir="src"
