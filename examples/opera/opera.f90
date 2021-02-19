@@ -34,7 +34,7 @@ program main
     type(c_ptr)                     :: music
     type(c_ptr)                     :: window
     integer                         :: rc
-    logical                         :: done = .false.
+    logical                         :: done
 
     ! Initialise SDL.
     if (sdl_init(ior(SDL_INIT_VIDEO, SDL_INIT_AUDIO)) < 0) then
@@ -90,6 +90,8 @@ program main
     if (mix_play_music(music, -1) < 0) then
         write (stderr, *) 'MIX Error: ', sdl_get_error()
     end if
+
+    done = .false.
 
     ! Event loop.
     do while (.not. done)

@@ -104,7 +104,7 @@ program main
     type(c_ptr)              :: renderer
     type(frame_buffer_type)  :: frame_buffer
     type(sdl_event)          :: event
-    integer(kind=1), pointer :: keys(:) => null()
+    integer(kind=1), pointer :: keys(:)
     integer, allocatable     :: world(:, :)
     integer, allocatable     :: buffer(:, :)
     integer(kind=c_int32_t)  :: palette(0:15)

@@ -270,6 +270,14 @@ target("pixel")
     add_syslinks("SDL2")
     set_targetdir("examples/pixel/")
 
+-- examples/powder/powder
+target("powder")
+    set_kind("binary")
+    add_deps("sdl2")
+    add_files("examples/powder/powder.f90")
+    add_syslinks("SDL2")
+    set_targetdir("examples/powder/")
+
 -- examples/scaling/scaling
 target("scaling")
     set_kind("binary")
@@ -322,6 +330,7 @@ target("examples")
     add_deps("msgbox")
     add_deps("opera")
     add_deps("pixel")
+    add_deps("powder")
     add_deps("scaling")
     add_deps("text")
     add_deps("voxel")

@@ -52,7 +52,7 @@
 | SDL_CreateCursor                      |   –   |
 | SDL_CreateMutex                       |   –   |
 | SDL_CreateRGBSurface                  |   ✓   |
-| SDL_CreateRGBSurfaceFrom              |   –   |
+| SDL_CreateRGBSurfaceFrom              |   ✓   |
 | SDL_CreateRenderer                    |   ✓   |
 | SDL_CreateSemaphore                   |   –   |
 | SDL_CreateSoftwareRenderer            |   –   |
@@ -154,7 +154,7 @@
 | SDL_GetDisplayName                    |   –   |
 | SDL_GetError                          |   ✓   |
 | SDL_GetEventFilter                    |   –   |
-| SDL_GetGlobalMouseState               |   –   |
+| SDL_GetGlobalMouseState               |   ✓   |
 | SDL_GetHint                           |   ✓   |
 | SDL_GetKeyFromName                    |   –   |
 | SDL_GetKeyFromScancode                |   –   |
@@ -182,7 +182,7 @@
 | SDL_GetRGB                            |   ✓   |
 | SDL_GetRGBA                           |   ✓   |
 | SDL_GetRelativeMouseMode              |   –   |
-| SDL_GetRelativeMouseState             |   –   |
+| SDL_GetRelativeMouseState             |   ✓   |
 | SDL_GetRenderDrawBlendMode            |   –   |
 | SDL_GetRenderDrawColor                |   –   |
 | SDL_GetRenderDriverInfo               |   ✓   |
@@ -602,7 +602,7 @@
 | Mix_HaltMusic                         |   –   |
 | Mix_HookMusic                         |   –   |
 | Mix_HookMusicFinished                 |   –   |
-| Mix_Init                              |   –   |
+| Mix_Init                              |   ✓   |
 | Mix_Linked_Version                    |   –   |
 | Mix_LoadMUS                           |   ✓   |
 | Mix_LoadWAV                           |   ✓   |
@@ -759,4 +759,5 @@
 ## Utility Functions
 | Name                                  | Description                                     |
 |---------------------------------------|-------------------------------------------------|
+| uint32                                | Converts Fortran signed integer to `Uint32`.    |
 | uint8                                 | Converts Fortran signed integer to `Uint8`.     |

@@ -80,17 +80,17 @@ module sdl2
 
     ! Utility functions and routines.
     public :: sdl_get_pixel_format
-    public :: uint32
     public :: uint8
+    public :: uint32
 
     ! Generic interfaces.
-    interface uint32
-        procedure :: uint32_i8
-    end interface
-
     interface uint8
         procedure :: uint8_i2
         procedure :: uint8_i4
+    end interface
+
+    interface uint32
+        procedure :: uint32_i8
     end interface
 
     ! Function and routine interfaces to SDL 2.0.
@@ -522,15 +522,6 @@ contains
         call sdl_transfer_event(event)
     end function sdl_wait_event
 
-    pure function uint32_8(i)
-        !! Utility function that converts Fortran signed integer
-        !! (8 bytes) to Uint32.
-        integer(kind=8), intent(in) :: i
-        integer(kind=c_int32_t)     :: uint32_8
-
-        uint32_8 = transfer([i, 1_8], 1_c_int32_t)
-    end function uint32_8
-
     pure function uint8_i2(i)
         !! Utility function that converts Fortran signed integer
         !! (2 bytes) to Uint8.
@@ -548,6 +539,15 @@ contains
 
         uint8_i4 = transfer([i, 1_4], 1_c_int8_t)
     end function uint8_i4
+
+    pure function uint32_i8(i)
+        !! Utility function that converts Fortran signed integer
+        !! (8 bytes) to Uint32.
+        integer(kind=8), intent(in) :: i
+        integer(kind=c_int32_t)     :: uint32_i8
+
+        uint32_i8 = transfer([i, 1_8], 1_c_int32_t)
+    end function uint32_i8
 
     subroutine sdl_log(str)
         !! Wrapper routine around `sdl_log_()` for string arguments, as

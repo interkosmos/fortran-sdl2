@@ -120,7 +120,7 @@ program main
     type(color_type)         :: colors(7)
     type(sdl_event)          :: event
     type(texture_type)       :: texture
-    integer(kind=1), pointer :: keys(:) => null()
+    integer(kind=1), pointer :: keys(:)
 
     type(logo_type)  :: logos(NLOGOS)
     type(point_type) :: points(NLOGOS)

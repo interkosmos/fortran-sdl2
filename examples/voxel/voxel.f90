@@ -62,8 +62,8 @@ program main
 
     character(len=30)             :: window_title
     integer                       :: fps, t1, rc
-    integer(kind=1), pointer      :: keys(:)       => null()
-    logical                       :: is_running    = .true.
+    integer(kind=1), pointer      :: keys(:)
+    logical                       :: is_running
     type(buffer_type)             :: buffer
     type(c_ptr)                   :: renderer
     type(c_ptr)                   :: window
@@ -106,6 +106,7 @@ program main
                      buffer%pixel_format, &
                      voxels)
     if (rc /= 0) stop
+    is_running = .true.
 
     ! Main loop.
     do while (is_running)

@@ -55,40 +55,38 @@ module doom
         rgb_type(255, 255, 255) ]
 contains
     subroutine fire_burn(fire, width, height)
-        integer, intent(inout) :: fire(*)
+        integer, intent(inout) :: fire(0:)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer                :: d, i, p, rnd
+        integer                :: i, p, rnd
         integer                :: x, y
         real                   :: r
 
         do y = 1, height - 1
-            do x = 1, width - 1
+            do x = 0, width - 1
                 i = (y * width) + x
                 p = fire(i)
 
                 if (p == 0) then
-                    d       = i - width
-                    fire(d) = 0
+                    fire(i - width) = 0
                 else
                     call random_number(r)
-                    rnd     = iand(int(r * 3.0), 3)
-                    d       = (i - rnd + 1) - width
-                    fire(d) = p - iand(rnd, 1)
+                    rnd = iand(int(r * 3), 3)
+                    fire(i - width - rnd + 1) = p - iand(rnd, 1)
                 end if
             end do
         end do
     end subroutine fire_burn
 
     subroutine fire_init(fire, width, height)
-        integer, intent(inout) :: fire(*)
+        integer, intent(inout) :: fire(0:)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
         integer                :: x
 
-        fire(1:width * height) = 1
+        fire(:) = 0
 
-        do x = 1, width
+        do x = 0, width - 1
             fire((height - 1) * width + x) = 36
         end do
     end subroutine fire_init
@@ -208,12 +206,12 @@ contains
 
         rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
 
-        do y = 1, height
-            do x = 1, width
-                i = fire(((y - 1) * width) + x)
+        do y = 0, height - 1
+            do x = 0, width - 1
+                i = fire(y * width + x)
                 p => palette(i + 1)
 
-                buffer%pixels((y - 1) * width + x) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
+                buffer%pixels(y * width + x + 1) = sdl_map_rgb(buffer%pixel_format, p%r, p%g, p%b)
             end do
         end do
 

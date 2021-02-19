@@ -1,0 +1,10 @@
+name = "fortran-sdl2"
+version = "0.5.0"
+license = "ISC"
+author = "Philipp Engel"
+maintainer = "https://github.com/interkosmos/"
+copyright = "2021 Philipp Engel"
+
+[library]
+source-dir="src"
+build-script="Makefile"

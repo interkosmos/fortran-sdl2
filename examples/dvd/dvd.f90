@@ -28,7 +28,7 @@ program main
     type(sdl_rect)           :: src_rect
     type(sdl_rect)           :: dst_rect
     type(sdl_event)          :: event
-    integer(kind=1), pointer :: keys(:) => null()
+    integer(kind=1), pointer :: keys(:)
     integer(kind=c_int32_t)  :: texture_format
     integer(kind=c_int)      :: texture_access
     integer                  :: texture_width
