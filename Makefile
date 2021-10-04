@@ -4,7 +4,7 @@
 FC         = gfortran
 SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
-FFLAGS     = -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS)
+FFLAGS     = -march=native -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS) # -O2
 LDLIBS     = $(SDL_LDLIBS)
 LIBGL      = -lGL   # -lopengl32
 LIBGLU     = -lGLU  # -lglu32

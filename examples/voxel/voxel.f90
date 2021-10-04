@@ -90,6 +90,8 @@ program main
         stop
     end if
 
+    rc = sdl_show_cursor(SDL_FALSE)
+
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
                                                    SDL_RENDERER_PRESENTVSYNC))
@@ -169,6 +171,7 @@ program main
     end do
 
     ! Quit gracefully.
+    rc = sdl_show_cursor(SDL_TRUE)
     call sdl_destroy_texture(buffer%texture)
     call sdl_destroy_renderer(renderer)
     call sdl_destroy_window(window)

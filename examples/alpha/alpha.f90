@@ -25,7 +25,7 @@ program main
     type(sdl_event)                 :: event
     integer                         :: color
     integer                         :: rc
-    logical                         :: done = .false.
+    logical                         :: is_done
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -56,17 +56,20 @@ program main
     window_rect = sdl_rect(25, 25, SCREEN_WIDTH, SCREEN_HEIGHT)
     image_rect  = sdl_rect(0, 0, image_optimised%w, image_optimised%h)
 
-    do while (.not. done)
+    is_done = .false.
+
+    do while (.not. is_done)
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
-                    done = .true.
+                    is_done = .true.
             end select
         end if
 
         ! Draw the image and update the window surface.
         rc = sdl_blit_surface(image_optimised, image_rect, window_surface, window_rect)
         rc = sdl_update_window_surface(window)
+        call sdl_delay(60)
     end do
 
     ! Quit gracefully.

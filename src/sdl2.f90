@@ -87,11 +87,11 @@ module sdl2
     interface uint8
         procedure :: uint8_i2
         procedure :: uint8_i4
-    end interface
+    end interface uint8
 
     interface uint32
         procedure :: uint32_i8
-    end interface
+    end interface uint32
 
     ! Function and routine interfaces to SDL 2.0.
     interface

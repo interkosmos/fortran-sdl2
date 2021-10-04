@@ -220,7 +220,7 @@ program main
     call img_quit()
     call sdl_quit()
 contains
-    function load_texture(renderer, file_name, texture) result(rc)
+    function load_texture(renderer, file_name, texture) result (rc)
         !! Loads texture from file.
         type(c_ptr),        intent(in)  :: renderer
         character(len=*),   intent(in)  :: file_name

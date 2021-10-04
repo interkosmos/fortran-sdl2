@@ -3,17 +3,19 @@ A collection of ISO C binding interfaces to
 [Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
 2D and 3D game programming in Fortran. SDL versions tested against:
 
-Library   | Version
-----------|--------
-SDL       | 2.0.12_3
-SDL_image | 2.0.5
-SDL_mixer | 2.0.4_2
-SDL_ttf   | 2.0.15
+Library    | Version
+-----------|---------
+SDL2       | 2.0.12_5
+SDL2_image | 2.0.5
+SDL2_mixer | 2.0.4_2
+SDL2_ttf   | 2.0.15
 
 The interface bindings have been built successfully with GNU Fortran 10 on
 FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 compilers should
 work as well. On Microsoft Windows, you may want to install GNU Fortran through
-[MSYS2](https://www.msys2.org/).
+[MSYS2](https://www.msys2.org/). For bindings to
+[SDL2_gfx](https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/index.html),
+see [fortran-sdl2_gfx](https://github.com/freevryheid/fortran-sdl2_gfx).
 
 ## Build Instructions
 If not present already, install SDL 2.0 with development headers (and
@@ -26,12 +28,14 @@ optionally: [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 ```
 
 Either use GNU/BSD make or [xmake](https://xmake.io/) to build *fortran-sdl2*.
+The [Fortran Package Manager](https://github.com/fortran-lang/fpm) (fpm) will
+produce `libfortran-sdl2.a` only (examples have to be compiled manually).
 
 ### Make
 Run `make sdl2` to compile the static library `libsdl2.a`:
 
 ```
-$ git clone https://github.com/interkosmos/fortran-sdl2
+$ git clone --depth 1 https://github.com/interkosmos/fortran-sdl2
 $ cd fortran-sdl2/
 $ make sdl2
 ```
@@ -42,8 +46,8 @@ On Microsoft Windows, you have to set `LIBGL` and `LIBGLU`:
 $ make all LIBGL=-lopengl32 LIBGLU=-lglu32
 ```
 
-You can override the default compiler (`gfortran`) by passing the `FC`
-argument, for example:
+On macOS, replace `-lGL -lGLU` with `-framework OpenGL`. You can override the
+default compiler (`gfortran`) by passing the `FC` argument, for example:
 
 ```
 $ make all FC=/opt/intel/bin/ifort
@@ -94,7 +98,7 @@ program main
     type(sdl_event) :: event
     type(sdl_rect)  :: rect
     integer         :: rc
-    logical         :: is_running = .true.
+    logical         :: is_running
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -122,6 +126,8 @@ program main
     rect = sdl_rect(50, 50, 250, 250)
 
     ! Event loop.
+    is_running = .true.
+
     do while (is_running)
         ! Catch events.
         do while (sdl_poll_event(event) > 0)
@@ -159,7 +165,7 @@ program main
 end program main
 ```
 
-Compile the source code with GNU Fortran:
+To compile the source code with GNU Fortran, run:
 
 ```
 $ gfortran `sdl2-config --cflags` -o example example.f90 libsdl2.a `sdl2-config --libs`

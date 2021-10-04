@@ -129,7 +129,7 @@ program main
     call img_quit()
     call sdl_quit()
 contains
-    function load_texture(id, file_path) result(file_exists)
+    function load_texture(id, file_path) result (file_exists)
         !! Loads texture from file and sets the argument`id` to the OpenGL
         !! texture id.
         integer,          intent(out) :: id

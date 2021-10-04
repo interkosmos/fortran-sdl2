@@ -35,11 +35,9 @@ contains
         call random_seed()
         call random_number(r)
 
-        do concurrent (y = 1:height)
-            do concurrent (x = 1:width)
-                if (r(x, y) <= p) &
-                    world(x, y) = TILE_TREE
-            end do
+        do concurrent (x = 1:width, y = 1:height)
+            if (r(x, y) <= p) &
+                world(x, y) = TILE_TREE
         end do
     end subroutine forest_init
 
@@ -58,38 +56,36 @@ contains
         call random_number(r)
         buffer = TILE_NONE
 
-        do concurrent (y = 1:height)
-            do concurrent (x = 1:width)
-                buffer(x, y) = world(x, y)
-                has_fire = .false.
+        do concurrent (x = 1:width, y = 1:height)
+            buffer(x, y) = world(x, y)
+            has_fire = .false.
 
-                select case (world(x, y))
-                    case (TILE_NONE)
-                        if (r(x, y) <= p) &
-                            buffer(x, y) = TILE_TREE
+            select case (world(x, y))
+                case (TILE_NONE)
+                    if (r(x, y) <= p) &
+                        buffer(x, y) = TILE_TREE
 
-                    case (TILE_TREE)
-                        loop: do j = -1, 1
-                            do i = -1, 1
-                                if (i == 0 .and. j == 0) cycle
+                case (TILE_TREE)
+                    loop: do j = -1, 1
+                        do i = -1, 1
+                            if (i == 0 .and. j == 0) cycle
 
-                                nx = 1 + modulo(x + i - 1, width)
-                                ny = 1 + modulo(y + j - 1, height)
+                            nx = 1 + modulo(x + i - 1, width)
+                            ny = 1 + modulo(y + j - 1, height)
 
-                                if (world(nx, ny) == TILE_FIRE) then
-                                    has_fire = .true.
-                                    exit loop
-                                end if
-                            end do
-                        end do loop
+                            if (world(nx, ny) == TILE_FIRE) then
+                                has_fire = .true.
+                                exit loop
+                            end if
+                        end do
+                    end do loop
 
-                        if (r(x, y) <= f .or. has_fire) &
-                            buffer(x, y) = TILE_FIRE
+                    if (r(x, y) <= f .or. has_fire) &
+                        buffer(x, y) = TILE_FIRE
 
-                    case (TILE_FIRE)
-                        buffer(x, y) = TILE_NONE
-                end select
-            end do
+                case (TILE_FIRE)
+                    buffer(x, y) = TILE_NONE
+            end select
         end do
 
         world = buffer
@@ -174,16 +170,17 @@ program main
     loop: do
         t1 = sdl_get_ticks()
 
-        do while (sdl_poll_event(event) > 0)
+        if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
                     exit loop
 
                 case (SDL_KEYDOWN)
                     keys(0:) => sdl_get_keyboard_state()
-                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
+                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) &
+                        exit loop
             end select
-        end do
+        end if
 
         call forest_next(world, buffer, SCREEN_WIDTH, SCREEN_HEIGHT, 0.001, 0.0000001)
         call render(frame_buffer, world, SCREEN_WIDTH, SCREEN_HEIGHT, palette)
@@ -251,11 +248,9 @@ contains
                               frame_buffer%pixels_ptr, &
                               frame_buffer%pitch)
 
-        do concurrent (y = 1:height)
-            do concurrent (x = 1:width)
-                offset = ((y - 1) * width) + x
-                frame_buffer%pixels(offset) = palette(world(x, y))
-            end do
+        do concurrent (x = 1:width, y = 1:height)
+            offset = ((y - 1) * width) + x
+            frame_buffer%pixels(offset) = palette(world(x, y))
         end do
 
         call sdl_unlock_texture(frame_buffer%texture)
