@@ -114,6 +114,16 @@ module sdl2
         end subroutine sdl_quit
     end interface
 contains
+    pure function copy(a)
+        character, intent(in)  :: a(:)
+        character(len=size(a)) :: copy
+        integer(kind=8)        :: i
+
+        do i = 1, size(a)
+            copy(i:i) = a(i)
+        end do
+    end function copy
+
     subroutine c_f_str_chars(c_str, f_str)
         !! Copies a C string, passed as a char-array reference, to a Fortran
         !! string.
@@ -133,25 +143,17 @@ contains
 
     subroutine c_f_str_ptr(c_str, f_str)
         !! Copies a C string, passed as a C pointer, to a Fortran string.
-        type(c_ptr),      intent(in)    :: c_str
-        character(len=*), intent(out)   :: f_str
-        character(kind=c_char), pointer :: char_ptrs(:)
-        integer                         :: i
+        type(c_ptr),                   intent(in)  :: c_str
+        character(len=:), allocatable, intent(out) :: f_str
+        character(kind=c_char), pointer            :: ptrs(:)
+        integer(kind=8)                            :: sz
 
-        if (c_associated(c_str)) then
-            call c_f_pointer(c_str, char_ptrs, [ huge(0) ])
-
-            i = 1
-
-            do while (char_ptrs(i) /= c_null_char .and. i <= len(f_str))
-                f_str(i:i) = char_ptrs(i)
-                i = i + 1
-            end do
-
-            if (i < len(f_str)) f_str(i:) = ' '
-        else
-            f_str = ' '
-        end if
+        if (.not. c_associated(c_str)) return
+        sz = c_strlen(c_str)
+        if (sz <= 0) return
+        call c_f_pointer(c_str, ptrs, [ sz ])
+        allocate (character(len=sz) :: f_str)
+        f_str = copy(ptrs)
     end subroutine c_f_str_ptr
 
     function sdl_alloc_format(pixel_format)
@@ -272,12 +274,9 @@ contains
         integer, intent(in)           :: index
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_audio_driver
-        integer(kind=8)               :: size
 
         ptr = sdl_get_audio_driver_(index)
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_audio_driver)
         call c_f_str_ptr(ptr, sdl_get_audio_driver)
     end function sdl_get_audio_driver
 
@@ -287,12 +286,9 @@ contains
         !! C char pointer to Fortran character.
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_base_path
-        integer(kind=8)               :: size
 
         ptr = sdl_get_base_path_()
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_base_path)
         call c_f_str_ptr(ptr, sdl_get_base_path)
         call sdl_free(ptr)
     end function sdl_get_base_path
@@ -303,12 +299,9 @@ contains
         !! C char pointer to Fortran character.
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_current_audio_driver
-        integer(kind=8)               :: size
 
         ptr = sdl_get_current_audio_driver_()
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_current_audio_driver)
         call c_f_str_ptr(ptr, sdl_get_current_audio_driver)
     end function sdl_get_current_audio_driver
 
@@ -318,12 +311,9 @@ contains
         !! C char pointer to Fortran character.
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_current_video_driver
-        integer(kind=8)               :: size
 
         ptr = sdl_get_current_video_driver_()
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_current_video_driver)
         call c_f_str_ptr(ptr, sdl_get_current_video_driver)
     end function sdl_get_current_video_driver
 
@@ -333,12 +323,9 @@ contains
         !! C char pointer to Fortran character.
         character(len=:), allocatable :: sdl_get_error
         type(c_ptr)                   :: ptr
-        integer(kind=8)               :: size
 
         ptr = sdl_get_error_()
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_error)
         call c_f_str_ptr(ptr, sdl_get_error)
     end function sdl_get_error
 
@@ -362,12 +349,9 @@ contains
         character(len=*), intent(in)  :: name
         character(len=:), allocatable :: sdl_get_hint
         type(c_ptr)                   :: ptr
-        integer(kind=8)               :: size
 
         ptr = sdl_get_hint_(name // c_null_char)
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_hint)
         call c_f_str_ptr(ptr, sdl_get_hint)
     end function sdl_get_hint
 
@@ -386,12 +370,9 @@ contains
         !! C char pointer to Fortran character.
         character(len=:), allocatable :: sdl_get_platform
         type(c_ptr)                   :: ptr
-        integer(kind=8)               :: size
 
         ptr = sdl_get_platform_()
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_platform)
         call c_f_str_ptr(ptr, sdl_get_platform)
     end function sdl_get_platform
 
@@ -402,12 +383,9 @@ contains
         integer,          intent(in)  :: index
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_video_driver
-        integer(kind=8)               :: size
 
         ptr = sdl_get_video_driver_(index)
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_video_driver)
         call c_f_str_ptr(ptr, sdl_get_video_driver)
     end function sdl_get_video_driver
 
@@ -432,12 +410,9 @@ contains
         type(c_ptr),      intent(in)  :: window
         type(c_ptr)                   :: ptr
         character(len=:), allocatable :: sdl_get_window_title
-        integer(kind=8)               :: size
 
         ptr = sdl_get_window_title_(window)
         if (.not. c_associated(ptr)) return
-        size = c_strlen(ptr)
-        allocate (character(len=size) :: sdl_get_window_title)
         call c_f_str_ptr(ptr, sdl_get_window_title)
     end function sdl_get_window_title
 

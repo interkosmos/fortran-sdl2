@@ -61,7 +61,6 @@ contains
         type(c_ptr), intent(in)         :: window
         integer                         :: dt(8)
         integer                         :: w, h, x, y
-        integer(kind=8)                 :: size
         type(sdl_version)               :: sdl_v
         type(sdl_renderer_info), target :: info
         character(len=:), allocatable   :: str
@@ -72,11 +71,8 @@ contains
         call sdl_get_window_position(window, x, y)
 
         if (sdl_get_render_driver_info(0, c_loc(info)) == 0) then
-            size = c_strlen(info%name)
-            allocate (character(len=size) :: str)
             call c_f_str_ptr(info%name, str)
         else
-            allocate (character(len=3) :: str)
             str = 'N/A'
         end if
 
