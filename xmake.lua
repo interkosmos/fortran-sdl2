@@ -1,5 +1,3 @@
-#!/usr/bin/env xmake
-
 add_rules("mode.debug", "mode.release")
 set_default(false)
 set_languages("fortran")
@@ -286,20 +284,28 @@ target("text")
     add_syslinks("SDL2", "SDL2_ttf")
     set_targetdir("examples/text/")
 
+-- examples/vertex/vertex
+target("vertex")
+    set_kind("binary")
+    add_deps("sdl2")
+    add_files("examples/vertex/vertex.f90")
+    add_syslinks("SDL2")
+    set_targetdir("examples/vertex/")
+
 -- examples/voxel/voxel
 target("voxel")
     set_kind("binary")
-    add_deps("sdl2", "sdl2_ttf")
+    add_deps("sdl2")
     add_files("examples/voxel/voxel.f90")
-    add_syslinks("SDL2", "SDL2_ttf")
+    add_syslinks("SDL2")
     set_targetdir("examples/voxel/")
 
 -- examples/window/window
 target("window")
     set_kind("binary")
-    add_deps("sdl2", "sdl2_ttf")
+    add_deps("sdl2")
     add_files("examples/window/window.f90")
-    add_syslinks("SDL2", "SDL2_ttf")
+    add_syslinks("SDL2")
     set_targetdir("examples/window/")
 
 -- all examples

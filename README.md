@@ -5,12 +5,12 @@ A collection of ISO C binding interfaces to
 
 Library    | Version
 -----------|---------
-SDL2       | 2.0.12_5
+SDL2       | 2.0.18
 SDL2_image | 2.0.5
-SDL2_mixer | 2.0.4_2
+SDL2_mixer | 2.0.4_4
 SDL2_ttf   | 2.0.15
 
-The interface bindings have been built successfully with GNU Fortran 10 on
+The interface bindings have been built successfully with GNU Fortran 11 on
 FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 compilers should
 work as well. On Microsoft Windows, you may want to install GNU Fortran through
 [MSYS2](https://www.msys2.org/). For bindings to
@@ -193,6 +193,7 @@ Some demo applications can be found in `examples/`:
 * [**pixel**](examples/pixel/screenshot.png) copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
 * [**scaling**](examples/scaling/screenshot.png) displays a scaled image (software renderer).
 * [**text**](examples/text/screenshot.png) outputs text with SDL_ttf (hardware renderer).
+* **vertex** shows geometry renderer of SDL 2.0.18.
 * [**voxel**](examples/voxel/screenshot.png) renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 

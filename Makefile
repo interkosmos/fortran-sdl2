@@ -70,6 +70,7 @@ OPERA    = examples/opera/opera
 PIXEL    = examples/pixel/pixel
 SCALING  = examples/scaling/scaling
 TEXT     = examples/text/text
+VERTEX   = examples/vertex/vertex
 VOXEL    = examples/voxel/voxel
 WINDOW   = examples/window/window
 
@@ -77,13 +78,13 @@ WINDOW   = examples/window/window
         sdl2 sdl2_image sdl2_mixer sdl2_ttf \
         glu \
         alpha cyclic draw dvd events fire forest gl gl3d glsphere image info log \
-        msgbox opera pixel powder scaling text voxel window
+        msgbox opera pixel powder scaling text vertex voxel window
 
 all: $(LIBRARY) $(GLU_LIB)
 
 examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
           $(GLSPHERE) $(INFO) $(LOG) $(LOGO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) \
-          $(SCALING) $(TEXT) $(VOXEL) $(WINDOW)
+          $(SCALING) $(TEXT) $(VERTEX) $(VOXEL) $(WINDOW)
 
 # Build targets of examples.
 alpha: $(ALPHA)
@@ -105,6 +106,7 @@ opera: $(OPERA)
 pixel: $(PIXEL)
 scaling: $(SCALING)
 text: $(TEXT)
+vertex: $(VERTEX)
 voxel: $(VOXEL)
 window: $(WINDOW)
 
@@ -200,6 +202,9 @@ $(SCALING): $(SCALING).f90 $(SDL_LIB)
 $(TEXT): $(TEXT).f90 $(SDL_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_ttf
 
+$(VERTEX): $(VERTEX).f90 $(SDL_LIB)
+	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
+
 $(VOXEL): $(VOXEL).f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
@@ -234,5 +239,6 @@ clean:
 	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
 	if [ -e $(SCALING) ]; then rm $(SCALING); fi
 	if [ -e $(TEXT) ]; then rm $(TEXT); fi
+	if [ -e $(VERTEX) ]; then rm $(VERTEX); fi
 	if [ -e $(VOXEL) ]; then rm $(VOXEL); fi
 	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi

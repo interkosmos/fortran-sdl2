@@ -6,17 +6,24 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_rect
-    use, intrinsic :: iso_c_binding, only: c_int
+    use, intrinsic :: iso_c_binding, only: c_float, c_int
     implicit none
+    private
+
+    ! SDL_FPoint
+    type, bind(c), public :: sdl_fpoint
+        real(kind=c_float) :: x
+        real(kind=c_float) :: y
+    end type sdl_fpoint
 
     ! SDL_Point
-    type, bind(c) :: sdl_point
+    type, bind(c), public :: sdl_point
         integer(kind=c_int) :: x
         integer(kind=c_int) :: y
     end type sdl_point
 
     ! SDL_Rect
-    type, bind(c) :: sdl_rect
+    type, bind(c), public :: sdl_rect
         integer(kind=c_int) :: x
         integer(kind=c_int) :: y
         integer(kind=c_int) :: w

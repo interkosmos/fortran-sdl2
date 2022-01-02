@@ -8,4 +8,4 @@ description = "Fortran 2008 ISO C binding interfaces to SDL 2.0"
 keywords = ["sdl", "sdl2", "opengl", "glu"]
 
 [library]
-source-dir="src"
+source-dir = "src"

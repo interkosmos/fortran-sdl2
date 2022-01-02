@@ -9,6 +9,7 @@ module sdl2_render
     use, intrinsic :: iso_c_binding
     use :: c_util
     use :: sdl2_rect
+    use :: sdl2_pixels
     use :: sdl2_surface
     implicit none
 
@@ -40,6 +41,13 @@ module sdl2_render
         integer(kind=c_int)     :: max_texture_height
     end type sdl_renderer_info
 
+    ! SDL_Vertex
+    type, bind(c), public :: sdl_vertex
+        type(sdl_fpoint) :: position
+        type(sdl_color)  :: color
+        type(sdl_fpoint) :: tex_coord
+    end type sdl_vertex
+
     public :: sdl_create_renderer
     public :: sdl_create_texture
     public :: sdl_create_texture_from_surface
@@ -63,6 +71,7 @@ module sdl2_render
     public :: sdl_render_draw_rects
     public :: sdl_render_fill_rect
     public :: sdl_render_fill_rects
+    public :: sdl_render_geometry
     public :: sdl_render_get_scale
     public :: sdl_render_get_viewport
     public :: sdl_render_present
@@ -264,6 +273,19 @@ module sdl2_render
             integer(kind=c_int), intent(in), value :: count
             integer(kind=c_int)                    :: sdl_render_fill_rects
         end function sdl_render_fill_rects
+
+        ! int SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices)
+        function sdl_render_geometry(renderer, texture, vertices, num_vertices, indices, num_indices) &
+                bind(c, name='SDL_RenderGeometry')
+            import :: c_int, c_ptr, sdl_vertex
+            type(c_ptr),         intent(in), value :: renderer
+            type(c_ptr),         intent(in), value :: texture
+            type(sdl_vertex),    intent(in)        :: vertices(*)
+            integer(kind=c_int), intent(in), value :: num_vertices
+            type(c_ptr),         intent(in), value :: indices
+            integer(kind=c_int), intent(in), value :: num_indices
+            integer(kind=c_int)                    :: sdl_render_geometry
+        end function sdl_render_geometry
 
         ! int SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect, Uint32 format, void *pixels, int pitch)
         function sdl_render_read_pixels(renderer, rect, format, pixels, pitch) bind(c, name='SDL_RenderReadPixels')
