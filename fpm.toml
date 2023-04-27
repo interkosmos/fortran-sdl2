@@ -9,3 +9,6 @@ keywords = ["sdl", "sdl2", "opengl", "glu"]
 
 [library]
 source-dir = "src"
+
+[install]
+library = true
