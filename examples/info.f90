@@ -58,12 +58,13 @@ contains
 
     subroutine print_debug(window)
         !! Prints debug messages to stdout.
-        type(c_ptr), intent(in)         :: window
+        type(c_ptr), intent(in) :: window
+
+        character(len=:), allocatable   :: str
         integer                         :: dt(8)
         integer                         :: w, h, x, y
         type(sdl_version)               :: sdl_v
         type(sdl_renderer_info), target :: info
-        character(len=:), allocatable   :: str
 
         call date_and_time(values=dt)
         call sdl_get_version(sdl_v)

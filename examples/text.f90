@@ -16,7 +16,7 @@ program main
     integer,          parameter :: SCREEN_WIDTH  = 320
     integer,          parameter :: SCREEN_HEIGHT = 240
     character(len=*), parameter :: STRING        = 'Hello, World!'
-    character(len=*), parameter :: FONT_PATH     = 'font.ttf'
+    character(len=*), parameter :: FONT_PATH     = 'share/font.ttf'
 
     type(c_ptr)                :: window
     type(c_ptr)                :: renderer

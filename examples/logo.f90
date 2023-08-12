@@ -30,8 +30,9 @@ contains
         integer,         intent(in)    :: height
         integer,         intent(in)    :: ncolors
         real,            intent(in)    :: max_depth
-        integer                        :: i
-        real                           :: r(3)
+
+        integer :: i
+        real    :: r(3)
 
         do i = 1, size(logos)
             call random_number(r)
@@ -51,8 +52,9 @@ contains
         integer,         intent(in)    :: height
         real,            intent(in)    :: max_depth
         real,            intent(in)    :: dz
-        integer                        :: i
-        real                           :: r(3)
+
+        integer :: i
+        real    :: r(3)
 
         do i = 1, size(logos)
             logos(i)%z = logos(i)%z - dz
@@ -73,8 +75,9 @@ contains
         integer,          intent(in)    :: width
         integer,          intent(in)    :: height
         type(point_type), intent(inout) :: points(:)
-        integer                         :: i
-        real                            :: k
+
+        integer :: i
+        real    :: k
 
         do i = 1, size(logos)
             k = 128.0 / logos(i)%z
@@ -86,16 +89,16 @@ end module logo
 
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_image
     use :: logo
     implicit none
 
     type :: color_type
-        integer(kind=2) :: r
-        integer(kind=2) :: g
-        integer(kind=2) :: b
+        integer :: r
+        integer :: g
+        integer :: b
     end type color_type
 
     type :: texture_type
@@ -107,20 +110,20 @@ program main
         type(sdl_rect)          :: rect
     end type texture_type
 
-    character(len=*), parameter :: FILE_NAME     = 'logo.png'
+    character(len=*), parameter :: FILE_NAME     = 'share/logo.png'
     integer,          parameter :: NLOGOS        = 20
     integer,          parameter :: SCREEN_WIDTH  = 1024
     integer,          parameter :: SCREEN_HEIGHT = 768
     real,             parameter :: DZ            = 2.0
     real,             parameter :: MAX_DEPTH     = 800.0
 
-    integer                  :: rc
-    type(c_ptr)              :: renderer
-    type(c_ptr)              :: window
-    type(color_type)         :: colors(7)
-    type(sdl_event)          :: event
-    type(texture_type)       :: texture
-    integer(kind=1), pointer :: keys(:)
+    integer                   :: rc
+    type(c_ptr)               :: renderer
+    type(c_ptr)               :: window
+    type(color_type)          :: colors(7)
+    type(sdl_event)           :: event
+    type(texture_type)        :: texture
+    integer(kind=i1), pointer :: keys(:)
 
     type(logo_type)  :: logos(NLOGOS)
     type(point_type) :: points(NLOGOS)
@@ -151,8 +154,7 @@ program main
     ! Create the SDL window.
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
                                0, 0, &
-                               SCREEN_WIDTH, SCREEN_HEIGHT, &
-                               ior(SDL_WINDOW_BORDERLESS, SDL_WINDOW_SHOWN))
+                               SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
         write (stderr, '(2a)') 'SDL Error: ', sdl_get_error()
@@ -262,10 +264,11 @@ contains
         type(texture_type), intent(inout) :: texture
         type(color_type),   intent(inout) :: colors(:)
         real,               intent(in)    :: max_depth
-        integer                           :: i, rc
-        integer                           :: w, h
-        real                              :: s
-        type(sdl_rect)                    :: rect
+
+        integer        :: i, rc
+        integer        :: w, h
+        real           :: s
+        type(sdl_rect) :: rect
 
         do i = 1, size(logos)
             s = 1.0 - (logos(i)%z / max_depth)

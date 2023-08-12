@@ -1,8 +1,6 @@
-! scaling.f90
+! alpha.f90
 !
-! Loads an image and scales it before drawing it on the window.
-! Example is taken from:
-! http://lazyfoo.net/tutorials/SDL/05_optimized_surface_loading_and_soft_stretching/index.php
+! Makes one color of an image transparent.
 !
 ! Author:  Philipp Engel
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
@@ -14,8 +12,8 @@ program main
     implicit none
 
     integer,          parameter :: SCREEN_WIDTH  = 640
-    integer,          parameter :: SCREEN_HEIGHT = 480
-    character(len=*), parameter :: FILE_NAME     = 'wall.bmp'
+    integer,          parameter :: SCREEN_HEIGHT = 240
+    character(len=*), parameter :: FILE_NAME     = 'share/fortran.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface
@@ -25,8 +23,9 @@ program main
     type(sdl_rect)                  :: window_rect
     type(sdl_rect)                  :: image_rect
     type(sdl_event)                 :: event
+    integer                         :: color
     integer                         :: rc
-    logical                         :: done = .false.
+    logical                         :: is_done
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -47,24 +46,30 @@ program main
         stop
     end if
 
-    window_surface  => sdl_get_window_surface(window)
-    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)
-    pixel_format    => sdl_get_pixel_format(window_surface)
-    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0)
+    window_surface  => sdl_get_window_surface(window)                     ! Get surface of window.
+    image_loaded    => sdl_load_bmp(FILE_NAME // c_null_char)             ! Load BMP file.
+    pixel_format    => sdl_get_pixel_format(window_surface)               ! Get pixel format of window.
+    image_optimised => sdl_convert_surface(image_loaded, pixel_format, 0) ! Optimise pixel format of image.
+    color           = sdl_map_rgb(pixel_format, 255, 0, 255)              ! Get translucent color (#FF00FF).
+    rc              = sdl_set_color_key(image_optimised, 1, color)        ! Set translucent color.
 
+    window_rect = sdl_rect(25, 25, SCREEN_WIDTH, SCREEN_HEIGHT)
     image_rect  = sdl_rect(0, 0, image_optimised%w, image_optimised%h)
-    window_rect = sdl_rect(0, 0, 256, 256)
 
-    do while (.not. done)
+    is_done = .false.
+
+    do while (.not. is_done)
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
                 case (SDL_QUITEVENT)
-                    done = .true.
+                    is_done = .true.
             end select
         end if
 
-        rc = sdl_blit_scaled(image_optimised, image_rect, window_surface, window_rect)
+        ! Draw the image and update the window surface.
+        rc = sdl_blit_surface(image_optimised, image_rect, window_surface, window_rect)
         rc = sdl_update_window_surface(window)
+        call sdl_delay(60)
     end do
 
     ! Quit gracefully.

@@ -8,11 +8,11 @@
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
 
-    character(len=*), parameter :: IMAGE_FILE    = 'lena.bmp'
+    character(len=*), parameter :: IMAGE_FILE    = 'share/lena.bmp'
     integer,          parameter :: SCREEN_WIDTH  = 320
     integer,          parameter :: SCREEN_HEIGHT = 200
 
@@ -39,7 +39,7 @@ program main
     integer(kind=c_int32_t) :: pixel
     integer                 :: rc
     integer                 :: i, x, y
-    integer(kind=2)         :: r, g, b
+    integer(kind=i1)        :: r, g, b
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then

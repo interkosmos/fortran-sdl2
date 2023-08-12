@@ -391,6 +391,7 @@
 | SDL_RenderDrawRects                   |   ✓   |
 | SDL_RenderFillRect                    |   ✓   |
 | SDL_RenderFillRects                   |   ✓   |
+| SDL_RenderGeometry                    |   ✓   |
 | SDL_RenderGetClipRect                 |   –   |
 | SDL_RenderGetD3D9Device               |   –   |
 | SDL_RenderGetLogicalSize              |   –   |

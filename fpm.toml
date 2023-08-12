@@ -1,14 +1,146 @@
 name = "fortran-sdl2"
-version = "0.5.0"
+version = "0.6.0"
 license = "ISC"
 author = "Philipp Engel"
 maintainer = "@interkosmos"
 copyright = "Copyright (c) 2021, Philipp Engel"
 description = "Fortran 2008 ISO C binding interfaces to SDL 2.0"
-keywords = ["sdl", "sdl2", "opengl", "glu"]
+keywords = [ "sdl", "sdl2", "opengl", "glu" ]
 
 [library]
 source-dir = "src"
 
 [install]
 library = true
+
+[[executable]]
+name = "alpha"
+source-dir = "examples"
+main = "alpha.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "cyclic"
+source-dir = "examples"
+main = "cyclic.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "draw"
+source-dir = "examples"
+main = "draw.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "dvd"
+source-dir = "examples"
+main = "dvd.f90"
+link = [ "SDL2", "SDL2_image" ]
+
+[[executable]]
+name = "events"
+source-dir = "examples"
+main = "events.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "fire"
+source-dir = "examples"
+main = "fire.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "forest"
+source-dir = "examples"
+main = "forest.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "gl"
+source-dir = "examples"
+main = "gl.f90"
+link = [ "SDL2", "GL" ]
+
+[[executable]]
+name = "gl3d"
+source-dir = "examples"
+main = "gl3d.f90"
+link = [ "SDL2", "SDL2_image", "GL", "GLU" ]
+
+[[executable]]
+name = "glsphere"
+source-dir = "examples"
+main = "glsphere.f90"
+link = [ "SDL2", "GL", "GLU" ]
+
+[[executable]]
+name = "image"
+source-dir = "examples"
+main = "image.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "info"
+source-dir = "examples"
+main = "info.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "log"
+source-dir = "examples"
+main = "log.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "logo"
+source-dir = "examples"
+main = "logo.f90"
+link = [ "SDL2", "SDL2_image" ]
+
+[[executable]]
+name = "msgbox"
+source-dir = "examples"
+main = "msgbox.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "opera"
+source-dir = "examples"
+main = "opera.f90"
+link = [ "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf" ]
+
+[[executable]]
+name = "pixel"
+source-dir = "examples"
+main = "pixel.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "scaling"
+source-dir = "examples"
+main = "scaling.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "text"
+source-dir = "examples"
+main = "text.f90"
+link = [ "SDL2", "SDL2_ttf" ]
+
+[[executable]]
+name = "vertex"
+source-dir = "examples"
+main = "vertex.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "voxel"
+source-dir = "examples"
+main = "voxel.f90"
+link = [ "SDL2" ]
+
+[[executable]]
+name = "window"
+source-dir = "examples"
+main = "window.f90"
+link = [ "SDL2" ]

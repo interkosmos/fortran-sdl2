@@ -8,7 +8,7 @@
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding, only: c_int8_t, c_int32_t, c_null_char, c_ptr
-    use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
 
@@ -53,8 +53,8 @@ program main
         real :: distance = 900. !! Draw distance.
     end type camera_type
 
-    character(len=*), parameter :: COLOR_MAP_FILE  = 'top.bmp'
-    character(len=*), parameter :: HEIGHT_MAP_FILE = 'dem.bmp'
+    character(len=*), parameter :: COLOR_MAP_FILE  = 'share/top.bmp'
+    character(len=*), parameter :: HEIGHT_MAP_FILE = 'share/dem.bmp'
     integer,          parameter :: MAP_WIDTH       = 1024
     integer,          parameter :: MAP_HEIGHT      = 1024
     integer,          parameter :: SCREEN_WIDTH    = 800
@@ -62,7 +62,7 @@ program main
 
     character(len=30)             :: window_title
     integer                       :: fps, t1, rc
-    integer(kind=1), pointer      :: keys(:)
+    integer(kind=i1), pointer     :: keys(:)
     logical                       :: is_running
     type(buffer_type)             :: buffer
     type(c_ptr)                   :: renderer
@@ -206,10 +206,10 @@ contains
 
     logical function is_key(keys, key)
         !! Returns whether a given key has been pressed.
-        integer(kind=1), pointer, intent(in) :: keys(:) !! Keyboard map.
-        integer,                  intent(in) :: key     !! Key to check.
+        integer(kind=i1), pointer, intent(in) :: keys(:) !! Keyboard map.
+        integer,                   intent(in) :: key     !! Key to check.
 
-        if (keys(int(key, kind=1)) == 1) then
+        if (keys(int(key, kind=i1)) == 1) then
             is_key = .true.
         else
             is_key = .false.
@@ -223,10 +223,11 @@ contains
         integer,                intent(in)    :: height
         type(sdl_pixel_format), intent(in)    :: pixel_format
         type(voxel_type),       intent(inout) :: voxels(width, height)
-        integer(kind=2)                       :: r, g, b
-        integer                               :: pixel
-        integer                               :: i, x, y
-        type(map_type)                        :: color_map, height_map
+
+        integer(kind=i1) :: r, g, b
+        integer          :: pixel
+        integer          :: i, x, y
+        type(map_type)   :: color_map, height_map
 
         read_voxels = 1
 
@@ -338,16 +339,17 @@ contains
         integer,           intent(in)    :: scale_height
         integer,           intent(in)    :: screen_width
         integer,           intent(in)    :: screen_height
-        integer                          :: line_y
-        integer                          :: offset
-        integer                          :: rc
-        integer                          :: nx, ny, x
-        real                             :: cos_phi, sin_phi
-        real                             :: dx, dy, dz
-        real                             :: height_on_screen
-        real                             :: y_buffer(0:screen_width - 1)
-        real                             :: z
-        type(point_type)                 :: left, right
+
+        integer          :: line_y
+        integer          :: offset
+        integer          :: rc
+        integer          :: nx, ny, x
+        real             :: cos_phi, sin_phi
+        real             :: dx, dy, dz
+        real             :: height_on_screen
+        real             :: y_buffer(0:screen_width - 1)
+        real             :: z
+        type(point_type) :: left, right
 
         sin_phi = sin(camera%angle)
         cos_phi = cos(camera%angle)

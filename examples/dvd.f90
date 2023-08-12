@@ -14,12 +14,12 @@ program main
     implicit none
 
     type :: color_type
-        integer(kind=2) :: r
-        integer(kind=2) :: g
-        integer(kind=2) :: b
+        integer :: r
+        integer :: g
+        integer :: b
     end type color_type
 
-    character(len=*), parameter :: FILE_NAME = 'logo.png'
+    character(len=*), parameter :: FILE_NAME = 'share/dvd.png'
 
     type(c_ptr)              :: window
     type(c_ptr)              :: renderer

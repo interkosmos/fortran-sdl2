@@ -7,6 +7,7 @@
 ! Licence: ISC
 module sdl2
     use, intrinsic :: iso_c_binding
+    use, intrinsic :: iso_fortran_env, only: i2 => int16, i4 => int32, i8 => int64
     use :: c_util
     use :: sdl2_audio
     use :: sdl2_blendmode
@@ -85,12 +86,12 @@ module sdl2
 
     ! Generic interfaces.
     interface uint8
-        procedure :: uint8_i2
-        procedure :: uint8_i4
+        module procedure :: uint8_i2
+        module procedure :: uint8_i4
     end interface uint8
 
     interface uint32
-        procedure :: uint32_i8
+        module procedure :: uint32_i8
     end interface uint32
 
     ! Function and routine interfaces to SDL 2.0.
@@ -114,22 +115,12 @@ module sdl2
         end subroutine sdl_quit
     end interface
 contains
-    pure function copy(a)
-        character, intent(in)  :: a(:)
-        character(len=size(a)) :: copy
-        integer(kind=8)        :: i
-
-        do i = 1, size(a)
-            copy(i:i) = a(i)
-        end do
-    end function copy
-
     subroutine c_f_str_chars(c_str, f_str)
         !! Copies a C string, passed as a char-array reference, to a Fortran
         !! string.
-        character(len=1, kind=c_char), intent(in)  :: c_str(*)
-        character(len=*),              intent(out) :: f_str
-        integer                                    :: i
+        character(kind=c_char), intent(in)  :: c_str(*)
+        character(len=*),       intent(out) :: f_str
+        integer                             :: i
 
         i = 1
 
@@ -145,15 +136,25 @@ contains
         !! Copies a C string, passed as a C pointer, to a Fortran string.
         type(c_ptr),                   intent(in)  :: c_str
         character(len=:), allocatable, intent(out) :: f_str
-        character(kind=c_char), pointer            :: ptrs(:)
-        integer(kind=8)                            :: sz
 
-        if (.not. c_associated(c_str)) return
-        sz = c_strlen(c_str)
-        if (sz <= 0) return
-        call c_f_pointer(c_str, ptrs, [ sz ])
-        allocate (character(len=sz) :: f_str)
-        f_str = copy(ptrs)
+        character(kind=c_char), pointer :: ptrs(:)
+        integer(kind=c_size_t)          :: i, sz
+
+        copy_block: block
+            if (.not. c_associated(c_str)) exit copy_block
+            sz = c_strlen(c_str)
+            if (sz < 0) exit copy_block
+            call c_f_pointer(c_str, ptrs, [ sz ])
+            allocate (character(len=sz) :: f_str)
+
+            do i = 1, sz
+                f_str(i:i) = ptrs(i)
+            end do
+
+            return
+        end block copy_block
+
+        if (.not. allocated(f_str)) f_str = ''
     end subroutine c_f_str_ptr
 
     function sdl_alloc_format(pixel_format)
@@ -217,10 +218,10 @@ contains
         integer,          intent(in) :: width
         integer,          intent(in) :: height
         integer,          intent(in) :: depth
-        integer(kind=8),  intent(in) :: r_mask
-        integer(kind=8),  intent(in) :: g_mask
-        integer(kind=8),  intent(in) :: b_mask
-        integer(kind=8),  intent(in) :: a_mask
+        integer(kind=i8), intent(in) :: r_mask
+        integer(kind=i8), intent(in) :: g_mask
+        integer(kind=i8), intent(in) :: b_mask
+        integer(kind=i8), intent(in) :: a_mask
         type(sdl_surface), pointer   :: sdl_create_rgb_surface
         type(c_ptr)                  :: ptr
 
@@ -246,10 +247,10 @@ contains
         integer,                  intent(in) :: height
         integer,                  intent(in) :: depth
         integer,                  intent(in) :: pitch
-        integer(kind=8),          intent(in) :: r_mask
-        integer(kind=8),          intent(in) :: g_mask
-        integer(kind=8),          intent(in) :: b_mask
-        integer(kind=8),          intent(in) :: a_mask
+        integer(kind=i8),         intent(in) :: r_mask
+        integer(kind=i8),         intent(in) :: g_mask
+        integer(kind=i8),         intent(in) :: b_mask
+        integer(kind=i8),         intent(in) :: a_mask
         type(sdl_surface), pointer           :: sdl_create_rgb_surface_from
         type(c_ptr)                          :: ptr
 
@@ -503,7 +504,7 @@ contains
         integer(kind=2), intent(in) :: i
         integer(kind=c_int8_t)      :: uint8_i2
 
-        uint8_i2 = transfer([i, 1_2], 1_c_int8_t)
+        uint8_i2 = transfer([i, 1_i2], 1_c_int8_t)
     end function uint8_i2
 
     pure function uint8_i4(i)
@@ -512,16 +513,16 @@ contains
         integer(kind=4), intent(in) :: i
         integer(kind=c_int8_t)      :: uint8_i4
 
-        uint8_i4 = transfer([i, 1_4], 1_c_int8_t)
+        uint8_i4 = transfer([i, 1_i4], 1_c_int8_t)
     end function uint8_i4
 
     pure function uint32_i8(i)
         !! Utility function that converts Fortran signed integer
         !! (8 bytes) to Uint32.
-        integer(kind=8), intent(in) :: i
-        integer(kind=c_int32_t)     :: uint32_i8
+        integer(kind=i8), intent(in) :: i
+        integer(kind=c_int32_t)      :: uint32_i8
 
-        uint32_i8 = transfer([i, 1_8], 1_c_int32_t)
+        uint32_i8 = transfer([i, 1_i8], 1_c_int32_t)
     end function uint32_i8
 
     subroutine sdl_log(str)

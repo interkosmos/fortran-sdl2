@@ -7,24 +7,26 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module forest
+    use, intrinsic :: iso_fortran_env, only: i1 => int8
     implicit none
 
-    integer(kind=1), parameter, public :: TILE_NONE = 1
-    integer(kind=1), parameter, public :: TILE_TREE = 2
-    integer(kind=1), parameter, public :: TILE_FIRE = 3
+    integer(kind=i1), parameter, public :: TILE_NONE = 1
+    integer(kind=i1), parameter, public :: TILE_TREE = 2
+    integer(kind=i1), parameter, public :: TILE_FIRE = 3
 
     public :: forest_init
     public :: forest_next
 contains
     subroutine forest_init(world, buffer, width, height, p)
         !! Initialises world and buffer arrays.
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        real,                         intent(in)    :: p
-        integer                                     :: x, y
-        real                                        :: r(width, height)
+        integer(kind=i1), allocatable, intent(inout) :: world(:, :)
+        integer(kind=i1), allocatable, intent(inout) :: buffer(:, :)
+        integer,                       intent(in)    :: width
+        integer,                       intent(in)    :: height
+        real,                          intent(in)    :: p
+
+        integer :: x, y
+        real    :: r(width, height)
 
         allocate (world(width, height))
         allocate (buffer(width, height))
@@ -43,15 +45,16 @@ contains
 
     subroutine forest_next(world, buffer, width, height, p, f)
         !! Next iteration of the cellular automaton.
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer(kind=1), allocatable, intent(inout) :: buffer(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        real,                         intent(in)    :: p
-        real,                         intent(in)    :: f
-        integer                                     :: i, j, nx, ny, x, y
-        logical                                     :: has_fire
-        real                                        :: r(width, height)
+        integer(kind=i1), allocatable, intent(inout) :: world(:, :)
+        integer(kind=i1), allocatable, intent(inout) :: buffer(:, :)
+        integer,                       intent(in)    :: width
+        integer,                       intent(in)    :: height
+        real,                          intent(in)    :: p
+        real,                          intent(in)    :: f
+
+        integer :: i, j, nx, ny, x, y
+        logical :: has_fire
+        real    :: r(width, height)
 
         call random_number(r)
         buffer = TILE_NONE
@@ -94,7 +97,7 @@ end module forest
 
 program main
     use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_null_ptr, c_ptr
-    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: forest
     implicit none
@@ -113,16 +116,16 @@ program main
         type(sdl_rect)                   :: rect
     end type frame_buffer_type
 
-    type(c_ptr)                  :: cursor
-    type(c_ptr)                  :: window
-    type(c_ptr)                  :: renderer
-    type(frame_buffer_type)      :: frame_buffer
-    type(sdl_event)              :: event
-    integer(kind=1), pointer     :: keys(:)
-    integer(kind=1), allocatable :: world(:, :)
-    integer(kind=1), allocatable :: buffer(:, :)
-    integer(kind=c_int32_t)      :: palette(3)
-    integer                      :: dt, rc, t1
+    type(c_ptr)                   :: cursor
+    type(c_ptr)                   :: window
+    type(c_ptr)                   :: renderer
+    type(frame_buffer_type)       :: frame_buffer
+    type(sdl_event)               :: event
+    integer(kind=i1), pointer     :: keys(:)
+    integer(kind=i1), allocatable :: world(:, :)
+    integer(kind=i1), allocatable :: buffer(:, :)
+    integer(kind=c_int32_t)       :: palette(3)
+    integer                       :: dt, rc, t1
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -177,7 +180,7 @@ program main
 
                 case (SDL_KEYDOWN)
                     keys(0:) => sdl_get_keyboard_state()
-                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) &
+                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=i1)) == 1) &
                         exit loop
             end select
         end if
@@ -235,13 +238,14 @@ contains
 
     subroutine render(frame_buffer, world, width, height, palette)
         !! Renders world to frame buffer texture.
-        type(frame_buffer_type),      intent(inout) :: frame_buffer
-        integer(kind=1), allocatable, intent(inout) :: world(:, :)
-        integer,                      intent(in)    :: width
-        integer,                      intent(in)    :: height
-        integer(kind=c_int32_t),      intent(inout) :: palette(*)
-        integer                                     :: offset, rc
-        integer                                     :: x, y
+        type(frame_buffer_type),       intent(inout) :: frame_buffer
+        integer(kind=i1), allocatable, intent(inout) :: world(:, :)
+        integer,                       intent(in)    :: width
+        integer,                       intent(in)    :: height
+        integer(kind=c_int32_t),       intent(inout) :: palette(*)
+
+        integer :: offset, rc
+        integer :: x, y
 
         rc = sdl_lock_texture(frame_buffer%texture, &
                               frame_buffer%rect, &

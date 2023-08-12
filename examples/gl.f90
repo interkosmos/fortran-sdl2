@@ -7,7 +7,8 @@
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i8 => int64, r8 => real64, &
+                                             stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
 
@@ -27,7 +28,7 @@ program main
 
     ! Enable multisampling for anti-aliasing.
     rc = sdl_gl_set_attribute(SDL_GL_MULTISAMPLEBUFFERS, 1)
-    rc = sdl_gl_set_attribute(SDL_GL_MULTISAMPLESAMPLES, 8)
+    rc = sdl_gl_set_attribute(SDL_GL_MULTISAMPLESAMPLES, 2)
 
     ! Create the SDL window.
     window = sdl_create_window('Fortran SDL 2.0' // c_null_char, &
@@ -67,12 +68,12 @@ contains
     subroutine gl_init(screen_width, screen_height)
         ! Initialises OpenGL.
         integer, intent(in) :: screen_width, screen_height
-        real(kind=8)        :: aspect
+        real(kind=r8)       :: aspect
 
         call glmatrixmode(GL_PROJECTION)
         ! Set aspect ratio of 2D orthographic projection.
-        aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
-        call glortho(-aspect, aspect, -1.0_8, 1.0_8, -1.0_8, 1.0_8)
+        aspect = real(screen_width, kind=r8) / real(screen_height, kind=r8)
+        call glortho(-aspect, aspect, -1.0_r8, 1.0_r8, -1.0_r8, 1.0_r8)
 
         call glmatrixmode(GL_MODELVIEW)
         call glenable(GL_DEPTH_TEST)

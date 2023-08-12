@@ -16,9 +16,9 @@ program main
 
     integer,          parameter :: SCREEN_WIDTH  = 320
     integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME     = 'italy.bmp'
-    character(len=*), parameter :: OGG_PATH      = 'opera.ogg'
-    character(len=*), parameter :: TTF_PATH      = 'font.ttf'
+    character(len=*), parameter :: FILE_NAME     = 'share/italy.bmp'
+    character(len=*), parameter :: OGG_PATH      = 'share/opera.ogg'
+    character(len=*), parameter :: TTF_PATH      = 'share/font.ttf'
     character(len=*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
 
     type(sdl_color)                 :: color

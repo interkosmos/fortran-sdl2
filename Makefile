@@ -6,8 +6,8 @@ SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDLIBS = `sdl2-config --libs`
 FFLAGS     = -march=native -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS) # -O2
 LDLIBS     = $(SDL_LDLIBS)
-LIBGL      = -lGL   # -lopengl32
-LIBGLU     = -lGLU  # -lglu32
+LIBGL      = -lGL  # -lopengl32
+LIBGLU     = -lGLU # -lglu32
 
 SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_stdinc.f90 \
@@ -51,64 +51,13 @@ TTF_LIB = libsdl2_ttf.a
 GLU_LIB = libglu.a
 LIBRARY = libfortran-sdl2.a
 
-ALPHA    = examples/alpha/alpha
-CYCLIC   = examples/cyclic/cyclic
-DRAW     = examples/draw/draw
-DVD      = examples/dvd/dvd
-EVENTS   = examples/events/events
-FIRE     = examples/fire/fire
-FOREST   = examples/forest/forest
-GL       = examples/gl/gl
-GL3D     = examples/gl3d/gl3d
-GLSPHERE = examples/glsphere/glsphere
-IMAGE    = examples/image/image
-INFO     = examples/info/info
-LOG      = examples/log/log
-LOGO     = examples/logo/logo
-MSGBOX   = examples/msgbox/msgbox
-OPERA    = examples/opera/opera
-PIXEL    = examples/pixel/pixel
-SCALING  = examples/scaling/scaling
-TEXT     = examples/text/text
-VERTEX   = examples/vertex/vertex
-VOXEL    = examples/voxel/voxel
-WINDOW   = examples/window/window
-
 .PHONY: all clean doc examples \
-        sdl2 sdl2_image sdl2_mixer sdl2_ttf \
-        glu \
-        alpha cyclic draw dvd events fire forest gl gl3d glsphere image info log \
-        msgbox opera pixel powder scaling text vertex voxel window
+        sdl2 sdl2_image sdl2_mixer sdl2_ttf glu
 
 all: $(LIBRARY) $(GLU_LIB)
 
-examples: $(ALPHA) $(CYCLIC) $(DRAW) $(DVD) $(EVENTS) $(FIRE) $(FOREST) $(GL) $(GL3D) \
-          $(GLSPHERE) $(INFO) $(LOG) $(LOGO) $(IMAGE) $(MSGBOX) $(OPERA) $(PIXEL) \
-          $(SCALING) $(TEXT) $(VERTEX) $(VOXEL) $(WINDOW)
-
-# Build targets of examples.
-alpha: $(ALPHA)
-cyclic: $(CYCLIC)
-draw: $(DRAW)
-dvd: $(DVD)
-events: $(EVENTS)
-fire: $(FIRE)
-forest: $(FOREST)
-gl: $(GL)
-gl3d: $(GL3D)
-glsphere: $(GLSPHERE)
-image: $(IMAGE)
-info: $(INFO)
-log: $(LOG)
-logo: $(LOGO)
-msgbox: $(MSGBOX)
-opera: $(OPERA)
-pixel: $(PIXEL)
-scaling: $(SCALING)
-text: $(TEXT)
-vertex: $(VERTEX)
-voxel: $(VOXEL)
-window: $(WINDOW)
+examples: alpha cyclic draw dvd events fire forest gl gl3d glsphere info \
+          log logo image msgbox opera pixel scaling text vertex voxel window
 
 # Build targets of SDL 2.0 interfaces.
 sdl2: $(SDL_LIB)
@@ -145,70 +94,70 @@ $(LIBRARY): $(SDL_LIB) $(IMG_LIB) $(MIX_LIB) $(TTF_LIB) $(GLU_LIB)
 	ar rcs $(LIBRARY) sdl2.o sdl2_image.o sdl2_mixer.o sdl2_ttf.o glu.o
 
 # Examples.
-$(ALPHA): $(ALPHA).f90 $(SDL_LIB)
+alpha: examples/alpha.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(CYCLIC): $(CYCLIC).f90 $(SDL_LIB)
+cyclic: examples/cyclic.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DRAW): $(DRAW).f90 $(SDL_LIB)
+draw: examples/draw.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(DVD): $(DVD).f90 $(SDL_LIB) $(IMG_LIB)
+dvd: examples/dvd.f90 $(SDL_LIB) $(IMG_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
 
-$(EVENTS): $(EVENTS).f90 $(SDL_LIB)
+events: examples/events.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(FIRE): $(FIRE).f90 $(SDL_LIB)
+fire: examples/fire.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(FOREST): $(FOREST).f90 $(SDL_LIB)
+forest: examples/forest.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(GL): $(GL).f90 $(SDL_LIB)
+gl: examples/gl.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL)
 
-$(GL3D): $(GL3D).f90 $(SDL_LIB) $(IMG_LIB) $(GLU_LIB)
+gl3d: examples/gl3d.f90 $(SDL_LIB) $(IMG_LIB) $(GLU_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image $(LIBGL) $(LIBGLU)
 
-$(GLSPHERE): $(GLSPHERE).f90 $(SDL_LIB) $(GLU_LIB)
+glsphere: examples/glsphere.f90 $(SDL_LIB) $(GLU_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) $(LIBGL) $(LIBGLU)
 
-$(IMAGE): $(IMAGE).f90 $(SDL_LIB)
+image: examples/image.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(INFO): $(INFO).f90 $(SDL_LIB)
+info: examples/info.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(LOG): $(LOG).f90 $(SDL_LIB)
+log: examples/log.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(LOGO): $(LOGO).f90 $(SDL_LIB) $(IMG_LIB)
+logo: examples/logo.f90 $(SDL_LIB) $(IMG_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_image
 
-$(MSGBOX): $(MSGBOX).f90 $(SDL_LIB)
+msgbox: examples/msgbox.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(OPERA): $(OPERA).f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
+opera: examples/opera.f90 $(SDL_LIB) $(MIX_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_mixer -lSDL2_ttf
 
-$(PIXEL): $(PIXEL).f90 $(SDL_LIB)
+pixel: examples/pixel.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(SCALING): $(SCALING).f90 $(SDL_LIB)
+scaling: examples/scaling.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(TEXT): $(TEXT).f90 $(SDL_LIB) $(TTF_LIB)
+text: examples/text.f90 $(SDL_LIB) $(TTF_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS) -lSDL2_ttf
 
-$(VERTEX): $(VERTEX).f90 $(SDL_LIB)
+vertex: examples/vertex.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(VOXEL): $(VOXEL).f90 $(SDL_LIB)
+voxel: examples/voxel.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
-$(WINDOW): $(WINDOW).f90 $(SDL_LIB)
+window: examples/window.f90 $(SDL_LIB)
 	$(FC) $(FFLAGS) -o $@ $? $(LDLIBS)
 
 # Make documentation.
@@ -220,25 +169,25 @@ clean:
 	if [ `ls -1 *.mod 2>/dev/null | wc -l` -gt 0 ]; then rm *.mod; fi
 	if [ `ls -1 *.a 2>/dev/null | wc -l` -gt 0 ]; then rm *.a; fi
 	if [ `ls -1 *.o 2>/dev/null | wc -l` -gt 0 ]; then rm *.o; fi
-	if [ -e $(ALPHA) ]; then rm $(ALPHA); fi
-	if [ -e $(CYCLIC) ]; then rm $(CYCLIC); fi
-	if [ -e $(DRAW) ]; then rm $(DRAW); fi
-	if [ -e $(DVD) ]; then rm $(DVD); fi
-	if [ -e $(EVENTS) ]; then rm $(EVENTS); fi
-	if [ -e $(FIRE) ]; then rm $(FIRE); fi
-	if [ -e $(FOREST) ]; then rm $(FOREST); fi
-	if [ -e $(GL) ]; then rm $(GL); fi
-	if [ -e $(GL3D) ]; then rm $(GL3D); fi
-	if [ -e $(GLSPHERE) ]; then rm $(GLSPHERE); fi
-	if [ -e $(IMAGE) ]; then rm $(IMAGE); fi
-	if [ -e $(INFO) ]; then rm $(INFO); fi
-	if [ -e $(LOG) ]; then rm $(LOG); fi
-	if [ -e $(LOGO) ]; then rm $(LOGO); fi
-	if [ -e $(MSGBOX) ]; then rm $(MSGBOX); fi
-	if [ -e $(OPERA) ]; then rm $(OPERA); fi
-	if [ -e $(PIXEL) ]; then rm $(PIXEL); fi
-	if [ -e $(SCALING) ]; then rm $(SCALING); fi
-	if [ -e $(TEXT) ]; then rm $(TEXT); fi
-	if [ -e $(VERTEX) ]; then rm $(VERTEX); fi
-	if [ -e $(VOXEL) ]; then rm $(VOXEL); fi
-	if [ -e $(WINDOW) ]; then rm $(WINDOW); fi
+	if [ -e alpha ]; then rm alpha; fi
+	if [ -e cyclic ]; then rm cyclic; fi
+	if [ -e draw ]; then rm draw; fi
+	if [ -e dvd ]; then rm dvd; fi
+	if [ -e events ]; then rm events; fi
+	if [ -e fire ]; then rm fire; fi
+	if [ -e forest ]; then rm forest; fi
+	if [ -e gl ]; then rm gl; fi
+	if [ -e gl3d ]; then rm gl3d; fi
+	if [ -e glsphere ]; then rm glsphere; fi
+	if [ -e image ]; then rm image; fi
+	if [ -e info ]; then rm info; fi
+	if [ -e log ]; then rm log; fi
+	if [ -e logo ]; then rm logo; fi
+	if [ -e msgbox ]; then rm msgbox; fi
+	if [ -e opera ]; then rm opera; fi
+	if [ -e pixel ]; then rm pixel; fi
+	if [ -e scaling ]; then rm scaling; fi
+	if [ -e text ]; then rm text; fi
+	if [ -e vertex ]; then rm vertex; fi
+	if [ -e voxel ]; then rm voxel; fi
+	if [ -e window ]; then rm window; fi

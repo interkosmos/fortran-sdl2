@@ -117,198 +117,177 @@ target("fortran-sdl2")
     add_files("src/sdl2_ttf.f90")
     add_files("src/glu.f90")
 
--- examples/alpha/alpha
+-- examples
 target("alpha")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/alpha/alpha.f90")
+    add_files("examples/alpha.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/alpha/")
+    set_targetdir(".")
 
--- examples/cyclic/cyclic
 target("cyclic")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/cyclic/cyclic.f90")
+    add_files("examples/cyclic.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/cyclic/")
+    set_targetdir(".")
 
--- examples/draw/draw
 target("draw")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/draw/draw.f90")
+    add_files("examples/draw.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/draw/")
+    set_targetdir(".")
 
--- examples/dvd/dvd
 target("dvd")
     set_kind("binary")
     add_deps("sdl2", "sdl2_image")
-    add_files("examples/dvd/dvd.f90")
+    add_files("examples/dvd.f90")
     add_syslinks("SDL2", "SDL2_image")
-    set_targetdir("examples/dvd/")
+    set_targetdir(".")
 
--- examples/events/events
 target("events")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/events/events.f90")
+    add_files("examples/events.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/events/")
+    set_targetdir(".")
 
--- examples/fire/fire
 target("fire")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/fire/fire.f90")
+    add_files("examples/fire.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/fire/")
+    set_targetdir(".")
 
--- examples/forest/forest
 target("forest")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/forest/forest.f90")
+    add_files("examples/forest.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/forest/")
+    set_targetdir(".")
 
--- examples/gl/gl
 target("gl")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/gl/gl.f90")
+    add_files("examples/gl.f90")
     add_syslinks("SDL2")
     if is_os("windows") then
         add_syslinks("opengl32")
     else
         add_syslinks("GL")
     end
-    set_targetdir("examples/gl/")
+    set_targetdir(".")
 
--- examples/gl3d/gl3d
 target("gl3d")
     set_kind("binary")
     add_deps("sdl2", "sdl2_image", "glu")
-    add_files("examples/gl3d/gl3d.f90")
+    add_files("examples/gl3d.f90")
     add_syslinks("SDL2", "SDL2_image")
     if is_os("windows") then
         add_syslinks("opengl32", "glu32")
     else
         add_syslinks("GL", "GLU")
     end
-    set_targetdir("examples/gl3d/")
+    set_targetdir(".")
 
--- examples/glsphere
 target("glsphere")
     set_kind("binary")
     add_deps("sdl2", "glu")
-    add_files("examples/glsphere/glsphere.f90")
+    add_files("examples/glsphere.f90")
     add_syslinks("SDL2")
     if is_os("windows") then
         add_syslinks("opengl32", "glu32")
     else
         add_syslinks("GL", "GLU")
     end
-    set_targetdir("examples/glsphere/")
+    set_targetdir(".")
 
--- examples/image/image
 target("image")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/image/image.f90")
+    add_files("examples/image.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/image/")
+    set_targetdir(".")
 
--- examples/info/info
 target("info")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/info/info.f90")
+    add_files("examples/info.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/info/")
+    set_targetdir(".")
 
--- examples/log/log
 target("log")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/log/log.f90")
+    add_files("examples/log.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/log/")
+    set_targetdir(".")
 
--- examples/logo/logo
 target("logo")
     set_kind("binary")
     add_deps("sdl2", "sdl2_image")
-    add_files("examples/logo/logo.f90")
+    add_files("examples/logo.f90")
     add_syslinks("SDL2", "SDL2_image")
-    set_targetdir("examples/logo/")
+    set_targetdir(".")
 
--- examples/msgbox/msgbox
 target("msgbox")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/msgbox/msgbox.f90")
+    add_files("examples/msgbox.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/msgbox/")
+    set_targetdir(".")
 
--- examples/opera/opera
 target("opera")
     set_kind("binary")
     add_deps("sdl2", "sdl2_image", "sdl2_mixer", "sdl2_ttf")
-    add_files("examples/opera/opera.f90")
+    add_files("examples/opera.f90")
     add_syslinks("SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf")
-    set_targetdir("examples/opera/")
+    set_targetdir(".")
 
--- examples/pixel/pixel
 target("pixel")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/pixel/pixel.f90")
+    add_files("examples/pixel.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/pixel/")
+    set_targetdir(".")
 
--- examples/scaling/scaling
 target("scaling")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/scaling/scaling.f90")
+    add_files("examples/scaling.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/scaling/")
+    set_targetdir(".")
 
--- examples/text/text
 target("text")
     set_kind("binary")
     add_deps("sdl2", "sdl2_ttf")
-    add_files("examples/text/text.f90")
+    add_files("examples/text.f90")
     add_syslinks("SDL2", "SDL2_ttf")
-    set_targetdir("examples/text/")
+    set_targetdir(".")
 
--- examples/vertex/vertex
 target("vertex")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/vertex/vertex.f90")
+    add_files("examples/vertex.f90")
     add_syslinks("SDL2")
     set_targetdir("examples/vertex/")
+    set_targetdir(".")
 
--- examples/voxel/voxel
 target("voxel")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/voxel/voxel.f90")
+    add_files("examples/voxel.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/voxel/")
+    set_targetdir(".")
 
--- examples/window/window
 target("window")
     set_kind("binary")
     add_deps("sdl2")
-    add_files("examples/window/window.f90")
+    add_files("examples/window.f90")
     add_syslinks("SDL2")
-    set_targetdir("examples/window/")
+    set_targetdir(".")
 
--- all examples
 target("examples")
     set_kind("phony")
     add_deps("alpha")

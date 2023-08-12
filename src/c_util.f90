@@ -26,7 +26,7 @@ module c_util
         function c_strlen(str) bind(c, name='strlen')
             import :: c_ptr, c_size_t
             type(c_ptr), intent(in), value :: str
-            integer(c_size_t)              :: c_strlen
+            integer(kind=c_size_t)         :: c_strlen
         end function c_strlen
     end interface
 end module c_util

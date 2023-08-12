@@ -134,23 +134,23 @@ module sdl2_pixels
 
         ! void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b)
         subroutine sdl_get_rgb(pixel, format, r, g, b) bind(c, name='SDL_GetRGB')
-            import :: c_ptr, c_uint16_t, c_uint32_t, sdl_pixel_format
+            import :: c_ptr, c_uint8_t, c_uint32_t, sdl_pixel_format
             integer(kind=c_uint32_t), intent(in), value :: pixel
             type(sdl_pixel_format),   intent(in)        :: format
-            integer(kind=c_uint16_t), intent(inout)     :: r
-            integer(kind=c_uint16_t), intent(inout)     :: g
-            integer(kind=c_uint16_t), intent(inout)     :: b
+            integer(kind=c_uint8_t),  intent(out)       :: r
+            integer(kind=c_uint8_t),  intent(out)       :: g
+            integer(kind=c_uint8_t),  intent(out)       :: b
         end subroutine sdl_get_rgb
 
         ! void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormat *format, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)
         subroutine sdl_get_rgba(pixel, format, r, g, b, a) bind(c, name='SDL_GetRGBA')
-            import :: c_ptr, c_uint16_t, c_uint32_t, sdl_pixel_format
+            import :: c_ptr, c_uint8_t, c_uint32_t, sdl_pixel_format
             integer(kind=c_uint32_t), intent(in), value :: pixel
             type(sdl_pixel_format),   intent(in)        :: format
-            integer(kind=c_uint16_t), intent(inout)     :: r
-            integer(kind=c_uint16_t), intent(inout)     :: g
-            integer(kind=c_uint16_t), intent(inout)     :: b
-            integer(kind=c_uint16_t), intent(inout)     :: a
+            integer(kind=c_uint8_t),  intent(out)       :: r
+            integer(kind=c_uint8_t),  intent(out)       :: g
+            integer(kind=c_uint8_t),  intent(out)       :: b
+            integer(kind=c_uint8_t),  intent(out)       :: a
         end subroutine sdl_get_rgba
     end interface
 end module sdl2_pixels

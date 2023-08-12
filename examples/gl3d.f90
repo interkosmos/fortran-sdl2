@@ -7,22 +7,24 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module util
+    use, intrinsic :: iso_fortran_env, only: r8 => real64
     implicit none
     private
     public :: camera_update
 
     type, public :: vector_type
-        real(kind=8) :: x, y, z
+        real(kind=r8) :: x, y, z
     end type vector_type
 
     type, public :: camera_type
         type(vector_type) :: pos
         type(vector_type) :: eye
-        real(kind=8)      :: dir
+        real(kind=r8)     :: dir
     end type camera_type
 contains
     subroutine camera_update(camera, angle)
-        real(kind=8), parameter          :: PI = acos(-1.0_8)
+        real(kind=r8), parameter :: PI = acos(-1.0_r8)
+
         type(camera_type), intent(inout) :: camera
         real,              intent(in)    :: angle
 
@@ -34,7 +36,8 @@ end module util
 
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, i8 => int64, r8 => real64, &
+                                             stderr => error_unit, stdout => output_unit
     use :: sdl2
     use :: sdl2_image
     use :: glu
@@ -44,14 +47,14 @@ program main
     integer, parameter :: SCREEN_WIDTH  = 800
     integer, parameter :: SCREEN_HEIGHT = 600
 
-    type(c_ptr)              :: context
-    type(c_ptr)              :: window
-    type(sdl_event)          :: event
-    type(camera_type)        :: camera
-    character(len=32)        :: file_name
-    integer(kind=1), pointer :: keys(:)
-    integer                  :: textures(3)
-    integer                  :: i, id, rc
+    type(c_ptr)               :: context
+    type(c_ptr)               :: window
+    type(sdl_event)           :: event
+    type(camera_type)         :: camera
+    character(len=32)         :: file_name
+    integer(kind=i1), pointer :: keys(:)
+    integer                   :: textures(3)
+    integer                   :: i, id, rc
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_EVERYTHING) < 0) then
@@ -87,7 +90,7 @@ program main
 
     ! Load texture files.
     do i = 1, size(textures)
-        write (file_name, '("t", i1, ".png")') i
+        write (file_name, '("share/t", i1, ".png")') i
         print '(3a)', 'Loading texture file "', trim(file_name), '" ...'
 
         if (.not. load_texture(id, trim(file_name))) stop 'Error: texture file not found'
@@ -112,7 +115,7 @@ program main
 
         ! Check keyboard input.
         keys(0:) => sdl_get_keyboard_state()
-        if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
+        if (keys(int(SDL_SCANCODE_ESCAPE, kind=i1)) == 1) exit loop
 
         ! Render the scene.
         call display(camera, textures)
@@ -147,10 +150,10 @@ contains
         ! Then, copy image to buffer in order to convert the pixel format.
         image  => img_load(file_path // c_null_char)
         buffer => sdl_create_rgb_surface(0, image%w, image%h, 32, &
-                                         int(z'000000FF', kind=8), &
-                                         int(z'0000FF00', kind=8), &
-                                         int(z'00FF0000', kind=8), &
-                                         int(z'FF000000', kind=8))
+                                         int(z'000000FF', kind=i8), &
+                                         int(z'0000FF00', kind=i8), &
+                                         int(z'00FF0000', kind=i8), &
+                                         int(z'FF000000', kind=i8))
         rect = sdl_rect(0, 0, image%w, image%h)
         rc   = sdl_blit_surface(image, rect, buffer, rect)
 
@@ -170,7 +173,7 @@ contains
     subroutine gl_init(screen_width, screen_height)
         !! Initialises OpenGL.
         integer, intent(in) :: screen_width, screen_height
-        real(kind=8)        :: aspect
+        real(kind=r8)       :: aspect
 
         ! Set drawing region.
         call glviewport(0, 0, screen_width, screen_height)
@@ -179,10 +182,10 @@ contains
         call glmatrixmode(GL_PROJECTION)
         call glloadidentity()
 
-        aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
+        aspect = real(screen_width, kind=r8) / real(screen_height, kind=r8)
         ! Alternatively:
-        ! call gl_perspective(45.0_8, aspect, 0.1_8, 50.0_8)
-        call gluperspective(45.0_8, aspect, 0.1_8, 50.0_8)
+        ! call gl_perspective(45.0_r8, aspect, 0.1_r8, 50.0_r8)
+        call gluperspective(45.0_r8, aspect, 0.1_r8, 50.0_r8)
 
         ! Set model view matrix.
         call glmatrixmode(GL_MODELVIEW)
@@ -199,12 +202,12 @@ contains
     subroutine gl_perspective(fovy, aspect, znear, zfar)
         !! Sets perspective, much like `gluPerspective()`, but without the GLU
         !! dependency.
-        real(kind=8), parameter  :: PI = acos(-1.0_8)
-        real(kind=8), intent(in) :: fovy
-        real(kind=8), intent(in) :: aspect
-        real(kind=8), intent(in) :: znear
-        real(kind=8), intent(in) :: zfar
-        real(kind=8)             :: fw, fh
+        real(kind=r8), parameter  :: PI = acos(-1.0_r8)
+        real(kind=r8), intent(in) :: fovy
+        real(kind=r8), intent(in) :: aspect
+        real(kind=r8), intent(in) :: znear
+        real(kind=r8), intent(in) :: zfar
+        real(kind=r8)             :: fw, fh
 
         fh = tan(fovy / 360. * PI) * znear
         fw = fh * aspect
@@ -215,13 +218,16 @@ contains
         !! The display routine, called every frame.
         type(camera_type), intent(inout) :: camera
         integer,           intent(inout) :: textures(*)
-        integer                          :: i
-        real, save                       :: angle = 0
+
+        integer    :: i
+        real, save :: angle = 0
 
         call glclear(ior(GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)) ! Clear the screen and depth buffer.
         call glmatrixmode(GL_MODELVIEW)                             ! Alter model view matrix.
         call glloadidentity()                                       ! Reset current model view matrix.
-        call glulookat(camera%eye%x, 0.0_8, camera%eye%z, 0.0_8, 0.0_8, 0.0_8, 0.0_8, 1.0_8, 0.0_8)
+        call glulookat(camera%eye%x, 0.0_r8, camera%eye%z, &
+                       0.0_r8, 0.0_r8, 0.0_r8, &
+                       0.0_r8, 1.0_r8, 0.0_r8)
 
         call glenable(GL_TEXTURE_2D)
 
@@ -246,10 +252,10 @@ contains
     subroutine square()
         !! Renders a textured square.
         call glbegin(GL_QUADS)
-            call glTexCoord2d(0._8, 1._8); call glVertex3f(-0.5, -0.5, 0.5)
-            call glTexCoord2d(1._8, 1._8); call glVertex3f( 0.5, -0.5, 0.5)
-            call glTexCoord2d(1._8, 0._8); call glVertex3f( 0.5,  0.5, 0.5)
-            call glTexCoord2d(0._8, 0._8); call glVertex3f(-0.5,  0.5, 0.5)
+            call glTexCoord2d(0._r8, 1._r8); call glVertex3f(-0.5, -0.5, 0.5)
+            call glTexCoord2d(1._r8, 1._r8); call glVertex3f( 0.5, -0.5, 0.5)
+            call glTexCoord2d(1._r8, 0._r8); call glVertex3f( 0.5,  0.5, 0.5)
+            call glTexCoord2d(0._r8, 0._r8); call glVertex3f(-0.5,  0.5, 0.5)
         call glend()
     end subroutine square
 

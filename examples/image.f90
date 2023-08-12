@@ -43,7 +43,7 @@ program main
     end if
 
     screen => sdl_get_window_surface(window)
-    image  => sdl_load_bmp('chess.bmp' // c_null_char)
+    image  => sdl_load_bmp('share/chess.bmp' // c_null_char)
 
     rect = sdl_rect(0, 0, image%w, image%h)
 

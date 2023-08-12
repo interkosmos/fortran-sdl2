@@ -6,11 +6,12 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module camera
+    use, intrinsic :: iso_fortran_env, only: r8 => real64
     implicit none
     private
 
     type, public :: camera_class
-        real(kind=8) :: x, y, z
+        real(kind=r8) :: x, y, z
     contains
         procedure :: init   => camera_init
         procedure :: update => camera_update
@@ -18,9 +19,9 @@ module camera
 contains
     subroutine camera_init(this, x, y, z)
         class(camera_class), intent(inout) :: this
-        real(kind=8),        intent(in)    :: x
-        real(kind=8),        intent(in)    :: y
-        real(kind=8),        intent(in)    :: z
+        real(kind=r8),       intent(in)    :: x
+        real(kind=r8),       intent(in)    :: y
+        real(kind=r8),       intent(in)    :: z
 
         this%x = x
         this%y = y
@@ -28,10 +29,11 @@ contains
     end subroutine camera_init
 
     subroutine camera_update(this, angle)
-        real(kind=8), parameter            :: PI = acos(-1.0_8)
+        real(kind=r8), parameter :: PI = acos(-1.0_r8)
+
         class(camera_class), intent(inout) :: this
         real,                intent(in)    :: angle
-        real(kind=8)                       :: dir
+        real(kind=r8)                      :: dir
 
         dir = angle * PI / 180
         this%x = cos(dir)

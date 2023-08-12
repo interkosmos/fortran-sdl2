@@ -1,23 +1,22 @@
 # fortran-sdl2
+
 A collection of ISO C binding interfaces to
 [Simple DirectMedia Layer 2.0](https://www.libsdl.org/) (SDL 2.0), for
 2D and 3D game programming in Fortran. SDL versions tested against:
 
 Library    | Version
 -----------|---------
-SDL2       | 2.0.18
-SDL2_image | 2.0.5
-SDL2_mixer | 2.0.4_4
-SDL2_ttf   | 2.0.15
+SDL2       | 2.28.2
+SDL2_image | 2.6.3
+SDL2_mixer | 2.6.3
+SDL2_ttf   | 2.20.2
 
-The interface bindings have been built successfully with GNU Fortran 11 on
-FreeBSD 12 and IFORT 19.1 on CentOS 8, but other Fortran 2008 compilers should
-work as well. On Microsoft Windows, you may want to install GNU Fortran through
-[MSYS2](https://www.msys2.org/). For bindings to
+For bindings to
 [SDL2_gfx](https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/index.html),
 see [fortran-sdl2_gfx](https://github.com/freevryheid/fortran-sdl2_gfx).
 
 ## Build Instructions
+
 If not present already, install SDL 2.0 with development headers (and
 optionally: [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 [SDL_mixer 2.0](https://www.libsdl.org/projects/SDL_mixer/), and/or
@@ -27,11 +26,11 @@ optionally: [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/),
 # pkg install devel/sdl20 graphics/sdl2_image audio/sdl2_mixer graphics/sdl2_ttf
 ```
 
-Either use GNU/BSD make or [xmake](https://xmake.io/) to build *fortran-sdl2*.
-The [Fortran Package Manager](https://github.com/fortran-lang/fpm) (fpm) will
-produce `libfortran-sdl2.a` only (examples have to be compiled manually).
+Either use GNU/BSD make, [xmake](https://xmake.io/) to build *fortran-sdl2*, or
+the [Fortran Package Manager](https://github.com/fortran-lang/fpm) (fpm).
 
 ### Make
+
 Run `make sdl2` to compile the static library `libsdl2.a`:
 
 ```
@@ -65,6 +64,7 @@ simply with `libfortran-sdl2.a`:
 | *all*             | `make all`          | `libfortran-sdl2.a -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf` |
 
 ### xmake
+
 Build all static libraries with:
 
 ```
@@ -80,6 +80,7 @@ $ xmake build <name>
 The default output directory is `build/`.
 
 ## Example
+
 The following example shows how to fill a rectangle, using the hardware renderer.
 
 ```fortran
@@ -102,7 +103,7 @@ program main
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
-        write (stderr, *) 'SDL Error: ', sdl_get_error()
+        write (stderr, '("SDL Error: ", a)') sdl_get_error()
         stop
     end if
 
@@ -115,7 +116,7 @@ program main
                                SDL_WINDOW_SHOWN)
 
     if (.not. c_associated(window)) then
-        write (stderr, *) 'SDL Error: ', sdl_get_error()
+        write (stderr, '("SDL Error: ", a)') sdl_get_error()
         stop
     end if
 
@@ -172,43 +173,36 @@ $ gfortran `sdl2-config --cflags` -o example example.f90 libsdl2.a `sdl2-config 
 ```
 
 ## Further Examples
+
 Some demo applications can be found in `examples/`:
 
-* [**alpha**](examples/alpha/screenshot.png) makes one color of an image transparent (software renderer).
-* [**cyclic**](examples/cyclic/screenshot.png) implements a 2D [cyclic cellular automaton](https://en.wikipedia.org/wiki/Cyclic_cellular_automaton) (hardware renderer).
-* [**draw**](examples/draw/screenshot.png) draws some shapes (hardware renderer).
-* [**dvd**](examples/dvd/screenshot.png) loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
+* [**alpha**](examples/alpha.png) makes one color of an image transparent (software renderer).
+* [**cyclic**](examples/cyclic.png) implements a 2D [cyclic cellular automaton](https://en.wikipedia.org/wiki/Cyclic_cellular_automaton) (hardware renderer).
+* [**draw**](examples/draw.png) draws some shapes (hardware renderer).
+* [**dvd**](examples/dvd.png) loads a PNG file with SDL_image and lets it bounce on the screen (hardware renderer).
 * **events** polls SDL events (software renderer).
-* [**fire**](examples/fire/screenshot.png) renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
-* [**forest**](examples/forest/screenshot.png) implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
-* [**gl**](examples/gl/screenshot.png) renders a triangle with OpenGL 1.3.
-* [**gl3d**](examples/gl3d/screenshot.png) rotates textured cubes with OpenGL 1.3.
-* [**glsphere**](examples/glsphere/screenshot.png) rotates the camera around GLU spheres.
-* [**image**](examples/image/screenshot.png) loads and displays an image (software renderer).
+* [**fire**](examples/fire.png) renders the [DOOM fire effect](http://fabiensanglard.net/doom_fire_psx/) (hardware renderer).
+* [**forest**](examples/forest.png) implements a cellular automaton, based on the [forest fire model](https://rosettacode.org/wiki/Forest_fire) (hardware renderer).
+* [**gl**](examples/gl.png) renders a triangle with OpenGL 1.3.
+* [**gl3d**](examples/gl3d.png) rotates textured cubes with OpenGL 1.3.
+* [**glsphere**](examples/glsphere.png) rotates the camera around GLU spheres.
+* [**image**](examples/image.png) loads and displays an image (software renderer).
 * **info** prints debug information to console (software renderer).
 * **log** prints log messages with `SDL_Log()` (software renderer).
-* [**logo**](examples/logo/screenshot.png) lets you fly through a field of Fortran logos (hardware renderer).
+* [**logo**](examples/logo.png) lets you fly through a field of Fortran logos (hardware renderer).
 * **msgbox** shows a simple message box (software renderer).
-* [**opera**](examples/opera/screenshot.png) plays an OGG file with SDL_mixer (software renderer).
-* [**pixel**](examples/pixel/screenshot.png) copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
-* [**scaling**](examples/scaling/screenshot.png) displays a scaled image (software renderer).
-* [**text**](examples/text/screenshot.png) outputs text with SDL_ttf (hardware renderer).
+* [**opera**](examples/opera.png) plays an OGG file with SDL_mixer (software renderer).
+* [**pixel**](examples/pixel.png) copies an SDL_Surface to an SDL_Texture pixelwise (hardware renderer).
+* [**scaling**](examples/scaling.png) displays a scaled image (software renderer).
+* [**text**](examples/text.png) outputs text with SDL_ttf (hardware renderer).
 * **vertex** shows geometry renderer of SDL 2.0.18.
-* [**voxel**](examples/voxel/screenshot.png) renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
+* [**voxel**](examples/voxel.png) renders a [voxel space](https://github.com/s-macke/VoxelSpace) with direct pixel manipulation. Use arrow keys and Q, A for camera movement (hardware renderer).
 * **window** opens a window and fills rectangles (software renderer).
 
 Compile all examples with:
 
 ```
 $ make examples
-```
-
-Or, use the name of a particular example. Run the examples from within their
-respective directory:
-
-```
-$ cd examples/<name>/
-$ ./<name>
 ```
 
 If you prefer xmake, build and run an example with:
@@ -225,17 +219,20 @@ $ xmake build examples
 ```
 
 ## Compatibility
+
 All Fortran interface names are written in snake case. For instance,
 `SDL_CreateWindow()` can be accessed by calling Fortran interface
 `sdl_create_window()`. The same is valid for derived types and their
 components. Enums and constants have kept their original names.
 
 ### Null-Termination of Strings
+
 A `c_null_char` must be appended to all strings passed to the interfaces,
 except `sdl_set_hint()` and `sdl_log*()`, which are wrappers that terminate the
 arguments for convenience.
 
 ### SDL_Color
+
 SDL 2.0 stores RGB colour values as `Uint8`. As Fortran does not feature unsigned
 types, the intrinsic procedure `transfer()` has to be used to transfer bit
 patterns directly. For example:
@@ -260,6 +257,7 @@ color = sdl_color(r = uint8(255), &
 ```
 
 ### SDL_Surface
+
 C pointers in derived types like `sdl_surface` must be converted to Fortran
 types manually by calling the intrinsic procedure `c_f_pointer()`. For instance,
 to assign the `sdl_pixel_format` pointer in `sdl_surface`:
@@ -278,7 +276,7 @@ and `ichar()` to convert `Uint8` to Fortran signed integer. For example:
 ```fortran
 integer, parameter              :: X = 10
 integer, parameter              :: Y = 20
-integer(kind=2)                 :: r, g, b
+integer(kind=int8)              :: r, g, b
 integer(kind=c_int32_t)         :: pixel
 integer(kind=c_int8_t), pointer :: pixels(:)
 type(sdl_pixel_format), pointer :: pixel_format
@@ -301,6 +299,7 @@ call sdl_get_rgb(pixel, pixel_format, r, g, b)
 ```
 
 ### SDL_Log
+
 Only a single string message can be passed to `sdl_log()` and `sdl_log_*()`
 routines, as Fortran does not support ellipsis arguments. For example:
 
@@ -321,11 +320,13 @@ call sdl_log(msg)
 Log messages will be trimmed and null-terminated by the wrapper routines.
 
 ### Events
+
 The SDL event [SDL_QUIT](https://wiki.libsdl.org/SDL_EventType#SDL_QUIT) has
 been renamed to `SDL_QUITEVENT` in Fortran to avoid conflict with interface
 `sdl_quit()`.
 
 ## Documentation
+
 Generate the source code documentation with
 [FORD](https://github.com/cmacmackin/ford). Add FORD with `pip`, for example:
 
@@ -350,10 +351,13 @@ $ ford project.md -d ./src
 Open `doc/index.html` in a web browser.
 
 ## Coverage
-See [coverage](coverage.md) for the current status.
+
+See [coverage](COVERAGE.md) for the current status.
 
 ## Credits
+
 Thanks go to [angelog0](https://github.com/angelog0).
 
 ## Licence
+
 ISC

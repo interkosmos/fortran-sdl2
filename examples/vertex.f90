@@ -85,4 +85,3 @@ program main
     call sdl_destroy_window(window)
     call sdl_quit()
 end program main
-
