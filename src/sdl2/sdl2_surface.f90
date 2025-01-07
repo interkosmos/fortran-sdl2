@@ -69,7 +69,7 @@ module sdl2_surface
 
         ! SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
         function sdl_create_rgb_surface_from_(pixels, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask) &
-                bind(c, name='SDL_CreateRGBSurface')
+                bind(c, name='SDL_CreateRGBSurfaceFrom')
             import :: c_int, c_ptr, c_uint32_t
             type(c_ptr),              intent(in), value :: pixels
             integer(kind=c_int),      intent(in), value :: width
