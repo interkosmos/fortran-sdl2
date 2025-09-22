@@ -3,12 +3,10 @@
 ! Example that shows how to render a triangle with OpenGL 1.3.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: i8 => int64, r8 => real64, &
-                                             stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i8 => int64, r8 => real64, stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
 
@@ -52,8 +50,7 @@ program main
         ! Event handling.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    exit loop
+                case (SDL_QUITEVENT); exit loop
             end select
         end if
 
@@ -68,11 +65,12 @@ contains
     subroutine gl_init(screen_width, screen_height)
         ! Initialises OpenGL.
         integer, intent(in) :: screen_width, screen_height
-        real(kind=r8)       :: aspect
+
+        real(r8) :: aspect
 
         call glmatrixmode(GL_PROJECTION)
         ! Set aspect ratio of 2D orthographic projection.
-        aspect = real(screen_width, kind=r8) / real(screen_height, kind=r8)
+        aspect = real(screen_width, r8) / real(screen_height, r8)
         call glortho(-aspect, aspect, -1.0_r8, 1.0_r8, -1.0_r8, 1.0_r8)
 
         call glmatrixmode(GL_MODELVIEW)

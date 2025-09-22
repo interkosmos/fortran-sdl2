@@ -4,22 +4,21 @@
 ! with SDL2_ttf (software renderer).
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_mixer
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 320
-    integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME     = 'share/italy.bmp'
-    character(len=*), parameter :: OGG_PATH      = 'share/opera.ogg'
-    character(len=*), parameter :: TTF_PATH      = 'share/font.ttf'
-    character(len=*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
+    integer,      parameter :: SCREEN_WIDTH  = 320
+    integer,      parameter :: SCREEN_HEIGHT = 240
+    character(*), parameter :: FILE_NAME     = 'share/italy.bmp'
+    character(*), parameter :: OGG_PATH      = 'share/opera.ogg'
+    character(*), parameter :: TTF_PATH      = 'share/font.ttf'
+    character(*), parameter :: MESSAGE       = 'Playing ' // OGG_PATH // ' ...'
 
     type(sdl_color)                 :: color
     type(sdl_event)                 :: event
@@ -97,8 +96,7 @@ program main
     do while (.not. done)
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    done = .true.
+                case (SDL_QUITEVENT); done = .true.
             end select
         end if
 

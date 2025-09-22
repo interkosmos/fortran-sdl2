@@ -7,8 +7,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int, c_int8_t, c_int32_t, c_null_char, c_ptr
-    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
+    use, intrinsic :: iso_c_binding
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_image
     implicit none
@@ -19,28 +19,24 @@ program main
         integer :: b
     end type color_type
 
-    character(len=*), parameter :: FILE_NAME = 'share/dvd.png'
+    character(*), parameter :: FILE_NAME = 'share/dvd.png'
 
-    type(c_ptr)              :: window
-    type(c_ptr)              :: renderer
-    type(c_ptr)              :: texture
-    type(color_type)         :: colors(5)
-    type(sdl_rect)           :: src_rect
-    type(sdl_rect)           :: dst_rect
-    type(sdl_event)          :: event
-    integer(kind=1), pointer :: keys(:)
-    integer(kind=c_int32_t)  :: texture_format
-    integer(kind=c_int)      :: texture_access
-    integer                  :: texture_width
-    integer                  :: texture_height
-    integer                  :: dx = 1
-    integer                  :: dy = 1
-    integer                  :: rc
-    integer                  :: screen_height
-    integer                  :: screen_width
+    type(c_ptr)          :: renderer, texture, window
+    type(color_type)     :: colors(5)
+    type(sdl_rect)       :: dst_rect, src_rect
+    type(sdl_event)      :: event
+    integer(i1), pointer :: keys(:)
+    integer(c_int32_t)   :: texture_format
+    integer(c_int)       :: texture_access
+    integer              :: texture_width
+    integer              :: texture_height
+    integer              :: dx, dy, rc
+    integer              :: screen_height, screen_width
 
     ! Initialise PRNG.
     call random_seed()
+
+    dx = 1; dy = 1
 
     ! Fill colour table.
     colors(1) = color_type(255,   0,   0)
@@ -81,11 +77,7 @@ program main
     texture  = img_load_texture(renderer, FILE_NAME // c_null_char)
 
     ! Get the texture size.
-    rc = sdl_query_texture(texture, &
-                           texture_format, &
-                           texture_access, &
-                           texture_width, &
-                           texture_height)
+    rc = sdl_query_texture(texture, texture_format, texture_access, texture_width, texture_height)
 
     ! Set source and destination rects.
     src_rect = sdl_rect(0, 0, texture_width, texture_height)
@@ -172,10 +164,6 @@ contains
         end do
 
         c = n
-
-        rc = sdl_set_texture_color_mod(texture,&
-                                       uint8(colors(c)%r), &
-                                       uint8(colors(c)%g), &
-                                       uint8(colors(c)%b))
+        rc = sdl_set_texture_color_mod(texture, uint8(colors(c)%r), uint8(colors(c)%g), uint8(colors(c)%b))
     end subroutine color_mod
 end program main

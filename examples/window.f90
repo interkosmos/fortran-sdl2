@@ -4,10 +4,9 @@
 ! software renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none

@@ -6,10 +6,10 @@ A collection of ISO C binding interfaces to
 
 Library    | Version
 -----------|---------
-SDL2       | 2.28.2
-SDL2_image | 2.6.3
-SDL2_mixer | 2.6.3
-SDL2_ttf   | 2.20.2
+SDL2       | 2.32.8
+SDL2_image | 2.8.8
+SDL2_mixer | 2.8.1
+SDL2_ttf   | 2.24.0
 
 For bindings to
 [SDL2_gfx](https://www.ferzkopp.net/Software/SDL2_gfx/Docs/html/index.html),
@@ -55,13 +55,13 @@ $ make all FC=/opt/intel/bin/ifort
 Link your Fortran project with `libsdl2.a` and (optionally) `libsdl2_*.a`, or
 simply with `libfortran-sdl2.a`:
 
-| Library           | Compilation         | Linking                                                         |
-|-------------------|---------------------|-----------------------------------------------------------------|
-| SDL2              | `make sdl2`         | `libsdl2.a -lSDL2`                                              |
-| SDL2_image        | `make sdl2_image`   | `libsdl2.a libsdl2_image.a -lSDL2 -lSDL2_image`                 |
-| SDL2_mixer        | `make sdl2_mixer`   | `libsdl2.a libsdl2_mixer.a -lSDL2 -lSDL2_mixer`                 |
-| SDL2_ttf          | `make sdl2_ttf`     | `libsdl2.a libsdl2_ttf.a -lSDL2 -lSDL2_ttf`                     |
-| *all*             | `make all`          | `libfortran-sdl2.a -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf` |
+| Library    | Compilation       | Linking                                                         |
+|------------|-------------------|-----------------------------------------------------------------|
+| SDL2       | `make sdl2`       | `libsdl2.a -lSDL2`                                              |
+| SDL2_image | `make sdl2_image` | `libsdl2.a libsdl2_image.a -lSDL2 -lSDL2_image`                 |
+| SDL2_mixer | `make sdl2_mixer` | `libsdl2.a libsdl2_mixer.a -lSDL2 -lSDL2_mixer`                 |
+| SDL2_ttf   | `make sdl2_ttf`   | `libsdl2.a libsdl2_ttf.a -lSDL2 -lSDL2_ttf`                     |
+| *all*      | `make all`        | `libfortran-sdl2.a -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf` |
 
 ### xmake
 
@@ -86,7 +86,7 @@ The following example shows how to fill a rectangle, using the hardware renderer
 ```fortran
 ! example.f90
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none

@@ -3,10 +3,9 @@
 ! Examples that demonstrates the geometry renderer of SDL 2.0.18.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
@@ -15,7 +14,7 @@ program main
     integer, parameter :: SCREEN_HEIGHT = 600
 
     integer          :: rc
-    logical          :: is_done
+    logical          :: done
     type(c_ptr)      :: window
     type(c_ptr)      :: renderer
     type(sdl_event)  :: event
@@ -63,13 +62,12 @@ program main
 
     ! Create renderer.
     renderer = sdl_create_renderer(window, -1, SDL_RENDERER_ACCELERATED)
-    is_done = .false.
+    done = .false.
 
-    do while (.not. is_done)
+    do while (.not. done)
         do while (sdl_poll_event(event) /= 0)
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    is_done = .true.
+                case (SDL_QUITEVENT); done = .true.
             end select
         end do
 

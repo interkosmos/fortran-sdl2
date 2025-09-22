@@ -3,17 +3,16 @@
 ! Makes one color of an image transparent.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 640
-    integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: FILE_NAME     = 'share/fortran.bmp'
+    integer,      parameter :: SCREEN_WIDTH  = 640
+    integer,      parameter :: SCREEN_HEIGHT = 240
+    character(*), parameter :: FILE_NAME     = 'share/fortran.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface

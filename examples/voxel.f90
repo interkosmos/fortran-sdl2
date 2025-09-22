@@ -4,10 +4,9 @@
 ! arrow keys and Q, A for camera movement.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_int8_t, c_int32_t, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: i1 => int8, stderr => error_unit, stdout => output_unit
     use :: sdl2
     implicit none
@@ -16,25 +15,25 @@ program main
     type :: map_type
         type(sdl_pixel_format), pointer :: pixel_format
         type(sdl_surface),      pointer :: image
-        integer(kind=c_int8_t), pointer :: pixels(:)
+        integer(c_int8_t),      pointer :: pixels(:)
     end type map_type
 
     ! Frame buffer type.
     type :: buffer_type
-        integer                          :: access
-        integer                          :: format
-        integer                          :: pitch
-        integer(kind=c_int32_t), pointer :: pixels(:)
-        type(c_ptr)                      :: pixels_ptr
-        type(c_ptr)                      :: texture
-        type(sdl_pixel_format),  pointer :: pixel_format
-        type(sdl_rect)                   :: rect
+        integer                         :: access
+        integer                         :: format
+        integer                         :: pitch
+        integer(c_int32_t),     pointer :: pixels(:)
+        type(c_ptr)                     :: pixels_ptr
+        type(c_ptr)                     :: texture
+        type(sdl_pixel_format), pointer :: pixel_format
+        type(sdl_rect)                  :: rect
     end type buffer_type
 
     ! Voxel type.
     type :: voxel_type
-        integer                 :: elevation
-        integer(kind=c_int32_t) :: color
+        integer            :: elevation
+        integer(c_int32_t) :: color
     end type voxel_type
 
     ! 2D point type.
@@ -53,16 +52,16 @@ program main
         real :: distance = 900. !! Draw distance.
     end type camera_type
 
-    character(len=*), parameter :: COLOR_MAP_FILE  = 'share/top.bmp'
-    character(len=*), parameter :: HEIGHT_MAP_FILE = 'share/dem.bmp'
-    integer,          parameter :: MAP_WIDTH       = 1024
-    integer,          parameter :: MAP_HEIGHT      = 1024
-    integer,          parameter :: SCREEN_WIDTH    = 800
-    integer,          parameter :: SCREEN_HEIGHT   = 600
+    character(*), parameter :: COLOR_MAP_FILE  = 'share/top.bmp'
+    character(*), parameter :: HEIGHT_MAP_FILE = 'share/dem.bmp'
+    integer,      parameter :: MAP_WIDTH       = 1024
+    integer,      parameter :: MAP_HEIGHT      = 1024
+    integer,      parameter :: SCREEN_WIDTH    = 800
+    integer,      parameter :: SCREEN_HEIGHT   = 600
 
-    character(len=30)             :: window_title
+    character(30)                 :: window_title
     integer                       :: fps, t1, rc
-    integer(kind=i1), pointer     :: keys(:)
+    integer(i1), pointer          :: keys(:)
     logical                       :: is_running
     type(buffer_type)             :: buffer
     type(c_ptr)                   :: renderer
@@ -93,20 +92,14 @@ program main
     rc = sdl_show_cursor(SDL_FALSE)
 
     ! Create renderer.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
 
     ! Create frame buffer texture.
     call create_buffer(renderer, window, SCREEN_WIDTH, SCREEN_HEIGHT, buffer)
 
     ! Load colour and height map.
     allocate (voxels(MAP_WIDTH, MAP_HEIGHT))
-    rc = read_voxels(COLOR_MAP_FILE, &
-                     HEIGHT_MAP_FILE, &
-                     MAP_WIDTH, &
-                     MAP_HEIGHT, &
-                     buffer%pixel_format, &
-                     voxels)
+    rc = read_voxels(COLOR_MAP_FILE, HEIGHT_MAP_FILE, MAP_WIDTH, MAP_HEIGHT, buffer%pixel_format, voxels)
     if (rc /= 0) stop
     is_running = .true.
 
@@ -117,50 +110,35 @@ program main
         ! Event handling.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    is_running = .false.
+                case (SDL_QUITEVENT); is_running = .false.
             end select
         end if
 
         keys(0:) => sdl_get_keyboard_state()
 
         ! Quit on Escape.
-        if (is_key(keys, SDL_SCANCODE_ESCAPE)) &
-            is_running = .false.
+        if (is_key(keys, SDL_SCANCODE_ESCAPE)) is_running = .false.
 
         ! Rotate left.
-        if (is_key(keys, SDL_SCANCODE_LEFT)) &
-            call rotate_camera(camera, .01)
+        if (is_key(keys, SDL_SCANCODE_LEFT)) call rotate_camera(camera, .01)
 
         ! Rotate right.
-        if (is_key(keys, SDL_SCANCODE_RIGHT)) &
-            call rotate_camera(camera, -.01)
+        if (is_key(keys, SDL_SCANCODE_RIGHT)) call rotate_camera(camera, -.01)
 
         ! Move backward.
-        if (is_key(keys, SDL_SCANCODE_DOWN)) &
-            call move_camera(camera, 1., MAP_WIDTH, MAP_HEIGHT)
+        if (is_key(keys, SDL_SCANCODE_DOWN)) call move_camera(camera, 1., MAP_WIDTH, MAP_HEIGHT)
 
         ! Move forward.
-        if (is_key(keys, SDL_SCANCODE_UP)) &
-            call move_camera(camera, -1., MAP_WIDTH, MAP_HEIGHT)
+        if (is_key(keys, SDL_SCANCODE_UP)) call move_camera(camera, -1., MAP_WIDTH, MAP_HEIGHT)
 
         ! Move up.
-        if (is_key(keys, SDL_SCANCODE_Q)) &
-            call lift_camera(camera, 1., 250., 700.)
+        if (is_key(keys, SDL_SCANCODE_Q)) call lift_camera(camera, 1., 250., 700.)
 
         ! Move down.
-        if (is_key(keys, SDL_SCANCODE_A)) &
-            call lift_camera(camera, -1., 250., 700.)
+        if (is_key(keys, SDL_SCANCODE_A)) call lift_camera(camera, -1., 250., 700.)
 
         ! Render to texture and flush to screen.
-        call render(buffer        = buffer, &
-                    camera        = camera, &
-                    voxels        = voxels, &
-                    map_width     = MAP_WIDTH, &
-                    map_height    = MAP_HEIGHT, &
-                    scale_height  = 120, &
-                    screen_width  = SCREEN_WIDTH, &
-                    screen_height = SCREEN_HEIGHT)
+        call render(buffer, camera, voxels, MAP_WIDTH, MAP_HEIGHT, 120, SCREEN_WIDTH, SCREEN_HEIGHT)
         rc = sdl_render_copy(renderer, buffer%texture, buffer%rect, buffer%rect)
         call sdl_render_present(renderer)
 
@@ -180,10 +158,11 @@ contains
     integer function calculate_fps(t1)
         !! Calculates current frames per seconds.
         integer, intent(in) :: t1   !! First time value.
-        integer             :: dt   !! Time delta.
-        integer, save       :: fc   !! Frame counter.
-        integer, save       :: ft   !! Frame time.
-        integer, save       :: fps  !! Frames per second.
+
+        integer       :: dt      !! Time delta.
+        integer, save :: fc  = 0 !! Frame counter.
+        integer, save :: ft  = 0 !! Frame time.
+        integer, save :: fps = 0 !! Frames per second.
 
         dt = sdl_get_ticks() - t1
         fc = fc + 1
@@ -199,35 +178,31 @@ contains
     end function calculate_fps
 
     logical function file_exists(path)
-        character(len=*), intent(in) :: path
+        character(*), intent(in) :: path
 
         inquire (file=path, exist=file_exists)
     end function file_exists
 
     logical function is_key(keys, key)
         !! Returns whether a given key has been pressed.
-        integer(kind=i1), pointer, intent(in) :: keys(:) !! Keyboard map.
-        integer,                   intent(in) :: key     !! Key to check.
+        integer(i1), pointer, intent(in) :: keys(:) !! Keyboard map.
+        integer,              intent(in) :: key     !! Key to check.
 
-        if (keys(int(key, kind=i1)) == 1) then
-            is_key = .true.
-        else
-            is_key = .false.
-        end if
+        is_key = (keys(int(key, i1)) == 1)
     end function
 
     integer function read_voxels(color_map_path, height_map_path, width, height, pixel_format, voxels)
-        character(len=*),       intent(in)    :: color_map_path
-        character(len=*),       intent(in)    :: height_map_path
+        character(*),           intent(in)    :: color_map_path
+        character(*),           intent(in)    :: height_map_path
         integer,                intent(in)    :: width
         integer,                intent(in)    :: height
         type(sdl_pixel_format), intent(in)    :: pixel_format
         type(voxel_type),       intent(inout) :: voxels(width, height)
 
-        integer(kind=i1) :: r, g, b
-        integer          :: pixel
-        integer          :: i, x, y
-        type(map_type)   :: color_map, height_map
+        integer(i1)    :: r, g, b
+        integer        :: pixel
+        integer        :: i, x, y
+        type(map_type) :: color_map, height_map
 
         read_voxels = 1
 
@@ -288,11 +263,7 @@ contains
         type(buffer_type), intent(inout) :: buffer
 
         ! Create buffer texture.
-        buffer%texture = sdl_create_texture(renderer, &
-                                            SDL_PIXELFORMAT_ARGB8888, &
-                                            SDL_TEXTUREACCESS_STREAMING, &
-                                            width, &
-                                            height)
+        buffer%texture = sdl_create_texture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height)
         buffer%rect = sdl_rect(0, 0, width, height)
         buffer%format = sdl_get_window_pixel_format(window)
         buffer%pixel_format => sdl_alloc_format(buffer%format)
@@ -319,7 +290,8 @@ contains
         real,              intent(in)    :: speed
         integer,           intent(in)    :: width
         integer,           intent(in)    :: height
-        real                             :: x, y
+
+        real :: x, y
 
         x = camera%x + sin(camera%angle) * speed
         y = camera%y + cos(camera%angle) * speed

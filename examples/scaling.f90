@@ -5,17 +5,16 @@
 ! http://lazyfoo.net/tutorials/SDL/05_optimized_surface_loading_and_soft_stretching/index.php
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 640
-    integer,          parameter :: SCREEN_HEIGHT = 480
-    character(len=*), parameter :: FILE_NAME     = 'share/wall.bmp'
+    integer,      parameter :: SCREEN_WIDTH  = 640
+    integer,      parameter :: SCREEN_HEIGHT = 480
+    character(*), parameter :: FILE_NAME     = 'share/wall.bmp'
 
     type(c_ptr)                     :: window
     type(sdl_surface),      pointer :: window_surface
@@ -26,7 +25,7 @@ program main
     type(sdl_rect)                  :: image_rect
     type(sdl_event)                 :: event
     integer                         :: rc
-    logical                         :: done = .false.
+    logical                         :: done
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -54,6 +53,8 @@ program main
 
     image_rect  = sdl_rect(0, 0, image_optimised%w, image_optimised%h)
     window_rect = sdl_rect(0, 0, 256, 256)
+
+    done = .false.
 
     do while (.not. done)
         if (sdl_poll_event(event) > 0) then

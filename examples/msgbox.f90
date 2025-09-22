@@ -3,24 +3,23 @@
 ! Displays a simple message box.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_null_ptr, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 320
-    integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: MSG_TITLE     = 'Hello, World!'
-    character(len=*), parameter :: MSG_TEXT      = 'Welcome to wherever you are.'
+    integer,      parameter :: SCREEN_WIDTH  = 320
+    integer,      parameter :: SCREEN_HEIGHT = 240
+    character(*), parameter :: MSG_TITLE     = 'Hello, World!'
+    character(*), parameter :: MSG_TEXT      = 'Welcome to wherever you are.'
 
     type(c_ptr)                :: window
     type(sdl_surface), pointer :: surface
     type(sdl_event)            :: event
     integer                    :: rc
-    logical                    :: done = .false.
+    logical                    :: done
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -49,12 +48,12 @@ program main
 
     surface => sdl_get_window_surface(window)
     rc = sdl_update_window_surface(window)
+    done = .false.
 
     do while (.not. done)
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    done = .true.
+                case (SDL_QUITEVENT); done = .true.
             end select
 
             rc = sdl_update_window_surface(window)

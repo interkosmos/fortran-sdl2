@@ -3,7 +3,6 @@
 ! OpenGL example that rotates the camera around GLU spheres.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module camera
     use, intrinsic :: iso_fortran_env, only: r8 => real64
@@ -11,7 +10,7 @@ module camera
     private
 
     type, public :: camera_class
-        real(kind=r8) :: x, y, z
+        real(r8) :: x, y, z
     contains
         procedure :: init   => camera_init
         procedure :: update => camera_update
@@ -19,9 +18,9 @@ module camera
 contains
     subroutine camera_init(this, x, y, z)
         class(camera_class), intent(inout) :: this
-        real(kind=r8),       intent(in)    :: x
-        real(kind=r8),       intent(in)    :: y
-        real(kind=r8),       intent(in)    :: z
+        real(r8),            intent(in)    :: x
+        real(r8),            intent(in)    :: y
+        real(r8),            intent(in)    :: z
 
         this%x = x
         this%y = y
@@ -29,11 +28,12 @@ contains
     end subroutine camera_init
 
     subroutine camera_update(this, angle)
-        real(kind=r8), parameter :: PI = acos(-1.0_r8)
+        real(r8), parameter :: PI = acos(-1.0_r8)
 
         class(camera_class), intent(inout) :: this
         real,                intent(in)    :: angle
-        real(kind=r8)                      :: dir
+
+        real(r8) :: dir
 
         dir = angle * PI / 180
         this%x = cos(dir)
@@ -42,6 +42,7 @@ contains
 end module camera
 
 module sphere
+    use, intrinsic :: iso_fortran_env, only: r8 => real64
     use :: sdl2
     use :: glu
     implicit none
@@ -51,7 +52,7 @@ module sphere
         real         :: x
         real         :: y
         real         :: z
-        real(kind=8) :: radius
+        real(r8)     :: radius
         integer      :: slices
         integer      :: stacks
         real         :: ambient(4)
@@ -71,7 +72,7 @@ contains
         real,                intent(in)    :: x
         real,                intent(in)    :: y
         real,                intent(in)    :: z
-        real(kind=8),        intent(in)    :: radius
+        real(r8),            intent(in)    :: radius
         real,                intent(in)    :: diffuse(4)
 
         this%x = x
@@ -113,25 +114,25 @@ end module sphere
 
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, r8 => real64, stderr => error_unit, stdout => output_unit
     use :: sdl2
     use :: glu
     use :: camera
     use :: sphere
     implicit none
 
-    character(len=*), parameter :: WINDOW_TITLE  = 'Fortran SDL 2.0'
-    integer,          parameter :: SCREEN_WIDTH  = 1024
-    integer,          parameter :: SCREEN_HEIGHT = 768
+    character(*), parameter :: WINDOW_TITLE  = 'Fortran SDL 2.0'
+    integer,      parameter :: SCREEN_WIDTH  = 1024
+    integer,      parameter :: SCREEN_HEIGHT = 768
 
-    character(len=32)        :: title
-    type(c_ptr)              :: context
-    type(c_ptr)              :: window
-    type(sdl_event)          :: event
-    type(camera_class)       :: eye
-    type(sphere_class)       :: spheres(2)
-    integer(kind=1), pointer :: keys(:)
-    integer                  :: fc, fps, i, t1
+    character(32)        :: title
+    type(c_ptr)          :: context
+    type(c_ptr)          :: window
+    type(sdl_event)      :: event
+    type(camera_class)   :: eye
+    type(sphere_class)   :: spheres(2)
+    integer(i1), pointer :: keys(:)
+    integer              :: fc, fps, i, t1
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_EVERYTHING) < 0) then
@@ -164,12 +165,12 @@ program main
     call gl_init(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     ! Initialise camera.
-    call eye%init(1.0_8, 1.0_8, 1.0_8)
+    call eye%init(1.0_r8, 1.0_r8, 1.0_r8)
     call eye%update(90.0)
 
     ! Initialise spheres.
-    call spheres(1)%init(0.0, 0.0, 0.0, 0.2_8, [ 0.1, 0.5, 0.8, 1.0 ])
-    call spheres(2)%init(0.2, 0.2, 0.3, 0.1_8, [ 0.8, 0.0, 0.2, 1.0 ])
+    call spheres(1)%init(0.0, 0.0, 0.0, 0.2_r8, [ 0.1, 0.5, 0.8, 1.0 ])
+    call spheres(2)%init(0.2, 0.2, 0.3, 0.1_r8, [ 0.8, 0.0, 0.2, 1.0 ])
 
     ! Main loop.
     loop: do
@@ -178,14 +179,13 @@ program main
         ! Event handling.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    exit loop
+                case (SDL_QUITEVENT); exit loop
             end select
         end if
 
         ! Check keyboard input.
         keys(0:) => sdl_get_keyboard_state()
-        if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
+        if (keys(int(SDL_SCANCODE_ESCAPE, 1)) == 1) exit loop
 
         ! Render the scene.
         call render(eye, spheres)
@@ -212,12 +212,13 @@ program main
 contains
     function current_fps(t1)
         !! Calculates current frames per seconds.
-        integer, intent(in) :: t1           !! First time value.
-        integer             :: current_fps  !! Result.
-        integer             :: dt           !! Time delta.
-        integer, save       :: fc           !! Frame counter.
-        integer, save       :: ft           !! Frame time.
-        integer, save       :: fps          !! Frames per second.
+        integer, intent(in) :: t1          !! First time value.
+        integer             :: current_fps !! Result.
+
+        integer       :: dt      !! Time delta.
+        integer, save :: fc  = 0 !! Frame counter.
+        integer, save :: ft  = 0 !! Frame time.
+        integer, save :: fps = 0 !! Frames per second.
 
         dt = sdl_get_ticks() - t1
 
@@ -236,7 +237,8 @@ contains
     subroutine gl_init(screen_width, screen_height)
         !! Initialises OpenGL.
         integer, intent(in) :: screen_width, screen_height
-        real(kind=8)        :: aspect
+
+        real(r8) :: aspect
 
         ! Set drawing region.
         call glviewport(0, 0, screen_width, screen_height)
@@ -244,8 +246,8 @@ contains
         ! Set projection matrix.
         call glmatrixmode(GL_PROJECTION)
         call glloadidentity()
-        aspect = real(screen_width, kind=8) / real(screen_height, kind=8)
-        call gluperspective(45.0_8, aspect, 0.1_8, 50.0_8)
+        aspect = real(screen_width, 8) / real(screen_height, 8)
+        call gluperspective(45.0_r8, aspect, 0.1_r8, 50.0_r8)
 
         ! Set model view matrix.
         call glmatrixmode(GL_MODELVIEW)
@@ -268,8 +270,9 @@ contains
         !! The display routine, called every frame.
         type(camera_class), intent(inout) :: eye
         type(sphere_class), intent(inout) :: spheres(:)
-        integer                           :: i
-        real, save                        :: angle
+
+        integer    :: i
+        real, save :: angle = 0.0
 
         angle = modulo(angle + 0.25, 360.0)
         call eye%update(angle)
@@ -278,8 +281,8 @@ contains
         call glmatrixmode(GL_MODELVIEW)                             ! Alter model view matrix.
         call glloadidentity()                                       ! Reset current model view matrix.
         call glulookat(eye%x, eye%y, eye%z, &
-                       0.0_8, 0.0_8, 0.0_8, &
-                       0.0_8, 1.0_8, 0.0_8)
+                       0.0_r8, 0.0_r8, 0.0_r8, &
+                       0.0_r8, 1.0_r8, 0.0_r8)
 
         do i = 1, size(spheres)
             call spheres(i)%render()

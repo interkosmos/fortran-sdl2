@@ -15,18 +15,18 @@ module sdl2_surface
 
     ! SDL_Surface
     type, bind(c) :: sdl_surface
-        integer(kind=c_uint32_t) :: flags
-        type(c_ptr)              :: format
-        integer(kind=c_int)      :: w
-        integer(kind=c_int)      :: h
-        integer(kind=c_int)      :: pitch
-        type(c_ptr)              :: pixels
-        type(c_ptr)              :: user_data
-        integer(kind=c_int)      :: locked
-        type(c_ptr)              :: lock_data
+        integer(kind=c_uint32_t) :: flags     = 0
+        type(c_ptr)              :: format    = c_null_ptr
+        integer(kind=c_int)      :: w         = 0
+        integer(kind=c_int)      :: h         = 0
+        integer(kind=c_int)      :: pitch     = 0
+        type(c_ptr)              :: pixels    = c_null_ptr
+        type(c_ptr)              :: user_data = c_null_ptr
+        integer(kind=c_int)      :: locked    = 0
+        type(c_ptr)              :: lock_data = c_null_ptr
         type(sdl_rect)           :: clip_rect
-        type(c_ptr)              :: map
-        integer(kind=c_int)      :: ref_count
+        type(c_ptr)              :: map       = c_null_ptr
+        integer(kind=c_int)      :: ref_count = 0
     end type sdl_surface
 
     public :: sdl_convert_surface_
@@ -69,7 +69,7 @@ module sdl2_surface
 
         ! SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
         function sdl_create_rgb_surface_from_(pixels, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask) &
-                bind(c, name='SDL_CreateRGBSurface')
+                bind(c, name='SDL_CreateRGBSurfaceFrom')
             import :: c_int, c_ptr, c_uint32_t
             type(c_ptr),              intent(in), value :: pixels
             integer(kind=c_int),      intent(in), value :: width

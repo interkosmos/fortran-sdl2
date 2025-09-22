@@ -1,15 +1,13 @@
 .POSIX:
 .SUFFIXES:
 
-FC         = gfortran
-SDL_CFLAGS = `sdl2-config --cflags`
-SDL_LDLIBS = `sdl2-config --libs`
-FFLAGS     = -march=native -Wall -std=f2008 -fmax-errors=1 $(SDL_CFLAGS) # -O2
-LDLIBS     = $(SDL_LDLIBS)
-LIBGL      = -lGL  # -lopengl32
-LIBGLU     = -lGLU # -lglu32
+FC     = gfortran
+FFLAGS = `sdl2-config --cflags`
+LDLIBS = `sdl2-config --libs`
+LIBGL  = -lGL
+LIBGLU = -lGLU
 
-SDL_SRC = src/c_util.f90 \
+SDL_SRC = src/c_util.F90 \
           src/sdl2/sdl2_stdinc.f90 \
           src/sdl2/sdl2_audio.f90 \
           src/sdl2/sdl2_blendmode.f90 \
@@ -39,7 +37,7 @@ SDL_SRC = src/c_util.f90 \
           src/sdl2/sdl2_opengl.f90 \
           src/sdl2.f90
 IMG_SRC = src/sdl2_image.f90
-MIX_SRC = src/c_util.f90 \
+MIX_SRC = src/c_util.F90 \
           src/sdl2_mixer.f90
 TTF_SRC = src/sdl2_ttf.f90
 GLU_SRC = src/glu.f90
@@ -51,8 +49,7 @@ TTF_LIB = libsdl2_ttf.a
 GLU_LIB = libglu.a
 LIBRARY = libfortran-sdl2.a
 
-.PHONY: all clean doc examples \
-        sdl2 sdl2_image sdl2_mixer sdl2_ttf glu
+.PHONY: all clean doc examples sdl2 sdl2_image sdl2_mixer sdl2_ttf glu
 
 all: $(LIBRARY) $(GLU_LIB)
 

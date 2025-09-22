@@ -3,7 +3,6 @@
 ! Demo that lets you fly through a field of Fortran logos.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module logo
     implicit none
@@ -36,10 +35,10 @@ contains
 
         do i = 1, size(logos)
             call random_number(r)
-            logos(i) = logo_type(x     = (width / 2) - (r(1) * width), &
-                                 y     = (height / 2) - (r(2) * height), &
-                                 z     = max_depth - (i * (max_depth / size(logos))), &
-                                 color = 1 + int(r(3) * ncolors))
+            logos(i) = logo_type((width / 2) - (r(1) * width), &
+                                 (height / 2) - (r(2) * height), &
+                                 max_depth - (i * (max_depth / size(logos))), &
+                                 1 + int(r(3) * ncolors))
         end do
     end subroutine logo_init
 
@@ -61,10 +60,10 @@ contains
 
             if (logos(i)%z < 0.0) then
                 call random_number(r)
-                logos(i) = logo_type(x     = (width / 2) - (r(1) * width), &
-                                     y     = (height / 2) - (r(2) * height), &
-                                     z     = max_depth, &
-                                     color = 1 + int(r(3) * ncolors))
+                logos(i) = logo_type((width / 2) - (r(1) * width), &
+                                     (height / 2) - (r(2) * height), &
+                                     max_depth, &
+                                     1 + int(r(3) * ncolors))
             end if
         end do
     end subroutine logo_move
@@ -96,34 +95,34 @@ program main
     implicit none
 
     type :: color_type
-        integer :: r
-        integer :: g
-        integer :: b
+        integer :: r = 0
+        integer :: g = 0
+        integer :: b = 0
     end type color_type
 
     type :: texture_type
-        integer(kind=c_int32_t) :: format
-        integer                 :: access
-        integer                 :: width
-        integer                 :: height
-        type(c_ptr)             :: ptr
-        type(sdl_rect)          :: rect
+        integer(c_int32_t) :: format
+        integer            :: access
+        integer            :: width
+        integer            :: height
+        type(c_ptr)        :: ptr
+        type(sdl_rect)     :: rect
     end type texture_type
 
-    character(len=*), parameter :: FILE_NAME     = 'share/logo.png'
-    integer,          parameter :: NLOGOS        = 20
-    integer,          parameter :: SCREEN_WIDTH  = 1024
-    integer,          parameter :: SCREEN_HEIGHT = 768
-    real,             parameter :: DZ            = 2.0
-    real,             parameter :: MAX_DEPTH     = 800.0
+    character(*), parameter :: FILE_NAME     = 'share/logo.png'
+    integer,      parameter :: NLOGOS        = 20
+    integer,      parameter :: SCREEN_WIDTH  = 1024
+    integer,      parameter :: SCREEN_HEIGHT = 768
+    real,         parameter :: DZ            = 2.0
+    real,         parameter :: MAX_DEPTH     = 800.0
 
-    integer                   :: rc
-    type(c_ptr)               :: renderer
-    type(c_ptr)               :: window
-    type(color_type)          :: colors(7)
-    type(sdl_event)           :: event
-    type(texture_type)        :: texture
-    integer(kind=i1), pointer :: keys(:)
+    integer              :: rc
+    type(c_ptr)          :: renderer
+    type(c_ptr)          :: window
+    type(color_type)     :: colors(7)
+    type(sdl_event)      :: event
+    type(texture_type)   :: texture
+    integer(i1), pointer :: keys(:)
 
     type(logo_type)  :: logos(NLOGOS)
     type(point_type) :: points(NLOGOS)
@@ -162,15 +161,10 @@ program main
     end if
 
     ! Initialise the logo.
-    call logo_init(logos     = logos, &
-                   width     = SCREEN_WIDTH, &
-                   height    = SCREEN_HEIGHT, &
-                   ncolors   = size(colors), &
-                   max_depth = MAX_DEPTH)
+    call logo_init(logos, SCREEN_WIDTH, SCREEN_HEIGHT, size(colors), MAX_DEPTH)
 
     ! Create renderer with hardware acceleration and VSync.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
 
     if (.not. c_associated(renderer)) then
         write (stderr, '(2a)') 'SDL Error: ', sdl_get_error()
@@ -195,8 +189,7 @@ program main
                 case (SDL_KEYDOWN)
                     keys(0:) => sdl_get_keyboard_state()
 
-                    if (keys(SDL_SCANCODE_ESCAPE) == 1) &
-                        exit loop
+                    if (keys(SDL_SCANCODE_ESCAPE) == 1) exit loop
 
                 case (SDL_QUITEVENT)
                     exit loop
@@ -225,7 +218,7 @@ contains
     function load_texture(renderer, file_name, texture) result (rc)
         !! Loads texture from file.
         type(c_ptr),        intent(in)  :: renderer
-        character(len=*),   intent(in)  :: file_name
+        character(*),       intent(in)  :: file_name
         type(texture_type), intent(out) :: texture
         integer                         :: rc
 
@@ -234,11 +227,7 @@ contains
         texture%ptr = img_load_texture(renderer, file_name // c_null_char)
         if (.not. c_associated(texture%ptr)) return
 
-        rc = sdl_query_texture(texture%ptr, &
-                               texture%format, &
-                               texture%access, &
-                               texture%width, &
-                               texture%height)
+        rc = sdl_query_texture(texture%ptr, texture%format, texture%access, texture%width, texture%height)
         if (rc < 0) return
 
         texture%rect = sdl_rect(0, 0, texture%width, texture%height)
@@ -250,10 +239,7 @@ contains
         type(c_ptr),      intent(in) :: ptr
         type(color_type), intent(in) :: color
 
-        rc = sdl_set_texture_color_mod(ptr,&
-                                       uint8(color%r), &
-                                       uint8(color%g), &
-                                       uint8(color%b))
+        rc = sdl_set_texture_color_mod(ptr,uint8(color%r), uint8(color%g), uint8(color%b))
     end subroutine color_mod
 
     subroutine render(renderer, logos, points, texture, colors, max_depth)
@@ -274,10 +260,7 @@ contains
             s = 1.0 - (logos(i)%z / max_depth)
             w = int(50.0 * s)
             h = int(50.0 * s)
-            rect = sdl_rect(points(i)%x, &
-                            points(i)%y, &
-                            w, &
-                            h)
+            rect = sdl_rect(points(i)%x, points(i)%y, w, h)
 
             call color_mod(texture%ptr, colors(logos(i)%color))
             rc = sdl_render_copy(renderer, texture%ptr, texture%rect, rect)

@@ -4,19 +4,18 @@
 ! the hardware renderer.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_null_char, c_ptr
+    use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: sdl2_ttf
     implicit none
 
-    integer,          parameter :: SCREEN_WIDTH  = 320
-    integer,          parameter :: SCREEN_HEIGHT = 240
-    character(len=*), parameter :: STRING        = 'Hello, World!'
-    character(len=*), parameter :: FONT_PATH     = 'share/font.ttf'
+    integer,      parameter :: SCREEN_WIDTH  = 320
+    integer,      parameter :: SCREEN_HEIGHT = 240
+    character(*), parameter :: STRING        = 'Hello, World!'
+    character(*), parameter :: FONT_PATH     = 'share/font.ttf'
 
     type(c_ptr)                :: window
     type(c_ptr)                :: renderer
@@ -27,7 +26,7 @@ program main
     type(sdl_event)            :: event
     type(sdl_color)            :: color
     integer                    :: rc
-    logical                    :: done = .false.
+    logical                    :: done
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -63,12 +62,13 @@ program main
     ! Set font colour.
     color = sdl_color(uint8(255),  uint8(0), uint8(0), uint8(SDL_ALPHA_OPAQUE))
 
+    done = .false.
+
     ! Event loop.
     do while (.not. done)
         if (sdl_wait_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    done = .true.
+                case (SDL_QUITEVENT); done = .true.
             end select
         end if
 
@@ -80,7 +80,6 @@ program main
         ! Render text.
         rc = sdl_render_clear(renderer)
         rc = sdl_render_copy(renderer, texture, rect, rect)
-
         call sdl_render_present(renderer)
 
         call sdl_destroy_texture(texture)

@@ -7,30 +7,30 @@
 ! Licence: ISC
 module sdl2_log
     use, intrinsic :: iso_c_binding
-    use :: c_util, only: c_char, c_funptr, c_int, c_ptr
+    use :: c_util
     implicit none
     private
 
-    public ::SDL_LOG_CATEGORY_APPLICATION
-    public ::SDL_LOG_CATEGORY_ERROR
-    public ::SDL_LOG_CATEGORY_ASSERT
-    public ::SDL_LOG_CATEGORY_SYSTEM
-    public ::SDL_LOG_CATEGORY_AUDIO
-    public ::SDL_LOG_CATEGORY_VIDEO
-    public ::SDL_LOG_CATEGORY_RENDER
-    public ::SDL_LOG_CATEGORY_INPUT
-    public ::SDL_LOG_CATEGORY_TEST
-    public ::SDL_LOG_CATEGORY_RESERVED1
-    public ::SDL_LOG_CATEGORY_RESERVED2
-    public ::SDL_LOG_CATEGORY_RESERVED3
-    public ::SDL_LOG_CATEGORY_RESERVED4
-    public ::SDL_LOG_CATEGORY_RESERVED5
-    public ::SDL_LOG_CATEGORY_RESERVED6
-    public ::SDL_LOG_CATEGORY_RESERVED7
-    public ::SDL_LOG_CATEGORY_RESERVED8
-    public ::SDL_LOG_CATEGORY_RESERVED9
-    public ::SDL_LOG_CATEGORY_RESERVED10
-    public ::SDL_LOG_CATEGORY_CUSTOM
+    public :: SDL_LOG_CATEGORY_APPLICATION
+    public :: SDL_LOG_CATEGORY_ERROR
+    public :: SDL_LOG_CATEGORY_ASSERT
+    public :: SDL_LOG_CATEGORY_SYSTEM
+    public :: SDL_LOG_CATEGORY_AUDIO
+    public :: SDL_LOG_CATEGORY_VIDEO
+    public :: SDL_LOG_CATEGORY_RENDER
+    public :: SDL_LOG_CATEGORY_INPUT
+    public :: SDL_LOG_CATEGORY_TEST
+    public :: SDL_LOG_CATEGORY_RESERVED1
+    public :: SDL_LOG_CATEGORY_RESERVED2
+    public :: SDL_LOG_CATEGORY_RESERVED3
+    public :: SDL_LOG_CATEGORY_RESERVED4
+    public :: SDL_LOG_CATEGORY_RESERVED5
+    public :: SDL_LOG_CATEGORY_RESERVED6
+    public :: SDL_LOG_CATEGORY_RESERVED7
+    public :: SDL_LOG_CATEGORY_RESERVED8
+    public :: SDL_LOG_CATEGORY_RESERVED9
+    public :: SDL_LOG_CATEGORY_RESERVED10
+    public :: SDL_LOG_CATEGORY_CUSTOM
 
     enum, bind(c)
         enumerator :: SDL_LOG_CATEGORY_APPLICATION

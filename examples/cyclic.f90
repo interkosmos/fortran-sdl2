@@ -3,7 +3,6 @@
 ! Cyclic cellular automaton, creates trippy colour effects.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module cyclic
     implicit none
@@ -17,8 +16,9 @@ contains
         integer,              intent(in)    :: width
         integer,              intent(in)    :: height
         integer,              intent(in)    :: nstates
-        integer                             :: x, y
-        real                                :: r(width, height)
+
+        integer :: x, y
+        real    :: r(width, height)
 
         allocate ( world(width, height))
         allocate (buffer(width, height))
@@ -44,8 +44,9 @@ contains
         integer,              intent(in)    :: nstates
         integer,              intent(in)    :: threshold
         integer,              intent(in)    :: range
-        integer                             :: cell, n
-        integer                             :: i, j, nx, ny, x, y
+
+        integer :: cell, n
+        integer :: i, j, nx, ny, x, y
 
         do concurrent (y = 1:height)
             do concurrent (x = 1:width)
@@ -76,8 +77,8 @@ contains
 end module cyclic
 
 program main
-    use, intrinsic :: iso_c_binding, only: c_associated, c_int8_t, c_null_char, c_null_ptr, c_ptr
-    use, intrinsic :: iso_fortran_env, only: stdout => output_unit, stderr => error_unit
+    use, intrinsic :: iso_c_binding
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, stdout => output_unit, stderr => error_unit
     use :: sdl2
     use :: cyclic
     implicit none
@@ -92,23 +93,23 @@ program main
         integer                          :: access
         integer                          :: format
         integer                          :: pitch
-        integer(kind=c_int32_t), pointer :: pixels(:)
+        integer(c_int32_t), pointer :: pixels(:)
         type(c_ptr)                      :: pixels_ptr
         type(c_ptr)                      :: texture
         type(sdl_pixel_format),  pointer :: pixel_format
         type(sdl_rect)                   :: rect
     end type frame_buffer_type
 
-    type(c_ptr)              :: cursor
-    type(c_ptr)              :: window
-    type(c_ptr)              :: renderer
-    type(frame_buffer_type)  :: frame_buffer
-    type(sdl_event)          :: event
-    integer(kind=1), pointer :: keys(:)
-    integer, allocatable     :: world(:, :)
-    integer, allocatable     :: buffer(:, :)
-    integer(kind=c_int32_t)  :: palette(0:15)
-    integer                  :: rc
+    type(c_ptr)             :: cursor
+    type(c_ptr)             :: window
+    type(c_ptr)             :: renderer
+    type(frame_buffer_type) :: frame_buffer
+    type(sdl_event)         :: event
+    integer(i1), pointer    :: keys(:)
+    integer, allocatable    :: world(:, :)
+    integer, allocatable    :: buffer(:, :)
+    integer(c_int32_t)      :: palette(0:15)
+    integer                 :: rc
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -134,8 +135,7 @@ program main
     call sdl_set_cursor(cursor)
 
     ! Create renderer.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
 
     ! Create frame buffer texture.
     call create_frame_buffer(renderer, window, frame_buffer, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -174,7 +174,7 @@ program main
 
                 case (SDL_KEYDOWN)
                     keys(0:) => sdl_get_keyboard_state()
-                    if (keys(int(SDL_SCANCODE_ESCAPE, kind=1)) == 1) exit loop
+                    if (keys(int(SDL_SCANCODE_ESCAPE, 1)) == 1) exit loop
             end select
         end do
 
@@ -209,23 +209,14 @@ contains
         integer,                 intent(in)  :: height
 
         ! Create frame buffer texture.
-        frame_buffer%texture = sdl_create_texture(renderer, &
-                                                  SDL_PIXELFORMAT_ARGB8888, &
-                                                  SDL_TEXTUREACCESS_STREAMING, &
-                                                  width, &
-                                                  height)
+        frame_buffer%texture = sdl_create_texture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height)
         frame_buffer%rect = sdl_rect(0, 0, width, height)
         frame_buffer%format = sdl_get_window_pixel_format(window)
         frame_buffer%pixel_format => sdl_alloc_format(frame_buffer%format)
 
         ! Get pixel pointers of buffer texture.
-        rc = sdl_lock_texture(frame_buffer%texture, &
-                              frame_buffer%rect, &
-                              frame_buffer%pixels_ptr, &
-                              frame_buffer%pitch)
-        call c_f_pointer(frame_buffer%pixels_ptr, &
-                         frame_buffer%pixels, &
-                         shape=[width * height])
+        rc = sdl_lock_texture(frame_buffer%texture, frame_buffer%rect, frame_buffer%pixels_ptr, frame_buffer%pitch)
+        call c_f_pointer(frame_buffer%pixels_ptr, frame_buffer%pixels, shape=[width * height])
         call sdl_unlock_texture(frame_buffer%texture)
     end subroutine create_frame_buffer
 
@@ -236,14 +227,12 @@ contains
         integer,                 intent(in)    :: width
         integer,                 intent(in)    :: height
         integer,                 intent(in)    :: ncolors
-        integer(kind=c_int32_t), intent(inout) :: palette(0:ncolors - 1)
-        integer                                :: offset, rc
-        integer                                :: x, y
+        integer(c_int32_t),      intent(inout) :: palette(0:ncolors - 1)
 
-        rc = sdl_lock_texture(frame_buffer%texture, &
-                              frame_buffer%rect, &
-                              frame_buffer%pixels_ptr, &
-                              frame_buffer%pitch)
+        integer :: offset, rc
+        integer :: x, y
+
+        rc = sdl_lock_texture(frame_buffer%texture, frame_buffer%rect, frame_buffer%pixels_ptr, frame_buffer%pitch)
 
         do concurrent (y = 1:height)
             do concurrent (x = 1:width)

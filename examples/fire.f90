@@ -4,7 +4,6 @@
 ! http://fabiensanglard.net/doom_fire_psx/
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module doom
     implicit  none
@@ -58,9 +57,10 @@ contains
         integer, intent(inout) :: fire(0:)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer                :: i, p, rnd
-        integer                :: x, y
-        real                   :: r
+
+        integer :: i, p, rnd
+        integer :: x, y
+        real    :: r
 
         do y = 1, height - 1
             do x = 0, width - 1
@@ -82,7 +82,8 @@ contains
         integer, intent(inout) :: fire(0:)
         integer, intent(in)    :: width
         integer, intent(in)    :: height
-        integer                :: x
+
+        integer :: x
 
         fire(:) = 0
 
@@ -105,13 +106,13 @@ program main
     integer, parameter :: FIRE_WIDTH    = SCREEN_WIDTH / 2
 
     type :: buffer_type
-        integer                          :: format       ! Texture format.
-        integer                          :: pitch        ! Texture pitch.
-        integer(kind=c_int32_t), pointer :: pixels(:)    ! SDL_Texture pixels pointer.
-        type(c_ptr)                      :: pixels_ptr   ! C pointer to texture pixels.
-        type(c_ptr)                      :: texture      ! C pointer to SDL_Texture.
-        type(sdl_pixel_format),  pointer :: pixel_format ! SDL_PixelFormat of SDL_Texture.
-        type(sdl_rect)                   :: rect         ! Utitlity rectangle.
+        integer                         :: format       ! Texture format.
+        integer                         :: pitch        ! Texture pitch.
+        integer(c_int32_t),     pointer :: pixels(:)    ! SDL_Texture pixels pointer.
+        type(c_ptr)                     :: pixels_ptr   ! C pointer to texture pixels.
+        type(c_ptr)                     :: texture      ! C pointer to SDL_Texture.
+        type(sdl_pixel_format), pointer :: pixel_format ! SDL_PixelFormat of SDL_Texture.
+        type(sdl_rect)                  :: rect         ! Utitlity rectangle.
     end type buffer_type
 
     type(buffer_type)    :: buffer
@@ -147,8 +148,7 @@ program main
     end if
 
     ! Create renderer with VSync enabled.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
     ! Create frame buffer texture.
     buffer%texture = sdl_create_texture(renderer, &
                                         SDL_PIXELFORMAT_ARGB8888, &
@@ -175,8 +175,7 @@ program main
         ! Event handling.
         do while (sdl_poll_event(event) > 0)
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    exit loop
+                case (SDL_QUITEVENT); exit loop
             end select
         end do
 
@@ -200,9 +199,10 @@ contains
         integer,           intent(inout) :: fire(*)
         integer,           intent(in)    :: width
         integer,           intent(in)    :: height
-        integer                          :: i, rc
-        integer                          :: x, y
-        type(rgb_type), pointer          :: p
+
+        integer                 :: i, rc
+        integer                 :: x, y
+        type(rgb_type), pointer :: p
 
         rc = sdl_lock_texture(buffer%texture, buffer%rect, buffer%pixels_ptr, buffer%pitch)
 

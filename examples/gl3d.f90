@@ -4,7 +4,6 @@
 ! fixed rendering pipeline).
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module util
     use, intrinsic :: iso_fortran_env, only: r8 => real64
@@ -13,17 +12,17 @@ module util
     public :: camera_update
 
     type, public :: vector_type
-        real(kind=r8) :: x, y, z
+        real(r8) :: x, y, z
     end type vector_type
 
     type, public :: camera_type
         type(vector_type) :: pos
         type(vector_type) :: eye
-        real(kind=r8)     :: dir
+        real(r8)          :: dir
     end type camera_type
 contains
     subroutine camera_update(camera, angle)
-        real(kind=r8), parameter :: PI = acos(-1.0_r8)
+        real(r8), parameter :: PI = acos(-1.0_r8)
 
         type(camera_type), intent(inout) :: camera
         real,              intent(in)    :: angle
@@ -36,8 +35,7 @@ end module util
 
 program main
     use, intrinsic :: iso_c_binding
-    use, intrinsic :: iso_fortran_env, only: i1 => int8, i8 => int64, r8 => real64, &
-                                             stderr => error_unit, stdout => output_unit
+    use, intrinsic :: iso_fortran_env, only: i1 => int8, i8 => int64, r8 => real64, stderr => error_unit, stdout => output_unit
     use :: sdl2
     use :: sdl2_image
     use :: glu
@@ -47,14 +45,14 @@ program main
     integer, parameter :: SCREEN_WIDTH  = 800
     integer, parameter :: SCREEN_HEIGHT = 600
 
-    type(c_ptr)               :: context
-    type(c_ptr)               :: window
-    type(sdl_event)           :: event
-    type(camera_type)         :: camera
-    character(len=32)         :: file_name
-    integer(kind=i1), pointer :: keys(:)
-    integer                   :: textures(3)
-    integer                   :: i, id, rc
+    type(c_ptr)          :: context
+    type(c_ptr)          :: window
+    type(sdl_event)      :: event
+    type(camera_type)    :: camera
+    character(32)        :: file_name
+    integer(i1), pointer :: keys(:)
+    integer              :: textures(3)
+    integer              :: i, id, rc
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_EVERYTHING) < 0) then
@@ -108,14 +106,13 @@ program main
         ! Event handling.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    exit loop
+                case (SDL_QUITEVENT); exit loop
             end select
         end if
 
         ! Check keyboard input.
         keys(0:) => sdl_get_keyboard_state()
-        if (keys(int(SDL_SCANCODE_ESCAPE, kind=i1)) == 1) exit loop
+        if (keys(int(SDL_SCANCODE_ESCAPE, i1)) == 1) exit loop
 
         ! Render the scene.
         call display(camera, textures)
@@ -135,12 +132,13 @@ contains
     function load_texture(id, file_path) result (file_exists)
         !! Loads texture from file and sets the argument`id` to the OpenGL
         !! texture id.
-        integer,          intent(out) :: id
-        character(len=*), intent(in)  :: file_path
-        logical                       :: file_exists
-        integer                       :: textures(1)
-        type(sdl_rect)                :: rect
-        type(sdl_surface), pointer    :: image, buffer
+        integer,      intent(out) :: id
+        character(*), intent(in)  :: file_path
+        logical                   :: file_exists
+
+        integer                    :: textures(1)
+        type(sdl_rect)             :: rect
+        type(sdl_surface), pointer :: image, buffer
 
         id = -1
         inquire (file=file_path, exist=file_exists)
@@ -150,10 +148,10 @@ contains
         ! Then, copy image to buffer in order to convert the pixel format.
         image  => img_load(file_path // c_null_char)
         buffer => sdl_create_rgb_surface(0, image%w, image%h, 32, &
-                                         int(z'000000FF', kind=i8), &
-                                         int(z'0000FF00', kind=i8), &
-                                         int(z'00FF0000', kind=i8), &
-                                         int(z'FF000000', kind=i8))
+                                         int(z'000000FF', i8), &
+                                         int(z'0000FF00', i8), &
+                                         int(z'00FF0000', i8), &
+                                         int(z'FF000000', i8))
         rect = sdl_rect(0, 0, image%w, image%h)
         rc   = sdl_blit_surface(image, rect, buffer, rect)
 
@@ -173,7 +171,8 @@ contains
     subroutine gl_init(screen_width, screen_height)
         !! Initialises OpenGL.
         integer, intent(in) :: screen_width, screen_height
-        real(kind=r8)       :: aspect
+
+        real(r8) :: aspect
 
         ! Set drawing region.
         call glviewport(0, 0, screen_width, screen_height)
@@ -182,7 +181,7 @@ contains
         call glmatrixmode(GL_PROJECTION)
         call glloadidentity()
 
-        aspect = real(screen_width, kind=r8) / real(screen_height, kind=r8)
+        aspect = real(screen_width, r8) / real(screen_height, r8)
         ! Alternatively:
         ! call gl_perspective(45.0_r8, aspect, 0.1_r8, 50.0_r8)
         call gluperspective(45.0_r8, aspect, 0.1_r8, 50.0_r8)
@@ -202,12 +201,14 @@ contains
     subroutine gl_perspective(fovy, aspect, znear, zfar)
         !! Sets perspective, much like `gluPerspective()`, but without the GLU
         !! dependency.
-        real(kind=r8), parameter  :: PI = acos(-1.0_r8)
-        real(kind=r8), intent(in) :: fovy
-        real(kind=r8), intent(in) :: aspect
-        real(kind=r8), intent(in) :: znear
-        real(kind=r8), intent(in) :: zfar
-        real(kind=r8)             :: fw, fh
+        real(r8), parameter :: PI = acos(-1.0_r8)
+
+        real(r8), intent(in) :: fovy
+        real(r8), intent(in) :: aspect
+        real(r8), intent(in) :: znear
+        real(r8), intent(in) :: zfar
+
+        real(r8) :: fw, fh
 
         fh = tan(fovy / 360. * PI) * znear
         fw = fh * aspect
@@ -217,10 +218,10 @@ contains
     subroutine display(camera, textures)
         !! The display routine, called every frame.
         type(camera_type), intent(inout) :: camera
-        integer,           intent(inout) :: textures(*)
+        integer,           intent(inout) :: textures(:)
 
         integer    :: i
-        real, save :: angle = 0
+        real, save :: angle = 0.0
 
         call glclear(ior(GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)) ! Clear the screen and depth buffer.
         call glmatrixmode(GL_MODELVIEW)                             ! Alter model view matrix.

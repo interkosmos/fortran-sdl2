@@ -4,7 +4,6 @@
 ! the screen, by accessing pixels of SDL_Surface and SDL_Texture directly.
 !
 ! Author:  Philipp Engel
-! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 program main
     use, intrinsic :: iso_c_binding
@@ -12,34 +11,34 @@ program main
     use :: sdl2
     implicit none
 
-    character(len=*), parameter :: IMAGE_FILE    = 'share/lena.bmp'
-    integer,          parameter :: SCREEN_WIDTH  = 320
-    integer,          parameter :: SCREEN_HEIGHT = 200
+    character(*), parameter :: IMAGE_FILE    = 'share/lena.bmp'
+    integer,      parameter :: SCREEN_WIDTH  = 320
+    integer,      parameter :: SCREEN_HEIGHT = 200
 
     type :: texture_type
-        integer                          :: access              ! Texture access.
-        integer                          :: format              ! Texture format.
-        integer                          :: pitch               ! Texture pitch.
-        integer                          :: width               ! Texture width.
-        integer                          :: height              ! Texture height.
-        integer(kind=c_int8_t),  pointer :: surface_pixels(:)   ! SDL_Surface pixels pointer.
-        integer(kind=c_int32_t), pointer :: texture_pixels(:)   ! SDL_Texture pixels pointer.
-        type(c_ptr)                      :: pixels_ptr          ! C pointer to texture pixels.
-        type(c_ptr)                      :: texture             ! C pointer to SDL_Texture.
-        type(sdl_pixel_format),  pointer :: pixel_format        ! SDL_PixelFormat of SDL_Texture.
-        type(sdl_surface),       pointer :: surface             ! SDL_Surface pointer.
+        integer                         :: access              ! Texture access.
+        integer                         :: format              ! Texture format.
+        integer                         :: pitch               ! Texture pitch.
+        integer                         :: width               ! Texture width.
+        integer                         :: height              ! Texture height.
+        integer(c_int8_t),      pointer :: surface_pixels(:)   ! SDL_Surface pixels pointer.
+        integer(c_int32_t),     pointer :: texture_pixels(:)   ! SDL_Texture pixels pointer.
+        type(c_ptr)                     :: pixels_ptr          ! C pointer to texture pixels.
+        type(c_ptr)                     :: texture             ! C pointer to SDL_Texture.
+        type(sdl_pixel_format), pointer :: pixel_format        ! SDL_PixelFormat of SDL_Texture.
+        type(sdl_surface),      pointer :: surface             ! SDL_Surface pointer.
     end type texture_type
 
-    type(texture_type)      :: buffer
-    type(texture_type)      :: image
-    type(c_ptr)             :: renderer
-    type(c_ptr)             :: window
-    type(sdl_event)         :: event
-    type(sdl_rect)          :: rect
-    integer(kind=c_int32_t) :: pixel
-    integer                 :: rc
-    integer                 :: i, x, y
-    integer(kind=i1)        :: r, g, b
+    type(texture_type) :: buffer
+    type(texture_type) :: image
+    type(c_ptr)        :: renderer
+    type(c_ptr)        :: window
+    type(sdl_event)    :: event
+    type(sdl_rect)     :: rect
+    integer(c_int32_t) :: pixel
+    integer            :: rc
+    integer            :: i, x, y
+    integer(i1)        :: r, g, b
 
     ! Initialise SDL.
     if (sdl_init(SDL_INIT_VIDEO) < 0) then
@@ -61,8 +60,7 @@ program main
     end if
 
     ! Create renderer.
-    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, &
-                                                   SDL_RENDERER_PRESENTVSYNC))
+    renderer = sdl_create_renderer(window, -1, ior(SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC))
 
     ! Load image file into texture.
     image%surface => sdl_load_bmp(IMAGE_FILE // c_null_char)
@@ -75,11 +73,7 @@ program main
     image%pixel_format => sdl_get_pixel_format(image%surface)
 
     ! Create frame buffer texture.
-    buffer%texture = sdl_create_texture(renderer, &
-                                        SDL_PIXELFORMAT_ARGB8888, &
-                                        SDL_TEXTUREACCESS_STREAMING, &
-                                        image%width, &
-                                        image%height)
+    buffer%texture = sdl_create_texture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, image%width, image%height)
     buffer%format = sdl_get_window_pixel_format(window)
     buffer%pixel_format => sdl_alloc_format(buffer%format)
 
@@ -123,8 +117,7 @@ program main
         ! Event handling.
         if (sdl_poll_event(event) > 0) then
             select case (event%type)
-                case (SDL_QUITEVENT)
-                    exit loop
+                case (SDL_QUITEVENT); exit loop
             end select
         end if
 
