@@ -6,9 +6,10 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_hints
-    use, intrinsic :: iso_c_binding, only: c_char, c_ptr
+    use sdl2_c_types, only: c_char, c_ptr
     use :: sdl2_stdinc, only: sdl_bool
     implicit none
+    private
 
     character(kind=c_char, len=*), parameter :: SDL_HINT_FRAMEBUFFER_ACCELERATION       = 'SDL_FRAMEBUFFER_ACCELERATION'
     character(kind=c_char, len=*), parameter :: SDL_HINT_RENDER_DRIVER                  = 'SDL_RENDER_DRIVER'

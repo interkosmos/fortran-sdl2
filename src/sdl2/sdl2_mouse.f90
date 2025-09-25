@@ -6,10 +6,10 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_mouse
-    use, intrinsic :: iso_c_binding, only: c_int, c_ptr
-    use :: c_util, only: c_uint32_t
+    use sdl2_c_types, only: c_ptr, c_int, c_uint32_t
     use :: sdl2_stdinc, only: sdl_bool
     implicit none
+    private
 
     integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
     integer(kind=c_int), parameter :: SDL_BUTTON_MIDDLE = 2

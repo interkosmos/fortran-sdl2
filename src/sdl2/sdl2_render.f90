@@ -6,23 +6,23 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_render
-    use, intrinsic :: iso_c_binding
-    use :: c_util
+    use sdl2_c_types, only: c_ptr, c_int, c_int32_t, c_uint8_t, c_uint32_t, c_float, c_double
     use :: sdl2_rect
     use :: sdl2_pixels
     use :: sdl2_surface
     implicit none
+    private
 
     ! SDL_RendererFlags
-    integer(kind=c_int), parameter :: SDL_RENDERER_SOFTWARE      = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_RENDERER_ACCELERATED   = int(z'00000002')
-    integer(kind=c_int), parameter :: SDL_RENDERER_PRESENTVSYNC  = int(z'00000004')
-    integer(kind=c_int), parameter :: SDL_RENDERER_TARGETTEXTURE = int(z'00000008')
+    integer(kind=c_int), parameter, public :: SDL_RENDERER_SOFTWARE      = int(z'00000001')
+    integer(kind=c_int), parameter, public :: SDL_RENDERER_ACCELERATED   = int(z'00000002')
+    integer(kind=c_int), parameter, public :: SDL_RENDERER_PRESENTVSYNC  = int(z'00000004')
+    integer(kind=c_int), parameter, public :: SDL_RENDERER_TARGETTEXTURE = int(z'00000008')
 
     ! SDL_RendererFlip
-    integer(kind=c_int), parameter :: SDL_FLIP_NONE       = int(z'00000000')
-    integer(kind=c_int), parameter :: SDL_FLIP_HORIZONTAL = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_FLIP_VERTICAL   = int(z'00000002')
+    integer(kind=c_int), parameter, public :: SDL_FLIP_NONE       = int(z'00000000')
+    integer(kind=c_int), parameter, public :: SDL_FLIP_HORIZONTAL = int(z'00000001')
+    integer(kind=c_int), parameter, public :: SDL_FLIP_VERTICAL   = int(z'00000002')
 
     ! SDL_TextureAccess
     enum, bind(c)
@@ -32,7 +32,7 @@ module sdl2_render
     end enum
 
     ! SDL_RendererInfo
-    type, bind(c), public :: sdl_renderer_info
+    type, public, bind(c) :: sdl_renderer_info
         type(c_ptr)             :: name
         integer(kind=c_int32_t) :: flags
         integer(kind=c_int32_t) :: num_texture_formats
@@ -42,7 +42,7 @@ module sdl2_render
     end type sdl_renderer_info
 
     ! SDL_Vertex
-    type, bind(c), public :: sdl_vertex
+    type, public, bind(c) :: sdl_vertex
         type(sdl_fpoint) :: position
         type(sdl_color)  :: color
         type(sdl_fpoint) :: tex_coord
