@@ -6,9 +6,9 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_messagebox
-    use, intrinsic :: iso_c_binding, only: c_char, c_int, c_ptr
-    use :: c_util, only: c_uint32_t
+    use sdl2_c_types, only: c_ptr, c_char, c_int, c_uint32_t
     implicit none
+    private
 
     ! SDL_MessageBoxFlags
     integer(kind=c_int), parameter :: SDL_MESSAGEBOX_ERROR       = int(z'00000010')

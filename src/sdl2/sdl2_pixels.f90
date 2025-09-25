@@ -6,53 +6,53 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_pixels
-    use, intrinsic :: iso_c_binding
-    use :: c_util
+    use sdl2_c_types, only: c_ptr, c_int, c_uint8_t, c_uint32_t
     implicit none
+    private
 
     ! SDL_PixelFormatEnum
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_UNKNOWN     = int(z'0')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX1LSB   = int(z'11100100')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX1MSB   = int(z'11200100')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX4LSB   = int(z'12100400')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX4MSB   = int(z'12200400')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_INDEX8      = int(z'13000801')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB332      = int(z'14110801')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB444      = int(z'15120c02')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB555      = int(z'15130f02')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR555      = int(z'15530f02')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB4444    = int(z'15321002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA4444    = int(z'15421002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR4444    = int(z'15721002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA4444    = int(z'15821002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB1555    = int(z'15331002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA5551    = int(z'15441002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR1555    = int(z'15731002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA5551    = int(z'15841002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB565      = int(z'15151002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR565      = int(z'15551002')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB24       = int(z'17101803')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR24       = int(z'17401803')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGB888      = int(z'16161804')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBX8888    = int(z'16261804')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGR888      = int(z'16561804')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRX8888    = int(z'16661804')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB8888    = int(z'16362004')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_RGBA8888    = int(z'16462004')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ABGR8888    = int(z'16762004')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_BGRA8888    = int(z'16862004')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_ARGB2101010 = int(z'16372004')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YV12        = int(z'32315659')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_IYUV        = int(z'56555949')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YUY2        = int(z'32595559')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_UYVY        = int(z'59565955')
-    integer(kind=c_int), parameter :: SDL_PIXELFORMAT_YVYU        = int(z'55595659')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_UNKNOWN     = int(z'0')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_INDEX1LSB   = int(z'11100100')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_INDEX1MSB   = int(z'11200100')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_INDEX4LSB   = int(z'12100400')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_INDEX4MSB   = int(z'12200400')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_INDEX8      = int(z'13000801')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB332      = int(z'14110801')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB444      = int(z'15120c02')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB555      = int(z'15130f02')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGR555      = int(z'15530f02')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ARGB4444    = int(z'15321002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGBA4444    = int(z'15421002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ABGR4444    = int(z'15721002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGRA4444    = int(z'15821002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ARGB1555    = int(z'15331002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGBA5551    = int(z'15441002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ABGR1555    = int(z'15731002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGRA5551    = int(z'15841002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB565      = int(z'15151002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGR565      = int(z'15551002')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB24       = int(z'17101803')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGR24       = int(z'17401803')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGB888      = int(z'16161804')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGBX8888    = int(z'16261804')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGR888      = int(z'16561804')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGRX8888    = int(z'16661804')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ARGB8888    = int(z'16362004')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_RGBA8888    = int(z'16462004')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ABGR8888    = int(z'16762004')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_BGRA8888    = int(z'16862004')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_ARGB2101010 = int(z'16372004')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_YV12        = int(z'32315659')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_IYUV        = int(z'56555949')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_YUY2        = int(z'32595559')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_UYVY        = int(z'59565955')
+    integer(kind=c_int), parameter, public :: SDL_PIXELFORMAT_YVYU        = int(z'55595659')
 
-    integer(kind=c_int), parameter :: SDL_ALPHA_OPAQUE      = 255
-    integer(kind=c_int), parameter :: SDL_ALPHA_TRANSPARENT = 0
+    integer(kind=c_int), parameter, public :: SDL_ALPHA_OPAQUE      = 255
+    integer(kind=c_int), parameter, public :: SDL_ALPHA_TRANSPARENT = 0
 
     ! SDL_Color
-    type, bind(c) :: sdl_color
+    type, public, bind(c) :: sdl_color
         integer(kind=c_uint8_t) :: r
         integer(kind=c_uint8_t) :: g
         integer(kind=c_uint8_t) :: b
@@ -60,7 +60,7 @@ module sdl2_pixels
     end type sdl_color
 
     ! SDL_Palette
-    type, bind(c) :: sdl_palette
+    type, public, bind(c) :: sdl_palette
         integer(kind=c_int)      :: ncolors
         type(c_ptr)              :: colors
         integer(kind=c_uint32_t) :: version
@@ -68,7 +68,7 @@ module sdl2_pixels
     end type sdl_palette
 
     ! SDL_PixelFormat
-    type, bind(c) :: sdl_pixel_format
+    type, public, bind(c) :: sdl_pixel_format
         integer(kind=c_uint32_t) :: format
         type(c_ptr)              :: palette
         integer(kind=c_uint8_t)  :: bits_per_pixel

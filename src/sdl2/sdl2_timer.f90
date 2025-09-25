@@ -6,11 +6,12 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_timer
-    use, intrinsic :: iso_c_binding
-    use :: c_util, only: c_uint32_t, c_uint64_t
+    use sdl2_c_types, only: c_uint32_t, c_uint64_t
     implicit none
+    private
 
     public :: sdl_delay
+    public :: sdl_get_ticks
     public :: sdl_get_performance_counter
     public :: sdl_get_performance_frequency
 

@@ -6,8 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_log
-    use, intrinsic :: iso_c_binding
-    use :: c_util
+    use sdl2_c_types, only: c_char, c_int, c_ptr, c_funptr
     implicit none
     private
 

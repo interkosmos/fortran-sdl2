@@ -6,8 +6,10 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_opengl
-    use, intrinsic :: iso_c_binding
+    use sdl2_c_types, only: c_ptr, c_short, c_int, c_long, c_signed_char, c_float, c_double
     implicit none
+    private
+
     integer, parameter, public :: GLenum     = c_int
     integer, parameter, public :: GLboolean  = c_signed_char
     integer, parameter, public :: GLbitfield = c_int

@@ -6,8 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_gamecontroller
-    use, intrinsic :: iso_c_binding, only: c_int, c_ptr
-    use :: sdl2_stdinc
+    use sdl2_c_types, only: c_ptr, c_int
+    use :: sdl2_stdinc, only: sdl_bool
     implicit none
     private
 

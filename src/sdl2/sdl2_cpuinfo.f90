@@ -6,9 +6,10 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_cpuinfo
-    use, intrinsic :: iso_c_binding
+    use sdl2_c_types, only: c_int
     use :: sdl2_stdinc, only: sdl_bool
     implicit none
+    private
 
     public :: sdl_get_cpu_cache_line_size
     public :: sdl_get_cpu_count

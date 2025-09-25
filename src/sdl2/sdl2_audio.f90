@@ -6,8 +6,9 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_audio
-    use, intrinsic :: iso_c_binding, only: c_int, c_ptr
+    use sdl2_c_types, only: c_ptr, c_int
     implicit none
+    private
 
     public :: sdl_get_audio_driver_
     public :: sdl_get_current_audio_driver_

@@ -6,11 +6,11 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_video
-    use, intrinsic :: iso_c_binding
-    use :: c_util, only: c_uint32_t
     use :: sdl2_surface, only: sdl_surface
     use :: sdl2_stdinc, only: sdl_bool
+    use sdl2_c_types, only: c_ptr, c_char, c_int, c_uint32_t
     implicit none
+    private
 
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
     integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
