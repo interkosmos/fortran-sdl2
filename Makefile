@@ -7,7 +7,7 @@ LDLIBS = `sdl2-config --libs`
 LIBGL  = -lGL
 LIBGLU = -lGLU
 
-SDL_SRC = src/c_util.F90 \
+SDL_SRC = src/sdl2/sdl2_c_types.F90 \
           src/sdl2/sdl2_stdinc.f90 \
           src/sdl2/sdl2_audio.f90 \
           src/sdl2/sdl2_blendmode.f90 \
@@ -37,7 +37,7 @@ SDL_SRC = src/c_util.F90 \
           src/sdl2/sdl2_opengl.f90 \
           src/sdl2.f90
 IMG_SRC = src/sdl2_image.f90
-MIX_SRC = src/c_util.F90 \
+MIX_SRC = src/sdl2/sdl2_c_types.F90 \
           src/sdl2_mixer.f90
 TTF_SRC = src/sdl2_ttf.f90
 GLU_SRC = src/glu.f90
