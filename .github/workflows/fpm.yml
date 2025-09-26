@@ -25,4 +25,4 @@ jobs:
       uses: fortran-lang/setup-fpm@v7
 
     - name: Build
-      run: FPM_FC=gfortran-${{ matrix.GCC }} fpm build
+      run: FPM_LDFLAGS="$(pkg-config --libs --cflags gl glu)" FPM_FC=gfortran-${{ matrix.GCC }} fpm build
