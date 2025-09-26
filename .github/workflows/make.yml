@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         image: [ 'ubuntu-latest' ]
-        GCC: [ '14', '15' ]
+        GCC: [ '12', '14' ]
 
     steps:
     - uses: actions/checkout@v4
