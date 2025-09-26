@@ -22,4 +22,6 @@ jobs:
       run: sudo apt update && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt install gfortran-${{ matrix.GCC }} libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
 
     - name: Build
-      run: FC=gfortran-${{ matrix.GCC }} make all
+      run: |
+        FC=gfortran-${{ matrix.GCC }} make all
+        FC=gfortran-${{ matrix.GCC }} make examples
