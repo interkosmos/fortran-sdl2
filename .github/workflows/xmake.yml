@@ -24,4 +24,4 @@ jobs:
     - name: Build
       run: |
         FC=gfortran-${{ matrix.GCC }} xmake
-        FC=gfortran-${{ matrix.GCC }} xmake examples
+        FC=gfortran-${{ matrix.GCC }} xmake build examples
