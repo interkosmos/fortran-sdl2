@@ -1,5 +1,4 @@
-name: Fortran Package Manager
-
+name: FPM
 on:
   push:
   pull_request:

@@ -1,4 +1,4 @@
-name: Makefiles
+name: Make
 
 on:
   push:
