@@ -4,8 +4,8 @@
 FC     = gfortran
 FFLAGS = `sdl2-config --cflags`
 LDLIBS = `sdl2-config --libs`
-LIBGL  = -lGL
-LIBGLU = -lGLU
+LIBGL  = `pkg-config --libs --cflags gl`
+LIBGLU = `pkg-config --libs --cflags glu`
 
 SDL_SRC = src/sdl2/sdl2_c_types.F90 \
           src/sdl2/sdl2_stdinc.f90 \
