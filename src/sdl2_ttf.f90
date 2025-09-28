@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_ttf
-    use, intrinsic :: iso_c_binding
+    use sdl2_c_types, only: c_ptr, c_char, c_int
     implicit none
     private
 

@@ -6,7 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_image
-    use, intrinsic :: iso_c_binding, only: c_associated, c_char, c_int, c_ptr
+    use sdl2_c_types, only: c_ptr, c_char, c_int
+    use, intrinsic :: iso_c_binding, only: c_f_pointer, c_associated
     use :: sdl2_surface
     implicit none
     private
