@@ -6,105 +6,101 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_video
+    use :: sdl2_c_types, only: c_char, c_int, c_ptr, c_uint32_t
     use :: sdl2_surface, only: sdl_surface
-    use :: sdl2_stdinc, only: sdl_bool
-    use sdl2_c_types, only: c_ptr, c_char, c_int, c_uint32_t
+    use :: sdl2_stdinc,  only: sdl_bool
     implicit none
     private
 
-    integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
-    integer(kind=c_int), parameter :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
+    integer(kind=c_int), parameter, public :: SDL_WINDOWPOS_UNDEFINED_MASK = int(z'1FFF0000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOWPOS_UNDEFINED      = ior(SDL_WINDOWPOS_UNDEFINED_MASK, 0)
 
-    integer(kind=c_int), parameter :: SDL_INIT_TIMER          = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_INIT_AUDIO          = int(z'00000010')
-    integer(kind=c_int), parameter :: SDL_INIT_VIDEO          = int(z'00000020')
-    integer(kind=c_int), parameter :: SDL_INIT_JOYSTICK       = int(z'00000200')
-    integer(kind=c_int), parameter :: SDL_INIT_HAPTIC         = int(z'00001000')
-    integer(kind=c_int), parameter :: SDL_INIT_GAMECONTROLLER = int(z'00002000')
-    integer(kind=c_int), parameter :: SDL_INIT_EVENTS         = int(z'00004000')
-    integer(kind=c_int), parameter :: SDL_INIT_NOPARACHUTE    = int(z'00010000')
-    integer(kind=c_int), parameter :: SDL_INIT_EVERYTHING     = ior(SDL_INIT_TIMER, &
-                                                                    ior(SDL_INIT_VIDEO, &
-                                                                    ior(SDL_INIT_VIDEO, &
-                                                                    ior(SDL_INIT_JOYSTICK, &
-                                                                    ior(SDL_INIT_HAPTIC, &
-                                                                    ior(SDL_INIT_GAMECONTROLLER, &
-                                                                    ior(SDL_INIT_EVENTS, SDL_INIT_NOPARACHUTE)))))))
+    integer(kind=c_int), parameter, public :: SDL_INIT_TIMER          = int(z'00000001')
+    integer(kind=c_int), parameter, public :: SDL_INIT_AUDIO          = int(z'00000010')
+    integer(kind=c_int), parameter, public :: SDL_INIT_VIDEO          = int(z'00000020')
+    integer(kind=c_int), parameter, public :: SDL_INIT_JOYSTICK       = int(z'00000200')
+    integer(kind=c_int), parameter, public :: SDL_INIT_HAPTIC         = int(z'00001000')
+    integer(kind=c_int), parameter, public :: SDL_INIT_GAMECONTROLLER = int(z'00002000')
+    integer(kind=c_int), parameter, public :: SDL_INIT_EVENTS         = int(z'00004000')
+    integer(kind=c_int), parameter, public :: SDL_INIT_NOPARACHUTE    = int(z'00010000')
+    integer(kind=c_int), parameter, public :: SDL_INIT_EVERYTHING     = ior(SDL_INIT_TIMER, &
+                                                                            ior(SDL_INIT_VIDEO, &
+                                                                            ior(SDL_INIT_VIDEO, &
+                                                                            ior(SDL_INIT_JOYSTICK, &
+                                                                            ior(SDL_INIT_HAPTIC, &
+                                                                            ior(SDL_INIT_GAMECONTROLLER, &
+                                                                            ior(SDL_INIT_EVENTS, SDL_INIT_NOPARACHUTE)))))))
 
-    integer(kind=c_int), parameter :: SDL_WINDOW_FULLSCREEN         = int(z'00000001')
-    integer(kind=c_int), parameter :: SDL_WINDOW_OPENGL             = int(z'00000002')
-    integer(kind=c_int), parameter :: SDL_WINDOW_SHOWN              = int(z'00000004')
-    integer(kind=c_int), parameter :: SDL_WINDOW_HIDDEN             = int(z'00000008')
-    integer(kind=c_int), parameter :: SDL_WINDOW_BORDERLESS         = int(z'00000010')
-    integer(kind=c_int), parameter :: SDL_WINDOW_RESIZABLE          = int(z'00000020')
-    integer(kind=c_int), parameter :: SDL_WINDOW_MINIMIZED          = int(z'00000040')
-    integer(kind=c_int), parameter :: SDL_WINDOW_MAXIMIZED          = int(z'00000080')
-    integer(kind=c_int), parameter :: SDL_WINDOW_INPUT_GRABBED      = int(z'00000100')
-    integer(kind=c_int), parameter :: SDL_WINDOW_INPUT_FOCUS        = int(z'00000200')
-    integer(kind=c_int), parameter :: SDL_WINDOW_MOUSE_FOCUS        = int(z'00000400')
-    integer(kind=c_int), parameter :: SDL_WINDOW_FULLSCREEN_DESKTOP = ior(SDL_WINDOW_FULLSCREEN, &
-                                                                          int(z'00001000'))
-    integer(kind=c_int), parameter :: SDL_WINDOW_FOREIGN            = int(z'00000800')
-    integer(kind=c_int), parameter :: SDL_WINDOW_ALLOW_HIGHDPI      = int(z'00002000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_MOUSE_CAPTURE      = int(z'00004000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_ALWAYS_ON_TOP      = int(z'00008000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_SKIP_TASKBAR       = int(z'00010000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_UTILITY            = int(z'00020000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_TOOLTIP            = int(z'00040000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_POPUP_MENU         = int(z'00080000')
-    integer(kind=c_int), parameter :: SDL_WINDOW_VULKAN             = int(z'10000000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_FULLSCREEN         = int(z'00000001')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_OPENGL             = int(z'00000002')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_SHOWN              = int(z'00000004')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_HIDDEN             = int(z'00000008')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_BORDERLESS         = int(z'00000010')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_RESIZABLE          = int(z'00000020')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_MINIMIZED          = int(z'00000040')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_MAXIMIZED          = int(z'00000080')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_INPUT_GRABBED      = int(z'00000100')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_INPUT_FOCUS        = int(z'00000200')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_MOUSE_FOCUS        = int(z'00000400')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_FULLSCREEN_DESKTOP = ior(SDL_WINDOW_FULLSCREEN, &
+                                                                                  int(z'00001000'))
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_FOREIGN            = int(z'00000800')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_ALLOW_HIGHDPI      = int(z'00002000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_MOUSE_CAPTURE      = int(z'00004000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_ALWAYS_ON_TOP      = int(z'00008000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_SKIP_TASKBAR       = int(z'00010000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_UTILITY            = int(z'00020000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_TOOLTIP            = int(z'00040000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_POPUP_MENU         = int(z'00080000')
+    integer(kind=c_int), parameter, public :: SDL_WINDOW_VULKAN             = int(z'10000000')
 
     ! SDL_WindowEventID
-    enum, bind(c)
-        enumerator :: SDL_WINDOWEVENT_NONE
-        enumerator :: SDL_WINDOWEVENT_SHOWN
-        enumerator :: SDL_WINDOWEVENT_HIDDEN
-        enumerator :: SDL_WINDOWEVENT_EXPOSED
-        enumerator :: SDL_WINDOWEVENT_MOVED
-        enumerator :: SDL_WINDOWEVENT_RESIZED
-        enumerator :: SDL_WINDOWEVENT_SIZE_CHANGED
-        enumerator :: SDL_WINDOWEVENT_MINIMIZED
-        enumerator :: SDL_WINDOWEVENT_MAXIMIZED
-        enumerator :: SDL_WINDOWEVENT_RESTORED
-        enumerator :: SDL_WINDOWEVENT_ENTER
-        enumerator :: SDL_WINDOWEVENT_LEAVE
-        enumerator :: SDL_WINDOWEVENT_FOCUS_GAINED
-        enumerator :: SDL_WINDOWEVENT_FOCUS_LOST
-        enumerator :: SDL_WINDOWEVENT_CLOSE
-        enumerator :: SDL_WINDOWEVENT_TAKE_FOCUS
-        enumerator :: SDL_WINDOWEVENT_HIT_TEST
-    end enum
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_NONE         = 0
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_SHOWN        = 1
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_HIDDEN       = 2
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_EXPOSED      = 3
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_MOVED        = 4
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_RESIZED      = 5
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_SIZE_CHANGED = 6
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_MINIMIZED    = 7
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_MAXIMIZED    = 8
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_RESTORED     = 9
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_ENTER        = 10
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_LEAVE        = 11
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_FOCUS_GAINED = 12
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_FOCUS_LOST   = 13
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_CLOSE        = 14
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_TAKE_FOCUS   = 15
+    integer(kind=c_int), parameter, public :: SDL_WINDOWEVENT_HIT_TEST     = 16
 
     ! SDL_GLattr
-    enum, bind(c)
-        enumerator :: SDL_GL_RED_SIZE
-        enumerator :: SDL_GL_GREEN_SIZE
-        enumerator :: SDL_GL_BLUE_SIZE
-        enumerator :: SDL_GL_ALPHA_SIZE
-        enumerator :: SDL_GL_BUFFER_SIZE
-        enumerator :: SDL_GL_DOUBLEBUFFER
-        enumerator :: SDL_GL_DEPTH_SIZE
-        enumerator :: SDL_GL_STENCIL_SIZE
-        enumerator :: SDL_GL_ACCUM_RED_SIZE
-        enumerator :: SDL_GL_ACCUM_GREEN_SIZE
-        enumerator :: SDL_GL_ACCUM_BLUE_SIZE
-        enumerator :: SDL_GL_ACCUM_ALPHA_SIZE
-        enumerator :: SDL_GL_STEREO
-        enumerator :: SDL_GL_MULTISAMPLEBUFFERS
-        enumerator :: SDL_GL_MULTISAMPLESAMPLES
-        enumerator :: SDL_GL_ACCELERATED_VISUAL
-        enumerator :: SDL_GL_RETAINED_BACKING
-        enumerator :: SDL_GL_CONTEXT_MAJOR_VERSION
-        enumerator :: SDL_GL_CONTEXT_MINOR_VERSION
-        enumerator :: SDL_GL_CONTEXT_EGL
-        enumerator :: SDL_GL_CONTEXT_FLAGS
-        enumerator :: SDL_GL_CONTEXT_PROFILE_MASK
-        enumerator :: SDL_GL_SHARE_WITH_CURRENT_CONTEXT
-        enumerator :: SDL_GL_FRAMEBUFFER_SRGB_CAPABLE
-        enumerator :: SDL_GL_CONTEXT_RELEASE_BEHAVIOR
-        enumerator :: SDL_GL_CONTEXT_RESET_NOTIFICATION
-        enumerator :: SDL_GL_CONTEXT_NO_ERROR
-    end enum
+    integer(kind=c_int), parameter, public :: SDL_GL_RED_SIZE                   = 0
+    integer(kind=c_int), parameter, public :: SDL_GL_GREEN_SIZE                 = 1
+    integer(kind=c_int), parameter, public :: SDL_GL_BLUE_SIZE                  = 2
+    integer(kind=c_int), parameter, public :: SDL_GL_ALPHA_SIZE                 = 3
+    integer(kind=c_int), parameter, public :: SDL_GL_BUFFER_SIZE                = 4
+    integer(kind=c_int), parameter, public :: SDL_GL_DOUBLEBUFFER               = 5
+    integer(kind=c_int), parameter, public :: SDL_GL_DEPTH_SIZE                 = 6
+    integer(kind=c_int), parameter, public :: SDL_GL_STENCIL_SIZE               = 7
+    integer(kind=c_int), parameter, public :: SDL_GL_ACCUM_RED_SIZE             = 8
+    integer(kind=c_int), parameter, public :: SDL_GL_ACCUM_GREEN_SIZE           = 9
+    integer(kind=c_int), parameter, public :: SDL_GL_ACCUM_BLUE_SIZE            = 10
+    integer(kind=c_int), parameter, public :: SDL_GL_ACCUM_ALPHA_SIZE           = 11
+    integer(kind=c_int), parameter, public :: SDL_GL_STEREO                     = 12
+    integer(kind=c_int), parameter, public :: SDL_GL_MULTISAMPLEBUFFERS         = 13
+    integer(kind=c_int), parameter, public :: SDL_GL_MULTISAMPLESAMPLES         = 14
+    integer(kind=c_int), parameter, public :: SDL_GL_ACCELERATED_VISUAL         = 15
+    integer(kind=c_int), parameter, public :: SDL_GL_RETAINED_BACKING           = 16
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_MAJOR_VERSION      = 17
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_MINOR_VERSION      = 18
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_EGL                = 19
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_FLAGS              = 20
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_PROFILE_MASK       = 21
+    integer(kind=c_int), parameter, public :: SDL_GL_SHARE_WITH_CURRENT_CONTEXT = 22
+    integer(kind=c_int), parameter, public :: SDL_GL_FRAMEBUFFER_SRGB_CAPABLE   = 23
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_RELEASE_BEHAVIOR   = 24
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_RESET_NOTIFICATION = 25
+    integer(kind=c_int), parameter, public :: SDL_GL_CONTEXT_NO_ERROR           = 26
 
     public :: sdl_create_window
     public :: sdl_destroy_window

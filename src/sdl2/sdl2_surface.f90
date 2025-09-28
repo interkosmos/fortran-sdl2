@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_surface
-    use sdl2_c_types, only: c_ptr, c_null_ptr, c_int, c_uint32_t
+    use :: sdl2_c_types, only: c_int, c_null_ptr, c_ptr, c_uint32_t
     use :: sdl2_pixels
     use :: sdl2_rect
     use :: sdl2_stdinc
@@ -14,7 +14,7 @@ module sdl2_surface
     private
 
     ! SDL_Surface
-    type, public, bind(c) :: sdl_surface
+    type, bind(c), public :: sdl_surface
         integer(kind=c_uint32_t) :: flags     = 0
         type(c_ptr)              :: format    = c_null_ptr
         integer(kind=c_int)      :: w         = 0

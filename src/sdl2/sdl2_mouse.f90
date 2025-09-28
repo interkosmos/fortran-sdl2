@@ -6,37 +6,35 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_mouse
-    use sdl2_c_types, only: c_ptr, c_int, c_uint32_t
-    use :: sdl2_stdinc, only: sdl_bool
+    use :: sdl2_c_types, only: c_int, c_ptr, c_uint32_t
+    use :: sdl2_stdinc,  only: sdl_bool
     implicit none
     private
 
-    integer(kind=c_int), parameter :: SDL_BUTTON_LEFT   = 1
-    integer(kind=c_int), parameter :: SDL_BUTTON_MIDDLE = 2
-    integer(kind=c_int), parameter :: SDL_BUTTON_RIGHT  = 3
-    integer(kind=c_int), parameter :: SDL_BUTTON_X1     = 4
-    integer(kind=c_int), parameter :: SDL_BUTTON_X2     = 5
-    integer(kind=c_int), parameter :: SDL_BUTTON_LMASK  = ishft(1, SDL_BUTTON_LEFT - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_MMASK  = ishft(1, SDL_BUTTON_MIDDLE - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_RMASK  = ishft(1, SDL_BUTTON_RIGHT - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_X1MASK = ishft(1, SDL_BUTTON_X1 - 1)
-    integer(kind=c_int), parameter :: SDL_BUTTON_X2MASK = ishft(1, SDL_BUTTON_X2 - 1)
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_LEFT   = 1
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_MIDDLE = 2
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_RIGHT  = 3
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_X1     = 4
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_X2     = 5
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_LMASK  = ishft(1, SDL_BUTTON_LEFT - 1)
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_MMASK  = ishft(1, SDL_BUTTON_MIDDLE - 1)
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_RMASK  = ishft(1, SDL_BUTTON_RIGHT - 1)
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_X1MASK = ishft(1, SDL_BUTTON_X1 - 1)
+    integer(kind=c_int), parameter, public :: SDL_BUTTON_X2MASK = ishft(1, SDL_BUTTON_X2 - 1)
 
-    enum, bind(c)
-        enumerator :: SDL_SYSTEM_CURSOR_ARROW     ! Arrow.
-        enumerator :: SDL_SYSTEM_CURSOR_IBEAM     ! I-beam.
-        enumerator :: SDL_SYSTEM_CURSOR_WAIT      ! Wait.
-        enumerator :: SDL_SYSTEM_CURSOR_CROSSHAIR ! Crosshair.
-        enumerator :: SDL_SYSTEM_CURSOR_WAITARROW ! Small wait cursor (or Wait if not available).
-        enumerator :: SDL_SYSTEM_CURSOR_SIZENWSE  ! Double arrow pointing northwest and southeast.
-        enumerator :: SDL_SYSTEM_CURSOR_SIZENESW  ! Double arrow pointing northeast and southwest.
-        enumerator :: SDL_SYSTEM_CURSOR_SIZEWE    ! Double arrow pointing west and east.
-        enumerator :: SDL_SYSTEM_CURSOR_SIZENS    ! Double arrow pointing north and south.
-        enumerator :: SDL_SYSTEM_CURSOR_SIZEALL   ! Four pointed arrow pointing north, south, east, and west.
-        enumerator :: SDL_SYSTEM_CURSOR_NO        ! Slashed circle or crossbones.
-        enumerator :: SDL_SYSTEM_CURSOR_HAND      ! Hand.
-        enumerator :: SDL_NUM_SYSTEM_CURSORS
-    end enum
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_ARROW     = 0  ! Arrow.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_IBEAM     = 1  ! I-beam.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_WAIT      = 2  ! Wait.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_CROSSHAIR = 3  ! Crosshair.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_WAITARROW = 4  ! Small wait cursor (or Wait if not available).
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_SIZENWSE  = 5  ! Double arrow pointing northwest and southeast.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_SIZENESW  = 6  ! Double arrow pointing northeast and southwest.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_SIZEWE    = 7  ! Double arrow pointing west and east.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_SIZENS    = 8  ! Double arrow pointing north and south.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_SIZEALL   = 9  ! Four pointed arrow pointing north, south, east, and west.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_NO        = 10 ! Slashed circle or crossbones.
+    integer(kind=c_int), parameter, public :: SDL_SYSTEM_CURSOR_HAND      = 11 ! Hand.
+    integer(kind=c_int), parameter, public :: SDL_NUM_SYSTEM_CURSORS      = 12
 
     public :: sdl_create_system_cursor
     public :: sdl_free_cursor

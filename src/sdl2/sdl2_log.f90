@@ -6,71 +6,38 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_log
-    use sdl2_c_types, only: c_char, c_int, c_ptr, c_funptr
+    use :: sdl2_c_types, only: c_char, c_funptr, c_int, c_ptr
     implicit none
     private
 
-    public :: SDL_LOG_CATEGORY_APPLICATION
-    public :: SDL_LOG_CATEGORY_ERROR
-    public :: SDL_LOG_CATEGORY_ASSERT
-    public :: SDL_LOG_CATEGORY_SYSTEM
-    public :: SDL_LOG_CATEGORY_AUDIO
-    public :: SDL_LOG_CATEGORY_VIDEO
-    public :: SDL_LOG_CATEGORY_RENDER
-    public :: SDL_LOG_CATEGORY_INPUT
-    public :: SDL_LOG_CATEGORY_TEST
-    public :: SDL_LOG_CATEGORY_RESERVED1
-    public :: SDL_LOG_CATEGORY_RESERVED2
-    public :: SDL_LOG_CATEGORY_RESERVED3
-    public :: SDL_LOG_CATEGORY_RESERVED4
-    public :: SDL_LOG_CATEGORY_RESERVED5
-    public :: SDL_LOG_CATEGORY_RESERVED6
-    public :: SDL_LOG_CATEGORY_RESERVED7
-    public :: SDL_LOG_CATEGORY_RESERVED8
-    public :: SDL_LOG_CATEGORY_RESERVED9
-    public :: SDL_LOG_CATEGORY_RESERVED10
-    public :: SDL_LOG_CATEGORY_CUSTOM
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_APPLICATION = 0
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_ERROR       = 1
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_ASSERT      = 2
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_SYSTEM      = 3
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_AUDIO       = 4
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_VIDEO       = 5
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RENDER      = 6
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_INPUT       = 7
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_TEST        = 8
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED1   = 9
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED2   = 10
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED3   = 11
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED4   = 12
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED5   = 13
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED6   = 14
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED7   = 15
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED8   = 16
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED9   = 17
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_RESERVED10  = 18
+    integer(kind=c_int), parameter, public :: SDL_LOG_CATEGORY_CUSTOM      = 19
 
-    enum, bind(c)
-        enumerator :: SDL_LOG_CATEGORY_APPLICATION
-        enumerator :: SDL_LOG_CATEGORY_ERROR
-        enumerator :: SDL_LOG_CATEGORY_ASSERT
-        enumerator :: SDL_LOG_CATEGORY_SYSTEM
-        enumerator :: SDL_LOG_CATEGORY_AUDIO
-        enumerator :: SDL_LOG_CATEGORY_VIDEO
-        enumerator :: SDL_LOG_CATEGORY_RENDER
-        enumerator :: SDL_LOG_CATEGORY_INPUT
-        enumerator :: SDL_LOG_CATEGORY_TEST
-        enumerator :: SDL_LOG_CATEGORY_RESERVED1
-        enumerator :: SDL_LOG_CATEGORY_RESERVED2
-        enumerator :: SDL_LOG_CATEGORY_RESERVED3
-        enumerator :: SDL_LOG_CATEGORY_RESERVED4
-        enumerator :: SDL_LOG_CATEGORY_RESERVED5
-        enumerator :: SDL_LOG_CATEGORY_RESERVED6
-        enumerator :: SDL_LOG_CATEGORY_RESERVED7
-        enumerator :: SDL_LOG_CATEGORY_RESERVED8
-        enumerator :: SDL_LOG_CATEGORY_RESERVED9
-        enumerator :: SDL_LOG_CATEGORY_RESERVED10
-        enumerator :: SDL_LOG_CATEGORY_CUSTOM
-    end enum
-
-    public :: SDL_LOG_PRIORITY_VERBOSE
-    public :: SDL_LOG_PRIORITY_DEBUG
-    public :: SDL_LOG_PRIORITY_INFO
-    public :: SDL_LOG_PRIORITY_WARN
-    public :: SDL_LOG_PRIORITY_ERROR
-    public :: SDL_LOG_PRIORITY_CRITICAL
-    public :: SDL_NUM_LOG_PRIORITIES
-
-    enum, bind(c)
-        enumerator :: SDL_LOG_PRIORITY_VERBOSE = 1
-        enumerator :: SDL_LOG_PRIORITY_DEBUG
-        enumerator :: SDL_LOG_PRIORITY_INFO
-        enumerator :: SDL_LOG_PRIORITY_WARN
-        enumerator :: SDL_LOG_PRIORITY_ERROR
-        enumerator :: SDL_LOG_PRIORITY_CRITICAL
-        enumerator :: SDL_NUM_LOG_PRIORITIES
-    end enum
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_VERBOSE  = 1
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_DEBUG    = 2
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_INFO     = 3
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_WARN     = 4
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_ERROR    = 5
+    integer(kind=c_int), parameter, public :: SDL_LOG_PRIORITY_CRITICAL = 6
+    integer(kind=c_int), parameter, public :: SDL_NUM_LOG_PRIORITIES    = 7
 
     public :: sdl_log_
     public :: sdl_log_critical_

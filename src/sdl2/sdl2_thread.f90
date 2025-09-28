@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_thread
-    use sdl2_c_types, only: c_char, c_int, c_ptr, c_funptr
+    use :: sdl2_c_types, only: c_char, c_int, c_ptr, c_funptr
     implicit none
 
     public :: sdl_create_thread

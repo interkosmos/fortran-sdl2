@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_pixels
-    use sdl2_c_types, only: c_ptr, c_int, c_uint8_t, c_uint32_t
+    use :: sdl2_c_types, only: c_int, c_ptr, c_uint8_t, c_uint32_t
     implicit none
     private
 
@@ -52,7 +52,7 @@ module sdl2_pixels
     integer(kind=c_int), parameter, public :: SDL_ALPHA_TRANSPARENT = 0
 
     ! SDL_Color
-    type, public, bind(c) :: sdl_color
+    type, bind(c), public :: sdl_color
         integer(kind=c_uint8_t) :: r
         integer(kind=c_uint8_t) :: g
         integer(kind=c_uint8_t) :: b
@@ -60,7 +60,7 @@ module sdl2_pixels
     end type sdl_color
 
     ! SDL_Palette
-    type, public, bind(c) :: sdl_palette
+    type, bind(c), public :: sdl_palette
         integer(kind=c_int)      :: ncolors
         type(c_ptr)              :: colors
         integer(kind=c_uint32_t) :: version
@@ -68,7 +68,7 @@ module sdl2_pixels
     end type sdl_palette
 
     ! SDL_PixelFormat
-    type, public, bind(c) :: sdl_pixel_format
+    type, bind(c), public :: sdl_pixel_format
         integer(kind=c_uint32_t) :: format
         type(c_ptr)              :: palette
         integer(kind=c_uint8_t)  :: bits_per_pixel

@@ -6,12 +6,12 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_version
-    use sdl2_c_types, only: c_uint8_t
+    use :: sdl2_c_types, only: c_uint8_t
     implicit none
     private
 
     ! SDL_version
-    type, public, bind(c) :: sdl_version
+    type, bind(c), public :: sdl_version
         integer(kind=c_uint8_t) :: major
         integer(kind=c_uint8_t) :: minor
         integer(kind=c_uint8_t) :: patch

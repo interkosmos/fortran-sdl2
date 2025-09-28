@@ -6,9 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_c_types
-
     use, intrinsic :: iso_c_binding, only: c_int8_t, c_int16_t, c_int32_t, c_int64_t, &
-                                           c_char,  c_signed_char, c_short, c_int, &
+                                           c_char, c_signed_char, c_short, c_int, &
                                            c_long, c_long_long, &
                                            c_ptr, c_funptr, c_null_ptr, c_null_char, &
                                            c_size_t, &
@@ -39,33 +38,32 @@ module sdl2_c_types
 
 #endif
 
-    public :: c_ptr
-    public :: c_funptr
-    public :: c_size_t
-    public :: c_float
     public :: c_double
-    public :: c_null_ptr
+    public :: c_float
+    public :: c_funptr
     public :: c_null_char
+    public :: c_null_ptr
+    public :: c_ptr
+    public :: c_size_t
 
+    public :: c_char
+    public :: c_int
     public :: c_int8_t
     public :: c_int16_t
     public :: c_int32_t
     public :: c_int64_t
-    public :: c_char
-    public :: c_signed_char
-    public :: c_short
-    public :: c_int
     public :: c_long
     public :: c_long_long
+    public :: c_short
+    public :: c_signed_char
 
     public :: c_uint8_t
     public :: c_uint16_t
     public :: c_uint32_t
     public :: c_uint64_t
-    public :: c_unsigned_char
-    public :: c_unsigned_short
     public :: c_unsigned
+    public :: c_unsigned_char
     public :: c_unsigned_long
     public :: c_unsigned_long_long
-
+    public :: c_unsigned_short
 end module sdl2_c_types

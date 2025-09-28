@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_events
-    use sdl2_c_types, only: c_ptr, c_char, c_int, c_uint8_t, c_uint16_t, c_uint32_t, c_int16_t, c_int32_t, c_int64_t, c_float
+    use :: sdl2_c_types, only: c_char, c_float, c_int, c_int16_t, c_int32_t, c_int64_t, c_ptr, c_uint8_t, c_uint16_t, c_uint32_t
     implicit none
     private
 
@@ -62,13 +62,13 @@ module sdl2_events
     integer(kind=c_int), parameter, public :: SDL_LASTEVEMT                = int(z'FFFF')
 
     ! SDL_CommonEvent
-    type, public, bind(c) :: sdl_common_event
+    type, bind(c), public :: sdl_common_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
     end type sdl_common_event
 
     ! SDL_WindowEvent
-    type, public, bind(c) :: sdl_window_event
+    type, bind(c), public :: sdl_window_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -81,7 +81,7 @@ module sdl2_events
     end type sdl_window_event
 
     ! SDL_Keysym
-    type, public, bind(c) :: sdl_key_sym
+    type, bind(c), public :: sdl_key_sym
         integer(kind=c_int)      :: scan_code
         integer(kind=c_int32_t)  :: sym
         integer(kind=c_uint16_t) :: mod
@@ -89,7 +89,7 @@ module sdl2_events
     end type sdl_key_sym
 
     ! SDL_KeyboardEvent
-    type, public, bind(c) :: sdl_keyboard_event
+    type, bind(c), public :: sdl_keyboard_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -101,7 +101,7 @@ module sdl2_events
     end type sdl_keyboard_event
 
     ! SDL_TextEditingEvent
-    type, public, bind(c) :: sdl_text_editing_event
+    type, bind(c), public :: sdl_text_editing_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -111,7 +111,7 @@ module sdl2_events
     end type sdl_text_editing_event
 
     ! SDL_TextInputEvent
-    type, public, bind(c) :: sdl_text_input_event
+    type, bind(c), public :: sdl_text_input_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -119,7 +119,7 @@ module sdl2_events
     end type sdl_text_input_event
 
     ! SDL_MouseMotionEvent
-    type, public, bind(c) :: sdl_mouse_motion_event
+    type, bind(c), public :: sdl_mouse_motion_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -132,7 +132,7 @@ module sdl2_events
     end type sdl_mouse_motion_event
 
     ! SDL_MouseButtonEvent
-    type, public, bind(c) :: sdl_mouse_button_event
+    type, bind(c), public :: sdl_mouse_button_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -146,7 +146,7 @@ module sdl2_events
     end type sdl_mouse_button_event
 
     ! SDL_MouseWheelEvent
-    type, public, bind(c) :: sdl_mouse_wheel_event
+    type, bind(c), public :: sdl_mouse_wheel_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -157,7 +157,7 @@ module sdl2_events
     end type sdl_mouse_wheel_event
 
     ! SDL_JoyAxisEvent
-    type, public, bind(c) :: sdl_joy_axis_event
+    type, bind(c), public :: sdl_joy_axis_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -170,7 +170,7 @@ module sdl2_events
     end type sdl_joy_axis_event
 
     ! SDL_JoyBallEvent
-    type, public, bind(c) :: sdl_joy_ball_event
+    type, bind(c), public :: sdl_joy_ball_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -183,7 +183,7 @@ module sdl2_events
     end type sdl_joy_ball_event
 
     ! SDL_JoyHatEvent
-    type, public, bind(c) :: sdl_joy_hat_event
+    type, bind(c), public :: sdl_joy_hat_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -194,7 +194,7 @@ module sdl2_events
     end type sdl_joy_hat_event
 
     ! SDL_JoyButtonEvent
-    type, public, bind(c) :: sdl_joy_button_event
+    type, bind(c), public :: sdl_joy_button_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -205,14 +205,14 @@ module sdl2_events
     end type sdl_joy_button_event
 
     ! SDL_JoyDeviceEvent
-    type, public, bind(c) :: sdl_joy_device_event
+    type, bind(c), public :: sdl_joy_device_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
     end type sdl_joy_device_event
 
     ! SDL_ControllerAxisEvent
-    type, public, bind(c) :: sdl_controller_axis_event
+    type, bind(c), public :: sdl_controller_axis_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -225,7 +225,7 @@ module sdl2_events
     end type sdl_controller_axis_event
 
     ! SDL_ControllerButtonEvent
-    type, public, bind(c) :: sdl_controller_button_event
+    type, bind(c), public :: sdl_controller_button_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -236,14 +236,14 @@ module sdl2_events
     end type sdl_controller_button_event
 
     ! SDL_ControllerDeviceEvent
-    type, public, bind(c) :: sdl_controller_device_event
+    type, bind(c), public :: sdl_controller_device_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
     end type sdl_controller_device_event
 
     ! SDL_AudioDeviceEvent
-    type, public, bind(c) :: sdl_audio_device_event
+    type, bind(c), public :: sdl_audio_device_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int32_t)  :: which
@@ -254,7 +254,7 @@ module sdl2_events
     end type sdl_audio_device_event
 
     ! SDL_TouchFingerEvent
-    type, public, bind(c) :: sdl_touch_finger_event
+    type, bind(c), public :: sdl_touch_finger_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int64_t)  :: touch_id
@@ -267,7 +267,7 @@ module sdl2_events
     end type sdl_touch_finger_event
 
     ! SDL_MultiGestureEvent
-    type, public, bind(c) :: sdl_multi_gesture_event
+    type, bind(c), public :: sdl_multi_gesture_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int64_t)  :: touch_id
@@ -280,7 +280,7 @@ module sdl2_events
     end type sdl_multi_gesture_event
 
     ! SDL_DollarGestureEvent
-    type, public, bind(c) :: sdl_dollar_gesture_event
+    type, bind(c), public :: sdl_dollar_gesture_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_int64_t)  :: touch_id
@@ -292,7 +292,7 @@ module sdl2_events
     end type sdl_dollar_gesture_event
 
     ! SDL_DropEvent
-    type, public, bind(c) :: sdl_drop_event
+    type, bind(c), public :: sdl_drop_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         type(c_ptr)              :: file
@@ -300,19 +300,19 @@ module sdl2_events
     end type sdl_drop_event
 
     ! SDL_QuitEvent
-    type, public, bind(c) :: sdl_quit_event
+    type, bind(c), public :: sdl_quit_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
     end type sdl_quit_event
 
     ! SDL_OSEvent
-    type, public, bind(c) :: sdl_os_event
+    type, bind(c), public :: sdl_os_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
     end type sdl_os_event
 
     ! SDL_UserEvent
-    type, public, bind(c) :: sdl_user_event
+    type, bind(c), public :: sdl_user_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         integer(kind=c_uint32_t) :: window_id
@@ -322,14 +322,14 @@ module sdl2_events
     end type sdl_user_event
 
     ! SDL_SysWMEvent
-    type, public, bind(c) :: sdl_sys_wm_event
+    type, bind(c), public :: sdl_sys_wm_event
         integer(kind=c_uint32_t) :: type
         integer(kind=c_uint32_t) :: timestamp
         type(c_ptr)              :: msg
     end type sdl_sys_wm_event
 
     ! SDL_Event
-    type, public, bind(c) :: sdl_event
+    type, bind(c), public :: sdl_event
         integer(kind=c_uint32_t)          :: type
         type(sdl_common_event)            :: common
         type(sdl_window_event)            :: window

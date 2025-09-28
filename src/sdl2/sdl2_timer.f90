@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_timer
-    use sdl2_c_types, only: c_uint32_t, c_uint64_t
+    use :: sdl2_c_types, only: c_uint32_t, c_uint64_t
     implicit none
     private
 

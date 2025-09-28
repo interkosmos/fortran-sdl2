@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module glu
-    use sdl2_c_types, only: c_ptr, c_int
+    use :: sdl2_c_types, only: c_int, c_ptr
     use :: sdl2_opengl
     implicit none
     private

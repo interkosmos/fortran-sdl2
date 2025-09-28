@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_stdinc
-    use sdl2_c_types, only: c_ptr, c_int, c_size_t
+    use :: sdl2_c_types, only: c_int, c_ptr, c_size_t
     implicit none
     private
 
@@ -35,5 +35,4 @@ module sdl2_stdinc
             integer(kind=c_size_t)         :: c_strlen
         end function c_strlen
     end interface
-
 end module sdl2_stdinc

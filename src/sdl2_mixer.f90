@@ -6,8 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_mixer
-    use sdl2_c_types, only: c_ptr,  c_char, c_int, c_int16_t, c_int64_t, c_uint32_t, c_null_char
-    use sdl2_rwops, only: sdl_rw_from_file
+    use :: sdl2_c_types, only: c_char, c_int, c_int16_t, c_int64_t, c_null_char, c_ptr, c_uint32_t
+    use :: sdl2_rwops,   only: sdl_rw_from_file
     implicit none
 
     integer(kind=c_int), parameter, public :: AUDIO_U8     = int(z'0008')

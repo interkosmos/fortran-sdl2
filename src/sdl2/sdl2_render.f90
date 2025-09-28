@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_render
-    use sdl2_c_types, only: c_ptr, c_int, c_int32_t, c_uint8_t, c_uint32_t, c_float, c_double
+    use :: sdl2_c_types, only: c_double, c_float, c_int, c_int32_t, c_null_ptr, c_ptr, c_uint8_t, c_uint32_t
     use :: sdl2_rect
     use :: sdl2_pixels
     use :: sdl2_surface
@@ -25,24 +25,22 @@ module sdl2_render
     integer(kind=c_int), parameter, public :: SDL_FLIP_VERTICAL   = int(z'00000002')
 
     ! SDL_TextureAccess
-    enum, bind(c)
-        enumerator :: SDL_TEXTUREACCESS_STATIC
-        enumerator :: SDL_TEXTUREACCESS_STREAMING
-        enumerator :: SDL_TEXTUREACCESS_TARGET
-    end enum
+    integer(kind=c_int), parameter, public :: SDL_TEXTUREACCESS_STATIC    = 0
+    integer(kind=c_int), parameter, public :: SDL_TEXTUREACCESS_STREAMING = 1
+    integer(kind=c_int), parameter, public :: SDL_TEXTUREACCESS_TARGET    = 2
 
     ! SDL_RendererInfo
-    type, public, bind(c) :: sdl_renderer_info
-        type(c_ptr)             :: name
-        integer(kind=c_int32_t) :: flags
-        integer(kind=c_int32_t) :: num_texture_formats
-        integer(kind=c_int32_t) :: texture_formats(16)
-        integer(kind=c_int)     :: max_texture_width
-        integer(kind=c_int)     :: max_texture_height
+    type, bind(c), public :: sdl_renderer_info
+        type(c_ptr)             :: name                = c_null_ptr
+        integer(kind=c_int32_t) :: flags               = 0
+        integer(kind=c_int32_t) :: num_texture_formats = 0
+        integer(kind=c_int32_t) :: texture_formats(16) = 0
+        integer(kind=c_int)     :: max_texture_width   = 0
+        integer(kind=c_int)     :: max_texture_height  = 0
     end type sdl_renderer_info
 
     ! SDL_Vertex
-    type, public, bind(c) :: sdl_vertex
+    type, bind(c), public :: sdl_vertex
         type(sdl_fpoint) :: position
         type(sdl_color)  :: color
         type(sdl_fpoint) :: tex_coord

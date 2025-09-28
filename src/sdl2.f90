@@ -6,11 +6,11 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2
+    use, intrinsic :: iso_c_binding,   only: c_associated, c_f_pointer
     use, intrinsic :: iso_fortran_env, only: i2 => int16, i4 => int32, i8 => int64
-    use, intrinsic :: iso_c_binding, only: c_associated, c_f_pointer
-    use :: sdl2_c_types, only: c_int, c_int8_t, c_int32_t, c_uint8_t, c_uint32_t, c_size_t, c_null_char, c_null_ptr
     use :: sdl2_audio
     use :: sdl2_blendmode
+    use :: sdl2_c_types, only: c_int, c_int8_t, c_int32_t, c_uint8_t, c_uint32_t, c_size_t, c_null_char, c_null_ptr
     use :: sdl2_cpuinfo
     use :: sdl2_error
     use :: sdl2_events
@@ -30,7 +30,7 @@ module sdl2
     use :: sdl2_render
     use :: sdl2_rwops
     use :: sdl2_scancode
-    use :: sdl2_stdinc, only: c_strlen
+    use :: sdl2_stdinc
     use :: sdl2_surface
     use :: sdl2_thread
     use :: sdl2_timer

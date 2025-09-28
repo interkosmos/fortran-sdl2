@@ -6,8 +6,8 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_cpuinfo
-    use sdl2_c_types, only: c_int
-    use :: sdl2_stdinc, only: sdl_bool
+    use :: sdl2_c_types, only: c_int
+    use :: sdl2_stdinc,  only: sdl_bool
     implicit none
     private
 

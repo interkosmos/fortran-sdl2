@@ -6,7 +6,7 @@
 ! GitHub:  https://github.com/interkosmos/fortran-sdl2/
 ! Licence: ISC
 module sdl2_keycode
-    use sdl2_c_types, only: c_int
+    use :: sdl2_c_types, only: c_int
     use :: sdl2_scancode
     implicit none
     private
