@@ -39,12 +39,6 @@ $ cd fortran-sdl2/
 $ make sdl2
 ```
 
-With GNU Fortran ≥ 15.2 you need to additionally pass argument `-funsigned`:
-
-```
-$ make sdl2 FFLAGS="-funsigned `sdl2-config --cflags`"
-```
-
 On Microsoft Windows, you have to set `LIBGL` and `LIBGLU`:
 
 ```
