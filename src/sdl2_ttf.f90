@@ -16,6 +16,7 @@ module sdl2_ttf
     public :: ttf_render_text_shaded
     public :: ttf_render_text_solid
     public :: ttf_close_font
+    public :: ttf_font_height
     public :: ttf_quit
 
     interface
@@ -59,6 +60,13 @@ module sdl2_ttf
             import :: c_ptr
             type(c_ptr), intent(in), value :: font
         end subroutine ttf_close_font
+
+        ! int TTF_FontHeight(const TTF_Font *font)
+        function ttf_font_height(font) bind(c, name='TTF_FontHeight')
+            import :: c_int, c_ptr
+            type(c_ptr), intent(in), value :: font
+            integer(kind=c_int) :: ttf_font_height
+        end function ttf_font_height
 
         ! void TTF_Quit(void)
         subroutine ttf_quit() bind(c, name='TTF_Quit')
